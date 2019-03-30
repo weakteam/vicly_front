@@ -4,7 +4,7 @@ import Login from "./components/login/LoginForm";
 import 'simplebar'; // or "import SimpleBar from 'simplebar';" if you want to use it manually.
 import 'simplebar/dist/simplebar.css';
 import Home from "./components/Home";
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {Router, Redirect, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from 'react-router-with-props';
 import {observer} from "mobx-react";
 import InviteForm from "./components/login/InviteForm";
@@ -12,7 +12,17 @@ import accountStore from "./store/AccountStore";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DevTools from "mobx-react-devtools";
+import ChatsStore from "./store/ChatsStore";
+import history from "./store/history"
 
+if(history.location.pathname.startsWith("/home/chat")){
+    ChatsStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+}
+history.listen((location, action) => {
+    if(history.location.pathname.startsWith("/home/chat")){
+        ChatsStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    }
+});
 
 @observer
 class App extends Component {
@@ -47,7 +57,7 @@ class App extends Component {
         const login = accountStore.status === "authed";
         return (
             <div>
-                <BrowserRouter>
+                <Router history={history}>
                     <Switch>
                         <PrivateRoute path="/home"
                                       component={Home}
@@ -60,9 +70,9 @@ class App extends Component {
                         <Route exact path="/invite/:invite_id" component={InviteForm}/>
                         <Route render={() => <Redirect to="/home"/>}/>
                     </Switch>
-                </BrowserRouter>
+                </Router>
                 <ToastContainer  position="bottom-right"/>
-               {/* <DevTools/>*/}
+                <DevTools/>
             </div>
         )
 

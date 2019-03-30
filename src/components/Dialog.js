@@ -80,7 +80,8 @@ class Dialog extends React.Component {
 
     handleDialogClick = () => {
         this.props.history.push(`/home/chat/${this.props.chatId}`);
-        this.chatsStore.currentChatId = this.props.chatId;
+        // FIXME comment is fix for url chat page reload dafauck mafuck
+        //this.chatsStore.currentChatId = this.props.chatId;
         ToastService.makeToast("selected chat:" + this.props.chatId);
     };
 

@@ -57,7 +57,7 @@ class MessagesStore {
             let lastUnread = null;
             messages = messages.sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
             messages.forEach(message => {
-                if (!message.timestamp_read) {
+                if (!message.timestamp_read && accountStore.userId==message.from) {
                     countUnreaded++;
                     lastUnread = message;
                 }

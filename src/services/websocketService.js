@@ -16,7 +16,7 @@ class WebsocketService{
     run(token){
         if (this.running)
             return;
-        websocket_url += token;
+        websocket_url += !!token ? token : "";
         // if (token) {
         //     throw Error("Cannot create websocket connection in unath session");
         // }
@@ -29,6 +29,7 @@ class WebsocketService{
             console.log("websocket error:"+err);
         };
         this.socket.onopen = () => {
+            console.log("ws connection opened!");
             let interval = setInterval(() => {
 
                 switch (this.socket.readyState) {
@@ -52,6 +53,7 @@ class WebsocketService{
             }
             alert('Код: ' + event.code + ' причина: ' + event.reason);
             if (token) {
+                this.running = false;
                 this.run();
             }
         };

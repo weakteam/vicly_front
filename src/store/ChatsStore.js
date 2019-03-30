@@ -3,6 +3,7 @@ import {BACKEND_URL} from "../common";
 import accountStore from "./AccountStore";
 import messagesStore from "./MessagesStore";
 
+
 class ChatsStore {
     @observable groups = [];
     @observable userChats = [];
@@ -10,6 +11,8 @@ class ChatsStore {
     @observable fetchFail = false;
     @observable currentChatId = null;
     err_message = "";
+
+
 
     async fetchChats() {
         try {

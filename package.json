@@ -33,7 +33,7 @@
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
-    "start": "rescripts start",
+    "start": "HOST=0.0.0.0 rescripts start",
     "build": "rescripts build",
     "test": "rescripts test"
   },

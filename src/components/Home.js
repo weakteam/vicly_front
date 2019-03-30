@@ -18,6 +18,10 @@ import chatsStore from "../store/ChatsStore";
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
+//import Button from "@material-ui/core/es/Button/Button";
+import $ from 'jquery';
+import {Button, Header, Image, Modal} from 'semantic-ui-react';
+import {Item, Menu, MenuProvider} from "react-contexify";
 import Background from '../images/mesB.jpg'
 ;
 
@@ -26,7 +30,7 @@ const styles = theme => ({
     root: {
         display: 'flex',
         [theme.breakpoints.down('xs')]: {
-           // display: 'block',
+            // display: 'block',
         },
         top: 0,
         bottom: 0,
@@ -125,8 +129,8 @@ const styles = theme => ({
         justifyContent: 'center',
     },
     userBar: {
-      display: 'flex',
-      marginLeft: 'auto',
+        display: 'flex',
+        marginLeft: 'auto',
     },
 });
 
@@ -157,6 +161,10 @@ class Home extends React.Component {
             )
         }
     }
+
+    handleClickContext = () => {
+        alert("LOL")
+    };
 
     // componentDidMount() {
     //     if (this.props.currentChatId.userId !== this.props.currentChatId.prevUserId) {
@@ -205,9 +213,9 @@ class Home extends React.Component {
                                 </IconButton>
                                 {/* <div className={classes.logoDiv}>Vicly messenger</div>*/}
                                 <div className={classes.userBar}>
-                                <InviteIcon chats={this.props.chats}/>
-                                <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
-                                            name={this.accountStore.fullName}/>
+                                    <InviteIcon chats={this.props.chats}/>
+                                    <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
+                                                name={this.accountStore.fullName}/>
                                 </div>
                             </Toolbar>
                             {/*<ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>*/}
@@ -245,10 +253,17 @@ class Home extends React.Component {
                 <main className={classes.content}>
                     <Scrollbars autoHide>
                         <div className={classes.toolbar}/>
-                        <Route path="/home/chat/:chat_id"
-                               render={(routeProps) => <ChatWindow {...routeProps}
-                                                                   handleDrawerToggle={this.handleDrawerToggle}
-                               />}/>
+                        <MenuProvider id={"menu_id"}>
+                            <Route path="/home/chat/:chat_id"
+                                   render={(routeProps) => <ChatWindow {...routeProps}
+                                                                       handleDrawerToggle={this.handleDrawerToggle}
+                                   />}/>
+                        </MenuProvider>
+                        <Menu id='menu_id'>
+                            <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
+                            <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
+                            <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
+                        </Menu>
                     </Scrollbars>
                 </main>
             </div>

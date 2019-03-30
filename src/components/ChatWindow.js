@@ -12,7 +12,6 @@ import accountStore from "../store/AccountStore";
 import {Scrollbars} from "react-custom-scrollbars";
 
 
-
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
@@ -92,25 +91,31 @@ class ChatWindow extends React.Component {
     scrollToBottom = () => {
         //this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
         //TODO scroll child
-        this.messageList.current.scrollToEnd();
+        if (this.messageList.current) {
+            this.messageList.current.scrollToEnd();
+        }
     };
 
     componentWillMount() {
         //this.messagesStore.getAllMessagesByChatId(this.chatsStore.currentChatId);
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // FIXME Need update ChatsStore too
-        // if (this.props.match.params.chat_id !== this.chatsStore.currentChatId){
-        //     this.chatsStore.currentChatId = this.props.match.params.chat_id;
-        //     return;
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        // Need update ChatsStore too
+        // I THINK FIXED
+        // const router_chat_id = parseInt(this.props.match.params.chat_id, 10);
+        // if (router_chat_id !== this.chatsStore.currentChatId) {
+        //     this.chatsStore.currentChatId = router_chat_id;
         // }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
         this.messagesStore.loadMessagesByChatId(this.chatsStore.currentChatId, 'user');
         let messages = this.messagesStore.messages.find(elem => elem.chatId === this.chatsStore.currentChatId);
         let self = this;
         if (messages) {
             messages.messages.forEach((elem) => {
-                if (elem.from != self.accountStore.userId) {
+                if (elem.from !== self.accountStore.userId) {
                     if (!elem.timestamp_delivery) {
                         self.messagesStore.deliveryMessage(elem.id, 1, 'user');
                     }
@@ -121,7 +126,7 @@ class ChatWindow extends React.Component {
                 }
 
             });
-            if (messages.messages.length){
+            if (messages.messages.length) {
                 this.scrollToBottom();
             }
         }
@@ -144,11 +149,14 @@ class ChatWindow extends React.Component {
             fullName: this.accountStore.fullName,
             userId: this.accountStore.userId
         };
-        if (this.chatsStore.currentChatId){
+        if (this.chatsStore.currentChatId) {
             let chatUser = this.chatsStore.userChats.find((elem) => elem.user.id === this.chatsStore.currentChatId);
-            chatUser = chatUser.user;
-            chatUser.fullName = chatUser.first_name + " " + chatUser.last_name;
-            let messages = this.messagesStore.messages.find((elem) => elem.chatId === this.chatsStore.currentChatId);
+            let messages = null;
+            if (chatUser) {
+                chatUser = chatUser.user;
+                chatUser.fullName = chatUser.first_name + " " + chatUser.last_name;
+                messages = this.messagesStore.messages.find((elem) => elem.chatId === this.chatsStore.currentChatId);
+            }
             return (
                 <div className={classes.chat}>
 
@@ -163,8 +171,6 @@ class ChatWindow extends React.Component {
                                     chatUser={chatUser}
                                     messages={messages}
                                     ref={this.messageList}/>
-
-
                             </div>
 
                             :
