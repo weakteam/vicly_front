@@ -40,6 +40,7 @@ class ChatsStore {
             runInAction("Update users info", () => {
                 this.userChats = content.with_group.flatMap((elem => elem.users));
                 this.userChats = this.userChats.map(chat => {
+                    messagesStore.createOrUpdateChatMessagesObjByUnreadedMessages(chat.user.id,  "user", chat.unread, chat.last);
                     chat.chat_type = "user";
                     return chat;
                 });

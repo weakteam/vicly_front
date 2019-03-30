@@ -1,16 +1,19 @@
 import {BACKEND_URL} from "../common";
 import {observable, runInAction} from "mobx";
 import accountStore from "./AccountStore";
+import ChatsStore from "./ChatsStore";
 
 class MessagesStore {
     @observable messages = [];
 
     constructor() {
         this.accountStore = accountStore;
+        this.chatsStore = ChatsStore;
     }
 
     loadMessagesByChatId(chatId, chatType) {
-        if (this.messages.find((elem) => elem.chatId === chatId)) {
+        const messages = this.messages.find((elem) => elem.chatId === chatId)
+        if (messages && messages.messages.length) {
             console.log("Chatid " + chatId + " already loaded! need to resolve only inreaded messages");
         } else {
             this.getAllMessagesByChatId(chatId, chatType)
@@ -18,6 +21,7 @@ class MessagesStore {
     }
 
     //@action
+    //TO ONLY WS USING
     addMessageToEnd(message) {
         //TODO for websocket push
         const myselfUserId = parseInt(accountStore.userId, 10);
@@ -29,13 +33,24 @@ class MessagesStore {
             }
         });
         if (messages) {
-            messages.messages.push(message);
-        } else {
-            messages = {
-                chatId: message.chat.id,
-                chat_type: message.chat.chat_type,
-                messages: [message]
+            // TODO NEED FUCKEN REFACTORIN THIS SHIT
+            if (message.chat.chat_type === 'user') {
+                if (this.chatsStore.currentChatId==message.from) {
+                    messages.messages.push(message);
+                    this.deliveryMessage(message.id, message.chat.id, 'user');
+                    this.readMessage(message.id, 'user');
+                }else {
+                    messages.messages.push(message);
+                    messages.unread++;
+                    messages.last = message;
+                    this.deliveryMessage(message.id, message.chat.id, 'user');
+                }
             }
+
+
+        } else {
+            // TODO WADAFUCK? i was drunked !?!?!
+            this.createOrUpdateChatMessagesObjByUnreadedMessages(message.chat.id, message.chat.chat_type, message.chat.unread.last,[message]);
         }
 
     }
@@ -63,14 +78,15 @@ class MessagesStore {
                 }
             });
             runInAction("getAllMessagesById", () => {
-                let chatMessages = {
-                    chatId: chatId,
-                    chat_type: chat_type,
-                    last: lastUnread,
-                    unread: countUnreaded,
-                    messages: messages
-                };
-                this.messages.push(chatMessages);
+                // let chatMessages = {
+                //     chatId: chatId,
+                //     chat_type: chat_type,
+                //     last: lastUnread,
+                //     unread: countUnreaded,
+                //     messages: messages
+                // };
+                // this.messages.push(chatMessages);
+                this.createOrUpdateChatMessagesObjByUnreadedMessages(chatId, chat_type, countUnreaded, lastUnread, messages);
                 //this.messages = messages;
             })
         } catch (err) {
@@ -81,9 +97,10 @@ class MessagesStore {
 
     //IT'S MY NAMING STYLE !!!!
     //@action("createOrUpdateChatMessagesObjByUnreadedMessages")
-    createOrUpdateChatMessagesObjByUnreadedMessages(chatId, chatType, countUnread, lastUnread) {
+    createOrUpdateChatMessagesObjByUnreadedMessages(chatId, chatType, countUnread, lastUnread, newMessages) {
         let messagesObj = this.messages.find(elem => elem.chatId == chatId);
         if (messagesObj) {
+            messagesObj.messages = newMessages || messagesObj.messages;
             messagesObj.last = lastUnread;
             messagesObj.unread = countUnread;
         } else {
@@ -92,7 +109,7 @@ class MessagesStore {
                 chat_type: chatType,
                 last: lastUnread,
                 unread: countUnread,
-                messages: []
+                messages: newMessages || []
             };
             this.messages.push(chatMessages);
         }
