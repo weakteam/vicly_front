@@ -18,7 +18,7 @@ import chatsStore from "../store/ChatsStore";
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
-import Background from '../images/chatBack2.jpg'
+import Background from '../images/chatBack3.jpg'
 //import Button from "@material-ui/core/es/Button/Button";
 import $ from 'jquery';
 import {Button, Header, Image, Modal} from 'semantic-ui-react';
@@ -91,7 +91,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             //minHeight: '100%',
         },
-       // backgroundImage: 'url(' +Background + ')' ,
+       backgroundImage: 'url(' +Background + ')' ,
        // backgroundImage: 'url(https://visme.co/blog/wp-content/uploads/2017/07/50-Beautiful-and-Minimalist-Presentation-Backgrounds-04.jpg)',
         backgroundSize: 'cover',
 
