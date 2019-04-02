@@ -5,6 +5,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography/Typography";
 import div from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
+import {fade} from "@material-ui/core/styles/colorManipulator";
 
 const styles = theme => ({
     root: {
@@ -19,6 +20,7 @@ const styles = theme => ({
         marginRight: 9,
         display: 'flex',
         alignItems: 'flex-end',
+        borderRadius: 0,
     },
     avatarMob: {
         marginLeft: 9,
@@ -31,6 +33,7 @@ const styles = theme => ({
         boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
     },
     fromMe: {
+        boxShadow: '0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
         maxWidth: 500,
         [theme.breakpoints.down('xs')]: {
             maxWidth: 300,
@@ -40,9 +43,7 @@ const styles = theme => ({
         },
         padding: 11,
         backgroundColor: '#e7f1e2',
-        borderRadius: 20,
-        boxShadow: '0px 3px 5px 0px rgba(0, 0, 0, 0.08)',
-transition: 'box-shadow 0.3s ease-in-out',
+        borderRadius: 10,
     },
 
     fromMeMob: {
@@ -55,9 +56,7 @@ transition: 'box-shadow 0.3s ease-in-out',
         },
         padding: 11,
         backgroundColor: '#e2f0f1',
-        borderRadius: 20,
-        boxShadow: '0px 3px 5px 0px rgba(0, 0, 0, 0.08)',
-        transition: 'box-shadow 0.3s ease-in-out',
+        borderRadius: 10,
     },
     toMe: {
         maxWidth: 500,
@@ -69,8 +68,7 @@ transition: 'box-shadow 0.3s ease-in-out',
         },
         padding: 11,
         backgroundColor: '#f9f9f9',
-        boxShadow: '0px 3px 5px 0px rgba(0, 0, 0, 0.08)',
-        borderRadius: 20,
+        borderRadius: 10,
     },
     messageBlock: {
         wordWrap: 'break-word',
@@ -92,7 +90,12 @@ transition: 'box-shadow 0.3s ease-in-out',
         },
         padding: 11,
         backgroundColor: '#efefef',
-        borderRadius: 20,
+        borderRadius: 10,
+    },
+    nonread: {
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        boxShadow: `${fade('#ef0511', 0.25)} 0 0 0 0.2rem`,
+        border: '1px solid #000',
     },
     mess: {},
 });

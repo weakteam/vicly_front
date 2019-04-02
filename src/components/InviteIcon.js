@@ -7,6 +7,7 @@ import PersonAdd from '@material-ui/icons/PersonAdd'
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import TextField from "@material-ui/core/TextField/TextField";
 import WorkGroupList from "./WorkGoupList";
+import InviteForm from "./login/InviteForm";
 
 
 function getModalStyle() {
@@ -27,19 +28,12 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
-        [theme.breakpoints.up('xs')]: {
+        [theme.breakpoints.down('xs')]: {
             width: '96%',
         },
-        [theme.breakpoints.up('sm')]: {
-            width: '55%',
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '50%',
-        },
-        [theme.breakpoints.up('lg')]: {
-            width: '29%',
-        },
-        width: 'auto',
+            width: '45%',
+
+       // width: 'auto',
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
@@ -96,7 +90,7 @@ class SimpleModal extends React.Component {
                     style={{zIndex: 5000}}
                 >
                     <div style={getModalStyle()} className={classes.paper}>
-                        <form className={classes.container} noValidate autoComplete="off">
+                        {/*<form className={classes.container} noValidate autoComplete="off">
                             <Typography variant="h5" align="center"> Приглашение нового пользователя</Typography>
                             <TextField
                                 id="standard-n"
@@ -115,9 +109,8 @@ class SimpleModal extends React.Component {
                                 margin="normal"
                             />
                             <WorkGroupList/>
-                        </form>
-                        <Button color="primary" onClick={this.handleClose}>Пригласить</Button>
-                        <Button color="secondary" onClick={this.handleClose}>Закрыть</Button>
+                        </form>*/}
+                        <InviteForm />
                     </div>
                 </Modal>
             </div>

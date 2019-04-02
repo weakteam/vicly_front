@@ -10,6 +10,7 @@ import messagesStore from "../store/MessagesStore"
 import {observer} from "mobx-react";
 import accountStore from "../store/AccountStore";
 import {Scrollbars} from "react-custom-scrollbars";
+import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 
 
 const styles = theme => ({
@@ -159,35 +160,33 @@ class ChatWindow extends React.Component {
             }
             return (
                 <div className={classes.chat}>
-
                     <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
+
                     {
-                        messages && messages.messages.length > 0 ?
+                            messages && messages.messages.length > 0 ? (
+                                <div className={classes.list}>
 
-                            <div className={classes.list}>
-
-                                <MessageList
-                                    myselfUser={myselfUser}
-                                    chatUser={chatUser}
-                                    messages={messages}
-                                    ref={this.messageList}/>
-                            </div>
-
-                            :
-                            <div className={classes.emptyChat}>
-                                <Typography variant="h5">История сообщений пуста...</Typography>
-                                {/* <SendMessageBar sendMsg={this.handleSendMessage}/>*/}
-                            </div>
+                                    <MessageList
+                                        myselfUser={myselfUser}
+                                        chatUser={chatUser}
+                                        messages={messages}
+                                        ref={this.messageList}/>
+                                </div>
+                            ) : (
+                                <div className={classes.emptyChat}>
+                                    <Typography color="secondary" variant="h5">История сообщения пуста...</Typography>
+                                </div>
+                                )
                     }
-                    <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
 
+                    <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
         } else {
             return (
                 <div className={classes.emptyChat}>
                     <div className={classes.empty}>
-                        <Typography variant="h5">Выберите диалог...</Typography>
+                        <Typography variant="h5" color="secondary">Выберите диалог...</Typography>
                     </div>
                 </div>
             );

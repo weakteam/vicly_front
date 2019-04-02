@@ -13,42 +13,143 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from "@material-ui/core/Grid/Grid";
 import {observer} from "mobx-react";
 import accountStore from "../../store/AccountStore";
+import {Link} from "react-router-dom";
+import Background from "../../images/login.jpg";
+import {fade} from "@material-ui/core/styles/colorManipulator";
+import Divider from "@material-ui/core/es/Divider";
+import InputBase from "@material-ui/core/InputBase";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = theme => ({
+    root: {
+        display: 'flex',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        position: 'absolute',
+        left: 0,
+        justifyContent: 'center',
+        minHeight: '100vh',
+        alignItems: 'center',
+        [theme.breakpoints.down('xs')]: {},
+        [theme.breakpoints.down('xs')]: {
+            minHeight: '100%',
+        },
+        backgroundSize: 'cover',
+        backgroundImage: 'url(' + Background + ')',
+        backgroundColor: theme.palette.primary.main,
+    },
+    radio: {
+        display: 'flex'
+    },
     main: {
-        width: 'auto',
         display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: '80%',
         },
-        [theme.breakpoints.up('xs')]: {
+        /*[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
             width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
+        },*/
+        boxShadow: theme.shadows[10],
+        maxWidth: '50%',
+        // maxHeight: '40%',
     },
     paper: {
-        marginTop: '50%',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    },
-    avatar: {
-        margin: theme.spacing.unit,
-        backgroundColor: theme.palette.secondary.main,
+        justifyContent: 'center',
+       // padding: 30,
+        boxShadow: theme.shadows[0],
+       // paddingBottom: 10,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
+        marginTop: 15,
     },
     submit: {
-        marginTop: theme.spacing.unit * 3,
+        width: 300,
+        boxShadow: theme.shadows[0],
+        backgroundColor: theme.palette.primary.main,
+        color: '#fff',
+        '&:hover': {
+            backgroundColor: '#122031',
+        },
     },
+    invite: {
+        boxShadow: theme.shadows[0],
+        '&:hover': {
+            backgroundColor: 'rgba(118,132,255,0.11)',
+        },
+    },
+    active: {
+        '&:focus': {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
+        },
+        '&:selected': {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
+        },
+        marginTop: 19,
+        borderRadius: 10,
+        backgroundColor: 'rgb(234, 234, 234)',
+        height: 30,
+        paddingLeft: 10,
+    },
+    label: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    password: {
+        marginTop: 10,
+    },
+    remember: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+        marginTop: 10,
+    },
+    checkbox: {
+        padding: 0,
+        marginRight: 5
+    },
+    header: {
+        textAlign: 'center',
+        marginBottom: 10
+    },
+    signIn: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30
+    },
+    inviteBut: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 7
+    },
+    block: {
+        marginBottom: 10,
+        marginRight: 20,
+    },
+    blockForm: {
+        display: 'flex',
+        alignItems: 'flex-start'
+    },
+    formControl: {
+        margin: 10,
+    },
+    group: {
+        display: 'inline',
+    },
+
 });
 
 @observer
@@ -62,6 +163,22 @@ class InviteForm extends React.Component {
         //this.props.setLoading();
     };
 
+    state = {
+        value: 'male',
+        kek: '',
+    };
+
+    handleChange = (event) => {
+        this.setState(state => ({
+            value: event.value,
+        }));
+    };
+
+    handleChangeSelect = (event) => {
+        this.setState({
+            kek: event.target.value,
+        });
+    };
 
     toLoginPage = (isInvite) => {
         this.props.history.push('/login')
@@ -69,41 +186,135 @@ class InviteForm extends React.Component {
 
     render() {
         const {classes} = this.props;
-        return(
-                <main className={classes.main}>
-                    <CssBaseline/>
+        return (
+
                     <Paper className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <LockIcon/>
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Invite
+                        <Typography variant="h5" className={classes.header}>
+                            Приглашение нового пользователя
                         </Typography>
+                        <Divider/>
                         <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
-                            <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="login">Login</InputLabel>
-                                <Input id="login"/>
-                            </FormControl>
-                            <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="password">Password</InputLabel>
-                                <Input id="password" autoComplete="email"/>
-                            </FormControl>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
-                                Sign up
-                            </Button>
-                            <Button fullWidth style={{marginTop: "10px"}} onClick={() => this.toLoginPage()}>
-                                Sign in
-                            </Button>
+                            <div className={classes.blockForm}>
+                                <div className={classes.block}>
+                                    <Typography variant="h6">Личные данные </Typography>
+                                    <FormControl required fullWidth>
+                                        <InputLabel shrink className={classes.label}>
+                                            <Typography variant="subtitle1"> Имя </Typography>
+                                        </InputLabel>
+                                        <InputBase
+                                            id="Name"
+                                            name="Name"
+                                            type="text"
+                                            classes={{input: classes.active}}
+                                        />
+                                    </FormControl>
+                                    <FormControl required fullWidth>
+                                        <InputLabel shrink className={classes.label}>
+                                            <Typography variant="subtitle1"> Фамилия </Typography>
+                                        </InputLabel>
+                                        <InputBase
+                                            id="Surname"
+                                            name="Surname"
+                                            type="text"
+                                            classes={{input: classes.active}}
+                                        />
+                                    </FormControl>
+                                    <FormControl required fullWidth>
+                                        <InputLabel shrink className={classes.label}>
+                                            <Typography variant="subtitle1"> Отчество </Typography>
+                                        </InputLabel>
+                                        <InputBase
+                                            id="patronymic"
+                                            name="patronymic"
+                                            type="еуче"
+                                            classes={{input: classes.active}}
+                                        />
+                                    </FormControl>
+                                </div>
+
+                                <div className={classes.block}>
+                                    <Typography variant="h6">Корпоративная информация</Typography>
+                                    <FormControl required fullWidth>
+                                        <InputLabel shrink className={classes.label}>
+                                            <Typography variant="subtitle1"> Должность </Typography>
+                                        </InputLabel>
+                                        <InputBase
+                                            id="Name"
+                                            name="Name"
+                                            type="text"
+                                            classes={{input: classes.active}}
+                                        />
+                                    </FormControl>
+
+                                    <FormControl required fullWidth>
+                                        <InputLabel shrink className={classes.label}>
+                                            <Typography variant="subtitle1"> Пол </Typography>
+                                        </InputLabel>
+                                        <RadioGroup
+                                            aria-label="gender"
+                                            name="gender2"
+                                            classes={{
+                                                root: classes.group
+                                            }}
+                                            //className={classes.group}
+                                            value={this.value}
+                                            onChange={this.handleChange}
+                                        >
+                                            <FormControlLabel
+                                                value="female"
+                                                control={<Radio color="primary"/>}
+                                                label="Женский"
+                                                labelPlacement="start"
+                                            />
+                                            <FormControlLabel
+                                                value="male"
+                                                control={<Radio color="primary"/>}
+                                                label="Мужской"
+                                                labelPlacement="start"
+                                            />
+                                        </RadioGroup>
+                                    </FormControl>
+
+                                    <form autoComplete="off">
+
+                                    <FormControl required fullWidth>
+                                        {/*<InputLabel shrink className={classes.label}>
+                                            <Typography variant="subtitle1"> Рабочая группа </Typography>
+                                        </InputLabel>*/}
+                                        <InputLabel htmlFor="age-simple">Рабочая группа</InputLabel>
+                                        <Select
+                                            value={this.state.kek}
+                                            onChange={this.handleChangeSelect}
+                                            inputProps={{
+                                                name: 'age',
+                                                id: 'age-simple',
+                                            }}
+                                        >
+                                            <MenuItem value={0}>
+                                                <em>Не выбрано</em>
+                                            </MenuItem>
+                                            <MenuItem value={2}>Ten</MenuItem>
+                                            <MenuItem value={3}>Twenty</MenuItem>
+                                            <MenuItem value={4}>Thirty</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <div className={classes.signIn}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    className={classes.submit}
+                                    component={props => <Link to="/login" {...props} />}>
+                                    Пригласить
+                                </Button>
+                            </div>
                         </form>
                     </Paper>
-                </main>
-            );
+        );
     }
 
 

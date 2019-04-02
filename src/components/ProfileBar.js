@@ -13,6 +13,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 const styles = theme => ({
     position: {
         height: 55,
+        zIndex: 2000,
         position: 'fixed',
         backgroundColor: theme.palette.primary.main,
         display: 'inline-flex',

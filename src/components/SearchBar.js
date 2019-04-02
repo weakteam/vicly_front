@@ -36,7 +36,7 @@ const styles = theme => ({
     },
     button: {
         //marginTop: 5,
-        color: theme.palette.secondary.dark
+        color: theme.palette.secondary.light
     },
     searchIco: {
         color: theme.palette.secondary.light
@@ -80,7 +80,7 @@ class OutlinedTextFields extends React.Component {
                         <i className="search icon"></i>
                 </div>
                 <IconButton>
-                    <AddCommentOutlined/>
+                    <AddCommentOutlined color="secondary"/>
                 </IconButton>
 
             </div>

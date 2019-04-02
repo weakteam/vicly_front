@@ -29,7 +29,7 @@ class ChatWindowEmpty extends React.Component {
         return (
             <div className={classes.emptyChat}>
                 <div className={classes.empty}>
-                    <Typography variant="h5">Выберите диалог...</Typography>
+                    <Typography color="secondary" variant="h5">Выберите диалог...</Typography>
                 </div>
             </div>
         );

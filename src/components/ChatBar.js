@@ -22,7 +22,7 @@ const styles = theme => ({
         justifyContent: 'space-between',
         height: 55,
         zIndex: 1,
-        borderBottom: '1px solid #e2e2e2',
+       // borderBottom: '1px solid #e2e2e2',
       //  borderLeft: '1px solid #e2e2e2',
         backgroundColor: theme.palette.primary.light,
         left: '30%',
@@ -40,6 +40,7 @@ const styles = theme => ({
         height: 33,
         margin: 10,
         marginRight: 0,
+
         /*backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.primary.dark
             }`,*/ // Логика стилей для темной темы
@@ -53,6 +54,15 @@ const styles = theme => ({
     dialogIco: {
         color: theme.palette.secondary.dark,
     },
+    search: {
+        '&:focus': {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            borderColor: '#819bff',
+            border: '1px solid #b9daff',
+            // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
+        },
+    },
+
 });
 
 class ChatBar extends React.Component {
@@ -96,7 +106,7 @@ f
                 </div>*/}
                 <div>
                     <div className={"ui icon input " +classes.searchField}>
-                        <input type="text" placeholder="Поиск сообщений..."/>
+                        <input type="text" placeholder="Поиск сообщений..." className={classes.search} style={{border: 0, backgroundColor: 'rgb(234, 234, 234)',}}/>
                         <i className="search icon"></i>
                     </div>
                     {/*<TextField

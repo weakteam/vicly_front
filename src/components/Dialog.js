@@ -120,7 +120,7 @@ class Dialog extends React.Component {
                 <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`} wrap="nowrap"
                       spacing={16}>
                     <Grid item md={16}>
-                        <Avatar className={classes.avatar} /*style={{backgroundColor: `${this.getRandomColor()}`}}*/>
+                        <Avatar src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg" className={classes.avatar} /*style={{backgroundColor: `${this.getRandomColor()}`}}*/>
                             {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
                         </Avatar>
                     </Grid>

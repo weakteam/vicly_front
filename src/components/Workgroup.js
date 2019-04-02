@@ -16,6 +16,10 @@ const styles = theme => ({
         paddingTop: 0,
         paddingBottom: 0,
     },
+
+    root: {
+      //backgroundColor: '#003f48',
+    },
 });
 
 class Workgroup extends React.Component {
@@ -58,7 +62,7 @@ class Workgroup extends React.Component {
                         }
                     </List>
                 </Collapse>
-                <Divider/>
+                <Divider classes={{root: classes.root}} style={{BackgroundColor: '#fff)'}}/>
             </div>
 
         )
