@@ -85,7 +85,7 @@ export default class MessagesStore {
         if (messages) {
             // TODO NEED FUCKEN REFACTORIN THIS SHIT
             if (message.chat.chat_type === 'user') {
-                if (this.chatsStore.currentChatId==message.from) {
+                if (this.currentChatId==message.from) {
                     messages.messages.push(message);
                     this.deliveryMessage(message.id, message.chat.id, 'user');
                     this.readMessage(message.id, 'user');
