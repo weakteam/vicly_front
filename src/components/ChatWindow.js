@@ -7,6 +7,7 @@ import MessageList from "./MessageList";
 import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../store/RootStore";
+import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 const {accountStore,messagesStore} = rootStore;
 
 
@@ -174,8 +175,8 @@ class ChatWindow extends React.Component {
                             </div>
                         ) : (
                             <div className={classes.emptyChat}>
-                                <Typography className={classes.text} variant="h5">История сообщения
-                                    пуста...</Typography>
+                             {/*   <Typography className={classes.text} variant="h5">История сообщения пуста...</Typography>*/}
+                                <Loader active inverted>Loading</Loader>
                             </div>
                         )
                     }

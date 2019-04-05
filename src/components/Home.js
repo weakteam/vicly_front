@@ -104,7 +104,7 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        //position: 'static',
+        position: 'static',
         //  flexShrink: 1,
         width: 'auto',
         minHeight: '100vh',
@@ -119,8 +119,8 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
-        backgroundImage: 'url(' + Background + ')',
-        backgroundSize: 'cover',
+       // backgroundImage: 'url(' + Background + ')',
+      //  backgroundSize: 'cover',
         //zIndex: 1503,
         boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
