@@ -20,7 +20,7 @@ import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import Typography from "@material-ui/core/es/Typography/Typography";
-//import Background from '../images/chatBack2.jpg';
+import Background from '../images/gif.gif';
 
 const styles = theme => ({
     root: {
@@ -94,7 +94,7 @@ const styles = theme => ({
         padding: 0,
     },
     content: {
-       // flexGrow: 1,
+        flexGrow: 1,
         width: '100%',
         minHeight: '100vh',
         [theme.breakpoints.down('xs')]: {
@@ -107,7 +107,7 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
-     //  backgroundImage: 'url(' +Background + ')' ,
+     backgroundImage: 'url(' +Background + ')' ,
         backgroundSize: 'cover',
         //zIndex: 1503,
         boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
