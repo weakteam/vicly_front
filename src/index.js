@@ -59,7 +59,7 @@ const theme = createMuiTheme({
             disabled: "rgba(158, 158, 158, 0.68)",
             disabledBackground: "rgba(0, 0, 0, 0.12)",
         },
-        type: "dark",
+        type: "light",
     },
 
 });

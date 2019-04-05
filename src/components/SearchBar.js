@@ -57,7 +57,6 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#fff' : 'rgba(255, 255, 255, 0.17)'
             }`,
     },
-
     search: {
         position: 'relative',
         margin: '0 0 0 8px',
@@ -90,7 +89,6 @@ const styles = theme => ({
 });
 
 class OutlinedTextFields extends React.Component {
-
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
@@ -113,7 +111,6 @@ class OutlinedTextFields extends React.Component {
                             input: classes.inputInput,
                         }}/>
                 </div>
-
                 <IconButton>
                     <AddCommentOutlined className={classes.icon}/>
                 </IconButton>

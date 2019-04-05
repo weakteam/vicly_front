@@ -1,6 +1,5 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import 'typeface-roboto';
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
@@ -44,7 +43,6 @@ class WindowPanel extends React.Component {
         ) : (
             <Route path="/home"
                    render={(routeProps) => <ChatWindowEmpty {...routeProps}/>}/>
-
         );
     }
 }

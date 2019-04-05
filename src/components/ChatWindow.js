@@ -9,9 +9,6 @@ import chatsStore from "../store/ChatsStore";
 import messagesStore from "../store/MessagesStore"
 import {observer} from "mobx-react";
 import accountStore from "../store/AccountStore";
-import {Scrollbars} from "react-custom-scrollbars";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
-
 
 const styles = theme => ({
     button: {
@@ -130,7 +127,6 @@ class ChatWindow extends React.Component {
 
                     }
                 }
-
             });
             if (messages.messages.length) {
                 this.scrollToBottom();

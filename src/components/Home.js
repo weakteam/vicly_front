@@ -20,7 +20,7 @@ import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import Typography from "@material-ui/core/es/Typography/Typography";
-import Background from '../images/gif.gif';
+//import Background from '../images/gif.gif';
 
 const styles = theme => ({
     root: {
@@ -48,7 +48,7 @@ const styles = theme => ({
             width: 0,
         },
 
-      //  flexShrink: 1,
+        //  flexShrink: 1,
         //zIndex: 500,
     },
     drawerPaper: {
@@ -103,12 +103,12 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         //position: 'static',
-      //  flexShrink: 1,
+        //  flexShrink: 1,
         width: 'auto',
         minHeight: '100vh',
         [theme.breakpoints.down('xs')]: {
-           // minHeight: '-webkit-fill-available',
-           // minHeight: 'auto',
+            // minHeight: '-webkit-fill-available',
+            // minHeight: 'auto',
             zIndex: 1,
         },
         borderLeft: ` ${
@@ -167,11 +167,36 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
             }`,
     },
+    logoDrawer: {
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 55,
+        bottom: 0,
+        position: 'fixed',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
+            }`,
+    },
+    logoText: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#a8a8a8' : '#7583a5'
+            }`,
+    },
 });
 
 @observer
 class Home extends React.Component {
-
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
@@ -200,7 +225,6 @@ class Home extends React.Component {
         }
     };
 
-
     workgroups() {
         if (this.chatsStore.groups.length) {
             return this.chatsStore.groups.map(
@@ -216,7 +240,6 @@ class Home extends React.Component {
                 </div>
 
             )
-
         }
     }
 
@@ -237,30 +260,28 @@ class Home extends React.Component {
     render() {
         const {classes, theme, chats} = this.props;
 
-        let drawer;
+        let drawer = (
+            <div>
+                <Hidden xsDown implementation="css">
+                    <ProfileBar handleChangeType={this.handleChangeType} chats={this.props.chats}
+                                andleLogout={this.accountStore.unauth.bind(accountStore)}/>
 
+                    <div className={classes.logoDrawer}>
+                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                    </div>
+                </Hidden>
+                <SearchBar/>
+                <List className={classes.workG}>
+                    {this.workgroups()}
+                </List>
 
-        drawer = (
-            <Scrollbars autoHide>
-                <div>
-                    <Hidden xsDown implementation="css">
-                        <ProfileBar handleChangeType={this.handleChangeType} chats={this.props.chats}
-                                    andleLogout={this.accountStore.unauth.bind(accountStore)}/>
-                    </Hidden>
-                    <SearchBar/>
-                    <List className={classes.workG}>
-                        {this.workgroups()}
-                    </List>
-                </div>
-            </Scrollbars>
+            </div>
         );
-
 
         return (
             <div className={classes.root}>
                 <nav className={classes.drawer}>
-                    {/* The implementation can be swap with js to avoid SEO duplication of links. */}
-                    <Hidden smUp implementation="css">
+                    <Hidden smUp implementation="js">
                         <AppBar position="fixed" className={classes.appBar}>
                             <Toolbar>
                                 <IconButton
@@ -312,10 +333,9 @@ class Home extends React.Component {
                 </nav>
 
                 <main className={classes.content}>
-                    <Scrollbars autoHide>
-                        <div className={classes.toolbar}/>
-                        {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
-                        {/*<MenuProvider id={"menu_id"}>
+                    <div className={classes.toolbar}/>
+                    {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
+                    {/*<MenuProvider id={"menu_id"}>
                             Это ниработает лол
                         </MenuProvider>
                         <Menu id='menu_id'>
@@ -323,11 +343,9 @@ class Home extends React.Component {
                             <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
                             <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
                         </Menu>*/}
-                        <Route path="/home/chat/:chat_id"
-                               render={(routeProps) => <ChatWindow {...routeProps}
-                                                                   handleDrawerToggle={this.handleDrawerToggle}
-                               />}/>
-                    </Scrollbars>
+                    <Route path="/home/chat/:chat_id"
+                           render={(routeProps) => <ChatWindow {...routeProps}
+                                                               handleDrawerToggle={this.handleDrawerToggle}/>}/>
                 </main>
             </div>
         );

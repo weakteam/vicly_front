@@ -3,19 +3,16 @@ import Message from './Message';
 import accountStore from '../store/AccountStore'
 import '../css/MessageList.css'
 
-
 const styles = theme => ({
     root: {
         display: 'flex',
         justifyContent: 'center',
         flexWrap: 'wrap'
-
     },
     listMessages: {
         marginLeft: 40,
         marginBottom: 205,
         marginTop: 23,
-
     },
     chip: {
         margin: theme.spacing.unit,
@@ -37,8 +34,8 @@ class MessageList extends React.Component {
         /*this.scrollToEnd();*/
     }
 
-    scrollToEnd(smooth=false) {
-        this.messagesEnd.current.scrollIntoView({behavior: smooth? "smooth" : "instant"});
+    scrollToEnd(smooth = false) {
+        this.messagesEnd.current.scrollIntoView({behavior: smooth ? "smooth" : "instant"});
         // this.messagesEnd.current.scrollTop = this.messagesEnd.current.scrollHeight;
     };
 
@@ -63,7 +60,7 @@ class MessageList extends React.Component {
         return (
             <div id='messageList'>
                 {messages}
-                <div ref={this.messagesEnd} />
+                <div ref={this.messagesEnd}/>
             </div>
         );
     }

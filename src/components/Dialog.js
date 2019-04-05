@@ -12,9 +12,6 @@ import {withRouter} from "react-router-dom";
 import ToastService from '../services/toastService'
 import messagesStore from "../store/MessagesStore"
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
-import InviteForm from "./login/InviteForm";
-import InviteIcon from "./InviteIcon";
-import SearchField from "./SearchField";
 import MessagePush from "./MessagePush";
 
 const styles = theme => ({
@@ -168,14 +165,12 @@ class Dialog extends React.Component {
 
                             <Grid item style={{padding: 0, marginRight: 7,}}>
                                 <Typography
-
                                     className={classes.time}>{lastUnread ? this.formatDate(lastUnread.timestamp_post.timestamp) : ""}</Typography>
                             </Grid>
                             {
-                                unreadCount ?
-                                    (<Badge badgeContent={unreadCount} classes={{badge: classes.margin}}/>) : ("")
+                                unreadCount ? (
+                                    <Badge badgeContent={unreadCount} classes={{badge: classes.margin}}/>) : ("")
                             }
-
                         </Grid>
                     </ListItem>
                 </Hidden>
@@ -210,15 +205,12 @@ class Dialog extends React.Component {
 
                             <Grid item style={{padding: 0, marginRight: 7,}}>
                                 <Typography
-
                                     className={classes.time}>{lastUnread ? this.formatDate(lastUnread.timestamp_post.timestamp) : ""}</Typography>
                             </Grid>
                             {
-                                unreadCount ?
-                                    (<Badge color="secondary" badgeContent={unreadCount}
-                                            classes={{badge: classes.margin}}/>) : ("")
+                                unreadCount ? (<Badge color="secondary" badgeContent={unreadCount}
+                                                      classes={{badge: classes.margin}}/>) : ("")
                             }
-
                         </Grid>
                     </ListItem>
                 </Hidden>

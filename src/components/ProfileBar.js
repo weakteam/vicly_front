@@ -1,18 +1,14 @@
 import React from 'react';
-import {Badge, Hidden, IconButton, withStyles} from "@material-ui/core";
-import InviteIco from "./SearchBar";
+import {Badge, IconButton, withStyles} from "@material-ui/core";
 import accountStore from "../store/AccountStore";
 import ProfileIco from "./ProfileIco";
-import chatsStore from "../store/ChatsStore";
 import Typography from "@material-ui/core/es/Typography/Typography";
-import messagesStore from "../store/MessagesStore";
 import InviteIcon from "./InviteIcon";
 import ExitToApp from '@material-ui/icons/ExitToApp'
 
-
 const styles = theme => ({
     position: {
-            width: 400,
+        width: 400,
         [theme.breakpoints.down('md')]: {
             width: 280,
         },
@@ -40,7 +36,6 @@ const styles = theme => ({
         left: 40,
         top: 12,
         width: 8,
-
     },
     marginInvite: {
         marginLeft: 'auto',
@@ -49,7 +44,6 @@ const styles = theme => ({
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-
     },
     online: {
         color: ` ${
@@ -73,20 +67,15 @@ const styles = theme => ({
 });
 
 class ProfileBar extends React.Component {
-
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
     }
 
     render() {
-
         const {classes} = this.props;
-
         return (
             <div className={classes.position}>
-
-
                 <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
                             name={this.accountStore.fullName}
                             handleChangeType/>
@@ -100,13 +89,10 @@ class ProfileBar extends React.Component {
                     </Typography>
                 </div>
 
-
                 <InviteIcon/>
                 <IconButton>
                     <ExitToApp className={classes.icon} onClick={this.accountStore.unauth.bind(accountStore)}/>
                 </IconButton>
-
-
             </div>
         );
     }

@@ -6,18 +6,13 @@ import ListItem from '@material-ui/core/ListItem';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import {Item, Menu, MenuProvider} from "react-contexify";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
-import chatsStore from "../store/ChatsStore";
-
 
 const styles = theme => ({
     groupName: {
         paddingTop: 0,
         paddingBottom: 0,
-
     },
     text: {
         color: ` ${
@@ -29,7 +24,6 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
     },
-
     root: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
@@ -68,21 +62,18 @@ class Workgroup extends React.Component {
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className={classes.active}>
                         {
-
-                                chats.map(
-                                    userChat =>
-                                        <Dialog chatId={userChat.user.id} unread={userChat.unread}
-                                                lastMsg={userChat.last}
-                                                dialog={userChat.user}
-                                                handleDrawerToggle={this.props.handleDrawerToggle}/>
+                            chats.map(
+                                userChat =>
+                                    <Dialog chatId={userChat.user.id} unread={userChat.unread}
+                                            lastMsg={userChat.last}
+                                            dialog={userChat.user}
+                                            handleDrawerToggle={this.props.handleDrawerToggle}/>
                             )
-
                         }
                     </List>
                 </Collapse>
                 <Divider classes={{root: classes.root}}/>
             </div>
-
         )
     }
 }
