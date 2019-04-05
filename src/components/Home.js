@@ -50,7 +50,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: 0,
         },
-         flexShrink: 0,
+        flexShrink: 0,
         //zIndex: 500,
     },
     drawerPaper: {
@@ -215,19 +215,6 @@ class Home extends React.Component {
         this.setState(state => ({mobileOpen: !state.mobileOpen}));
     };
 
-    handleChangeType = () => {
-        if (this.state.type === "light") {
-
-            this.setState({
-                type: "dark",
-            })
-        } else {
-            this.setState({
-                type: "light",
-            })
-        }
-    };
-
     workgroups() {
         if (this.messagesStore.groups.length) {
             return this.messagesStore.groups.map(
@@ -266,8 +253,10 @@ class Home extends React.Component {
         let drawer = (
             <div>
                 <Hidden xsDown implementation="css">
-                    <ProfileBar handleChangeType={this.handleChangeType} chats={this.props.chats}
-                                andleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                    <ProfileBar
+                        changeThemeType={this.props.changeThemeType}
+                        handleChangeType={this.handleChangeType} chats={this.props.chats}
+                        andleLogout={this.accountStore.unauth.bind(accountStore)}/>
                     <div className={classes.logoDrawer}>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
@@ -298,8 +287,10 @@ class Home extends React.Component {
                                 </div>
                                 <div className={classes.userBar}>
                                     <InviteIcon chats={this.props.chats}/>
-                                    <ProfileIco handleLogout={this.accountStore.unauth.bind(this.accountStore)}
-                                                name={this.accountStore.fullName}/>
+                                    <ProfileIco
+                                        changeThemeType={this.props.changeThemeType}
+                                        handleLogout={this.accountStore.unauth.bind(this.accountStore)}
+                                        name={this.accountStore.fullName}/>
                                 </div>
                             </Toolbar>
                             {/*<ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>*/}

@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import InviteIcon from "./InviteIcon";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import rootStore from "../store/RootStore";
+
 const {accountStore} = rootStore;
 
 const styles = theme => ({
@@ -78,9 +79,11 @@ class ProfileBar extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.position}>
-                <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
-                            name={this.accountStore.fullName}
-                            handleChangeType/>
+                <ProfileIco
+                    changeThemeType={this.props.changeThemeType}
+                    handleLogout={this.accountStore.unauth.bind(accountStore)}
+                    name={this.accountStore.fullName}
+                    handleChangeType/>
 
                 <div className={classes.wrap}>
                     <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>

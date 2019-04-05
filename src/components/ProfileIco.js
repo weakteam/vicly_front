@@ -103,7 +103,7 @@ class ProfileIco extends React.Component {
                                     <MenuItem onClick={this.handleClose} className={classes.menuItem}><Settings/>Настройки</MenuItem>
                                     <MenuItem onClick={this.props.handleLogout}
                                               className={classes.menuItem}><ExitToApp/>Выйти</MenuItem>
-                                    <MenuItem onClick={this.props.handleChangeType}
+                                    <MenuItem onClick={this.props.changeThemeType}
                                               className={classes.menuItem}><ExitToApp/>Сменить тему</MenuItem>
                                 </Menu>
                             </div>

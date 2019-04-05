@@ -11,15 +11,60 @@ import "react-toastify/dist/ReactToastify.css";
 import DevTools from "mobx-react-devtools";
 import rootStore from "./store/RootStore";
 import history from "./store/history"
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 
-if(history.location.pathname.startsWith("/home/chat")){
+if (history.location.pathname.startsWith("/home/chat")) {
     rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
 }
 history.listen((location, action) => {
-    if(history.location.pathname.startsWith("/home/chat")){
+    if (history.location.pathname.startsWith("/home/chat")) {
         rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
     }
 });
+
+const themeOptions = {
+    palette: {
+        primary: {
+            light: "#ffffff",
+            main: "#fffffc", //аппбар и серчбар
+            mainElem: "#075454",
+            dark: "#1c212d",
+            darkSecondary: '#323a4d',
+            contrastText: "#fff",
+
+        },
+        secondary: {
+            light: "#3f3f3f",
+            lightIcons: "#565656",
+            lightSecondary: "#3647a6",
+            lightBadge: "#7fa66f",
+            main: "#ffffff", //иконки
+            dark: "#ffffff",
+            darkSecondary: "#bebebe",
+            darkBadge: "#ffffff",
+            contrastText: "#000000",
+        },
+        text: {
+            primary: "#1d1c28",
+            secondary: "rgba(0, 0, 0, 0.54)",
+            disabled: "rgba(0, 0, 0, 0.38)",
+            hint: "rgba(0, 0, 0, 0.38)",
+        },
+        background: {
+            paper: "#f7f7f7",
+            default: "#fcfcfc",
+        },
+        action: {
+            active: "rgb(72, 170, 210)",
+            hover: "rgba(72, 170, 210, 0.21)",
+            hoverOpacity: 0.08,
+            selected: "rgba(72, 170, 210, 0.68)",
+            disabled: "rgba(158, 158, 158, 0.68)",
+            disabledBackground: "rgba(0, 0, 0, 0.12)",
+        },
+        type: "dark",
+    },
+};
 
 @observer
 class App extends Component {
@@ -29,6 +74,7 @@ class App extends Component {
         super(props);
         this.state = {
             loading: false,
+            themeOpt: themeOptions
         }
     }
 
@@ -48,29 +94,46 @@ class App extends Component {
     //     }
     // }
 
+
+    changeThemeType() {
+        this.setState((prevState) => {
+            prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
+            return prevState;
+        });
+    };
+
     render() {
+
+        const theme = createMuiTheme(this.state.themeOpt);
+
         console.log(this.props);
-        const login = rootStore.accountStore.status === "authed";
+        const authStatus = rootStore.accountStore.status === "authed";
         return (
-            <div>
-                <Router history={history}>
-                    <Switch>
-                        <PrivateRoute path="/home"
-                                      redirectTo="/login"
-                                      authed={login}
-                                      component={Home}
-                                    /*  render={() => <Home/>}*//>
-                        <PrivateRoute exact path="/login"
-                                      component={Login}
-                                      redirectTo="/home"
-                                      authed={!login}/>
-                        <Route exact path="/invite/:invite_id" component={InviteForm}/>
-                        <Route render={() => <Redirect to="/home"/>}/>
-                    </Switch>
-                </Router>
-                <ToastContainer position="bottom-right"/>
-                <DevTools/>
-            </div>
+            <MuiThemeProvider theme={theme}>
+                <div>
+                    <Router history={history}>
+                        {
+                            authStatus ?
+                                (
+                                    <Switch>
+                                        <Route path="/home" render={() => <Home changeThemeType={this.changeThemeType.bind(this)}/>}/>
+                                        <Route render={() => <Redirect to="/home"/>}/>
+                                    </Switch>
+                                )
+                                :
+                                (
+                                    <Switch>
+                                        <Route exact path="/login" component={Login}/>
+                                        <Route exact path="/invite/:invite_id" component={InviteForm}/>
+                                        <Route render={() => <Redirect to="/login"/>}/>
+                                    </Switch>
+                                )
+                        }
+                    </Router>
+                    <ToastContainer position="bottom-right"/>
+                    <DevTools/>
+                </div>
+            </MuiThemeProvider>
         )
 
     }
