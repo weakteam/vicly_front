@@ -31,7 +31,9 @@ const styles = theme => ({
     },
 
     root: {
-      //backgroundColor: '#003f48',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
+            }`,
     },
 });
 

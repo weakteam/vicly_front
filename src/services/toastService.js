@@ -1,12 +1,22 @@
+import React from 'react';
 import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-class ToastService{
+class ToastService {
     toasts = toast;
 
-    makeToast(text){
-        this.toasts(text, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-        });
+    toast(component) {
+        this.toasts(
+            component,
+            {
+                position: toast.POSITION.TOP_RIGHT,
+                hideProgressBar: true,
+                draggable: true,
+                // Close directly after the enter transition
+                autoClose: 2000,
+
+            }
+        );
     }
 }
 

@@ -29,7 +29,13 @@ const styles = theme => ({
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        left: '30%',
+        left: 400,
+        [theme.breakpoints.down('md')]: {
+            left: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            left: 250
+        },
         [theme.breakpoints.down('xs')]: {
             left: 0,
             top: 55,

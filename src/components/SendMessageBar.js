@@ -24,16 +24,25 @@ const styles = theme => ({
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
+        left: 400,
+        [theme.breakpoints.down('md')]: {
+            left: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            left: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            left: 0,
+        },
         bottom: 0,
         display: 'inline-flex',
         position: 'fixed',
         alignItems: 'center',
         right: 0,
-        [theme.breakpoints.down('xs')]: {
-            width: '100%',
-            left: 0,
-        },
-        left: '30%',
+
+
+
+
       //  borderTop: '1px solid #e2e2e2',
         //  borderLeft: '1px solid #e2e2e2',
     },

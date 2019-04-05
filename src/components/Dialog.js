@@ -12,6 +12,10 @@ import {withRouter} from "react-router-dom";
 import ToastService from '../services/toastService'
 import messagesStore from "../store/MessagesStore"
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
+import InviteForm from "./login/InviteForm";
+import InviteIcon from "./InviteIcon";
+import SearchField from "./SearchField";
+import MessagePush from "./MessagePush";
 
 const styles = theme => ({
     fixWidth: {
@@ -91,19 +95,18 @@ class Dialog extends React.Component {
         "И": "#9e72cf"
 
     };
-
     handleDialogClick = () => {
         this.props.history.push(`/home/chat/${this.props.chatId}`);
         // FIXME comment is fix for url chat page reload dafauck mafuck
         //this.chatsStore.currentChatId = this.props.chatId;
-        ToastService.makeToast("selected chat:" + this.props.chatId);
+        ToastService.toast(<MessagePush {...this.props}/>);
     };
 
     handleDialogClickMob = () => {
         this.props.history.push(`/home/chat/${this.props.chatId}`);
         // FIXME comment is fix for url chat page reload dafauck mafuck
         //this.chatsStore.currentChatId = this.props.chatId;
-        ToastService.makeToast("selected chat:" + this.props.chatId);
+        ToastService.toast(<MessagePush {...this.props}/>);
 
         this.props.handleDrawerToggle();
     };

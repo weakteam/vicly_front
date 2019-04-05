@@ -33,7 +33,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             left: 0,
         },
-        left: '30%',
+        left: 400,
         position: 'fixed',
         display: 'flex',
         alignItems: 'center',

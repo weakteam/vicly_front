@@ -42,7 +42,7 @@ const styles = theme => ({
             maxWidth: 300,
         },
         padding: 11,
-        backgroundColor: '#e7f1e2',
+        backgroundColor: '#d5f0ff',
         borderRadius: 10,
     },
 

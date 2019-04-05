@@ -12,6 +12,16 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 
 const styles = theme => ({
     position: {
+            width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
         height: 55,
         zIndex: 2000,
         position: 'fixed',
@@ -19,7 +29,6 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,
         display: 'inline-flex',
-        width: '30%',
         alignItems: 'center',
         top: 0,
     },

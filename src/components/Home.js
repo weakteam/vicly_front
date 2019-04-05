@@ -37,19 +37,35 @@ const styles = theme => ({
             }`,
     },
     drawer: {
-        [theme.breakpoints.up('lg')]: {
-            width: '30%',
-            flexShrink: 0,
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
         },
-        [theme.breakpoints.up('md')]: {
-            width: '33%',
-            flexShrink: 0,
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
         },
-        [theme.breakpoints.up('sm')]: {
-            width: '30%',
-            flexShrink: 0,
+        [theme.breakpoints.down('xs')]: {
+            width: 0,
         },
+
+      //  flexShrink: 1,
         //zIndex: 500,
+    },
+    drawerPaper: {
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
+        borderRight: 0,
     },
 
     appBar: {
@@ -76,16 +92,7 @@ const styles = theme => ({
     toolbar: {
         height: 55,
     },
-    drawerPaper: {
-        [theme.breakpoints.down('xs')]: {
-            width: '85%',
-        },
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
-        width: '30%',
-       borderRight: 0,
-    },
+
     workG: {
         [theme.breakpoints.down('xs')]: {
             marginTop: 105,
@@ -95,10 +102,13 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        width: '100%',
+        //position: 'static',
+      //  flexShrink: 1,
+        width: 'auto',
         minHeight: '100vh',
         [theme.breakpoints.down('xs')]: {
-            minHeight: '-webkit-fill-available',
+           // minHeight: '-webkit-fill-available',
+           // minHeight: 'auto',
             zIndex: 1,
         },
         borderLeft: ` ${
@@ -107,8 +117,8 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
-     backgroundImage: 'url(' +Background + ')' ,
-        backgroundSize: 'cover',
+        //backgroundImage: 'url(' + Background + ')',
+        //backgroundSize: 'cover',
         //zIndex: 1503,
         boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
@@ -150,7 +160,7 @@ const styles = theme => ({
         marginLeft: 'auto',
     },
     load: {
-      marginTop: '50%',
+        marginTop: '50%',
     },
     icon: {
         color: ` ${
@@ -180,9 +190,9 @@ class Home extends React.Component {
     handleChangeType = () => {
         if (this.state.type === "light") {
 
-        this.setState({
-            type: "dark",
-        })
+            this.setState({
+                type: "dark",
+            })
         } else {
             this.setState({
                 type: "light",
@@ -194,17 +204,18 @@ class Home extends React.Component {
     workgroups() {
         if (this.chatsStore.groups.length) {
             return this.chatsStore.groups.map(
-                workgroup => <Workgroup chatsStore={chatsStore} handleDrawerToggle={this.handleDrawerToggle}  workgroup={workgroup} chats={
+                workgroup => <Workgroup chatsStore={chatsStore} handleDrawerToggle={this.handleDrawerToggle}
+                                        workgroup={workgroup} chats={
                     this.chatsStore.userChats.filter(
                         userChat => userChat.user.group_id === workgroup.id)}/>
             )
         } else {
-            return(
+            return (
                 <div style={{marginTop: '50%'}}>
                     <Loader active inverted>Loading</Loader>
                 </div>
 
-                )
+            )
 
         }
     }
@@ -233,7 +244,8 @@ class Home extends React.Component {
             <Scrollbars autoHide>
                 <div>
                     <Hidden xsDown implementation="css">
-                        <ProfileBar  handleChangeType={this.handleChangeType} chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                        <ProfileBar handleChangeType={this.handleChangeType} chats={this.props.chats}
+                                    andleLogout={this.accountStore.unauth.bind(accountStore)}/>
                     </Hidden>
                     <SearchBar/>
                     <List className={classes.workG}>
@@ -260,7 +272,7 @@ class Home extends React.Component {
                                 </IconButton>
                                 <div className={classes.logoDiv}>
                                     <Typography variant="h6" className={classes.text}> Vicly Messenger </Typography>
-                                    </div>
+                                </div>
                                 <div className={classes.userBar}>
                                     <InviteIcon chats={this.props.chats}/>
                                     <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
@@ -302,7 +314,7 @@ class Home extends React.Component {
                 <main className={classes.content}>
                     <Scrollbars autoHide>
                         <div className={classes.toolbar}/>
-                     {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
+                        {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
                         {/*<MenuProvider id={"menu_id"}>
                             Это ниработает лол
                         </MenuProvider>

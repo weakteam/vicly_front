@@ -9,21 +9,28 @@ import InputBase from "@material-ui/core/InputBase";
 
 const styles = theme => ({
     position: {
-        display: 'inline-flex',
-        position: "fixed",
-        alignItems: 'center',
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            top: 55,
+        },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,
+        display: 'inline-flex',
+        position: "fixed",
+        alignItems: 'center',
         height: 55,
         top: 55,
-        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-        [theme.breakpoints.down('xs')]: {
-            width: '100%',
-            position: "fixed",
-            top: 55,
-        },
-        width: '30%',
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
         zIndex: 1499,
     },
     textField: {
