@@ -7,12 +7,16 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import div from "@material-ui/core/Grid/Grid";
 import {observer} from "mobx-react";
-import accountStore from "../../store/AccountStore";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import Background from "../../images/login.jpg"
 import Dark from "../../images/rer.jpg"
+// import Background from "../../images/loginBack.jpg"
+
+import rootStore from "../../store/RootStore";
+const {accountStore, messagesStore} = rootStore;
+
 
 const styles = theme => ({
     root: {

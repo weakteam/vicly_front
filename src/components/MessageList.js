@@ -1,7 +1,9 @@
 import React from 'react';
 import Message from './Message';
-import accountStore from '../store/AccountStore'
 import '../css/MessageList.css'
+
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {

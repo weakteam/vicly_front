@@ -1,8 +1,7 @@
 import {computed, observable, action, runInAction} from "mobx";
 import {BACKEND_URL} from "../common";
-import WebSocketService from "../services/websocketService";
 
-class AccountStore {
+export default class AccountStore {
     @observable fullName = "";
     @observable token = "";
     @observable login = "";
@@ -11,17 +10,18 @@ class AccountStore {
     @observable status = "unauthed";
     err_message = "";
 
-    constructor() {
+    constructor(RootStore) {
         this.fullName = sessionStorage.getItem("fullName");
         this.token = sessionStorage.getItem("token");
-        this.userId = sessionStorage.getItem("userId");
-        this.groupId = sessionStorage.getItem("groupId");
+        this.userId = parseInt(sessionStorage.getItem("userId"), 10);
+        this.groupId = parseInt(sessionStorage.getItem("groupId"), 10);
         this.login = sessionStorage.getItem("login");
         if (this.token) {
             this.status = "authed";
         }
+        this.rootStore = RootStore;
         if(this.token)
-            WebSocketService.run(this.token)
+            this.rootStore.webSocketService.run(this.token);
     }
 
     async loginUser(login, password) {
@@ -54,7 +54,7 @@ class AccountStore {
                 this.groupId = content.group_id;
                 this.saveInLocalStorage(this.fullName, this.token, this.userId, this.groupId, this.login);
             });
-            WebSocketService.run(this.token)
+            this.rootStore.webSocketService.run(this.token);
         } catch (err) {
             console.log(err);
             runInAction("Auth failed", () => {
@@ -81,8 +81,3 @@ class AccountStore {
         sessionStorage.clear();
     }
 }
-
-export let lol = 5;
-
-export default new AccountStore();
-

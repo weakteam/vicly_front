@@ -8,6 +8,9 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
+import rootStore from "../store/RootStore";
+const {accountStore, messagesStore} = rootStore;
+
 
 const styles = theme => ({
     groupName: {
@@ -46,7 +49,7 @@ class Workgroup extends React.Component {
     }
 
     render() {
-        const {classes, theme, workgroup, chats, chatsStore} = this.props;
+        const {classes, theme, workgroup, chats, messagesStore} = this.props;
         const lol = workgroup.name;
 
         return (

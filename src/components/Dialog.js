@@ -6,13 +6,13 @@ import 'typeface-roboto';
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
-import chatsStore from "../store/ChatsStore";
 import {observer} from "mobx-react";
 import {withRouter} from "react-router-dom";
 import ToastService from '../services/toastService'
-import messagesStore from "../store/MessagesStore"
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import MessagePush from "./MessagePush";
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     fixWidth: {
@@ -72,7 +72,7 @@ class Dialog extends React.Component {
     constructor(props) {
         super(props);
         this.messagesStore = messagesStore;
-        this.chatsStore = chatsStore;
+        this.chatsStore = messagesStore;
     }
 
     getRandomColor = (letter) => {
@@ -95,17 +95,18 @@ class Dialog extends React.Component {
     handleDialogClick = () => {
         this.props.history.push(`/home/chat/${this.props.chatId}`);
         // FIXME comment is fix for url chat page reload dafauck mafuck
-        //this.chatsStore.currentChatId = this.props.chatId;
+        //this.messagesStore.currentChatId = this.props.chatId;
         ToastService.toast(<MessagePush {...this.props}/>);
     };
 
     handleDialogClickMob = () => {
         this.props.history.push(`/home/chat/${this.props.chatId}`);
         // FIXME comment is fix for url chat page reload dafauck mafuck
-        //this.chatsStore.currentChatId = this.props.chatId;
+        //this.messagesStore.currentChatId = this.props.chatId;
         ToastService.toast(<MessagePush {...this.props}/>);
 
         this.props.handleDrawerToggle();
+        //this.messagesStore.currentChatId = this.props.chatId;
     };
 
     formatDate = (timestamp) => {

@@ -1,10 +1,12 @@
 import React from 'react';
-import {Badge, IconButton, withStyles} from "@material-ui/core";
-import accountStore from "../store/AccountStore";
+import {Badge, Hidden, IconButton, withStyles} from "@material-ui/core";
+import InviteIco from "./SearchBar";
 import ProfileIco from "./ProfileIco";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import InviteIcon from "./InviteIcon";
-import ExitToApp from '@material-ui/icons/ExitToApp'
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import rootStore from "../store/RootStore";
+const {accountStore} = rootStore;
 
 const styles = theme => ({
     position: {

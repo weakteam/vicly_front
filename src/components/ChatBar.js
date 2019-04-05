@@ -1,15 +1,18 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import IconButton from "@material-ui/core/IconButton/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 import Typography from "@material-ui/core/Typography/Typography";
 import div from "@material-ui/core/Grid/Grid";
 import MoreVert from '@material-ui/icons/MoreVert'
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
-import Group from '@material-ui/icons/Group'
-import accountStore from "../store/AccountStore";
+import Group from '@material-ui/icons/Group';
+import rootStore from "../store/RootStore";
 import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from '@material-ui/icons/Search';
+
+const {accountStore, messagesStore} = rootStore;
+
 
 const styles = theme => ({
     position: {

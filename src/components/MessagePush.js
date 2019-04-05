@@ -4,8 +4,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import 'typeface-roboto';
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import chatsStore from "../store/ChatsStore";
 import {observer} from "mobx-react";
+
+import rootStore from "../store/RootStore";
+const {accountStore, messagesStore} = rootStore;
 
 
 const styles = theme => ({
@@ -30,7 +32,7 @@ class MessagePush extends React.Component {
 
     constructor(props) {
         super(props);
-        this.chatsStore = chatsStore;
+        this.messagesStore = messagesStore;
     }
 
     render() {

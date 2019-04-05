@@ -9,7 +9,9 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 import PersonOutline from '@material-ui/icons/PersonOutline'
 import Settings from '@material-ui/icons/Settings'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-import accountStore from "../store/AccountStore";
+
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {

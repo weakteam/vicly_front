@@ -5,6 +5,8 @@ import PersonAdd from '@material-ui/icons/PersonAddOutlined'
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import InviteForm from "./login/InviteForm";
 
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 function getModalStyle() {
     const top = 50;

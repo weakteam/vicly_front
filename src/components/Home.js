@@ -12,14 +12,18 @@ import Workgroup from "./Workgroup";
 import SearchBar from "./SearchBar";
 import ProfileIco from "./ProfileIco";
 import InviteIcon from "./InviteIcon";
-import accountStore from "../store/AccountStore";
-import chatsStore from "../store/ChatsStore";
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import Typography from "@material-ui/core/es/Typography/Typography";
-//import Background from '../images/gif.gif';
+import Background from '../images/gif.gif';
+
+//import Button from "@material-ui/core/es/Button/Button";
+import {Item, Menu, MenuProvider} from "react-contexify";
+import rootStore from "../store/RootStore";
+
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {
@@ -199,7 +203,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
-        this.chatsStore = chatsStore;
+        this.messagesStore = messagesStore;
     }
 
     state = {
@@ -225,11 +229,11 @@ class Home extends React.Component {
     };
 
     workgroups() {
-        if (this.chatsStore.groups.length) {
-            return this.chatsStore.groups.map(
-                workgroup => <Workgroup chatsStore={chatsStore} handleDrawerToggle={this.handleDrawerToggle}
+        if (this.messagesStore.groups.length) {
+            return this.messagesStore.groups.map(
+                workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
                                         workgroup={workgroup} chats={
-                    this.chatsStore.userChats.filter(
+                    this.messagesStore.userChats.filter(
                         userChat => userChat.user.group_id === workgroup.id)}/>
             )
         } else {
@@ -253,7 +257,7 @@ class Home extends React.Component {
     // }
 
     componentWillMount() {
-        chatsStore.fetchChats()
+        messagesStore.fetchChats()
     };
 
     render() {
@@ -294,7 +298,7 @@ class Home extends React.Component {
                                 </div>
                                 <div className={classes.userBar}>
                                     <InviteIcon chats={this.props.chats}/>
-                                    <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
+                                    <ProfileIco handleLogout={this.accountStore.unauth.bind(this.accountStore)}
                                                 name={this.accountStore.fullName}/>
                                 </div>
                             </Toolbar>

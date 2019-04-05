@@ -167,7 +167,7 @@ class InviteForm extends React.Component {
         e.preventDefault();
         console.log(e.target.login.value + "  " + e.target.password.value);
         //const { login, password } = this.state;
-        //accountStore.loginUser(e.target.login.value, e.target.password.value);
+        //AccountStore.loginUser(e.target.login.value, e.target.password.value);
         //this.props.setLoading();
     };
 

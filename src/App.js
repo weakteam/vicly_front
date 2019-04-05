@@ -8,19 +8,18 @@ import {Router, Redirect, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from 'react-router-with-props';
 import {observer} from "mobx-react";
 import InviteForm from "./components/login/InviteForm";
-import accountStore from "./store/AccountStore";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DevTools from "mobx-react-devtools";
-import ChatsStore from "./store/ChatsStore";
+import rootStore from "./store/RootStore";
 import history from "./store/history"
 
-if (history.location.pathname.startsWith("/home/chat")) {
-    ChatsStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+if(history.location.pathname.startsWith("/home/chat")){
+    rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
 }
 history.listen((location, action) => {
-    if (history.location.pathname.startsWith("/home/chat")) {
-        ChatsStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    if(history.location.pathname.startsWith("/home/chat")){
+        rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
     }
 });
 
@@ -46,15 +45,14 @@ class App extends Component {
     // }
     //
     // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (accountStore.status === "authed") {
-    //         chatsStore.fetchChats()
+    //     if (AccountStore.status === "authed") {
+    //         messagesStore.fetchChats()
     //     }
     // }
 
     render() {
         console.log(this.props);
-        let lol = accountStore;
-        const login = accountStore.status === "authed";
+        const login = rootStore.accountStore.status === "authed";
         return (
             <div>
                 <Router history={history}>

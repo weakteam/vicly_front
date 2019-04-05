@@ -1,19 +1,21 @@
-import {getAllMessages} from "../store/actions/messageActions";
-import {fetchChats} from "../store/actions/mainActions";
-import messageStore from "../store/MessagesStore";
 import {IP} from "../common";
 
 const NEW_MESSAGE = 0;
 const USER_ACTIVITY = 10;
 
-let websocket_url =`ws://${IP}/ws/`;
+let websocket_url = `ws://${IP}/ws/`;
 
-class WebsocketService{
+export default class WebsocketService {
     socket;
     token;
     running = false;
 
-    run(token){
+    constructor(RootStore) {
+        this.rootStore = RootStore;
+    }
+
+
+    run(token) {
         if (this.running)
             return;
         websocket_url += !!token ? token : "";
@@ -25,8 +27,8 @@ class WebsocketService{
 
         this.socket = new WebSocket(websocket_url);
         this.socket.onmessage = this.onMessage;
-        this.socket.onerror = (err)=> {
-            console.log("websocket error:"+err);
+        this.socket.onerror = (err) => {
+            console.log("websocket error:" + err);
         };
         this.socket.onopen = () => {
             console.log("ws connection opened!");
@@ -60,17 +62,17 @@ class WebsocketService{
     }
 
     onMessage = (message) => {
-        console.log("websocket message:"+message.data);
+        console.log("websocket message:" + message.data);
         const payload = JSON.parse(message.data);
-        if (payload === {}){
+        if (payload === {}) {
             console.log("ws pong");
             return;
         }
         console.log("ws message");
         switch (payload.event) {
             case NEW_MESSAGE:
-                if(payload)
-                    messageStore.addMessageToEnd(payload.message.message);
+                if (payload)
+                    this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
                 break;
             default:
                 break;
@@ -82,13 +84,11 @@ class WebsocketService{
     };
 
     updateMessageInChat = (chatId) => {
-        getAllMessages(chatId);
+        // getAllMessages(chatId);
     };
 
-    updateUserList= () => {
-        fetchChats();
+    updateUserList = () => {
+        // fetchChats();
     };
 
 }
-
-export default new WebsocketService();

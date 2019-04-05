@@ -2,10 +2,11 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
-import accountStore from "../store/AccountStore";
-import chatsStore from "../store/ChatsStore";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
+
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
@@ -92,7 +93,7 @@ class OutlinedTextFields extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
-        this.chatsStore = chatsStore;
+        this.chatsStore = messagesStore;
     }
 
     render() {

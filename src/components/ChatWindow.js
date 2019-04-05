@@ -5,10 +5,10 @@ import 'typeface-roboto';
 import SendMessageBar from "./SendMessageBar";
 import MessageList from "./MessageList";
 import ChatBar from "./ChatBar";
-import chatsStore from "../store/ChatsStore";
-import messagesStore from "../store/MessagesStore"
 import {observer} from "mobx-react";
-import accountStore from "../store/AccountStore";
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
+
 
 const styles = theme => ({
     button: {
@@ -56,7 +56,6 @@ const styles = theme => ({
 class ChatWindow extends React.Component {
     constructor(props) {
         super(props);
-        this.chatsStore = chatsStore;
         this.messagesStore = messagesStore;
         this.accountStore = accountStore;
         this.messageList = React.createRef();
@@ -87,7 +86,7 @@ class ChatWindow extends React.Component {
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
-        this.messagesStore.postMessage(message.message, this.chatsStore.currentChatId);
+        this.messagesStore.postMessage(message.message, this.messagesStore.currentChatId);
         this.scrollToBottom();
     };
 
@@ -100,21 +99,21 @@ class ChatWindow extends React.Component {
     };
 
     componentWillMount() {
-        //this.messagesStore.getAllMessagesByChatId(this.chatsStore.currentChatId);
+        //this.messagesStore.getAllMessagesByChatId(this.messagesStore.currentChatId);
     }
 
     componentWillUpdate(nextProps, nextState, nextContext) {
-        // Need update ChatsStore too
+        // Need update MessagesStore too
         // I THINK FIXED
         // const router_chat_id = parseInt(this.props.match.params.chat_id, 10);
-        // if (router_chat_id !== this.chatsStore.currentChatId) {
-        //     this.chatsStore.currentChatId = router_chat_id;
+        // if (router_chat_id !== this.messagesStore.currentChatId) {
+        //     this.messagesStore.currentChatId = router_chat_id;
         // }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        this.messagesStore.loadMessagesByChatId(this.chatsStore.currentChatId, 'user');
-        let messages = this.messagesStore.messages.find(elem => elem.chatId === this.chatsStore.currentChatId);
+        this.messagesStore.loadMessagesByChatId(this.messagesStore.currentChatId, 'user');
+        let messages = this.messagesStore.messages.find(elem => elem.chatId === this.messagesStore.currentChatId);
         let self = this;
         if (messages) {
             messages.messages.forEach((elem) => {
@@ -151,13 +150,13 @@ class ChatWindow extends React.Component {
             fullName: this.accountStore.fullName,
             userId: this.accountStore.userId
         };
-        if (this.chatsStore.currentChatId) {
-            let chatUser = this.chatsStore.userChats.find((elem) => elem.user.id === this.chatsStore.currentChatId);
+        if (this.messagesStore.currentChatId) {
+            let chatUser = this.messagesStore.userChats.find((elem) => elem.user.id === this.messagesStore.currentChatId);
             let messages = null;
             if (chatUser) {
                 chatUser = chatUser.user;
                 chatUser.fullName = chatUser.first_name + " " + chatUser.last_name;
-                messages = this.messagesStore.messages.find((elem) => elem.chatId === this.chatsStore.currentChatId);
+                messages = this.messagesStore.messages.find((elem) => elem.chatId === this.messagesStore.currentChatId);
             }
             return (
                 <div className={classes.chat}>

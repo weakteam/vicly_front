@@ -4,9 +4,10 @@ import 'typeface-roboto';
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ChatWindow from "./Home";
-import chatsStore from "../store/ChatsStore";
 import ChatWindowEmpty from "./ChatWindowEmpty";
 
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     emptyChat: {
@@ -29,7 +30,7 @@ const styles = theme => ({
 class WindowPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.chatsStore = chatsStore;
+        this.chatsStore = messagesStore;
     }
 
 
