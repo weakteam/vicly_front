@@ -46,8 +46,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: 0,
         },
-
-        //  flexShrink: 1,
+         flexShrink: 0,
         //zIndex: 500,
     },
     drawerPaper: {
