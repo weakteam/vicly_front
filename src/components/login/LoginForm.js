@@ -13,7 +13,6 @@ import {fade} from '@material-ui/core/styles/colorManipulator';
 import Background from "../../images/login.jpg"
 import Dark from "../../images/rer.jpg"
 // import Background from "../../images/loginBack.jpg"
-
 import rootStore from "../../store/RootStore";
 const {accountStore, messagesStore} = rootStore;
 

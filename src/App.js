@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
 import Login from "./components/login/LoginForm";
-import 'simplebar'; // or "import SimpleBar from 'simplebar';" if you want to use it manually.
-import 'simplebar/dist/simplebar.css';
 import Home from "./components/Home";
 import {Router, Redirect, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from 'react-router-with-props';
