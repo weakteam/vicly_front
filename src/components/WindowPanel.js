@@ -42,7 +42,7 @@ class WindowPanel extends React.Component {
                    render={(routeProps) => <ChatWindow {...routeProps}
                                                        handleDrawerToggle={this.handleDrawerToggle}/>}/>
         ) : (
-            <Route path="/home/chat/"
+            <Route path="/home"
                    render={(routeProps) => <ChatWindowEmpty {...routeProps}/>}/>
 
         );

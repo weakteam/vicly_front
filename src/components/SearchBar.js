@@ -1,29 +1,29 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import Search from "@material-ui/icons/Search"
 import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
 import accountStore from "../store/AccountStore";
 import chatsStore from "../store/ChatsStore";
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
 
 const styles = theme => ({
     position: {
         display: 'inline-flex',
         position: "fixed",
         alignItems: 'center',
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
         height: 55,
-       top: 55,
-        // borderRight: '1px solid #e2e2e2',
-         borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+        top: 55,
+        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
         [theme.breakpoints.down('xs')]: {
             width: '100%',
             position: "fixed",
             top: 55,
         },
-            width: '30%',
+        width: '30%',
         zIndex: 1499,
     },
     textField: {
@@ -35,11 +35,50 @@ const styles = theme => ({
         height: 36,
     },
     button: {
-        //marginTop: 5,
         color: theme.palette.secondary.light
     },
     searchIco: {
         color: theme.palette.secondary.light
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    iconSearch: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#fff' : 'rgba(255, 255, 255, 0.17)'
+            }`,
+    },
+
+    search: {
+        position: 'relative',
+        margin: '0 0 0 8px',
+        width: '100%'
+    },
+    searchIcon: {
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 7,
+    },
+    inputRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+        width: '100%',
+    },
+    inputInput: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+        width: '100%',
+        borderRadius: 4,
+        padding: 8,
     },
 });
 
@@ -52,37 +91,25 @@ class OutlinedTextFields extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <div className={classes.position}>
-                   {/* <TextField
-                        id="standard-search"
-                        placeholder="Поиск..."
-                        type="search"
-                        variant='outlined'
-                        className={classes.textField}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton className={classes.searchIco}>
-                                        <Search/>
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />*/}
-               <div className={"ui icon input " +classes.textField}>
-                    <input type="text" placeholder="Поиск контактов..."/>
-                        <i className="search icon"></i>
+                <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon className={classes.iconSearch}/>
+                    </div>
+                    <InputBase
+                        placeholder="Поиск сообщений…"
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}/>
                 </div>
-                <IconButton>
-                    <AddCommentOutlined color="secondary"/>
-                </IconButton>
 
+                <IconButton>
+                    <AddCommentOutlined className={classes.icon}/>
+                </IconButton>
             </div>
 
         );

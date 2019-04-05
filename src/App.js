@@ -15,11 +15,11 @@ import DevTools from "mobx-react-devtools";
 import ChatsStore from "./store/ChatsStore";
 import history from "./store/history"
 
-if(history.location.pathname.startsWith("/home/chat")){
+if (history.location.pathname.startsWith("/home/chat")) {
     ChatsStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
 }
 history.listen((location, action) => {
-    if(history.location.pathname.startsWith("/home/chat")){
+    if (history.location.pathname.startsWith("/home/chat")) {
         ChatsStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
     }
 });
@@ -31,7 +31,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
         }
     }
 
@@ -60,9 +60,10 @@ class App extends Component {
                 <Router history={history}>
                     <Switch>
                         <PrivateRoute path="/home"
-                                      component={Home}
                                       redirectTo="/login"
-                                      authed={login}/>
+                                      authed={login}
+                                      component={Home}
+                                    /*  render={() => <Home/>}*//>
                         <PrivateRoute exact path="/login"
                                       component={Login}
                                       redirectTo="/home"
@@ -71,7 +72,7 @@ class App extends Component {
                         <Route render={() => <Redirect to="/home"/>}/>
                     </Switch>
                 </Router>
-                <ToastContainer  position="bottom-right"/>
+                <ToastContainer position="bottom-right"/>
                 <DevTools/>
             </div>
         )

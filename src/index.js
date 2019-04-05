@@ -16,20 +16,29 @@ const store = createStore(
     composeEnhancer(applyMiddleware(thunk)),
 );
 
+
+/*const themeOptions;*/
+
 const theme = createMuiTheme({
     palette: {
         primary: {
             light: "#ffffff",
-            main: "#363b41", //аппбар и серчбар
+            main: "#fffffc", //аппбар и серчбар
             mainElem: "#075454",
-            dark: "#5ab2ff",
+            dark: "#1c212d",
+            darkSecondary: '#323a4d',
             contrastText: "#fff",
 
         },
         secondary: {
-            light: "#d1d1d1",
+            light: "#3f3f3f",
+            lightIcons: "#565656",
+            lightSecondary: "#3647a6",
+            lightBadge: "#7fa66f",
             main: "#ffffff", //иконки
-            dark: "#798bc5",
+            dark: "#ffffff",
+            darkSecondary: "#bebebe",
+            darkBadge: "#ffffff",
             contrastText: "#000000",
         },
         text: {
@@ -50,9 +59,17 @@ const theme = createMuiTheme({
             disabled: "rgba(158, 158, 158, 0.68)",
             disabledBackground: "rgba(0, 0, 0, 0.12)",
         },
+        type: "light",
     },
 
 });
+
+/*let theme = createMuiTheme(themeOptions);
+
+ const changeThemeType = () => {
+     themeOptions.palette.type = themeOptions.palette.type === "dark" ? "light" : "dark";
+     theme = createMuiTheme(themeOptions)
+ };*/
 
 ReactDOM.render(
     <Provider store={store}>
@@ -66,7 +83,7 @@ ReactDOM.render(
 if (module.hot) {
     module.hot.accept('./App', () => {
         ReactDOM.render(
-            <Provider> store={store}>
+            <Provider store={store}>
                 <MuiThemeProvider theme={theme}>
                     <App/>
                 </MuiThemeProvider>

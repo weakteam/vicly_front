@@ -132,7 +132,7 @@ class CheckboxList extends React.Component {
         return (
             <div className={classes.root}>
                 <List>
-                    <Typography variant="h6" align="center"> Рабочие группы</Typography>
+                    <Typography variant="h6"> Рабочие группы</Typography>
                     {['Бухгалтерия', 'Разработка'].map(value => (
                         <ListItem key={value} role={undefined} dense button onClick={this.handleToggle(value)}>
                             <Checkbox

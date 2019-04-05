@@ -9,12 +9,25 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import {Item, Menu, MenuProvider} from "react-contexify";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
+import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
+import chatsStore from "../store/ChatsStore";
 
 
 const styles = theme => ({
     groupName: {
         paddingTop: 0,
         paddingBottom: 0,
+
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
 
     root: {
@@ -37,32 +50,35 @@ class Workgroup extends React.Component {
     }
 
     render() {
-        const {classes, theme, workgroup, chats} = this.props;
+        const {classes, theme, workgroup, chats, chatsStore} = this.props;
+        const lol = workgroup.name;
 
         return (
             <div>
-
                 <ListItem button onClick={this.handleClick} className={classes.groupName}>
                     <ListItem>
-                        <Typography variant='h6' color="secondary">
+                        <Typography variant='h6' className={classes.text}>
                             {workgroup.name}
                         </Typography>
                     </ListItem>
-                    {this.state.open ? <ExpandLess color="secondary"/> : <ExpandMore color="secondary"/>}
+                    {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className={classes.active}>
                         {
-                            chats.map(
-                                userChat =>
-                                    <Dialog chatId={userChat.user.id} unread={userChat.unread}
-                                            lastMsg={userChat.last}
-                                            dialog={userChat.user}/>
+
+                                chats.map(
+                                    userChat =>
+                                        <Dialog chatId={userChat.user.id} unread={userChat.unread}
+                                                lastMsg={userChat.last}
+                                                dialog={userChat.user}
+                                                handleDrawerToggle={this.props.handleDrawerToggle}/>
                             )
+
                         }
                     </List>
                 </Collapse>
-                <Divider classes={{root: classes.root}} style={{BackgroundColor: '#fff)'}}/>
+                <Divider classes={{root: classes.root}}/>
             </div>
 
         )

@@ -15,7 +15,9 @@ const styles = theme => ({
         height: 55,
         zIndex: 2000,
         position: 'fixed',
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
         display: 'inline-flex',
         width: '30%',
         alignItems: 'center',
@@ -23,7 +25,12 @@ const styles = theme => ({
     },
     userDisplay: {},
     bage: {
-        color: '#20ff98',
+        backgroundColor: '#41ff9c',
+        minWidth: 8,
+        height: 8,
+        left: 40,
+        top: 12,
+        width: 8,
 
     },
     marginInvite: {
@@ -33,12 +40,26 @@ const styles = theme => ({
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
+
+    },
+    online: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     barDisp: {
         display: 'inline-flex',
     },
     butt: {
-      marginLeft: 'auto',
+        marginLeft: 'auto',
+    },
+    name: {
+        marginTop: 7,
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
     },
 });
 
@@ -57,23 +78,24 @@ class ProfileBar extends React.Component {
             <div className={classes.position}>
 
 
-                    <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
-                                name={this.accountStore.fullName}/>
+                <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
+                            name={this.accountStore.fullName}
+                            handleChangeType/>
 
-                <Typography variant="h6" color="secondary" className={classes.wrap}>{accountStore.fullName}</Typography>
+                <div className={classes.wrap}>
+                    <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>
+                    <Typography variant="subtitle1" className={classes.online}>
+                        <Badge color="secondary" classes={{badge: classes.bage}}>
+                            Online
+                        </Badge>
+                    </Typography>
+                </div>
 
 
-                <InviteIcon />
-                <IconButton >
-                    <ExitToApp color="secondary"  onClick={this.accountStore.unauth.bind(accountStore)}/>
+                <InviteIcon/>
+                <IconButton>
+                    <ExitToApp className={classes.icon} onClick={this.accountStore.unauth.bind(accountStore)}/>
                 </IconButton>
-
-
-
-
-
-
-
 
 
             </div>

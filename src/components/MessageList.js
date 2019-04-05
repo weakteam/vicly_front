@@ -2,7 +2,6 @@ import React from 'react';
 import Message from './Message';
 import accountStore from '../store/AccountStore'
 import '../css/MessageList.css'
-import { Scrollbars } from 'react-custom-scrollbars';
 
 
 const styles = theme => ({

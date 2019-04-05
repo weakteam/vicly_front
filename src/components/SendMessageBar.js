@@ -15,7 +15,15 @@ const styles = theme => ({
 
     position: {
          height: 'auto',
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
+            }`,
+        borderTop: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
         bottom: 0,
         display: 'inline-flex',
         position: 'fixed',
@@ -32,8 +40,18 @@ const styles = theme => ({
     iconButton: {
         width: 48,
         height: 48,
-
-        color: theme.palette.secondary.dark
+    },
+    input: {
+        borderRadius: 4,
+        //  backgroundColor: 'rgba(234, 234, 234, 0.59)', //rgb(101, 114, 146)
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? 'rgba(234, 234, 234, 0.59)' : 'rgb(101, 114, 146)'
+            }`,
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     active: {
         '&:focus': {
@@ -48,10 +66,14 @@ const styles = theme => ({
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
         },*/
         width: 'calc(100% - 18px)',
-        borderRadius: 4,
-        backgroundColor: 'rgb(234, 234, 234)',
-        // width: '100%',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+       // width: '100%',
         paddingTop: 13,
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
         paddingBottom: 13,
         paddingLeft: 10,
         paddingRight: 10,
@@ -122,7 +144,7 @@ class SendMessageBar extends React.Component {
                 />*/}
 
                 <IconButton className={classes.iconButton}>
-                    <AttachFile/>
+                    <AttachFile className={classes.icon}/>
                 </IconButton>
 
                 <FormControl fullWidth>

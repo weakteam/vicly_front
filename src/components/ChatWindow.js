@@ -40,6 +40,11 @@ const styles = theme => ({
         justifyContent: 'center',
     },
     empty: {},
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
     list: {
         [theme.breakpoints.down('xs')]: {
             paddingTop: 65,
@@ -174,7 +179,7 @@ class ChatWindow extends React.Component {
                                 </div>
                             ) : (
                                 <div className={classes.emptyChat}>
-                                    <Typography color="secondary" variant="h5">История сообщения пуста...</Typography>
+                                    <Typography className={classes.text} variant="h5">История сообщения пуста...</Typography>
                                 </div>
                                 )
                     }
@@ -186,7 +191,7 @@ class ChatWindow extends React.Component {
             return (
                 <div className={classes.emptyChat}>
                     <div className={classes.empty}>
-                        <Typography variant="h5" color="secondary">Выберите диалог...</Typography>
+                        <Typography variant="h5" className={classes.text}>Выберите диалог...</Typography>
                     </div>
                 </div>
             );

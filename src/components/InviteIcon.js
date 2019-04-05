@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
-import PersonAdd from '@material-ui/icons/PersonAdd'
+import PersonAdd from '@material-ui/icons/PersonAddOutlined'
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import TextField from "@material-ui/core/TextField/TextField";
 import WorkGroupList from "./WorkGoupList";
@@ -24,26 +24,34 @@ function getModalStyle() {
 const styles = theme => ({
     root: {
         alignSelf: 'center',
-       marginLeft: 'auto',
+        marginLeft: 'auto',
+        zIndex: 1000,
     },
     paper: {
         position: 'absolute',
         [theme.breakpoints.down('xs')]: {
             width: '96%',
         },
-            width: '45%',
+        width: '45%',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
 
-       // width: 'auto',
-        backgroundColor: theme.palette.background.paper,
+        // width: 'auto',
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
     },
-    textField:{
+    textField: {
         width: '-webkit-fill-available',
     },
     container: {
         display: 'flex',
         flexWrap: 'wrap',
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
     },
 });
 
@@ -77,17 +85,15 @@ class SimpleModal extends React.Component {
 
         return (
             <div className={classes.root}>
-                <IconButton
-                    onClick={this.handleOpen}
-                    color="secondary">
-                    <PersonAdd/>
+                <IconButton onClick={this.handleOpen}>
+                    <PersonAdd className={classes.icon}/>
                 </IconButton>
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.state.open}
                     onClose={this.handleClose}
-                    style={{zIndex: 5000}}
+                    style={{zIndex: 1200}}
                 >
                     <div style={getModalStyle()} className={classes.paper}>
                         {/*<form className={classes.container} noValidate autoComplete="off">
@@ -110,7 +116,7 @@ class SimpleModal extends React.Component {
                             />
                             <WorkGroupList/>
                         </form>*/}
-                        <InviteForm />
+                        <InviteForm/>
                     </div>
                 </Modal>
             </div>

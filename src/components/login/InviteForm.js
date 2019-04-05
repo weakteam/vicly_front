@@ -1,49 +1,27 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Grid from "@material-ui/core/Grid/Grid";
 import {observer} from "mobx-react";
-import accountStore from "../../store/AccountStore";
 import {Link} from "react-router-dom";
-import Background from "../../images/login.jpg";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import Divider from "@material-ui/core/es/Divider";
 import InputBase from "@material-ui/core/InputBase";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormLabel from "@material-ui/core/FormLabel";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = theme => ({
     root: {
-        display: 'flex',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        position: 'absolute',
-        left: 0,
-        justifyContent: 'center',
-        minHeight: '100vh',
-        alignItems: 'center',
-        [theme.breakpoints.down('xs')]: {},
-        [theme.breakpoints.down('xs')]: {
-            minHeight: '100%',
-        },
-        backgroundSize: 'cover',
-        backgroundImage: 'url(' + Background + ')',
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
+            }`,
+        zIndex: 10000,
     },
     radio: {
         display: 'flex'
@@ -59,14 +37,19 @@ const styles = theme => ({
         boxShadow: theme.shadows[10],
         maxWidth: '50%',
         // maxHeight: '40%',
+
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
+        borderRadius: 0,
         justifyContent: 'center',
        // padding: 30,
         boxShadow: theme.shadows[0],
        // paddingBottom: 10,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -75,10 +58,14 @@ const styles = theme => ({
     submit: {
         width: 300,
         boxShadow: theme.shadows[0],
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
+            }`,
         color: '#fff',
         '&:hover': {
-            backgroundColor: '#122031',
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#2e374c' : '#3e4b67'
+                }`,
         },
     },
     invite: {
@@ -98,13 +85,21 @@ const styles = theme => ({
         },
         marginTop: 19,
         borderRadius: 10,
-        backgroundColor: 'rgb(234, 234, 234)',
         height: 30,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
+            }`,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
         paddingLeft: 10,
     },
     label: {
         display: 'flex',
         alignItems: 'center',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     password: {
         marginTop: 10,
@@ -122,7 +117,10 @@ const styles = theme => ({
     },
     header: {
         textAlign: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     signIn: {
         display: 'flex',
@@ -148,6 +146,16 @@ const styles = theme => ({
     },
     group: {
         display: 'inline',
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    backi: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
+            }`,
     },
 
 });
@@ -187,7 +195,7 @@ class InviteForm extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-
+<div className={classes.root}>
                     <Paper className={classes.paper}>
                         <Typography variant="h5" className={classes.header}>
                             Приглашение нового пользователя
@@ -196,10 +204,10 @@ class InviteForm extends React.Component {
                         <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
                             <div className={classes.blockForm}>
                                 <div className={classes.block}>
-                                    <Typography variant="h6">Личные данные </Typography>
+                                    <Typography variant="h6" className={classes.text}>Личные данные</Typography>
                                     <FormControl required fullWidth>
                                         <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1"> Имя </Typography>
+                                            <Typography variant="subtitle1"  className={classes.text}> Имя </Typography>
                                         </InputLabel>
                                         <InputBase
                                             id="Name"
@@ -210,7 +218,7 @@ class InviteForm extends React.Component {
                                     </FormControl>
                                     <FormControl required fullWidth>
                                         <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1"> Фамилия </Typography>
+                                            <Typography variant="subtitle1" className={classes.text}> Фамилия </Typography>
                                         </InputLabel>
                                         <InputBase
                                             id="Surname"
@@ -221,26 +229,26 @@ class InviteForm extends React.Component {
                                     </FormControl>
                                     <FormControl required fullWidth>
                                         <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1"> Отчество </Typography>
+                                            <Typography variant="subtitle1" className={classes.text}> Отчество </Typography>
                                         </InputLabel>
                                         <InputBase
                                             id="patronymic"
                                             name="patronymic"
-                                            type="еуче"
+                                            type="text"
                                             classes={{input: classes.active}}
                                         />
                                     </FormControl>
                                 </div>
 
                                 <div className={classes.block}>
-                                    <Typography variant="h6">Корпоративная информация</Typography>
+                                    <Typography variant="h6" className={classes.text}>Корпоративная информация</Typography>
                                     <FormControl required fullWidth>
                                         <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1"> Должность </Typography>
+                                            <Typography variant="subtitle1" className={classes.text}> Должность </Typography>
                                         </InputLabel>
                                         <InputBase
-                                            id="Name"
-                                            name="Name"
+                                            id="position"
+                                            name="position"
                                             type="text"
                                             classes={{input: classes.active}}
                                         />
@@ -248,7 +256,7 @@ class InviteForm extends React.Component {
 
                                     <FormControl required fullWidth>
                                         <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1"> Пол </Typography>
+                                            <Typography variant="subtitle1" className={classes.text}> Пол </Typography>
                                         </InputLabel>
                                         <RadioGroup
                                             aria-label="gender"
@@ -262,14 +270,20 @@ class InviteForm extends React.Component {
                                         >
                                             <FormControlLabel
                                                 value="female"
-                                                control={<Radio color="primary"/>}
+                                                control={<Radio className={ classes.text}/>}
                                                 label="Женский"
+                                                classes={{
+                                                    label: classes.text,
+                                                }}
                                                 labelPlacement="start"
                                             />
                                             <FormControlLabel
                                                 value="male"
-                                                control={<Radio color="primary"/>}
+                                                control={<Radio className={ classes.text}/>}
                                                 label="Мужской"
+                                                classes={{
+                                                    label: classes.text,
+                                                }}
                                                 labelPlacement="start"
                                             />
                                         </RadioGroup>
@@ -277,22 +291,24 @@ class InviteForm extends React.Component {
 
                                     <form autoComplete="off">
 
-                                    <FormControl required fullWidth>
+                                    <FormControl style={{zIndex: 5000}} required fullWidth>
                                         {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
                                         </InputLabel>*/}
-                                        <InputLabel htmlFor="age-simple">Рабочая группа</InputLabel>
+                                        <InputLabel className={ classes.text} htmlFor="age-simple">Рабочая группа</InputLabel>
                                         <Select
+                                            className={ classes.text}
                                             value={this.state.kek}
                                             onChange={this.handleChangeSelect}
-                                            inputProps={{
-                                                name: 'age',
-                                                id: 'age-simple',
-                                            }}
+                                        /*classes={{
+                                            Paper: classes.backi,
+                                            paper: classes.backi,
+                                            root: classes.backi,
+                                            MuiPaper: classes.backi,
+                                        }}
+                                        style={{backgroundColor: '#000'}}*/
                                         >
-                                            <MenuItem value={0}>
-                                                <em>Не выбрано</em>
-                                            </MenuItem>
+                                            <MenuItem value={0}>Не выбрано</MenuItem>
                                             <MenuItem value={2}>Ten</MenuItem>
                                             <MenuItem value={3}>Twenty</MenuItem>
                                             <MenuItem value={4}>Thirty</MenuItem>
@@ -308,12 +324,13 @@ class InviteForm extends React.Component {
                                     type="submit"
                                     variant="contained"
                                     className={classes.submit}
-                                    component={props => <Link to="/login" {...props} />}>
+                                   /* component={props => <Link to="/login" {...props} />}*/>
                                     Пригласить
                                 </Button>
                             </div>
                         </form>
                     </Paper>
+</div>
         );
     }
 

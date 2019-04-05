@@ -2,7 +2,6 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Checkbox from '@material-ui/core/Checkbox';
-import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -13,7 +12,7 @@ import Divider from "@material-ui/core/es/Divider/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import Background from "../../images/login.jpg"
-import {Link} from "react-router-dom";
+import Dark from "../../images/rer.jpg"
 
 const styles = theme => ({
     root: {
@@ -31,7 +30,9 @@ const styles = theme => ({
             minHeight: '100%',
         },
         backgroundSize: 'cover',
-        backgroundImage: 'url(' + Background + ')',
+        backgroundImage: ` ${
+            theme.palette.type === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
+            }`,
         backgroundColor: theme.palette.primary.main,
     },
     main: {
@@ -50,7 +51,10 @@ const styles = theme => ({
         justifyContent: 'center',
         padding: 30,
         boxShadow: theme.shadows[0],
-        paddingBottom: 10,
+        paddingBottom: 30,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -59,10 +63,14 @@ const styles = theme => ({
     submit: {
         width: '100%',
         boxShadow: theme.shadows[0],
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
+            }`,
         color: '#fff',
         '&:hover': {
-            backgroundColor: '#122031',
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#2e374c' : '#3e4b67'
+                }`,
         },
     },
     invite: {
@@ -82,13 +90,21 @@ const styles = theme => ({
         },
         marginTop: 19,
         borderRadius: 10,
-        backgroundColor: 'rgb(234, 234, 234)',
         height: 30,
         paddingLeft: 10,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
+            }`,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     label: {
         display: 'flex',
         alignItems: 'center',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     password: {
         marginTop: 10,
@@ -97,16 +113,22 @@ const styles = theme => ({
         display: 'inline-flex',
         alignItems: 'center',
         width: '100%',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         marginTop: 10,
     },
     checkbox: {
         padding: 0,
-        marginRight: 5
+        marginLeft: 5,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     header: {
         textAlign: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     signIn: {
         display: 'flex',
@@ -118,6 +140,11 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 7
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
 });
 
@@ -145,33 +172,35 @@ class LoginForm extends React.Component {
                         <Divider/>
                         <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
                             <FormControl required fullWidth>
-                                <InputLabel shrink className={classes.label}>
-                                    <Typography variant="subtitle1"> Логин </Typography>
-                                </InputLabel>
+                                {/*<InputLabel shrink className={classes.label}>
+                                    <Typography variant="subtitle1" className={classes.text}>Логин</Typography>
+                                </InputLabel>*/}
                                 <InputBase
                                     id="login"
                                     name="login"
+                                    placeholder="Логин"
                                     type="login"
                                     classes={{input: classes.active}}
                                 />
                             </FormControl>
 
                             <FormControl required fullWidth className={classes.password}>
-                                <InputLabel shrink className={classes.label}>
-                                    <Typography variant="subtitle1 "> Пароль </Typography>
-                                </InputLabel>
+                                {/*<InputLabel shrink className={classes.label}>
+                                    <Typography variant="subtitle1 ">Пароль</Typography>
+                                </InputLabel>*/}
                                 <InputBase
                                     id="password"
                                     name="password"
                                     type="password"
+                                    placeholder="Пароль"
                                     classes={{
                                         input: classes.active
                                     }}/>
                             </FormControl>
 
                             <div className={classes.remember}>
-                                <Checkbox value="remember" color="primary" className={classes.checkbox}/>
-                                <Typography variant="caption">Запомнить меня?</Typography>
+                                <Typography variant="caption" className={classes.label}>Запомнить меня?</Typography>
+                                <Checkbox value="remember" className={classes.checkbox}/>
                             </div>
 
                             <div className={classes.signIn}>
@@ -182,17 +211,6 @@ class LoginForm extends React.Component {
                                     Войти
                                 </Button>
                             </div>
-
-                            <div className={classes.inviteBut}>
-                                <Button
-                                    type="submit"
-                                    className={classes.invite}
-                                    color="primary"
-                                    component={props => <Link to="/invite/:invite_id" {...props} />}>
-                                    <Typography variant="caption"> Пригласить </Typography>
-                                </Button>
-                            </div>
-
                         </form>
                     </Paper>
                 </main>

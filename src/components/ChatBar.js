@@ -1,17 +1,15 @@
 import React from 'react';
-import TextField from "@material-ui/core/TextField/TextField";
-import withStyles from "@material-ui/core/es/styles/withStyles";
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
+import {withStyles} from '@material-ui/core/styles';
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Typography from "@material-ui/core/Typography/Typography";
 import div from "@material-ui/core/Grid/Grid";
-import Search from "@material-ui/icons/Search"
 import MoreVert from '@material-ui/icons/MoreVert'
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
 import Group from '@material-ui/icons/Group'
 import accountStore from "../store/AccountStore";
-import MenuIcon from "./Home";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from '@material-ui/icons/Search';
 
 const styles = theme => ({
     position: {
@@ -22,9 +20,15 @@ const styles = theme => ({
         justifyContent: 'space-between',
         height: 55,
         zIndex: 1,
-       // borderBottom: '1px solid #e2e2e2',
-      //  borderLeft: '1px solid #e2e2e2',
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
+            }`,
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
         left: '30%',
         [theme.breakpoints.down('xs')]: {
             left: 0,
@@ -38,29 +42,73 @@ const styles = theme => ({
     },
     searchField: {
         height: 33,
-        margin: 10,
+        margin: 7,
         marginRight: 0,
-
-        /*backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.primary.dark
-            }`,*/ // Логика стилей для темной темы
         [theme.breakpoints.down('xs')]: {
             maxWidth: '90%',
         },
+        background: '#000!important',
+        backgroundColor: '#000!important'
     },
     searchIco: {
         color: theme.palette.secondary.light
     },
     dialogIco: {
-        color: theme.palette.secondary.dark,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     search: {
-        '&:focus': {
-            transition: theme.transitions.create(['border-color', 'box-shadow']),
-            borderColor: '#819bff',
-            border: '1px solid #b9daff',
-            // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
-        },
+        position: 'relative',
+        margin: 12,
+    },
+    searchIcon: {
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 7,
+    },
+    inputRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    inputInput: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+        width: '100%',
+        borderRadius: 4,
+        padding: 8,
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    iconSearch: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#fff' : 'rgba(255, 255, 255, 0.17)'
+            }`,
+    },
+    menu: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+    },
+    menuItem: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
     },
 
 });
@@ -69,6 +117,7 @@ class ChatBar extends React.Component {
     state = {
         auth: true,
         anchorEl: null,
+        type: this.props.theme.palette.type,
     };
 
     constructor(props) {
@@ -92,48 +141,28 @@ class ChatBar extends React.Component {
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
         const {classes, theme} = this.props;
+        const type = this.state.type;
 
         return (
             <div className={classes.position}>
-               {/* <div>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Open drawer"
-                        onClick={this.props.handleDrawerToggle}
-                        className={classes.menuButton}>
-f
-                    </IconButton>
-                </div>*/}
                 <div>
-                    <div className={"ui icon input " +classes.searchField}>
-                        <input type="text" placeholder="Поиск сообщений..." className={classes.search} style={{border: 0, backgroundColor: 'rgb(234, 234, 234)',}}/>
-                        <i className="search icon"></i>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon className={classes.iconSearch}/>
+                        </div>
+                        <InputBase
+                            placeholder="Поиск сообщений…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}/>
                     </div>
-                    {/*<TextField
-                        id="outlined-search"
-                        placeholder="Поиск по сообщениям..."
-                        type="search"
-                        className={classes.searchField}
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton className={classes.searchIco}>
-                                        <Search/>
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />*/}
                 </div>
 
                 <div className={classes.namePosition}>
-                    <Typography variant="h6" noWrap>{this.accountStore.fullName}</Typography>
-                    <IconButton className={classes.dialogIco}>
-                        <Group/>
+                    <Typography variant="h6" className={classes.text} noWrap>{this.accountStore.fullName}</Typography>
+                    <IconButton>
+                        <Group className={classes.dialogIco}/>
                     </IconButton>
                 </div>
 
@@ -141,9 +170,8 @@ f
                     <IconButton
                         aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup="true"
-                        onClick={this.handleMenu}
-                        color="inherit">
-                        <MoreVert/>
+                        onClick={this.handleMenu}>
+                        <MoreVert className={classes.dialogIco}/>
                     </IconButton>
                     <Menu
                         style={{zIndex: 2000}}
@@ -159,11 +187,13 @@ f
                         }}
                         open={open}
                         onClose={this.handleClose}
-                    >
-                        <MenuItem onClick={this.handleClose}>Информация о чате</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Вложения</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Заглушить уведомления</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Выйти</MenuItem>
+                        classes={{
+                            paper: classes.menu,
+                        }}>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Информация о чате</MenuItem>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Вложения</MenuItem>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Заглушить уведомления</MenuItem>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Выйти</MenuItem>
                     </Menu>
                 </div>
             </div>
@@ -171,4 +201,4 @@ f
     }
 }
 
-export default withStyles(styles)(ChatBar);
+export default withStyles(styles, {withTheme: true})(ChatBar);

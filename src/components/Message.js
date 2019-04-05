@@ -33,7 +33,7 @@ const styles = theme => ({
         boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
     },
     fromMe: {
-        boxShadow: '0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
+        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
         maxWidth: 500,
         [theme.breakpoints.down('xs')]: {
             maxWidth: 300,
@@ -57,6 +57,7 @@ const styles = theme => ({
         padding: 11,
         backgroundColor: '#e2f0f1',
         borderRadius: 10,
+        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
     },
     toMe: {
         maxWidth: 500,
@@ -69,6 +70,7 @@ const styles = theme => ({
         padding: 11,
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
+        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
     },
     messageBlock: {
         wordWrap: 'break-word',

@@ -21,6 +21,16 @@ const styles = theme => ({
             marginLeft: 'auto',
         },
     },
+    menu: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+    },
+    menuItem: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
     menuButton: {
         marginLeft: -12,
         marginRight: 5,
@@ -28,16 +38,16 @@ const styles = theme => ({
 });
 
 class ProfileIco extends React.Component {
-    state = {
-        auth: true,
-        anchorEl: null,
-    };
 
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
     }
-
+    state = {
+        auth: true,
+        anchorEl: null,
+       // type: this.props.theme.palette.type,
+    };
     handleChange = event => {
         this.setState({auth: event.target.checked});
     };
@@ -51,7 +61,7 @@ class ProfileIco extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, theme} = this.props;
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
 
@@ -81,12 +91,16 @@ class ProfileIco extends React.Component {
                                     vertical: 'top',
                                     horizontal: 'right',
                                 }}
+                                classes={{
+                                    paper: classes.menu,
+                                }}
                                 open={open}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem onClick={this.handleClose}><PersonOutline/>Профиль</MenuItem>
-                                <MenuItem onClick={this.handleClose}><Settings/>Настройки</MenuItem>
-                                <MenuItem onClick={this.props.handleLogout}><ExitToApp/>Выйти</MenuItem>
+                                <MenuItem onClick={this.handleClose} className={classes.menuItem}><PersonOutline/>Профиль</MenuItem>
+                                <MenuItem onClick={this.handleClose} className={classes.menuItem}><Settings/>Настройки</MenuItem>
+                                <MenuItem onClick={this.props.handleLogout} className={classes.menuItem}><ExitToApp/>Выйти</MenuItem>
+                                <MenuItem onClick={this.props.handleChangeType} className={classes.menuItem}><ExitToApp/>Сменить тему</MenuItem>
                             </Menu>
                         </div>
                     )}

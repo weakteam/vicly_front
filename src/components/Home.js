@@ -18,25 +18,23 @@ import chatsStore from "../store/ChatsStore";
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
-import Background from '../images/chatBack3.jpg'
-//import Button from "@material-ui/core/es/Button/Button";
-import $ from 'jquery';
-import {Button, Header, Image, Modal} from 'semantic-ui-react';
-import {Item, Menu, MenuProvider} from "react-contexify";
+import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
+import Typography from "@material-ui/core/es/Typography/Typography";
 //import Background from '../images/chatBack2.jpg';
 
 const styles = theme => ({
-
     root: {
         display: 'flex',
-        [theme.breakpoints.down('xs')]: {
-            // display: 'block',
-        },
         top: 0,
         bottom: 0,
         left: 100,
         right: 100,
         flexGrow: 1,
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     drawer: {
         [theme.breakpoints.up('lg')]: {
@@ -51,13 +49,21 @@ const styles = theme => ({
             width: '30%',
             flexShrink: 0,
         },
-        zIndex: 1500,
+        //zIndex: 500,
     },
+
     appBar: {
-        zIndex: 1501,
+        zIndex: 1962,
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
         height: 55,
         boxShadow: theme.shadows[0],
         width: '100%',
+        position: 'fixed',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
     },
     menuButton: {
         marginRight: 20,
@@ -74,28 +80,37 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '85%',
         },
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
         width: '30%',
-        backgroundColor: theme.palette.primary.main,
-        borderRight: '0px',
+       borderRight: 0,
     },
     workG: {
         [theme.breakpoints.down('xs')]: {
             marginTop: 105,
         },
-        marginTop: 113,
+        marginTop: 110,
         padding: 0,
     },
     content: {
-        flexGrow: 1,
+       // flexGrow: 1,
+        width: '100%',
         minHeight: '100vh',
         [theme.breakpoints.down('xs')]: {
-            //minHeight: '100%',
+            minHeight: '-webkit-fill-available',
+            zIndex: 1,
         },
-       backgroundImage: 'url(' +Background + ')' ,
-       // backgroundImage: 'url(https://visme.co/blog/wp-content/uploads/2017/07/50-Beautiful-and-Minimalist-Presentation-Backgrounds-04.jpg)',
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
+            }`,
+     //  backgroundImage: 'url(' +Background + ')' ,
         backgroundSize: 'cover',
-
-        boxShadow: '-2px 0px 20px 0px rgba(0,0,0,0.5)',
+        //zIndex: 1503,
+        boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
     logo: {
         width: 150,
@@ -134,6 +149,14 @@ const styles = theme => ({
         display: 'flex',
         marginLeft: 'auto',
     },
+    load: {
+      marginTop: '50%',
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
 });
 
 @observer
@@ -147,20 +170,42 @@ class Home extends React.Component {
 
     state = {
         mobileOpen: false,
+        type: this.props.theme.palette.type,
     };
 
     handleDrawerToggle = () => {
         this.setState(state => ({mobileOpen: !state.mobileOpen}));
     };
 
+    handleChangeType = () => {
+        if (this.state.type === "light") {
+
+        this.setState({
+            type: "dark",
+        })
+        } else {
+            this.setState({
+                type: "light",
+            })
+        }
+    };
+
 
     workgroups() {
         if (this.chatsStore.groups.length) {
             return this.chatsStore.groups.map(
-                workgroup => <Workgroup workgroup={workgroup} chats={
+                workgroup => <Workgroup chatsStore={chatsStore} handleDrawerToggle={this.handleDrawerToggle}  workgroup={workgroup} chats={
                     this.chatsStore.userChats.filter(
                         userChat => userChat.user.group_id === workgroup.id)}/>
             )
+        } else {
+            return(
+                <div style={{marginTop: '50%'}}>
+                    <Loader active inverted>Loading</Loader>
+                </div>
+
+                )
+
         }
     }
 
@@ -188,7 +233,7 @@ class Home extends React.Component {
             <Scrollbars autoHide>
                 <div>
                     <Hidden xsDown implementation="css">
-                        <ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                        <ProfileBar  handleChangeType={this.handleChangeType} chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>
                     </Hidden>
                     <SearchBar/>
                     <List className={classes.workG}>
@@ -211,9 +256,11 @@ class Home extends React.Component {
                                     aria-label="Open drawer"
                                     onClick={this.handleDrawerToggle}
                                     className={classes.menuButton}>
-                                    <MenuIcon/>
+                                    <MenuIcon className={classes.icon}/>
                                 </IconButton>
-                                {/* <div className={classes.logoDiv}>Vicly messenger</div>*/}
+                                <div className={classes.logoDiv}>
+                                    <Typography variant="h6" className={classes.text}> Vicly Messenger </Typography>
+                                    </div>
                                 <div className={classes.userBar}>
                                     <InviteIcon chats={this.props.chats}/>
                                     <ProfileIco handleLogout={this.accountStore.unauth.bind(accountStore)}
@@ -255,17 +302,19 @@ class Home extends React.Component {
                 <main className={classes.content}>
                     <Scrollbars autoHide>
                         <div className={classes.toolbar}/>
-                        <MenuProvider id={"menu_id"}>
-                            <Route path="/home/chat/:chat_id"
-                                   render={(routeProps) => <ChatWindow {...routeProps}
-                                                                       handleDrawerToggle={this.handleDrawerToggle}
-                                   />}/>
+                     {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
+                        {/*<MenuProvider id={"menu_id"}>
+                            Это ниработает лол
                         </MenuProvider>
                         <Menu id='menu_id'>
                             <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
                             <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
                             <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
-                        </Menu>
+                        </Menu>*/}
+                        <Route path="/home/chat/:chat_id"
+                               render={(routeProps) => <ChatWindow {...routeProps}
+                                                                   handleDrawerToggle={this.handleDrawerToggle}
+                               />}/>
                     </Scrollbars>
                 </main>
             </div>
