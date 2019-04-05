@@ -15,7 +15,6 @@
     "prop-types": "latest",
     "react": "latest",
     "react-contexify": "^4.0.2",
-    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "latest",
     "react-jss": "latest",
     "react-redux": "^5.1.1",
@@ -29,7 +28,6 @@
     "request": "^2.88.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.83.0",
-    "simplebar-react": "0.1.0-beta.5",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {

@@ -44,9 +44,9 @@ const styles = theme => ({
         flexDirection: 'column',
         borderRadius: 0,
         justifyContent: 'center',
-       // padding: 30,
+        // padding: 30,
         boxShadow: theme.shadows[0],
-       // paddingBottom: 10,
+        // paddingBottom: 10,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,
@@ -195,118 +195,120 @@ class InviteForm extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-<div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <Typography variant="h5" className={classes.header}>
-                            Приглашение нового пользователя
-                        </Typography>
-                        <Divider/>
-                        <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
-                            <div className={classes.blockForm}>
-                                <div className={classes.block}>
-                                    <Typography variant="h6" className={classes.text}>Личные данные</Typography>
-                                    <FormControl required fullWidth>
-                                        <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1"  className={classes.text}> Имя </Typography>
-                                        </InputLabel>
-                                        <InputBase
-                                            id="Name"
-                                            name="Name"
-                                            type="text"
-                                            classes={{input: classes.active}}
-                                        />
-                                    </FormControl>
-                                    <FormControl required fullWidth>
-                                        <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1" className={classes.text}> Фамилия </Typography>
-                                        </InputLabel>
-                                        <InputBase
-                                            id="Surname"
-                                            name="Surname"
-                                            type="text"
-                                            classes={{input: classes.active}}
-                                        />
-                                    </FormControl>
-                                    <FormControl required fullWidth>
-                                        <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1" className={classes.text}> Отчество </Typography>
-                                        </InputLabel>
-                                        <InputBase
-                                            id="patronymic"
-                                            name="patronymic"
-                                            type="text"
-                                            classes={{input: classes.active}}
-                                        />
-                                    </FormControl>
-                                </div>
+            <div className={classes.root}>
+                <Paper className={classes.paper}>
+                    <Typography variant="h5" className={classes.header}>
+                        Приглашение нового пользователя
+                    </Typography>
+                    <Divider/>
+                    <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
+                        <div className={classes.blockForm}>
+                            <div className={classes.block}>
+                                <Typography variant="h6" className={classes.text}>Личные данные</Typography>
+                                <FormControl required fullWidth>
+                                    <InputLabel shrink className={classes.label}>
+                                        <Typography variant="subtitle1" className={classes.text}> Имя </Typography>
+                                    </InputLabel>
+                                    <InputBase
+                                        id="Name"
+                                        name="Name"
+                                        type="text"
+                                        classes={{input: classes.active}}
+                                    />
+                                </FormControl>
+                                <FormControl required fullWidth>
+                                    <InputLabel shrink className={classes.label}>
+                                        <Typography variant="subtitle1" className={classes.text}> Фамилия </Typography>
+                                    </InputLabel>
+                                    <InputBase
+                                        id="Surname"
+                                        name="Surname"
+                                        type="text"
+                                        classes={{input: classes.active}}
+                                    />
+                                </FormControl>
+                                <FormControl required fullWidth>
+                                    <InputLabel shrink className={classes.label}>
+                                        <Typography variant="subtitle1" className={classes.text}> Отчество </Typography>
+                                    </InputLabel>
+                                    <InputBase
+                                        id="patronymic"
+                                        name="patronymic"
+                                        type="text"
+                                        classes={{input: classes.active}}
+                                    />
+                                </FormControl>
+                            </div>
 
-                                <div className={classes.block}>
-                                    <Typography variant="h6" className={classes.text}>Корпоративная информация</Typography>
-                                    <FormControl required fullWidth>
-                                        <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1" className={classes.text}> Должность </Typography>
-                                        </InputLabel>
-                                        <InputBase
-                                            id="position"
-                                            name="position"
-                                            type="text"
-                                            classes={{input: classes.active}}
-                                        />
-                                    </FormControl>
+                            <div className={classes.block}>
+                                <Typography variant="h6" className={classes.text}>Корпоративная информация</Typography>
+                                <FormControl required fullWidth>
+                                    <InputLabel shrink className={classes.label}>
+                                        <Typography variant="subtitle1"
+                                                    className={classes.text}> Должность </Typography>
+                                    </InputLabel>
+                                    <InputBase
+                                        id="position"
+                                        name="position"
+                                        type="text"
+                                        classes={{input: classes.active}}
+                                    />
+                                </FormControl>
 
-                                    <FormControl required fullWidth>
-                                        <InputLabel shrink className={classes.label}>
-                                            <Typography variant="subtitle1" className={classes.text}> Пол </Typography>
-                                        </InputLabel>
-                                        <RadioGroup
-                                            aria-label="gender"
-                                            name="gender2"
+                                <FormControl required fullWidth>
+                                    <InputLabel shrink className={classes.label}>
+                                        <Typography variant="subtitle1" className={classes.text}> Пол </Typography>
+                                    </InputLabel>
+                                    <RadioGroup
+                                        aria-label="gender"
+                                        name="gender2"
+                                        classes={{
+                                            root: classes.group
+                                        }}
+                                        //className={classes.group}
+                                        value={this.value}
+                                        onChange={this.handleChange}
+                                    >
+                                        <FormControlLabel
+                                            value="female"
+                                            control={<Radio className={classes.text}/>}
+                                            label="Женский"
                                             classes={{
-                                                root: classes.group
+                                                label: classes.text,
                                             }}
-                                            //className={classes.group}
-                                            value={this.value}
-                                            onChange={this.handleChange}
-                                        >
-                                            <FormControlLabel
-                                                value="female"
-                                                control={<Radio className={ classes.text}/>}
-                                                label="Женский"
-                                                classes={{
-                                                    label: classes.text,
-                                                }}
-                                                labelPlacement="start"
-                                            />
-                                            <FormControlLabel
-                                                value="male"
-                                                control={<Radio className={ classes.text}/>}
-                                                label="Мужской"
-                                                classes={{
-                                                    label: classes.text,
-                                                }}
-                                                labelPlacement="start"
-                                            />
-                                        </RadioGroup>
-                                    </FormControl>
+                                            labelPlacement="start"
+                                        />
+                                        <FormControlLabel
+                                            value="male"
+                                            control={<Radio className={classes.text}/>}
+                                            label="Мужской"
+                                            classes={{
+                                                label: classes.text,
+                                            }}
+                                            labelPlacement="start"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
 
-                                    <form autoComplete="off">
+                                <form autoComplete="off">
 
                                     <FormControl style={{zIndex: 5000}} required fullWidth>
                                         {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
                                         </InputLabel>*/}
-                                        <InputLabel className={ classes.text} htmlFor="age-simple">Рабочая группа</InputLabel>
+                                        <InputLabel className={classes.text} htmlFor="age-simple">Рабочая
+                                            группа</InputLabel>
                                         <Select
-                                            className={ classes.text}
+                                            className={classes.text}
                                             value={this.state.kek}
                                             onChange={this.handleChangeSelect}
-                                        /*classes={{
-                                            Paper: classes.backi,
-                                            paper: classes.backi,
-                                            root: classes.backi,
-                                            MuiPaper: classes.backi,
-                                        }}
-                                        style={{backgroundColor: '#000'}}*/
+                                            /*classes={{
+                                                Paper: classes.backi,
+                                                paper: classes.backi,
+                                                root: classes.backi,
+                                                MuiPaper: classes.backi,
+                                            }}
+                                            style={{backgroundColor: '#000'}}*/
                                         >
                                             <MenuItem value={0}>Не выбрано</MenuItem>
                                             <MenuItem value={2}>Ten</MenuItem>
@@ -314,23 +316,23 @@ class InviteForm extends React.Component {
                                             <MenuItem value={4}>Thirty</MenuItem>
                                         </Select>
                                     </FormControl>
-                                    </form>
+                                </form>
 
-                                </div>
                             </div>
+                        </div>
 
-                            <div className={classes.signIn}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className={classes.submit}
-                                   /* component={props => <Link to="/login" {...props} />}*/>
-                                    Пригласить
-                                </Button>
-                            </div>
-                        </form>
-                    </Paper>
-</div>
+                        <div className={classes.signIn}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                className={classes.submit}
+                                /* component={props => <Link to="/login" {...props} />}*/>
+                                Пригласить
+                            </Button>
+                        </div>
+                    </form>
+                </Paper>
+            </div>
         );
     }
 

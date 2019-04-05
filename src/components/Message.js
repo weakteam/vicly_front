@@ -12,8 +12,8 @@ const styles = theme => ({
     },
     rootMob: {
         margin: '0px 25px 15px 0px',
-      display: 'flex',
-      justifyContent: 'flex-end',
+        display: 'flex',
+        justifyContent: 'flex-end',
     },
     avatar: {
         marginRight: 9,
@@ -154,7 +154,8 @@ class Message extends React.Component {
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
-                            variant="body2" style={{    minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
+                            variant="body2"
+                            style={{minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -176,7 +177,8 @@ class Message extends React.Component {
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
-                            variant="body2" style={{    minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
+                            variant="body2"
+                            style={{minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -189,24 +191,29 @@ class Message extends React.Component {
         return (
             <div>
                 <Hidden smDown implementation="css">
-        <div className={classes.root}>
-            <div className={classes.messageBlock}>
-                <div className={classes.avatar}>
-                    <Avatar className={classes.avatarIco}>
-                        {this.props.userInfo.fullName[0].toUpperCase()}
-                    </Avatar>
-                </div>
-                <div className={fromMe ? classes.fromMe : classes.toMe}>
-                    <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
-                        <Typography
-                            variant="body2" style={{    minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
-                        <Typography variant="caption"
-                                    className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                    <div className={classes.root}>
+                        <div className={classes.messageBlock}>
+                            <div className={classes.avatar}>
+                                <Avatar className={classes.avatarIco}>
+                                    {this.props.userInfo.fullName[0].toUpperCase()}
+                                </Avatar>
+                            </div>
+                            <div className={fromMe ? classes.fromMe : classes.toMe}>
+                                <div style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    width: '-webkit-fill-available'
+                                }}>
+                                    <Typography
+                                        variant="body2"
+                                        style={{minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
+                                    <Typography variant="caption"
+                                                className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                                </div>
+                                <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                            </div>
+                        </div>
                     </div>
-                    <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
-                </div>
-            </div>
-        </div>
                 </Hidden>
 
                 <Hidden mdUp implementation="css">

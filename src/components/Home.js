@@ -9,7 +9,6 @@ import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChatWindow from "./ChatWindow"
 import Workgroup from "./Workgroup";
-import {Scrollbars} from "react-custom-scrollbars";
 import SearchBar from "./SearchBar";
 import ProfileIco from "./ProfileIco";
 import InviteIcon from "./InviteIcon";
@@ -178,6 +177,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
+        zIndex: 400,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -265,7 +265,6 @@ class Home extends React.Component {
                 <Hidden xsDown implementation="css">
                     <ProfileBar handleChangeType={this.handleChangeType} chats={this.props.chats}
                                 andleLogout={this.accountStore.unauth.bind(accountStore)}/>
-
                     <div className={classes.logoDrawer}>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
@@ -281,7 +280,7 @@ class Home extends React.Component {
         return (
             <div className={classes.root}>
                 <nav className={classes.drawer}>
-                    <Hidden smUp implementation="js">
+                    <Hidden smUp implementation="css">
                         <AppBar position="fixed" className={classes.appBar}>
                             <Toolbar>
                                 <IconButton

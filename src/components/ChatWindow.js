@@ -164,20 +164,21 @@ class ChatWindow extends React.Component {
                     <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
 
                     {
-                            messages && messages.messages.length > 0 ? (
-                                <div className={classes.list}>
+                        messages && messages.messages.length > 0 ? (
+                            <div className={classes.list}>
 
-                                    <MessageList
-                                        myselfUser={myselfUser}
-                                        chatUser={chatUser}
-                                        messages={messages}
-                                        ref={this.messageList}/>
-                                </div>
-                            ) : (
-                                <div className={classes.emptyChat}>
-                                    <Typography className={classes.text} variant="h5">История сообщения пуста...</Typography>
-                                </div>
-                                )
+                                <MessageList
+                                    myselfUser={myselfUser}
+                                    chatUser={chatUser}
+                                    messages={messages}
+                                    ref={this.messageList}/>
+                            </div>
+                        ) : (
+                            <div className={classes.emptyChat}>
+                                <Typography className={classes.text} variant="h5">История сообщения
+                                    пуста...</Typography>
+                            </div>
+                        )
                     }
 
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>

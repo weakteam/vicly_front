@@ -99,8 +99,10 @@ class ProfileIco extends React.Component {
                                     onClose={this.handleClose}>
                                     <MenuItem onClick={this.handleClose} className={classes.menuItem}><PersonOutline/>Профиль</MenuItem>
                                     <MenuItem onClick={this.handleClose} className={classes.menuItem}><Settings/>Настройки</MenuItem>
-                                    <MenuItem onClick={this.props.handleLogout} className={classes.menuItem}><ExitToApp/>Выйти</MenuItem>
-                                    <MenuItem onClick={this.props.handleChangeType} className={classes.menuItem}><ExitToApp/>Сменить тему</MenuItem>
+                                    <MenuItem onClick={this.props.handleLogout}
+                                              className={classes.menuItem}><ExitToApp/>Выйти</MenuItem>
+                                    <MenuItem onClick={this.props.handleChangeType}
+                                              className={classes.menuItem}><ExitToApp/>Сменить тему</MenuItem>
                                 </Menu>
                             </div>
                         )}

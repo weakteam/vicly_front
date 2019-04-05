@@ -35,7 +35,7 @@ class WindowPanel extends React.Component {
 
     render() {
         const {classes} = this.props;
-        let isChatDefined = this.chatsStore.userChats && !!this.chatsStore.userChats.with_group.flatMap((elem)=>elem.users).find((elem) => elem.user.id === this.chatsStore.currentChatId);
+        let isChatDefined = this.chatsStore.userChats && !!this.chatsStore.userChats.with_group.flatMap((elem) => elem.users).find((elem) => elem.user.id === this.chatsStore.currentChatId);
         return isChatDefined ? (
             <Route path="/home/chat/:chat_id"
                    render={(routeProps) => <ChatWindow {...routeProps}
