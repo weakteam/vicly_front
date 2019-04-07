@@ -12,7 +12,8 @@ import ToastService from '../services/toastService'
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import MessagePush from "./MessagePush";
 import rootStore from "../store/RootStore";
-const {accountStore,messagesStore} = rootStore;
+
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     fixWidth: {
@@ -125,14 +126,15 @@ class Dialog extends React.Component {
     render() {
         const {classes, dialog} = this.props;
         const selected = this.props.chatId === this.chatsStore.currentChatId;
-        const messagesObj = this.messagesStore.messages.find(elem => elem.chatId == this.props.chatId);
-        let unreadCount, lastUnread;
-        if (messagesObj) {
-            unreadCount = messagesObj.unread;
-            lastUnread = messagesObj.last;
+
+        const chatObj = this.messagesStore.findChat(this.props.chatId, "user");
+        let unreadCount=0, lastMessage="";
+        if (chatObj) {
+            unreadCount = chatObj.unread;
+            lastMessage = chatObj.messages.length ? chatObj.messages[chatObj.messages.length-1] : chatObj.last;
         } else {
             unreadCount = 0;
-            lastUnread = null;
+            lastMessage = "";
         }
         return (
             <div>
@@ -158,15 +160,19 @@ class Dialog extends React.Component {
                                 <Typography variant="body2"
                                             color="secondary"
                                             noWrap
-                                            className={classes.userName}>{dialog.first_name + " " + dialog.last_name}</Typography>
+                                            className={classes.userName}>
+                                    {dialog.first_name + " " + dialog.last_name}
+                                </Typography>message
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>{this.props.lastMsg ? this.props.lastMsg.message : "Нет сообщений"}</Typography>
+                                            className={classes.message}>
+                                    {unreadCount ? lastMessage.message : "Нет сообщений"}
+                                </Typography>
                             </Grid>
 
                             <Grid item style={{padding: 0, marginRight: 7,}}>
                                 <Typography
-                                    className={classes.time}>{lastUnread ? this.formatDate(lastUnread.timestamp_post.timestamp) : ""}</Typography>
+                                    className={classes.time}>{lastMessage ? this.formatDate(lastMessage.timestamp_post.timestamp) : ""}</Typography>
                             </Grid>
                             {
                                 unreadCount ? (
@@ -201,12 +207,12 @@ class Dialog extends React.Component {
                                             className={classes.userName}>{dialog.first_name + " " + dialog.last_name}</Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>{this.props.lastMsg ? this.props.lastMsg.message : "Нет сообщений"}</Typography>
+                                            className={classes.message}>{unreadCount ? lastMessage.message : "Нет сообщений"}</Typography>
                             </Grid>
 
                             <Grid item style={{padding: 0, marginRight: 7,}}>
                                 <Typography
-                                    className={classes.time}>{lastUnread ? this.formatDate(lastUnread.timestamp_post.timestamp) : ""}</Typography>
+                                    className={classes.time}>{lastMessage ? this.formatDate(lastMessage.timestamp_post.timestamp) : ""}</Typography>
                             </Grid>
                             {
                                 unreadCount ? (<Badge color="secondary" badgeContent={unreadCount}

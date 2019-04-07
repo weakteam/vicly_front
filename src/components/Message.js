@@ -155,7 +155,7 @@ class Message extends React.Component {
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
-                            style={{minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
+                            style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -163,7 +163,7 @@ class Message extends React.Component {
                 </div>
                 <div className={classes.avatarMob}>
                     <Avatar className={classes.avatarIco}>
-                        {this.props.userInfo.fullName[0].toUpperCase()}
+                        {this.props.userInfo.first_name[0].toUpperCase()}
                     </Avatar>
                 </div>
             </div>
@@ -171,14 +171,14 @@ class Message extends React.Component {
             kek = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
                     <Avatar className={classes.avatarIco}>
-                        {this.props.userInfo.fullName[0].toUpperCase()}
+                        {this.props.userInfo.first_name[0].toUpperCase()}
                     </Avatar>
                 </div>
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
-                            style={{minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
+                            style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -195,7 +195,7 @@ class Message extends React.Component {
                         <div className={classes.messageBlock}>
                             <div className={classes.avatar}>
                                 <Avatar className={classes.avatarIco}>
-                                    {this.props.userInfo.fullName[0].toUpperCase()}
+                                    {this.props.userInfo.first_name[0].toUpperCase()}
                                 </Avatar>
                             </div>
                             <div className={fromMe ? classes.fromMe : classes.toMe}>
@@ -206,7 +206,7 @@ class Message extends React.Component {
                                 }}>
                                     <Typography
                                         variant="body2"
-                                        style={{minWidth: 'max-content'}}>{this.props.userInfo.fullName}</Typography>
+                                        style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                                     <Typography variant="caption"
                                                 className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                                 </div>

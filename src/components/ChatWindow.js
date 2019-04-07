@@ -8,7 +8,8 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
-const {accountStore,messagesStore} = rootStore;
+
+const {accountStore, messagesStore} = rootStore;
 
 
 const styles = theme => ({
@@ -62,26 +63,9 @@ class ChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-    equalMessages = (msg1, msg2) => {
-        return msg1.id === msg2.id;
-    };
-
-    equalMsgArrays = (arr1, arr2) => {
-        if (arr1.length !== arr2.length)
-            return false;
-        for (let i = 0; i < arr1.length; i++) {
-            if (arr1[i].id !== arr2[i].id)
-                return false;
-        }
-    };
 
     componentDidMount() {
         console.log("componentDidMount chatWindow");
-        console.log("props:" + this.props);
-
-        // if (this.messagesEnd.current) {
-        //     this.scrollToBottom();
-        // }
     }
 
 
@@ -113,72 +97,50 @@ class ChatWindow extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        this.messagesStore.loadMessagesByChatId(this.messagesStore.currentChatId, 'user');
-        let messages = this.messagesStore.messages.find(elem => elem.chatId === this.messagesStore.currentChatId);
-        let self = this;
-        if (messages) {
-            messages.messages.forEach((elem) => {
-                if (elem.from !== self.accountStore.userId) {
-                    if (!elem.timestamp_delivery) {
-                        self.messagesStore.deliveryMessage(elem.id, 1, 'user');
-                    }
-                    if (!elem.timestamp_read) {
-                        self.messagesStore.readMessage(elem.id, 'user');
-
-                    }
-                }
-            });
-            if (messages.messages.length) {
-                this.scrollToBottom();
-            }
+        const {chat} = this.props;
+        if (chat && chat.messages.length) {
+            this.scrollToBottom();
         }
-
-        // if(this.props.chatMessages){
-        //     let props = this.props;
-        //     this.props.chatMessages.forEach((msg, i, arr) => {
-        //         if(!msg.timestamp_read){
-        //             props.markAsRead(msg.id, this.props.userId);
-        //         }
-        //     })
-        // }
-
-        //this.props.getAllMessages(this.props.userId);
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, chat} = this.props;
         const myselfUser = {
             fullName: this.accountStore.fullName,
+            first_name: this.accountStore.first_name,
+            last_name: this.accountStore.last_name,
             userId: this.accountStore.userId
         };
         if (this.messagesStore.currentChatId) {
-            let chatUser = this.messagesStore.userChats.find((elem) => elem.user.id === this.messagesStore.currentChatId);
             let messages = null;
-            if (chatUser) {
-                chatUser = chatUser.user;
-                chatUser.fullName = chatUser.first_name + " " + chatUser.last_name;
-                messages = this.messagesStore.messages.find((elem) => elem.chatId === this.messagesStore.currentChatId);
+            if (chat) {
+                messages = chat.messages;
             }
             return (
                 <div className={classes.chat}>
                     <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
 
                     {
-                        messages && messages.messages.length > 0 ? (
-                            <div className={classes.list}>
-
-                                <MessageList
-                                    myselfUser={myselfUser}
-                                    chatUser={chatUser}
-                                    messages={messages}
-                                    ref={this.messageList}/>
-                            </div>
-                        ) : (
-                            <div className={classes.emptyChat}>
-                             {/*   <Typography className={classes.text} variant="h5">История сообщения пуста...</Typography>*/}
+                        messagesStore.messagesLoading ?
+                            (
                                 <Loader active inverted>Loading</Loader>
-                            </div>
-                        )
+                            )
+                            :
+                            chat && messages && messages.length > 0 ? (
+                                <div className={classes.list}>
+
+                                    <MessageList
+                                        myselfUser={myselfUser}
+                                        chatUser={chat.user}
+                                        messages={messages}
+                                        ref={this.messageList}/>
+                                </div>
+                            ) : (
+                                <div className={classes.emptyChat}>
+                                    <Typography className={classes.text} variant="h5">История сообщения
+                                        пуста...</Typography>
+                                </div>
+                            )
                     }
 
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>

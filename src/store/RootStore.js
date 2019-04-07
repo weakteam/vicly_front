@@ -6,7 +6,7 @@ class RootStore{
     constructor(){
         this.webSocketService = new WebSocketService(this);
         this.accountStore = new AccountStore(this);
-        this.messagesStore = new MessagesStore(this.accountStore);
+        this.messagesStore = new MessagesStore(this);
     }
 }
 

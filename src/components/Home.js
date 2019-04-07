@@ -119,8 +119,8 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
-       // backgroundImage: 'url(' + Background + ')',
-      //  backgroundSize: 'cover',
+        // backgroundImage: 'url(' + Background + ')',
+        //  backgroundSize: 'cover',
         //zIndex: 1503,
         boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
@@ -243,10 +243,6 @@ class Home extends React.Component {
     //     }
     // }
 
-    componentWillMount() {
-        messagesStore.fetchChats()
-    };
-
     render() {
         const {classes, theme, chats} = this.props;
 
@@ -337,8 +333,12 @@ class Home extends React.Component {
                             <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
                         </Menu>*/}
                     <Route path="/home/chat/:chat_id"
-                           render={(routeProps) => <ChatWindow {...routeProps}
-                                                               handleDrawerToggle={this.handleDrawerToggle}/>}/>
+                           render={(routeProps) =>
+                               <ChatWindow
+                                   {...routeProps}
+                                   handleDrawerToggle={this.handleDrawerToggle}
+                                   chat={this.messagesStore.getCurrentChat()}
+                               />}/>
                 </main>
             </div>
         );

@@ -1,19 +1,42 @@
 import {BACKEND_URL} from "../common";
-import {observable, runInAction} from "mobx";
+import {autorun, observable, reaction, runInAction} from "mobx";
 
 export default class MessagesStore {
-    @observable messages = [];
-
     @observable groups = [];
     @observable userChats = [];
     @observable groupChats = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
     err_message = "";
+    @observable messagesLoading = false;
 
-    constructor(AccountStore) {
-        this.accountStore = AccountStore;
-    }
+    constructor(RootStore) {
+        this.accountStore = RootStore.accountStore;
+        autorun(() => {
+            this.fetchChats();
+        });
+        reaction(
+            () => this.currentChatId,
+            (currentChatId) => {
+                if (currentChatId) {
+                    this.loadMessagesByChatId(this.currentChatId, 'user');
+                    const chat = this.userChats.find(elem => elem.chatId === currentChatId);
+                    chat.messages.forEach((elem) => {
+                        if (elem.from !== this.accountStore.userId) {
+                            if (!elem.timestamp_delivery) {
+                                this.deliveryMessage(elem.id, 1, 'user');
+                            }
+                            if (!elem.timestamp_read) {
+                                this.readMessage(elem.id, 'user');
+
+                            }
+                        }
+                    });
+                }
+            },
+            {fireImmediately: true}
+        );
+    };
 
     async fetchChats() {
         try {
@@ -39,12 +62,12 @@ export default class MessagesStore {
             }
             const content = await userListResponse.json();
             runInAction("Update users info", () => {
-                this.userChats = content.with_group.flatMap((elem => elem.users));
-                this.userChats = this.userChats.map(chat => {
-                    this.createOrUpdateChatMessagesObjByUnreadedMessages(chat.user.id, "user", chat.unread, chat.last);
-                    chat.chat_type = "user";
-                    return chat;
-                });
+                content.with_group
+                    .flatMap((elem => elem.users))
+                    .forEach(chat => {
+                        this.createChatObject(chat.user, chat.user.id, "user", chat.unread, chat.last);
+                        // this.updateChatInfo(chat.user,chat.user.id, "user", chat.unread, chat.last);
+                    });
                 this.groupChats = content.with_group.flatMap((elem => elem.group_chats));
                 this.groups = content.with_group.map(elem => {
                     return elem.group;
@@ -60,13 +83,14 @@ export default class MessagesStore {
     }
 
 
-
-    loadMessagesByChatId(chatId, chatType) {
-        const messages = this.messages.find((elem) => elem.chatId === chatId);
-        if (messages && messages.messages.length) {
+    async loadMessagesByChatId(chatId, chatType) {
+        // this.messagesLoading = true;
+        const chat = this.findChat(chatId, chatType);
+        const lol = 5;
+        if (chat && chat.messages && chat.messages.length) {
             console.log("Chatid " + chatId + " already loaded! need to resolve only inreaded messages");
         } else {
-            this.getAllMessagesByChatId(chatId, chatType)
+            await this.getAllMessagesByChatId(chatId, chatType)
         }
     }
 
@@ -75,34 +99,26 @@ export default class MessagesStore {
     addMessageToEnd(message) {
         //TODO for websocket push
         const myselfUserId = parseInt(this.accountStore.userId, 10);
-        let messages = this.messages.find((elem) => {
-            if (message.chat.chat_type === 'user') {
-                return message.chat.user_ids.includes(elem.chatId) && message.chat.user_ids.includes(myselfUserId);
-            } else {
-                return elem.chatId === message.chat.id;
-            }
-        });
-        if (messages) {
-            // TODO NEED FUCKEN REFACTORIN THIS SHIT
-            if (message.chat.chat_type === 'user') {
-                if (this.currentChatId==message.from) {
-                    messages.messages.push(message);
+        // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
+        const idChat = message.chat.user_ids.filter(elem=>elem!==this.accountStore.userId)[0];
+        const chat = this.findChat(idChat, message.chat.chat_type);
+        if (chat) {
+            if (chat.chat_type === 'user') {
+                if (this.currentChatId == message.from) {
+                    chat.messages.push(message);
+                    chat.last = message;
                     this.deliveryMessage(message.id, message.chat.id, 'user');
                     this.readMessage(message.id, 'user');
-                }else {
-                    messages.messages.push(message);
-                    messages.unread++;
-                    messages.last = message;
+                } else {
+                    chat.messages.push(message);
+                    chat.unread++;
+                    chat.last = message;
                     this.deliveryMessage(message.id, message.chat.id, 'user');
                 }
             }
-
-
         } else {
-            // TODO WADAFUCK? i was drunked !?!?!
-            this.createOrUpdateChatMessagesObjByUnreadedMessages(message.chat.id, message.chat.chat_type, message.chat.unread.last,[message]);
+            this.updateChatInfo(message.chat.id, message.chat.chat_type, message.chat.unread, message);
         }
-
     }
 
     async getAllMessagesByChatId(chatId, chat_type) {
@@ -122,22 +138,13 @@ export default class MessagesStore {
             let lastUnread = null;
             messages = messages.sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
             messages.forEach(message => {
-                if (!message.timestamp_read && this.accountStore.userId==message.from) {
+                if (!message.timestamp_read && this.accountStore.userId == message.from) {
                     countUnreaded++;
                     lastUnread = message;
                 }
             });
             runInAction("getAllMessagesById", () => {
-                // let chatMessages = {
-                //     chatId: chatId,
-                //     chat_type: chat_type,
-                //     last: lastUnread,
-                //     unread: countUnreaded,
-                //     messages: messages
-                // };
-                // this.messages.push(chatMessages);
-                this.createOrUpdateChatMessagesObjByUnreadedMessages(chatId, chat_type, countUnreaded, lastUnread, messages);
-                //this.messages = messages;
+                this.updateChatInfo(chatId, chat_type, countUnreaded, lastUnread, messages);
             })
         } catch (err) {
             console.log(err);
@@ -146,22 +153,28 @@ export default class MessagesStore {
     }
 
     //IT'S MY NAMING STYLE !!!!
-    //@action("createOrUpdateChatMessagesObjByUnreadedMessages")
-    createOrUpdateChatMessagesObjByUnreadedMessages(chatId, chatType, countUnread, lastUnread, newMessages) {
-        let messagesObj = this.messages.find(elem => elem.chatId == chatId);
-        if (messagesObj) {
-            messagesObj.messages = newMessages || messagesObj.messages;
-            messagesObj.last = lastUnread;
-            messagesObj.unread = countUnread;
-        } else {
-            let chatMessages = {
+    //@action("updateChatInfo")
+    createChatObject(userObj, chatId, chatType, countUnread, lastUnread, newMessages) {
+        const chat = this.findChat(chatId, chatType);
+        if (!chat) {
+            const newChat = {
                 chatId: chatId,
                 chat_type: chatType,
                 last: lastUnread,
                 unread: countUnread,
-                messages: newMessages || []
+                messages: newMessages || [],
+                user: userObj
             };
-            this.messages.push(chatMessages);
+            this.userChats.push(newChat);
+        }
+    }
+
+    updateChatInfo(chatId, chatType, countUnread, lastUnread, newMessages) {
+        const chat = this.findChat(chatId, chatType);
+        if (chat) {
+            chat.messages = newMessages || chat.messages;
+            chat.last = lastUnread;
+            chat.unread = countUnread;
         }
     }
 
@@ -183,15 +196,7 @@ export default class MessagesStore {
             if (!response.ok) {
                 alert("post message failed")
             }
-            //const content = await response.json();
-            //console.log(content);
-            // return dispatch(sendMessage({
-            //     message: message,
-            //     status: 'ok'
-            //  }));
-            // runInAction("postMessage", () => {
-            //
-            // })
+
 
         } catch (err) {
             console.log(err);
@@ -216,16 +221,8 @@ export default class MessagesStore {
             if (!response.ok) {
                 console.log("mark delivered message failed")
             }
-            //const content = await response.json();
-            //console.log(content);
-            // return dispatch(sendMessage({
-            //     message: message,
-            //     status: 'ok'
-            //  }));
-            // runInAction("postMessage", () => {
-            //
-            // })
-
+            const message = this.findMessage(messageId, chatId, chatType);
+            // message.
         } catch (err) {
             console.log(err);
             // return dispatch(setChatList(err))
@@ -248,19 +245,27 @@ export default class MessagesStore {
             if (!response.ok) {
                 console.log("mark delivered message failed")
             }
-            //const content = await response.json();
-            //console.log(content);
-            // return dispatch(sendMessage({
-            //     message: message,
-            //     status: 'ok'
-            //  }));
-            // runInAction("postMessage", () => {
-            //
-            // })
 
         } catch (err) {
             console.log(err);
             // return dispatch(setChatList(err))
         }
+    }
+
+    findChat(chatId, chatType) {
+        if (chatType === "user") {
+            return this.userChats.find(elem => elem.user.id === chatId);
+        } else {
+            console.log("Not ready yet!");
+        }
+    }
+
+    findMessage(messageId, chatId, chatType) {
+        const chat = this.findChat(chatId, chatType);
+        chat.messages.find(elem => elem.id === messageId);
+    }
+
+    getCurrentChat() {
+        return this.findChat(this.currentChatId, "user");
     }
 }

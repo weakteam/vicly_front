@@ -3,6 +3,7 @@ import Message from './Message';
 import '../css/MessageList.css'
 
 import rootStore from "../store/RootStore";
+import {observer} from "mobx-react";
 const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
@@ -21,6 +22,7 @@ const styles = theme => ({
     },
 });
 
+@observer
 class MessageList extends React.Component {
     constructor(props) {
         super(props);
@@ -47,7 +49,7 @@ class MessageList extends React.Component {
         const myUserId = this.accountStore.userId;
         console.log("myUserId:" + myUserId);
 
-        const messages = this.props.messages.messages.map((message, i) => {
+        const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from == myUserId;//int == string !!!
             return (
                 <Message

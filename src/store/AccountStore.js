@@ -3,6 +3,8 @@ import {BACKEND_URL} from "../common";
 
 export default class AccountStore {
     @observable fullName = "";
+    first_name = "";
+    last_name = "";
     @observable token = "";
     @observable login = "";
     userId = null;
@@ -12,6 +14,8 @@ export default class AccountStore {
 
     constructor(RootStore) {
         this.fullName = sessionStorage.getItem("fullName");
+        this.first_name = sessionStorage.getItem("first_name");
+        this.last_name = sessionStorage.getItem("last_name");
         this.token = sessionStorage.getItem("token");
         this.userId = parseInt(sessionStorage.getItem("userId"), 10);
         this.groupId = parseInt(sessionStorage.getItem("groupId"), 10);
@@ -47,12 +51,14 @@ export default class AccountStore {
 
             runInAction("Auth success", () => {
                 this.fullName = content.first_name + " " + content.last_name;
+                this.first_name = content.first_name;
+                this.last_name = content.last_name;
                 this.token = content.token;
                 this.login = login;
                 this.status = "authed";
                 this.userId = content.id;
                 this.groupId = content.group_id;
-                this.saveInLocalStorage(this.fullName, this.token, this.userId, this.groupId, this.login);
+                this.saveInLocalStorage(this.fullName,this.first_name, this.last_name, this.token, this.userId, this.groupId, this.login);
             });
             this.rootStore.webSocketService.run(this.token);
         } catch (err) {
@@ -64,8 +70,10 @@ export default class AccountStore {
         }
     };
 
-    saveInLocalStorage(fullName, token, userId, groupId, login) {
+    saveInLocalStorage(fullName,first_name, last_name, token, userId, groupId, login) {
         sessionStorage.setItem("fullName", fullName);
+        sessionStorage.setItem("first_name", first_name);
+        sessionStorage.setItem("last_name", last_name);
         sessionStorage.setItem("token", token);
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("groupId",groupId);
