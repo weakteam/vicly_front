@@ -6,9 +6,6 @@ import 'typeface-roboto';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";
 
-import rootStore from "../store/RootStore";
-const {accountStore, messagesStore} = rootStore;
-
 
 const styles = theme => ({
     avatar: {
@@ -30,13 +27,8 @@ const styles = theme => ({
 @observer
 class MessagePush extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.messagesStore = messagesStore;
-    }
-
     render() {
-        const {classes, dialog} = this.props;
+        const {classes, message} = this.props;
         return (
             <div className={classes.root}>
                 <Typography variant="h6">Новое сообщение</Typography>
@@ -48,17 +40,17 @@ class MessagePush extends React.Component {
                         <Avatar
                             src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg"
                             className={classes.avatar}>
-                            {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
+                            {"Mock !!!"}
                         </Avatar>
                     </Grid>
 
                     <Grid item xs zeroMinWidth>
                         <Typography variant="body2"
                                     noWrap
-                                    className={classes.userName1}>{dialog.first_name + " " + dialog.last_name}</Typography>
+                                    className={classes.userName1}>{"Mock !!!!"}</Typography>
                         <Typography variant="caption"
                                     noWrap
-                                    className={classes.message2}>{this.props.lastMsg ? this.props.lastMsg.message : "Нет сообщений"}</Typography>
+                                    className={classes.message2}>{message ? message.message : "Нет сообщений"}</Typography>
                     </Grid>
                 </Grid>
             </div>

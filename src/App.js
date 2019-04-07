@@ -131,7 +131,6 @@ class App extends Component {
                         }
                     </Router>
                     <ToastContainer position="bottom-right"/>
-                    <DevTools/>
                 </div>
             </MuiThemeProvider>
         )

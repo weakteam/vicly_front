@@ -1,9 +1,14 @@
 import React from 'react';
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MessagePush from "../components/MessagePush";
 
 class ToastService {
     toasts = toast;
+
+    toastNewMessage(message){
+        this.toast(<MessagePush message={message}/>);
+    }
 
     toast(component) {
         this.toasts(

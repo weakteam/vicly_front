@@ -1,4 +1,5 @@
 import {IP} from "../common";
+import toastService from "./toastService";
 
 const NEW_MESSAGE = 0;
 const USER_ACTIVITY = 10;
@@ -71,8 +72,10 @@ export default class WebsocketService {
         console.log("ws message");
         switch (payload.event) {
             case NEW_MESSAGE:
-                if (payload)
+                if (payload){
                     this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
+                    toastService.toastNewMessage(payload.message.message);
+                }
                 break;
             default:
                 break;
