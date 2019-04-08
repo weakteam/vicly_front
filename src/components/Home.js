@@ -99,7 +99,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             marginTop: 105,
         },
-        marginTop: 110,
+        marginTop: 109,
         padding: 0,
     },
     content: {
@@ -196,6 +196,9 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#a8a8a8' : '#7583a5'
             }`,
     },
+    loader: {
+
+    },
 });
 
 @observer
@@ -223,12 +226,17 @@ class Home extends React.Component {
                     this.messagesStore.userChats.filter(
                         userChat => userChat.user.group_id === workgroup.id)}/>
             )
+
+
         } else {
             return (
-                <div style={{marginTop: '50%'}}>
-                    <Loader active inverted>Loading</Loader>
+                <div style={{ display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: 'calc(100vh - 109px)',
+                }}>
+              {this.state.type === "light" ? <Loader active >Loading</Loader> : <Loader inverted active >Loading</Loader>}
                 </div>
-
             )
         }
     }

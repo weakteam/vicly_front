@@ -12,6 +12,7 @@ import ToastService from '../services/toastService'
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import MessagePush from "./MessagePush";
 import rootStore from "../store/RootStore";
+import AvatarColor from "./AvatarColor"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -78,13 +79,17 @@ class Dialog extends React.Component {
 
     getRandomColor = (letter) => {
         let col = this.colorMap[letter];
-        if (col) return col;
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+        if (col) {
+            return col;
+        } else {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
-        return color;
+
     };
 
     colorMap = {
@@ -136,6 +141,8 @@ class Dialog extends React.Component {
             unreadCount = 0;
             lastMessage = "";
         }
+        const name = dialog.first_name[0];
+        let colorChange = AvatarColor.getColor(name);
         return (
             <div>
                 <Hidden implementation="css" smUp>
@@ -150,8 +157,7 @@ class Dialog extends React.Component {
                               spacing={16}>
                             <Grid item md={16}>
                                 <Avatar
-                                    src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg"
-                                    className={classes.avatar} /*style={{backgroundColor: `${this.getRandomColor()}`}}*/>
+                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
                                     {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
                                 </Avatar>
                             </Grid>
@@ -162,7 +168,7 @@ class Dialog extends React.Component {
                                             noWrap
                                             className={classes.userName}>
                                     {dialog.first_name + " " + dialog.last_name}
-                                </Typography>message
+                                </Typography>
                                 <Typography variant="caption"
                                             noWrap
                                             className={classes.message}>
@@ -194,8 +200,7 @@ class Dialog extends React.Component {
                               spacing={16}>
                             <Grid item md={16}>
                                 <Avatar
-                                    src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg"
-                                    className={classes.avatar} /*style={{backgroundColor: `${this.getRandomColor()}`}}*/>
+                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
                                     {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
                                 </Avatar>
                             </Grid>

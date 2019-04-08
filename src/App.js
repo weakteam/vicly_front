@@ -56,13 +56,13 @@ const themeOptions = {
         },
         action: {
             active: "rgb(72, 170, 210)",
-            hover: "rgba(72, 170, 210, 0.21)",
+            hover: "rgba(198,190,200,0.21)",
             hoverOpacity: 0.08,
-            selected: "rgba(72, 170, 210, 0.68)",
+            selected: "rgba(60, 60, 60, 0.08)",
             disabled: "rgba(158, 158, 158, 0.68)",
             disabledBackground: "rgba(0, 0, 0, 0.12)",
         },
-        type: "dark",
+        type: "light",
     },
 };
 

@@ -21,6 +21,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        fontSize: '0.9rem'
     },
     icon: {
         color: ` ${
@@ -31,6 +32,10 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
             }`,
+    },
+    gutters: {
+      paddingTop: 6,
+      paddingBottom: 6,
     },
 });
 
@@ -47,15 +52,30 @@ class Workgroup extends React.Component {
         // You can also log the error to an error reporting service
         console.log(error, info);
     }
+    workGroupColor = (letter) => {
+        let col = this.colorMap[letter];
+        if (col) return col;
+    };
+
+    colorMap = {
+        "t": "rgba(206, 255, 204, 0.23)",
+        "Б": "rgba(170, 237, 251, 0.27)",
+        "И": "#9e72cf"
+
+    };
 
     render() {
         const {classes, theme, workgroup, chats, messagesStore} = this.props;
         const lol = workgroup.name;
+       let wcolor = lol.charAt(0);
+       let kek = this.workGroupColor(wcolor);
 
         return (
-            <div>
-                <ListItem button onClick={this.handleClick} className={classes.groupName}>
-                    <ListItem>
+            <div style={{backgroundColor: `${kek}`}}>
+                <ListItem  button onClick={this.handleClick} className={classes.groupName}>
+                    <ListItem disableGutters classes={{
+                        root: classes.gutters,
+                    }}>
                         <Typography variant='h6' className={classes.text}>
                             {workgroup.name}
                         </Typography>
@@ -75,7 +95,7 @@ class Workgroup extends React.Component {
                         }
                     </List>
                 </Collapse>
-                <Divider classes={{root: classes.root}}/>
+               {/* <Divider classes={{root: classes.root}}/>*/}
             </div>
         )
     }
