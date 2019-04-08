@@ -1,52 +1,81 @@
-import {getAllMessages} from "../store/actions/messageActions";
-import {fetchChats} from "../store/actions/mainActions";
-import {BACKEND_URL} from "../common";
-import loginService from "./loginService";
+import {IP} from "../common";
+import toastService from "./toastService";
 
 const NEW_MESSAGE = 0;
 const USER_ACTIVITY = 10;
 
-let websocket_url ="ws://192.168.2.14:9000/ws/";
+let websocket_url = `ws://${IP}/ws/`;
 
-class WebsocketService{
+export default class WebsocketService {
     socket;
-    addMessageHandler;
-    constructor(addMsgHnd) {
-        console.log("ws construct");
-        this.addMessageHandler = addMsgHnd;
-        websocket_url += loginService.getToken();
+    token;
+    running = false;
+
+    constructor(RootStore) {
+        this.rootStore = RootStore;
+    }
+
+
+    run(token) {
+        if (this.running)
+            return;
+        websocket_url += !!token ? token : "";
+        // if (token) {
+        //     throw Error("Cannot create websocket connection in unath session");
+        // }
+        this.running = true;
+        this.token = token;
+
         this.socket = new WebSocket(websocket_url);
         this.socket.onmessage = this.onMessage;
-        this.socket.onerror = (err)=> {
-            console.log("websocket error:"+err);
+        this.socket.onerror = (err) => {
+            console.log("websocket error:" + err);
         };
         this.socket.onopen = () => {
-            setInterval(() => {
-                this.socket.send(JSON.stringify({}));
+            console.log("ws connection opened!");
+            let interval = setInterval(() => {
+
+                switch (this.socket.readyState) {
+                    //if open - pong
+                    case 1:
+                        this.socket.send(JSON.stringify({}));
+                        break;
+                    case 2:
+                    case 3:
+                        clearInterval(interval);
+
+                }
             }, 30000);
         };
 
-        this.socket.onclose = function(event) {
+        this.socket.onclose = (event) => {
             if (event.wasClean) {
                 alert('Соединение закрыто чисто');
             } else {
                 alert('Обрыв соединения');
             }
             alert('Код: ' + event.code + ' причина: ' + event.reason);
+            if (token) {
+                this.running = false;
+                this.run();
+            }
         };
     }
 
     onMessage = (message) => {
-        console.log("websocket message:"+message.data);
+        console.log("websocket message:" + message.data);
         const payload = JSON.parse(message.data);
-        if (payload === {}){
+        if (payload === {}) {
             console.log("ws pong");
             return;
         }
+        console.log("ws message");
         switch (payload.event) {
             case NEW_MESSAGE:
-                if(payload)
-                this.addMessageHandler(payload.message.message);
+                if (payload){
+                    this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
+                    toastService.toastNewMessage(payload.message.message);
+                }
                 break;
             default:
                 break;
@@ -58,13 +87,11 @@ class WebsocketService{
     };
 
     updateMessageInChat = (chatId) => {
-        getAllMessages(chatId);
+        // getAllMessages(chatId);
     };
 
-    updateUserList= () => {
-        fetchChats();
+    updateUserList = () => {
+        // fetchChats();
     };
 
 }
-
-export default WebsocketService;

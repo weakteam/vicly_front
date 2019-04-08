@@ -2,12 +2,15 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import 'typeface-roboto';
-import '../css/Dialog.css'
-import connect from "react-redux/es/connect/connect";
 import SendMessageBar from "./SendMessageBar";
 import MessageList from "./MessageList";
 import ChatBar from "./ChatBar";
-import {getAllMessages, markAsRead, markAsReadAction, postMessage} from "../store/actions/messageActions"
+import {observer} from "mobx-react";
+import rootStore from "../store/RootStore";
+import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
+
+const {accountStore, messagesStore} = rootStore;
+
 
 const styles = theme => ({
     button: {
@@ -23,127 +26,138 @@ const styles = theme => ({
         fontSize: 20,
     },
     emptyChat: {
-        marginTop: 300,
-        marginBottom: 300,
-        textAlign: 'center',
+        top: 40,
+        bottom: 0,
+        right: 0,
+        [theme.breakpoints.down('xs')]: {
+            left: 0,
+        },
+        left: 400,
+        position: 'fixed',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
+    empty: {},
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    list: {
+        [theme.breakpoints.down('xs')]: {
+            paddingTop: 65,
+        },
+        paddingTop: 6,
+        paddingBottom: 55,
+    },
+
 });
 
+@observer
 class ChatWindow extends React.Component {
     constructor(props) {
         super(props);
+        this.messagesStore = messagesStore;
+        this.accountStore = accountStore;
         this.messageList = React.createRef();
     }
 
-    equalMessages = (msg1, msg2) => {
-        return msg1.id === msg2.id;
-    };
-
-    equalMsgArrays = (arr1, arr2) => {
-        if (arr1.length !== arr2.length)
-            return false;
-        for (let i = 0; i < arr1.length; i++) {
-            if (arr1[i].id !== arr2[i].id)
-                return false;
-        }
-    };
 
     componentDidMount() {
         console.log("componentDidMount chatWindow");
-        console.log("props:" + this.props);
-
-        // if (this.messagesEnd.current) {
-        //     this.scrollToBottom();
-        // }
     }
 
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
-        this.props.postMessage(message.message, this.props.userId);
+        this.messagesStore.postMessage(message.message, this.messagesStore.currentChatId);
         this.scrollToBottom();
     };
 
     scrollToBottom = () => {
         //this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
         //TODO scroll child
-        //this.messageList.current.scrollToEnd();
+        if (this.messageList.current) {
+            this.messageList.current.scrollToEnd();
+        }
     };
 
-    //Injected func
-    scrollToEnd() {
-        this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
-    };
+    componentWillMount() {
+        //this.messagesStore.getAllMessagesByChatId(this.messagesStore.currentChatId);
+    }
+
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        // Need update MessagesStore too
+        // I THINK FIXED
+        // const router_chat_id = parseInt(this.props.match.params.chat_id, 10);
+        // if (router_chat_id !== this.messagesStore.currentChatId) {
+        //     this.messagesStore.currentChatId = router_chat_id;
+        // }
+    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.userId !== this.props.userId) {
-            this.props.getAllMessages(this.props.userId);
-            // this.scrollToBottom();
-            //this.props.handleDrawerToggle();
+        const {chat} = this.props;
+        if (chat && chat.messages.length) {
+            this.scrollToBottom();
         }
-        if(this.props.chatMessages){
-            let props = this.props;
-            this.props.chatMessages.forEach((msg, i, arr) => {
-                if(!msg.timestamp_read){
-                    props.markAsRead(msg.id, this.props.userId);
-                }
-            })
-        }
-
-        //this.props.getAllMessages(this.props.userId);
     };
 
     render() {
-        const {classes} = this.props;
-        return this.props.userId ? (
-            <div>
-                <ChatBar userInfo={this.props.currentChat.info}/>
-                {
-                    this.props.chatMessages && this.props.chatMessages.length > 0 ?
-                        <MessageList userInfo={this.props.currentChat.info} myUserId={this.props.userId}
-                                     messages={this.props.chatMessages ? this.props.chatMessages : []}
-                                     ref={this.messageList}
-                        />
-                        :
-                        <div className={classes.emptyChat}>
-                            <Typography variant="h5" style={{color: '#bcbcbc'}}>История сообщений пуста...</Typography>
-                            <SendMessageBar sendMsg={this.handleSendMessage}/>
-                        </div>
-                }
-                <SendMessageBar handleSendMessage={this.handleSendMessage}/>
-            </div>
-        ) : (
-            <div>
-                <div className={classes.emptyChat}>
-                    <Typography variant="h5" style={{color: '#bcbcbc'}}>Выберите диалог...</Typography>
+        const {classes, chat} = this.props;
+        const myselfUser = {
+            fullName: this.accountStore.fullName,
+            first_name: this.accountStore.first_name,
+            last_name: this.accountStore.last_name,
+            userId: this.accountStore.userId
+        };
+        if (this.messagesStore.currentChatId) {
+            let messages = null;
+            if (chat) {
+                messages = chat.messages;
+            }
+            return (
+                <div className={classes.chat}>
+                    <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
+
+                    {
+                        messagesStore.messagesLoading ?
+                            (
+                                <Loader active inverted>Loading</Loader>
+                            )
+                            :
+                            chat && messages && messages.length > 0 ? (
+                                <div className={classes.list}>
+
+                                    <MessageList
+                                        myselfUser={myselfUser}
+                                        chatUser={chat.user}
+                                        messages={messages}
+                                        ref={this.messageList}/>
+                                </div>
+                            ) : (
+                                <div className={classes.emptyChat}>
+                                    <Typography className={classes.text} variant="h5">История сообщения
+                                        пуста...</Typography>
+                                </div>
+                            )
+                    }
+
+                    <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
-            </div>
-        );
-    }
-}
-
-function mapStateToProps(state, ownProps) {
-    return {
-        chatMessages: state.messages[ownProps.userId],
-        currentChat: state.currentChat
-    }
-}
-
-
-function mapDispatchToProps(dispatch) {
-    return {
-        postMessage: (message, toId) => dispatch(postMessage(message, toId)),
-        getAllMessages: (chatId) => dispatch(getAllMessages(chatId)),
-        markAsRead:(messageId,chatId) => dispatch(markAsRead(messageId, chatId)),
+            )
+        } else {
+            return (
+                <div className={classes.emptyChat}>
+                    <div className={classes.empty}>
+                        <Typography variant="h5" className={classes.text}>Выберите диалог...</Typography>
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
 const styledWindow = withStyles(styles, {withTheme: true})(ChatWindow);
 
-
-const ChatWindowsContainer = connect(
-    mapStateToProps,
-    mapDispatchToProps)
-(styledWindow);
-
-export default ChatWindowsContainer
+export default styledWindow;

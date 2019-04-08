@@ -1,50 +1,105 @@
 import React from 'react';
-import '../css/Message.css'
-import Chip from "@material-ui/core/Chip/Chip";
 import Avatar from "@material-ui/core/Avatar/Avatar";
-import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
-import {Button, Comment, Form} from 'semantic-ui-react';
 import Typography from "@material-ui/core/Typography/Typography";
-import Grid from "@material-ui/core/Grid/Grid";
-import loginService from "../services/loginService"
+import div from "@material-ui/core/Grid/Grid";
+import Hidden from "@material-ui/core/es/Hidden/Hidden";
+import {fade} from "@material-ui/core/styles/colorManipulator";
+import AvatarColor from "./AvatarColor"
 
 const styles = theme => ({
     root: {
+        margin: '0px 0px 15px 25px',
+    },
+    rootMob: {
+        margin: '0px 25px 15px 0px',
         display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
     },
-    chip: {
-        margin: theme.spacing.unit,
-    },
-    messages: {
+    avatar: {
+        marginRight: 9,
         display: 'flex',
+        alignItems: 'flex-end',
+        borderRadius: 0,
     },
-    ava: {
-        borderRadius: 50,
+    avatarMob: {
+        marginLeft: 9,
+        display: 'flex',
+        alignItems: 'flex-end',
     },
-    fixWidth: {
-        paddingLeft: 2,
-        paddingTop: 3,
-        paddingBottom: 3,
+    avatarIco: {
+        width: 35,
+        height: 35,
+        boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
     },
     fromMe: {
-        backgroundColor: '#99ffc4',
-        width: 'fit-content',
-        borderRadius: 9,
-        padding: 6,
-        maxWidth: '38%'
+        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
+        maxWidth: 500,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 300,
+        },
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 300,
+        },
+        padding: 11,
+        backgroundColor: '#d5f0ff',
+        borderRadius: 10,
+    },
+
+    fromMeMob: {
+        maxWidth: 500,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 300,
+        },
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 300,
+        },
+        padding: 11,
+        backgroundColor: '#e2f0f1',
+        borderRadius: 10,
+        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
     },
     toMe: {
-        backgroundColor: '#efefef',
-        width: 'fit-content',
-        borderRadius: 9,
-        padding: 6,
-        maxWidth: '38%'
+        maxWidth: 500,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 300,
+        },
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 300,
+        },
+        padding: 11,
+        backgroundColor: '#f9f9f9',
+        borderRadius: 10,
+        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
     },
+    messageBlock: {
+        wordWrap: 'break-word',
+        overflowWrap: 'break-word',
+        display: 'flex',
+
+    },
+    caption: {
+        marginLeft: 14,
+        color: '#bbb',
+    },
+    wrap: {
+        maxWidth: 500,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 300,
+        },
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 300,
+        },
+        padding: 11,
+        backgroundColor: '#efefef',
+        borderRadius: 10,
+    },
+    nonread: {
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        boxShadow: `${fade('#ef0511', 0.25)} 0 0 0 0.2rem`,
+        border: '1px solid #000',
+    },
+    mess: {},
 });
 
 function handleDelete() {
@@ -69,80 +124,117 @@ class Message extends React.Component {
     };
 
     colorMap = {
-        "Р":"#2ab49b",
-        "А":"#d15c17",
-        "И":"#9e72cf"
+        "Р": "#2ab49b",
+        "А": "#d15c17",
+        "И": "#9e72cf"
 
     };
 
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
         let date = new Date(timestamp);
-        const today = now.toDateString() == date.toDateString();
-        const  mins = date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+        const today = now.toDateString() === date.toDateString();
+        const mins = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
         if (today) {
             return date.getHours() + ":" + mins;
         } else {
-            return date.getHours() + ":" +mins + " " + date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
+            //  return date.getHours() + ":" + mins + " " + date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
+            return date.getHours() + ":" + mins;
         }
     };
-
-    returnName(fromMe){
-        return fromMe ?
-            loginService.getCreds().first_name[0].toUpperCase() + loginService.getCreds().last_name[0].toUpperCase()
-            :
-            this.props.userInfo.first_name[0].toUpperCase() + this.props.userInfo.last_name[0].toUpperCase();
-    }
 
     render() {
         // Was the message sent by the current user. If so, add a css class
         const fromMe = this.props.fromMe ? 'from-me' : '';
         const {classes} = this.props;
+        const name = this.props.userInfo.first_name[0];
+        let colorChange = AvatarColor.getColor(name);
+
+        let kek;
+
+        if (fromMe) {
+            kek = <div className={classes.messageBlock}>
+                <div className={fromMe ? classes.fromMe : classes.toMe}>
+                    <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
+                        <Typography
+                            variant="body2"
+                            style={{minWidth: 'max-content'}}>Я</Typography>
+                        <Typography variant="caption"
+                                    className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                    </div>
+                    <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                </div>
+                <div className={classes.avatarMob}>
+                    <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
+                        {this.props.userInfo.first_name[0].toUpperCase()}
+                    </Avatar>
+                </div>
+            </div>
+        } else {
+            kek = <div className={classes.messageBlock}>
+                <div className={classes.avatar}>
+                    <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
+                        {this.props.userInfo.first_name[0].toUpperCase()}
+                    </Avatar>
+                </div>
+                <div className={fromMe ? classes.fromMe : classes.toMe}>
+                    <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
+                        <Typography
+                            variant="body2"
+                            style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                        <Typography variant="caption"
+                                    className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                    </div>
+                    <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                </div>
+
+            </div>
+        }
 
         return (
-            <Grid container spacing={16} wrap="nowrap" style={{marginBottom: 20, width: '100%'}}>
-                <Grid item style={{alignSelf: 'flex-end'}}>
-                    <Avatar style={{width: 40, height: 40, backgroundColor: `${this.getRandomColor(this.returnName(fromMe)[0])}`}}>
-                        {
-                            fromMe ?
-                                loginService.getCreds().first_name[0].toUpperCase() + loginService.getCreds().last_name[0].toUpperCase()
-                                :
-                                this.props.userInfo.first_name[0].toUpperCase() + this.props.userInfo.last_name[0].toUpperCase()
-                        }
-                    </Avatar>
-                </Grid>
-                <div className={fromMe ? "speech-bubble" : "speech-bubblet"}>
-                    <Grid item style={{margin: 7}}>
-                        <Typography variant="body2"> {fromMe ? loginService.getCreds().first_name :  this.props.userInfo.first_name} </Typography>
-                        <Typography variant="body1"
-                                    style={{overflowWrap: 'break-word',}}> {this.props.message} </Typography>
-                        <Typography variant="caption">
-                            {
-                                this.formatDate(this.props.messageInfo.timestamp_post.timestamp)
-                            }
-                        </Typography>
-                    </Grid>
+            <div>
+                <Hidden smDown implementation="css">
+                    <div className={classes.root}>
+                        <div className={classes.messageBlock}>
+                            <div className={classes.avatar}>
+                                <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
+                                    {this.props.userInfo.first_name[0].toUpperCase()}
+                                </Avatar>
+                            </div>
+                            <div className={fromMe ? classes.fromMe : classes.toMe}>
+                                <div style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    width: '-webkit-fill-available'
+                                }}>
+                                    {
+                                        fromMe ?  (
+                                            <Typography
+                                            variant="body2"
+                                            style={{minWidth: 'max-content'}}>Я</Typography>
+                                        ) : (
+                                            <Typography
+                                                variant="body2"
+                                                style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                        )
+                                    }
 
-                </div>
-            </Grid>
-
-
-            /*<Comment.Group>
-                <Comment>
-                    {/!*<Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/steve.jpg'/>*!/}
-                    <Avatar style={{width: 45, height: 45}}>A
-                    </Avatar>
-                    <Comment.Content style={{backgroundColor: '#99ffc4',     width: 'fit-content', borderRadius: 15}}>
-                        <div style={{padding: 10}}>
-                        <Comment.Author as='a'>{ this.props.username }</Comment.Author>
-                        <Comment.Metadata>
-                            <div>2 days ago</div>
-                        </Comment.Metadata>
-                        <Comment.Text>  { this.props.message }</Comment.Text>
+                                    <Typography variant="caption"
+                                                className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                                </div>
+                                <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                            </div>
                         </div>
-                    </Comment.Content>
-                </Comment>
-            </Comment.Group>*/
+                    </div>
+                </Hidden>
+
+                <Hidden mdUp implementation="css">
+                    <div className={fromMe ? classes.rootMob : classes.root}>
+                        {kek}
+                    </div>
+                </Hidden>
+
+            </div>
         );
     }
 }
@@ -151,10 +243,6 @@ Message.defaultProps = {
     message: '',
     username: '',
     fromMe: false
-};
-
-Message.propTypes = {
-    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Message);

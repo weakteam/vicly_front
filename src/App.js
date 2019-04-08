@@ -1,28 +1,82 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Grid, Paper} from '@material-ui/core';
-import Login from "./components/Login";
-import {connect} from "react-redux";
-import 'simplebar'; // or "import SimpleBar from 'simplebar';" if you want to use it manually.
-import 'simplebar/dist/simplebar.css';
+import Login from "./components/login/LoginForm";
 import Home from "./components/Home";
-import {setLoginStatus} from "./store/actions/loginActions";
-import {fetchChats} from "./store/actions/mainActions";
-import loginService from "./services/loginService"
-import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
-import WebsocketService from "./services/websocketService";
-import {addLastMessageToUser, addMessage} from "./store/actions/messageActions";
+import {Router, Redirect, Route, Switch} from "react-router-dom";
+import {PrivateRoute} from 'react-router-with-props';
+import {observer} from "mobx-react";
+import InviteForm from "./components/login/InviteForm";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DevTools from "mobx-react-devtools";
+import rootStore from "./store/RootStore";
+import history from "./store/history"
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 
+if (history.location.pathname.startsWith("/home/chat")) {
+    rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+}
+history.listen((location, action) => {
+    if (history.location.pathname.startsWith("/home/chat")) {
+        rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    }
+});
+
+const themeOptions = {
+    palette: {
+        primary: {
+            light: "#ffffff",
+            main: "#fffffc", //аппбар и серчбар
+            mainElem: "#075454",
+            dark: "#1c212d",
+            darkSecondary: '#323a4d',
+            contrastText: "#fff",
+
+        },
+        secondary: {
+            light: "#3f3f3f",
+            lightIcons: "#565656",
+            lightSecondary: "#3647a6",
+            lightBadge: "#7fa66f",
+            main: "#ffffff", //иконки
+            dark: "#ffffff",
+            darkSecondary: "#bebebe",
+            darkBadge: "#ffffff",
+            contrastText: "#000000",
+        },
+        text: {
+            primary: "#1d1c28",
+            secondary: "rgba(0, 0, 0, 0.54)",
+            disabled: "rgba(0, 0, 0, 0.38)",
+            hint: "rgba(0, 0, 0, 0.38)",
+        },
+        background: {
+            paper: "#f7f7f7",
+            default: "#fcfcfc",
+        },
+        action: {
+            active: "rgb(72, 170, 210)",
+            hover: "rgba(198,190,200,0.21)",
+            hoverOpacity: 0.08,
+            selected: "rgba(60, 60, 60, 0.08)",
+            disabled: "rgba(158, 158, 158, 0.68)",
+            disabledBackground: "rgba(0, 0, 0, 0.12)",
+        },
+        type: "light",
+    },
+};
+
+@observer
 class App extends Component {
     websocketService;
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            themeOpt: themeOptions
         }
     }
-
 
     setLoading = () => {
         this.setState({
@@ -30,88 +84,58 @@ class App extends Component {
         })
     };
 
-    addMessage(message) {
-        this.props.updateLastMessageInUser(message);
-        this.props.addMessage(message);
-    }
+    // componentWillMount() {
+    //     this.websocketService = new WebsocketService(this.addMessage.bind(this));
+    // }
+    //
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if (AccountStore.status === "authed") {
+    //         messagesStore.fetchChats()
+    //     }
+    // }
 
 
-    componentWillMount() {
-        const creds = loginService.getCreds();
-        if (creds.token) {
-            this.props.setUserInfo({
-                last_name: creds.last_name,
-                first_name: creds.first_name,
-                token: creds.token,
-                status: true
-            });
-            this.props.OnChatsFetch();
-            this.websocketService = new WebsocketService(this.addMessage.bind(this));
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.user.status !== this.props.user.status) {
-            this.props.OnChatsFetch();
-        }
-    }
+    changeThemeType() {
+        this.setState((prevState) => {
+            prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
+            return prevState;
+        });
+    };
 
     render() {
+
+        const theme = createMuiTheme(this.state.themeOpt);
+
         console.log(this.props);
-        if (this.props.user.status) {
-            return (
-                <Home chats={this.props.chats}/>
-            );
-        } else {
-            return (
-                <Grid container>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            {this.state.loading && !this.props.user.status && !this.props.user.error ?
-                                <LinearProgress variant="query"/> : ""}
-                        </Grid>
-                    </Grid>
-                    <Grid container>
-                        <Grid item xs={1} lg={4}/>
-                        <Grid item xs={10} lg={4}>
-                            <Login setLoading={this.setLoading.bind(this)}/>
-                        </Grid>
-                        <Grid item xs={1} lg={4}/>
-                    </Grid>
-
-                </Grid>
-            )
-        }
+        const authStatus = rootStore.accountStore.status === "authed";
+        return (
+            <MuiThemeProvider theme={theme}>
+                <div>
+                    <Router history={history}>
+                        {
+                            authStatus ?
+                                (
+                                    <Switch>
+                                        <Route path="/home" render={() => <Home changeThemeType={this.changeThemeType.bind(this)}/>}/>
+                                        <Route render={() => <Redirect to="/home"/>}/>
+                                    </Switch>
+                                )
+                                :
+                                (
+                                    <Switch>
+                                        <Route exact path="/login" component={Login}/>
+                                        <Route exact path="/invite/:invite_id" component={InviteForm}/>
+                                        <Route render={() => <Redirect to="/login"/>}/>
+                                    </Switch>
+                                )
+                        }
+                    </Router>
+                    <ToastContainer position="bottom-right"/>
+                </div>
+            </MuiThemeProvider>
+        )
 
     }
 }
 
-
-function mapStateToProps(state) {
-    return {
-        user: state.user,
-        chats: state.chats
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        setUserInfo: function (user) {
-            dispatch(setLoginStatus(user))
-        },
-        OnChatsFetch: () => {
-            dispatch(fetchChats());
-        },
-        addMessage: (message) => {
-            dispatch(addMessage(message));
-        },
-        updateLastMessageInUser:(message) => {
-            dispatch(addLastMessageToUser(message));
-        }
-    }
-}
-
-const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
-
-
-export default AppContainer;
+export default App;

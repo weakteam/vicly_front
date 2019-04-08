@@ -4,150 +4,233 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import 'typeface-roboto';
 import ListItem from "@material-ui/core/ListItem/ListItem";
-import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import {connect} from "react-redux";
-import {tryLogin} from "../store/actions/loginActions";
-import {setCurrentChat} from "../store/actions/chatActions";
 import Badge from "@material-ui/core/Badge/Badge";
+import {observer} from "mobx-react";
+import {withRouter} from "react-router-dom";
+import ToastService from '../services/toastService'
+import Hidden from "@material-ui/core/es/Hidden/Hidden";
+import MessagePush from "./MessagePush";
+import rootStore from "../store/RootStore";
+import AvatarColor from "./AvatarColor"
+
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     fixWidth: {
-        backgroundColor: '#17212b',
-        width: '100% !important',
-        margin: '0px !important',
-        paddingLeft: 2,
-        paddingTop: 3,
-        paddingBottom: 3,
-        borderBottom: '1px solid #1f2c39',
+        margin: 0,
+        width: 'inherit',
     },
-    white: {
-        [theme.breakpoints.up('xs')]: {
-            color: "white",
-        },
+    avatar: {
+        width: 45,
+        height: 45,
     },
-    selected: {
-        backgroundColor: "rgba(255, 255, 255, 0.18)"
-    },
-    inverted: {
-        filter: 'invert(100%)',
+    listItemPadding: {
+        padding: 'unset'
     },
     margin: {
-        top: '39px!important',
-        right: '17px!important',
+        top: 34,
+        right: 17,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightBadge : theme.palette.secondary.dark
+            }`,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.light
+            }`,
     },
     fixPadding: {
-        marginRight: 6,
-        marginTop: 10,
         padding: 0,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 9,
+        margin: 0,
     },
     contentPadding: {
         paddingTop: 15,
         paddingBottom: 15,
         paddingLeft: 9,
     },
+    userName: {
+        fontSize: '1rem',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    message: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightSecondary : theme.palette.secondary.dark
+            }`,
+        fontSize: '0.9rem'
+    },
+    time: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightSecondary : theme.palette.secondary.dark
+            }`,
+        padding: 0,
+        marginTop: 4,
+    },
 });
 
+@observer
 class Dialog extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.messagesStore = messagesStore;
+        this.chatsStore = messagesStore;
+    }
 
     getRandomColor = (letter) => {
         let col = this.colorMap[letter];
-        if (col) return col;
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
+        if (col) {
+            return col;
+        } else {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
-        return color;
+
     };
 
     colorMap = {
-        "Р":"#2ab49b",
-        "А":"#d15c17",
-        "И":"#9e72cf"
+        "Р": "#2ab49b",
+        "А": "#d15c17",
+        "И": "#9e72cf"
 
     };
-
     handleDialogClick = () => {
-        this.props.setCurrentChat(this.props.dialog.id, this.props.dialog);
+        this.props.history.push(`/home/chat/${this.props.chatId}`);
+        // FIXME comment is fix for url chat page reload dafauck mafuck
+        //this.messagesStore.currentChatId = this.props.chatId;
+        // ToastService.toast(<MessagePush {...this.props}/>);
+    };
+
+    handleDialogClickMob = () => {
+        this.props.history.push(`/home/chat/${this.props.chatId}`);
+        // FIXME comment is fix for url chat page reload dafauck mafuck
+        //this.messagesStore.currentChatId = this.props.chatId;
+        ToastService.toast(<MessagePush {...this.props}/>);
+
+        this.props.handleDrawerToggle();
+        //this.messagesStore.currentChatId = this.props.chatId;
     };
 
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
         let date = new Date(timestamp);
         const today = now.toDateString() == date.toDateString();
-        const  mins = date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+        const mins = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
         if (today) {
             return date.getHours() + ":" + mins;
         } else {
-            return date.getHours() + ":" +mins + " " + date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
+            //  return date.getHours() + ":" + mins + " " + date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
+            return date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
         }
     };
 
     render() {
         const {classes, dialog} = this.props;
-        const selected = this.props.dialog.id === this.props.currentChat.userId;
+        const selected = this.props.chatId === this.chatsStore.currentChatId;
+
+        const chatObj = this.messagesStore.findChat(this.props.chatId, "user");
+        let unreadCount=0, lastMessage="";
+        if (chatObj) {
+            unreadCount = chatObj.unread;
+            lastMessage = chatObj.messages.length ? chatObj.messages[chatObj.messages.length-1] : chatObj.last;
+        } else {
+            unreadCount = 0;
+            lastMessage = "";
+        }
+        const name = dialog.first_name[0];
+        let colorChange = AvatarColor.getColor(name);
         return (
-            <ListItem selected={selected} onClick={this.handleDialogClick} disableGutters={true} button
-                      style={{padding: 'unset'}}>
-                <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`} wrap="nowrap"
-                      spacing={16}>
-                    <Grid item md={16} style={{paddingRight: 1}}>
-                        <Avatar style={{width: 50, height: 50, backgroundColor: `${this.getRandomColor(dialog.first_name[0])}`}}>
-                            {dialog.first_name[0].toUpperCase()+dialog.last_name[0].toUpperCase()}
-                        </Avatar>
-                    </Grid>
-                    <Grid item xs zeroMinWidth style={{paddingTop: 14}}>
-                        <Typography variant="body2" color="inherit"
-                                    className={classes.white}
-                                    noWrap>{dialog.first_name + " " + dialog.last_name}</Typography>
-                        <Typography variant="caption" color="inherit"
-                                    className={classes.white}
-                                    noWrap>{this.props.lastMsg ? this.props.lastMsg.message : "Нет сообщений"}</Typography>
-                    </Grid>
-                    <Grid item className={classes.fixPadding} style={{paddingLeft: 1, paddingTop: 15}}>
-                        <Typography
-                            variant="caption"
-                            className={classes.white}
-                            color="inherit">{this.props.lastMsg ? this.formatDate(this.props.lastMsg.timestamp_post.timestamp) : ""}</Typography>
-                    </Grid>
-                    {
-                        this.props.unread ?
-                            (
-                                <div className={classes.margin}>
-                                    <Badge color="primary" badgeContent={this.props.unread} className={classes.margin}>
-                                    </Badge>
-                                </div>
-                            )
-                            :
-                            (
-                                ""
-                            )
-                    }
+            <div>
+                <Hidden implementation="css" smUp>
+                    <ListItem
+                        selected={selected}
+                        onClick={this.handleDialogClickMob.bind(this)}
+                        disableGutters={true}
+                        button
+                        className={classes.listItemPadding}>
+                        <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
+                              wrap="nowrap"
+                              spacing={16}>
+                            <Grid item md={16}>
+                                <Avatar
+                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
+                                    {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
+                                </Avatar>
+                            </Grid>
 
-                </Grid>
-            </ListItem>
+                            <Grid item xs zeroMinWidth>
+                                <Typography variant="body2"
+                                            color="secondary"
+                                            noWrap
+                                            className={classes.userName}>
+                                    {dialog.first_name + " " + dialog.last_name}
+                                </Typography>
+                                <Typography variant="caption"
+                                            noWrap
+                                            className={classes.message}>
+                                    {unreadCount ? lastMessage.message : "Нет сообщений"}
+                                </Typography>
+                            </Grid>
 
+                            <Grid item style={{padding: 0, marginRight: 7,}}>
+                                <Typography
+                                    className={classes.time}>{lastMessage ? this.formatDate(lastMessage.timestamp_post.timestamp) : ""}</Typography>
+                            </Grid>
+                            {
+                                unreadCount ? (
+                                    <Badge badgeContent={unreadCount} classes={{badge: classes.margin}}/>) : ("")
+                            }
+                        </Grid>
+                    </ListItem>
+                </Hidden>
+
+                <Hidden implementation="css" xsDown>
+                    <ListItem
+                        selected={selected}
+                        onClick={this.handleDialogClick.bind(this)}
+                        disableGutters={true}
+                        button
+                        className={classes.listItemPadding}>
+                        <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
+                              wrap="nowrap"
+                              spacing={16}>
+                            <Grid item md={16}>
+                                <Avatar
+                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
+                                    {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
+                                </Avatar>
+                            </Grid>
+
+                            <Grid item xs zeroMinWidth>
+                                <Typography variant="body2"
+                                            color="secondary"
+                                            noWrap
+                                            className={classes.userName}>{dialog.first_name + " " + dialog.last_name}</Typography>
+                                <Typography variant="caption"
+                                            noWrap
+                                            className={classes.message}>{unreadCount ? lastMessage.message : "Нет сообщений"}</Typography>
+                            </Grid>
+
+                            <Grid item style={{padding: 0, marginRight: 7,}}>
+                                <Typography
+                                    className={classes.time}>{lastMessage ? this.formatDate(lastMessage.timestamp_post.timestamp) : ""}</Typography>
+                            </Grid>
+                            {
+                                unreadCount ? (<Badge color="secondary" badgeContent={unreadCount}
+                                                      classes={{badge: classes.margin}}/>) : ("")
+                            }
+                        </Grid>
+                    </ListItem>
+                </Hidden>
+            </div>
         );
     }
 }
 
+const styledComponent = withStyles(styles, {withTheme: true})(withRouter(Dialog));
 
-function mapStateToProps(state) {
-    return {
-        currentChat: state.currentChat
-    }
-}
-
-const mapDispatchToProps = dispatch => ({
-    setCurrentChat: (chatId, user) => {
-        dispatch(setCurrentChat(chatId, user));
-    }
-});
-
-const styledComponent = withStyles(styles, {withTheme: true})(Dialog);
-
-export default connect(mapStateToProps, mapDispatchToProps)(styledComponent);
+export default styledComponent;

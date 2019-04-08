@@ -1,108 +1,124 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import SendOutlined from "@material-ui/core/SvgIcon/SvgIcon";
+import {withStyles} from '@material-ui/core/styles';
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import Search from "@material-ui/icons/Search"
 import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
-import "../css/dark.css"
+import SearchIcon from "@material-ui/icons/Search";
+import InputBase from "@material-ui/core/InputBase";
+
+import rootStore from "../store/RootStore";
+const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
     position: {
-        position: "fixed",
-        top: 50,
-        left: 0,
-        right: 0,
-        backgroundColor: '#17212b',
-        borderRight: '1px solid #243342',
-        [theme.breakpoints.up('xs')]: {
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
             width: '100%',
+            top: 55,
         },
-        [theme.breakpoints.up('md')]: {
-            width: '30%',
-        },
-        [theme.breakpoints.up('sm')]: {
-            width: '33%',
-        },
-        [theme.breakpoints.up('lg')]: {
-            width: '30%',
-        },
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
+        display: 'inline-flex',
+        position: "fixed",
+        alignItems: 'center',
+        height: 55,
+        top: 55,
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
         zIndex: 1499,
     },
     textField: {
-        marginLeft: 15,
+        width: 'calc(100% - 54px)',
         marginRight: 0,
-        width: '83%',
-        [theme.breakpoints.up('sm')]: {
-            width: '68%',
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '80%',
-        },
-        [theme.breakpoints.up('lg')]: {
-            width: '83%',
-        },
-        margin: 'auto',
-        backgroundColor: '#1d2a36',
-        borderRadius: 8,
-        padding: 4
+        marginLeft: 6,
+        borderRadius: 4,
+        color: theme.palette.primary.light,
+        height: 36,
     },
-    dense: {
-        marginTop: 16,
+    button: {
+        color: theme.palette.secondary.light
     },
-    menu: {
-        width: 200,
+    searchIco: {
+        color: theme.palette.secondary.light
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    iconSearch: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#d2d2d2' : 'rgba(255, 255, 255, 0.17)'
+            }`,
+    },
+    search: {
+        position: 'relative',
+        margin: '0 0 0 8px',
+        width: '100%'
+    },
+    searchIcon: {
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 7,
+    },
+    inputRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+        width: '100%',
+    },
+    inputInput: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+        width: '100%',
+        borderRadius: 4,
+        padding: 8,
     },
 });
 
 class OutlinedTextFields extends React.Component {
+    constructor(props) {
+        super(props);
+        this.accountStore = accountStore;
+        this.chatsStore = messagesStore;
+    }
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <div className={classes.position}>
-                <form className={classes.container} noValidate autoComplete="off">
-
-                    <TextField
-                        id="standard-search"
-                        placeholder="Поиск..."
-                        type="search"
-                        className={classes.textField}
-                        margin="normal"
-                        fullWidth
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton style={{padding: 0}}>
-                                        <Search style={{color: "white"}}/>
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <IconButton style={{width: 48, height: 48}}>
-                        <AddCommentOutlined style={{color: "white"}}/>
-                    </IconButton>
-
-                </form>
+                <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon className={classes.iconSearch}/>
+                    </div>
+                    <InputBase
+                        placeholder="Поиск диалогов…"
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}/>
+                </div>
+                <IconButton>
+                    <AddCommentOutlined className={classes.icon}/>
+                </IconButton>
             </div>
 
         );
     }
 }
-
-OutlinedTextFields.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(OutlinedTextFields);

@@ -1,120 +1,217 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
-import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import Dialog from "./Dialog";
 import ChatWindow from "./ChatWindow"
-import connect from "react-redux/es/connect/connect";
-import Button from "@material-ui/core/Button/Button";
-import {fetchChats} from "../store/actions/mainActions";
 import Workgroup from "./Workgroup";
-import {Scrollbars} from "react-custom-scrollbars";
 import SearchBar from "./SearchBar";
-import ChatBar from "./ChatBar";
 import ProfileIco from "./ProfileIco";
-import InviteIco from "./InviteIco";
-import {getAllMessages, postMessage} from "../store/actions/messageActions";
-import {userLogout} from "../store/actions/loginActions";
-import Background from  '../images/messagesBackground.jpg'
+import InviteIcon from "./InviteIcon";
+import {observer} from "mobx-react";
+import {Route} from "react-router-dom";
+import ProfileBar from "./ProfileBar";
+import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
+import Typography from "@material-ui/core/es/Typography/Typography";
+import Background from '../images/gif.gif';
 
-const drawerWidth = 450;
+//import Button from "@material-ui/core/es/Button/Button";
+import {Item, Menu, MenuProvider} from "react-contexify";
+import rootStore from "../store/RootStore";
+
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
-
     root: {
         display: 'flex',
-        marginLeft: 0,
-        marginRight: 0,
+        top: 0,
+        bottom: 0,
+        left: 100,
+        right: 100,
         flexGrow: 1,
-        color: 'white',
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     drawer: {
-        [theme.breakpoints.up('lg')]: {
-            width: '30%',
-            flexShrink: 0,
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
         },
-        [theme.breakpoints.up('md')]: {
-            width: '33%',
-            flexShrink: 0,
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
         },
-        [theme.breakpoints.up('sm')]: {
-            width: '30%',
-            flexShrink: 0,
+        [theme.breakpoints.down('xs')]: {
+            width: 0,
         },
-        backgroundColor: '#25464c',
-        zIndex: 1500, //TODO: ui bug
-        borderRight: '1px solid #243342',
+        flexShrink: 0,
+        //zIndex: 500,
     },
-    appBar: {
-        marginLeft: drawerWidth,
-        [theme.breakpoints.up('sm')]: {
-            width: '100%',
-            height: 50,
+    drawerPaper: {
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
         },
-        backgroundColor: '#253340',
-        zIndex: 1501,
-        height: 50,
-        boxShadow: '0 0 0 rgba(0,0,0,0)',
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
+        borderRight: 0,
+    },
+
+    appBar: {
+        zIndex: 1962,
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        height: 55,
+        boxShadow: theme.shadows[0],
+        width: '100%',
+        position: 'fixed',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
     },
     menuButton: {
         marginRight: 20,
         [theme.breakpoints.up('sm')]: {
             display: 'none',
+            right: 0,
+            top: 0,
         },
     },
     toolbar: {
-        height: 50,
+        height: 55,
     },
-    drawerPaper: {
-        [theme.breakpoints.up('xs')]: {
-            width: '85%',
-        },
-        [theme.breakpoints.up('sm')]: {
-            width: '35%',
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '33%',
-        },
-        [theme.breakpoints.up('lg')]: {
-            width: '30%',
-        },
-        backgroundColor: '#17212b',
-        borderRight: '1px solid #243342',
-    },
+
     workG: {
-        [theme.breakpoints.up('xs')]: {
-            marginTop: 49,
-            paddingTop: 0
+        [theme.breakpoints.down('xs')]: {
+            marginTop: 105,
         },
-        marginTop: 55,
+        marginTop: 109,
+        padding: 0,
     },
     content: {
         flexGrow: 1,
-        /*padding: theme.spacing.unit * 3,*/
-        [theme.breakpoints.up('lg')]: {
-            left: '33%'
+        position: 'static',
+        //  flexShrink: 1,
+        width: 'auto',
+        minHeight: '100vh',
+        [theme.breakpoints.down('xs')]: {
+            // minHeight: '-webkit-fill-available',
+            // minHeight: 'auto',
+            zIndex: 1,
         },
-        backgroundImage: `url(${Background})`
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
+            }`,
+        // backgroundImage: 'url(' + Background + ')',
+        //  backgroundSize: 'cover',
+        //zIndex: 1503,
+        boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+    },
+    logo: {
+        width: 150,
+        marginRight: 'auto',
+    },
+    logoDiv: {
+        flexGrow: 1
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        backgroundColor: theme.palette.primary.dark,
+        height: 50,
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
+        position: 'fixed',
+        top: 0,
+
+        zIndex: 1000
+    },
+    emptyChat: {
+        top: 40,
+        bottom: 0,
+        right: 0,
+        [theme.breakpoints.down('xs')]: {
+            left: 0,
+        },
+        left: '30%',
+        position: 'fixed',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    userBar: {
+        display: 'flex',
+        marginLeft: 'auto',
+    },
+    load: {
+        marginTop: '50%',
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    logoDrawer: {
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+        },
+        zIndex: 400,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 55,
+        bottom: 0,
+        position: 'fixed',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
+            }`,
+    },
+    logoText: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#a8a8a8' : '#7583a5'
+            }`,
+    },
+    loader: {
+
     },
 });
 
+@observer
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.accountStore = accountStore;
+        this.messagesStore = messagesStore;
+    }
+
     state = {
         mobileOpen: false,
+        type: this.props.theme.palette.type,
     };
 
     handleDrawerToggle = () => {
@@ -122,84 +219,93 @@ class Home extends React.Component {
     };
 
     workgroups() {
-        if (this.props.chats.status) {
-            console.log(this.props);
-            return this.props.chats.with_group.map(function (workgroup) {
-                    return (
-                        <Workgroup workgroup={workgroup}/>
-                    )
-                }
+        if (this.messagesStore.groups.length) {
+            return this.messagesStore.groups.map(
+                workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
+                                        workgroup={workgroup} chats={
+                    this.messagesStore.userChats.filter(
+                        userChat => userChat.user.group_id === workgroup.id)}/>
             )
+
+
         } else {
-            return ""
+            return (
+                <div style={{ display: 'flex',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: 'calc(100vh - 109px)',
+                }}>
+              {this.state.type === "light" ? <Loader active >Loading</Loader> : <Loader inverted active >Loading</Loader>}
+                </div>
+            )
         }
     }
 
-    componentDidMount(){
-        if (this.props.currentChat.userId !== this.props.currentChat.prevUserId ) {
-            this.handleDrawerToggle();
-        }
-    }
-
-    handleLogout = () => {
-        this.props.handleLogout();
+    handleClickContext = () => {
+        alert("LOL")
     };
+
+    // componentDidMount() {
+    //     if (this.props.currentChatId.userId !== this.props.currentChatId.prevUserId) {
+    //         this.handleDrawerToggle();
+    //     }
+    // }
 
     render() {
         const {classes, theme, chats} = this.props;
 
-        let drawer;
+        let drawer = (
+            <div>
+                <Hidden xsDown implementation="css">
+                    <ProfileBar
+                        changeThemeType={this.props.changeThemeType}
+                        handleChangeType={this.handleChangeType} chats={this.props.chats}
+                        andleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                    <div className={classes.logoDrawer}>
+                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                    </div>
+                </Hidden>
+                <SearchBar/>
+                <List className={classes.workG}>
+                    {this.workgroups()}
+                </List>
 
-
-        drawer = (
-            <Scrollbars
-                autoHide
-                renderTrackHorizontal={({style, ...props}) =>
-                    <div {...props} style={{...style, backgroundColor: 'blue'}}/>
-                }>
-                {this.props.children}
-                <div>
-                    <div
-                        className={classes.toolbar}/>
-                    <SearchBar/>
-                    <Divider/>
-                    <List className={classes.workG}>
-                        {this.workgroups()}
-                    </List>
-                </div>
-            </Scrollbars>
+            </div>
         );
-
 
         return (
             <div className={classes.root}>
-                <CssBaseline/>
-                <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar style={{minHeight: 'auto'}}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.handleDrawerToggle}
-                            className={classes.menuButton}
-                        >
-                            <MenuIcon/>
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap style={{flexGrow: 1}}>
-                            Weak messenger
-                        </Typography>
-                        <InviteIco chats={this.props.chats}/>
-                        <ProfileIco handleLogout={this.handleLogout.bind(this)}/>
-                    </Toolbar>
-                </AppBar>
                 <nav className={classes.drawer}>
-                    {/* The implementation can be swap with js to avoid SEO duplication of links. */}
                     <Hidden smUp implementation="css">
+                        <AppBar position="fixed" className={classes.appBar}>
+                            <Toolbar>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="Open drawer"
+                                    onClick={this.handleDrawerToggle}
+                                    className={classes.menuButton}>
+                                    <MenuIcon className={classes.icon}/>
+                                </IconButton>
+                                <div className={classes.logoDiv}>
+                                    <Typography variant="h6" className={classes.text}> Vicly Messenger </Typography>
+                                </div>
+                                <div className={classes.userBar}>
+                                    <InviteIcon chats={this.props.chats}/>
+                                    <ProfileIco
+                                        changeThemeType={this.props.changeThemeType}
+                                        handleLogout={this.accountStore.unauth.bind(this.accountStore)}
+                                        name={this.accountStore.fullName}/>
+                                </div>
+                            </Toolbar>
+                            {/*<ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>*/}
+                        </AppBar>
                         <Drawer
                             container={this.props.container}
                             variant="temporary"
                             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
+                            onOpen={this.handleDrawerToggle}
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
@@ -222,32 +328,29 @@ class Home extends React.Component {
                         </Drawer>
                     </Hidden>
                 </nav>
+
                 <main className={classes.content}>
                     <div className={classes.toolbar}/>
-                    <Scrollbars autoHide style={{height: '-webkit-fill-available', zIndex: 1, marginTop: 50}}>
-                    <ChatWindow handleDrawerToggle={this.handleDrawerToggle} userId={this.props.currentChat.userId}/>
-                    </Scrollbars>
+                    {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
+                    {/*<MenuProvider id={"menu_id"}>
+                            Это ниработает лол
+                        </MenuProvider>
+                        <Menu id='menu_id'>
+                            <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
+                            <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
+                            <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
+                        </Menu>*/}
+                    <Route path="/home/chat/:chat_id"
+                           render={(routeProps) =>
+                               <ChatWindow
+                                   {...routeProps}
+                                   handleDrawerToggle={this.handleDrawerToggle}
+                                   chat={this.messagesStore.getCurrentChat()}
+                               />}/>
                 </main>
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        chats: state.chats,
-        currentChat:state.currentChat
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        handleLogout: () => dispatch(userLogout())
-    }
-}
-
-const styledComponent = withStyles(styles, {withTheme: true})(Home);
-
-const HomeContainer = connect(mapStateToProps,mapDispatchToProps)(styledComponent);
-
-export default HomeContainer;
+export default withStyles(styles, {withTheme: true})(Home);

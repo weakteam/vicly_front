@@ -1,143 +1,186 @@
 import React from 'react';
-import TextField from "@material-ui/core/TextField/TextField";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/es/styles/withStyles";
-import SendOutlined from '@material-ui/icons/SendOutlined';
-import AttachFile from '@material-ui/icons/AttachFile';
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
+import {withStyles} from '@material-ui/core/styles';
 import IconButton from "@material-ui/core/IconButton/IconButton";
+import SearchIcon from '@material-ui/icons/Search';
 import Typography from "@material-ui/core/Typography/Typography";
-import Avatar from "@material-ui/core/Avatar/Avatar";
-import Grid from "@material-ui/core/Grid/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase/ButtonBase";
-import Search from "@material-ui/icons/Search"
+import div from "@material-ui/core/Grid/Grid";
 import MoreVert from '@material-ui/icons/MoreVert'
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import PersonOutline from "@material-ui/core/SvgIcon/SvgIcon";
 import Menu from "@material-ui/core/Menu/Menu";
-import Add from '@material-ui/icons/Add'
-import Group from '@material-ui/icons/Group'
-import FavoriteOutlined from '@material-ui/icons/FavoriteBorderOutlined'
+import Group from '@material-ui/icons/Group';
+import rootStore from "../store/RootStore";
+import InputBase from "@material-ui/core/InputBase";
 
-const styles = theme => ({ //TODO fix themes
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        height: '-webkit-fill-available',
-        marginLeft: '5px!important',
-        width: '-webkit-fill-available',
-        backgroundColor: '#1d2a36',
-    },
-    wid: {
-        [theme.breakpoints.up('xs')]: {
-            width: '0',
-        },
-    },
+const {accountStore, messagesStore} = rootStore;
+
+
+const styles = theme => ({
     position: {
         position: 'fixed',
-        top: 50,
-        backgroundColor: '#17212b',
-        display: '-webkit-inline-box',
-        height: 50,
-        zIndex: 1,
-        margin: '0!important',
+        top: 0,
         right: 0,
-        [theme.breakpoints.up('xs')]: {
+        display: 'inline-flex',
+        justifyContent: 'space-between',
+        height: 55,
+        zIndex: 1,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
+            }`,
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,
+        left: 400,
+        [theme.breakpoints.down('md')]: {
+            left: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            left: 250
+        },
+        [theme.breakpoints.down('xs')]: {
             left: 0,
-            width: 'auto!important',
-        },
-        [theme.breakpoints.up('sm')]: {
-            left: '35%',
-            width: 'auto!important',
-        },
-        [theme.breakpoints.up('md')]: {
-            left: '33%',
-            width: 'auto!important',
-        },
-        [theme.breakpoints.up('lg')]: {
-            left: '30%',
-            width: 'auto!important',
+            top: 55,
         },
     },
+    namePosition: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        maxWidth: '40%'
+    },
+    searchField: {
+        height: 33,
+        margin: 7,
+        marginRight: 0,
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: '90%',
+        },
+        background: '#000!important',
+        backgroundColor: '#000!important'
+    },
+    searchIco: {
+        color: theme.palette.secondary.light
+    },
+    dialogIco: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    search: {
+        position: 'relative',
+        margin: 12,
+    },
+    searchIcon: {
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 7,
+    },
+    inputRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    inputInput: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+        width: '100%',
+        borderRadius: 4,
+        padding: 8,
+    },
+    icon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    iconSearch: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#d2d2d2' : 'rgba(255, 255, 255, 0.17)'
+            }`,
+    },
+    menu: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+    },
+    menuItem: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+
 });
 
 class ChatBar extends React.Component {
     state = {
         auth: true,
         anchorEl: null,
+        type: this.props.theme.palette.type,
     };
 
+    constructor(props) {
+        super(props);
+        this.accountStore = accountStore;
+    }
+
     handleChange = event => {
-        this.setState({ auth: event.target.checked });
+        this.setState({auth: event.target.checked});
     };
 
     handleMenu = event => {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({anchorEl: event.currentTarget});
     };
 
     handleClose = () => {
-        this.setState({ anchorEl: null });
+        this.setState({anchorEl: null});
     };
+
     render() {
-        const { auth, anchorEl } = this.state;
+        const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
         const {classes, theme} = this.props;
+        const type = this.state.type;
 
         return (
-            <Grid className={classes.position} container spacing={16}>
-                <Grid item xs={3} sm={2} md={2} lg={4} xl={4}>
-                    <TextField
-                        id="outlined-search"
-                        placeholder="Поиск по сообщениям..."
-                        type="search"
-                        className={classes.textField}
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton  style={{padding: 0}}>
-                                        <Search style={{color: 'white'}}/>
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={3} sm={3} md={4} lg={4} xl={4} style={{textAlign: 'center'}} className={classes.wid}>
-                    <div style={{display: '-webkit-inline-box'}}>
-                        <Typography variant="h6" style={{color: '#fff'}}>{this.props.userInfo.first_name}</Typography>
-                        <IconButton style={{
-                            padding: 4,
-                            marginLeft: 4,
-                            borderRadius: '10%',
-                            width: '-webkit-fill-available',
-                            height: '-webkit-fill-available',
-                            color: 'white',
-                        }}>
-                            <Group/>
-                            {/*<Typography style={{color: 'white'}}>12</Typography>*/}
-                        </IconButton>
+            <div className={classes.position}>
+                <div>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon className={classes.iconSearch}/>
+                        </div>
+                        <InputBase
+                            placeholder="Поиск сообщений…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}/>
                     </div>
-                </Grid>
-                <Grid item xs={6} sm={7} md={4} lg={4} xl={4} style={{textAlign: 'end', margin: 'auto'}}>
-                    <IconButton style={{padding: 0, marginRight: 25}}>
-                        <Add style={{color: 'white'}}/>
+                </div>
+
+                <div className={classes.namePosition}>
+                    <Typography variant="h6" className={classes.text} noWrap>{this.accountStore.fullName}</Typography>
+                    <IconButton>
+                        <Group className={classes.dialogIco}/>
                     </IconButton>
-                    <IconButton style={{padding: 0, marginRight: 25}}>
-                        <FavoriteOutlined style={{color: 'white'}}/>
-                    </IconButton>
+                </div>
+
+                <div>
                     <IconButton
-                        style={{padding: 0}}
                         aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup="true"
-                        onClick={this.handleMenu}
-                        color="inherit">
-                        <MoreVert/>
+                        onClick={this.handleMenu}>
+                        <MoreVert className={classes.dialogIco}/>
                     </IconButton>
                     <Menu
                         style={{zIndex: 2000}}
@@ -153,20 +196,19 @@ class ChatBar extends React.Component {
                         }}
                         open={open}
                         onClose={this.handleClose}
-                    >
-                        <MenuItem onClick={this.handleClose}>Информация о чате</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Вложения</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Заглушить уведомления</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Выйти</MenuItem>
+                        classes={{
+                            paper: classes.menu,
+                        }}>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Информация о чате</MenuItem>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Вложения</MenuItem>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Заглушить
+                            уведомления</MenuItem>
+                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Выйти</MenuItem>
                     </Menu>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
         )
     }
 }
 
-
-ChatBar.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-export default withStyles(styles)(ChatBar);
+export default withStyles(styles, {withTheme: true})(ChatBar);
