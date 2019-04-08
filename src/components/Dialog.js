@@ -98,6 +98,7 @@ class Dialog extends React.Component {
         // FIXME comment is fix for url chat page reload dafauck mafuck
         //this.messagesStore.currentChatId = this.props.chatId;
         // ToastService.toast(<MessagePush {...this.props}/>);
+        
     };
 
     handleDialogClickMob = () => {
