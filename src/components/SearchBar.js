@@ -55,7 +55,7 @@ const styles = theme => ({
     },
     iconSearch: {
         color: ` ${
-            theme.palette.type === 'light' ? '#fff' : 'rgba(255, 255, 255, 0.17)'
+            theme.palette.type === 'light' ? '#d2d2d2' : 'rgba(255, 255, 255, 0.17)'
             }`,
     },
     search: {
@@ -106,7 +106,7 @@ class OutlinedTextFields extends React.Component {
                         <SearchIcon className={classes.iconSearch}/>
                     </div>
                     <InputBase
-                        placeholder="Поиск сообщений…"
+                        placeholder="Поиск диалогов…"
                         classes={{
                             root: classes.inputRoot,
                             input: classes.inputInput,

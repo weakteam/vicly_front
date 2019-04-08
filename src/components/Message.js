@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import div from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import {fade} from "@material-ui/core/styles/colorManipulator";
+import AvatarColor from "./AvatarColor"
 
 const styles = theme => ({
     root: {
@@ -146,6 +147,8 @@ class Message extends React.Component {
         // Was the message sent by the current user. If so, add a css class
         const fromMe = this.props.fromMe ? 'from-me' : '';
         const {classes} = this.props;
+        const name = this.props.userInfo.first_name[0];
+        let colorChange = AvatarColor.getColor(name);
 
         let kek;
 
@@ -155,14 +158,14 @@ class Message extends React.Component {
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
-                            style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                            style={{minWidth: 'max-content'}}>Я</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
                 </div>
                 <div className={classes.avatarMob}>
-                    <Avatar className={classes.avatarIco}>
+                    <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
                         {this.props.userInfo.first_name[0].toUpperCase()}
                     </Avatar>
                 </div>
@@ -170,7 +173,7 @@ class Message extends React.Component {
         } else {
             kek = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
-                    <Avatar className={classes.avatarIco}>
+                    <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
                         {this.props.userInfo.first_name[0].toUpperCase()}
                     </Avatar>
                 </div>
@@ -194,7 +197,7 @@ class Message extends React.Component {
                     <div className={classes.root}>
                         <div className={classes.messageBlock}>
                             <div className={classes.avatar}>
-                                <Avatar className={classes.avatarIco}>
+                                <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
                                     {this.props.userInfo.first_name[0].toUpperCase()}
                                 </Avatar>
                             </div>
@@ -204,9 +207,18 @@ class Message extends React.Component {
                                     alignItems: 'center',
                                     width: '-webkit-fill-available'
                                 }}>
-                                    <Typography
-                                        variant="body2"
-                                        style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                    {
+                                        fromMe ?  (
+                                            <Typography
+                                            variant="body2"
+                                            style={{minWidth: 'max-content'}}>Я</Typography>
+                                        ) : (
+                                            <Typography
+                                                variant="body2"
+                                                style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                        )
+                                    }
+
                                     <Typography variant="caption"
                                                 className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                                 </div>

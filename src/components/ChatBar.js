@@ -106,7 +106,7 @@ const styles = theme => ({
     },
     iconSearch: {
         color: ` ${
-            theme.palette.type === 'light' ? '#fff' : 'rgba(255, 255, 255, 0.17)'
+            theme.palette.type === 'light' ? '#d2d2d2' : 'rgba(255, 255, 255, 0.17)'
             }`,
     },
     menu: {

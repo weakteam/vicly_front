@@ -9,9 +9,22 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 import PersonOutline from '@material-ui/icons/PersonOutline'
 import Settings from '@material-ui/icons/Settings'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
-
+import Modal from "@material-ui/core/Modal";
+import UserProfile from "./UserProfile";
 import rootStore from "../store/RootStore";
-const {accountStore,messagesStore} = rootStore;
+
+const {accountStore, messagesStore} = rootStore;
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
 
 const styles = theme => ({
     root: {
@@ -20,6 +33,17 @@ const styles = theme => ({
             top: 0,
             marginLeft: 'auto',
         },
+    },
+    paper: {
+        position: 'absolute',
+        [theme.breakpoints.down('xs')]: {
+            width: '96%',
+        },
+        width: 500,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
+        boxShadow: theme.shadows[5],
     },
     menu: {
         backgroundColor: ` ${
@@ -49,6 +73,7 @@ class ProfileIco extends React.Component {
     state = {
         auth: true,
         anchorEl: null,
+        open: false,
         // type: this.props.theme.palette.type,
     };
     handleChange = event => {
@@ -61,6 +86,16 @@ class ProfileIco extends React.Component {
 
     handleClose = () => {
         this.setState({anchorEl: null});
+    };
+
+    handleMenuOpen = () => {
+        this.setState({open: true});
+
+        this.handleClose();
+    };
+
+    handleMenuClose = () => {
+        this.setState({open: false});
     };
 
     render() {
@@ -99,13 +134,27 @@ class ProfileIco extends React.Component {
                                     }}
                                     open={open}
                                     onClose={this.handleClose}>
-                                    <MenuItem onClick={this.handleClose} className={classes.menuItem}><PersonOutline/>Профиль</MenuItem>
-                                    <MenuItem onClick={this.handleClose} className={classes.menuItem}><Settings/>Настройки</MenuItem>
+                                    <MenuItem onClick={this.handleMenuOpen}
+                                              className={classes.menuItem}>Профиль</MenuItem>
+                                    <MenuItem onClick={this.handleClose}
+                                              className={classes.menuItem}>Настройки</MenuItem>
                                     <MenuItem onClick={this.props.handleLogout}
-                                              className={classes.menuItem}><ExitToApp/>Выйти</MenuItem>
+                                              className={classes.menuItem}>Выйти</MenuItem>
                                     <MenuItem onClick={this.props.changeThemeType}
-                                              className={classes.menuItem}><ExitToApp/>Сменить тему</MenuItem>
+                                              className={classes.menuItem}>Сменить тему</MenuItem>
                                 </Menu>
+                                <Modal
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.open}
+                                    onClose={this.handleMenuClose}
+                                    style={{zIndex: 1200}}>
+
+                                    <div style={getModalStyle()} className={classes.paper}>
+                                        <UserProfile {...this.props} />
+                                    </div>
+
+                                </Modal>
                             </div>
                         )}
                 </Toolbar>
