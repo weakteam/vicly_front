@@ -6,4 +6,4 @@ RUN npm install --silent
 RUN npm install -g serve
 RUN npm run build
 # start app
-CMD ["serve", "build"]
+CMD ["serve", "-s", "build"]
