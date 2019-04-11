@@ -1,20 +1,27 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputLabel from '@material-ui/core/InputLabel';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button/index';
+import FormControl from '@material-ui/core/FormControl/index';
+import FormControlLabel from '@material-ui/core/FormControlLabel/index';
+import InputLabel from '@material-ui/core/InputLabel/index';
+import Paper from '@material-ui/core/Paper/index';
+import Typography from '@material-ui/core/Typography/index';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {observer} from "mobx-react";
-import {Link} from "react-router-dom";
+import {observer} from "mobx-react/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
-import Divider from "@material-ui/core/es/Divider";
-import InputBase from "@material-ui/core/InputBase";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import Divider from "@material-ui/core/es/Divider/index";
+import InputBase from "@material-ui/core/InputBase/index";
+import RadioGroup from "@material-ui/core/RadioGroup/index";
+import Radio from "@material-ui/core/Radio/index";
+import Select from "@material-ui/core/Select/index";
+import MenuItem from "@material-ui/core/MenuItem/index";
+import Stepper from "@material-ui/core/Stepper/index";
+import StepLabel from "@material-ui/core/StepLabel/index";
+import Step from "@material-ui/core/Step/index";
+import {BACKEND_URL} from "../common";
+import rootStore from "../store/RootStore";
+
+const {accountStore, messagesStore} = rootStore;
+
 
 const styles = theme => ({
     root: {
@@ -37,7 +44,6 @@ const styles = theme => ({
         boxShadow: theme.shadows[10],
         maxWidth: '50%',
         // maxHeight: '40%',
-
     },
     paper: {
         display: 'flex',
@@ -146,6 +152,7 @@ const styles = theme => ({
     },
     group: {
         display: 'inline',
+        color: '#000',
     },
     text: {
         color: ` ${
@@ -157,42 +164,142 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
             }`,
     },
+    paperRoot: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            }`,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    labelRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark + '!important'
+            }`,
+    },
+    completed: '#79cc9f!important',
 
+    checked: {
+        '&:not($checked)': {
+            color: '#000',
+        },
+        '&$checked': {
+            color: '#000',
+        },
+    }
 });
 
 @observer
 class InviteForm extends React.Component {
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(e.target.login.value + "  " + e.target.password.value);
-        //const { login, password } = this.state;
-        //AccountStore.loginUser(e.target.login.value, e.target.password.value);
-        //this.props.setLoading();
-    };
+    constructor(props) {
+        super(props);
+        this.accountStore = accountStore;
+    }
 
     state = {
         value: 'male',
-        kek: '',
+        workGroup: '',
+        activeStep: 0,
+
+        formValues: {
+            name: '',
+            surname: '',
+            patronymic: '',
+            role: '',
+        },
+
+        inviteId: {},
+    };
+
+    handleReset = () => {
+        this.setState({
+            formValues: {},
+            activeStep: 0,
+            workGroup: '',
+            inviteId: {},
+        })
     };
 
     handleChange = (event) => {
-        this.setState(state => ({
+        this.setState({
             value: event.value,
-        }));
+        });
     };
 
     handleChangeSelect = (event) => {
         this.setState({
-            kek: event.target.value,
+            workGroup: event.target.value,
         });
     };
 
-    toLoginPage = (isInvite) => {
-        this.props.history.push('/login')
+    getStepContent(step) {
+        switch (step) {
+            case 0:
+                return this.firstStepForm();
+            case 1:
+                return this.secondStepForm();
+            default:
+                return "";
+        }
+    }
+
+    handleChangeStep = () => {
+        this.setState({
+            activeStep: 1
+        });
     };
 
-    render() {
+    createInvite(name, surname, role) {
+        try {
+            const response = fetch(BACKEND_URL + "/invite", {
+                method: 'POST',
+                headers: {
+                    'Authorization': this.accountStore.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    first_name: name,
+                    last_name: surname,
+                    role_id: role,
+                })
+            })
+                .then(response => response.json())
+                .then(json => {
+                    this.setState({
+                        inviteId: json
+                    })
+                });
+            console.log(this.accountStore.token);
+            if (!response.ok) {
+                console.log("Invite doesn't created")
+            } else {
+                console.log("Invite created")
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    handleChange1 = (event) => {
+        event.preventDefault();
+        let formValues = this.state.formValues;
+        let name = event.target.name;
+        let valueField = event.target.value;
+
+        formValues[name] = valueField;
+
+        this.setState({formValues})
+    };
+
+
+    handleClick = () => {
+        this.createInvite(this.state.formValues.name, this.state.formValues.surname, this.state.formValues.role)
+        this.handleChangeStep()
+    };
+
+    firstStepForm = () => {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
@@ -201,7 +308,7 @@ class InviteForm extends React.Component {
                         Приглашение нового пользователя
                     </Typography>
                     <Divider/>
-                    <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
+                    <form onSubmit={this.handleClick} className={classes.form}>
                         <div className={classes.blockForm}>
                             <div className={classes.block}>
                                 <Typography variant="h6" className={classes.text}>Личные данные</Typography>
@@ -210,9 +317,11 @@ class InviteForm extends React.Component {
                                         <Typography variant="subtitle1" className={classes.text}> Имя </Typography>
                                     </InputLabel>
                                     <InputBase
-                                        id="Name"
-                                        name="Name"
+                                        id="name"
+                                        name="name"
                                         type="text"
+                                        value={this.state.formValues["name"]}
+                                        onChange={this.handleChange1.bind(this)}
                                         classes={{input: classes.active}}
                                     />
                                 </FormControl>
@@ -221,9 +330,11 @@ class InviteForm extends React.Component {
                                         <Typography variant="subtitle1" className={classes.text}> Фамилия </Typography>
                                     </InputLabel>
                                     <InputBase
-                                        id="Surname"
-                                        name="Surname"
+                                        id="surname"
+                                        name="surname"
                                         type="text"
+                                        value={this.state.formValues["surname"]}
+                                        onChange={this.handleChange1.bind(this)}
                                         classes={{input: classes.active}}
                                     />
                                 </FormControl>
@@ -235,6 +346,8 @@ class InviteForm extends React.Component {
                                         id="patronymic"
                                         name="patronymic"
                                         type="text"
+                                        value={this.state.formValues["patronymic"]}
+                                        onChange={this.handleChange1.bind(this)}
                                         classes={{input: classes.active}}
                                     />
                                 </FormControl>
@@ -245,14 +358,17 @@ class InviteForm extends React.Component {
                                 <FormControl required fullWidth>
                                     <InputLabel shrink className={classes.label}>
                                         <Typography variant="subtitle1"
-                                                    className={classes.text}> Должность </Typography>
+                                                    className={classes.text}>
+                                            Должность
+                                        </Typography>
                                     </InputLabel>
                                     <InputBase
-                                        id="position"
-                                        name="position"
+                                        id="role"
+                                        name="role"
                                         type="text"
-                                        classes={{input: classes.active}}
-                                    />
+                                        value={this.state.formValues["role"]}
+                                        onChange={this.handleChange1.bind(this)}
+                                        classes={{input: classes.active}}/>
                                 </FormControl>
 
                                 <FormControl required fullWidth>
@@ -263,35 +379,38 @@ class InviteForm extends React.Component {
                                         aria-label="gender"
                                         name="gender2"
                                         classes={{
-                                            root: classes.group
+                                            root: classes.group,
+                                            checked: classes.checked,
                                         }}
                                         //className={classes.group}
                                         value={this.value}
-                                        onChange={this.handleChange}
-                                    >
+                                        onChange={this.handleChange}>
                                         <FormControlLabel
                                             value="female"
-                                            control={<Radio className={classes.text}/>}
+                                            control={<Radio classes={{
+                                                root: classes.checked,
+                                            }} className={classes.text}/>}
                                             label="Женский"
                                             classes={{
                                                 label: classes.text,
+                                                checked: classes.checked,
                                             }}
                                             labelPlacement="start"
                                         />
                                         <FormControlLabel
                                             value="male"
-                                            control={<Radio className={classes.text}/>}
+                                            control={<Radio classes={{root: classes.checked}}
+                                                            className={classes.text}/>}
                                             label="Мужской"
                                             classes={{
                                                 label: classes.text,
+                                                checked: classes.checked,
                                             }}
-                                            labelPlacement="start"
-                                        />
+                                            labelPlacement="start"/>
                                     </RadioGroup>
                                 </FormControl>
 
                                 <form autoComplete="off">
-
                                     <FormControl style={{zIndex: 5000}} required fullWidth>
                                         {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
@@ -300,43 +419,74 @@ class InviteForm extends React.Component {
                                             группа</InputLabel>
                                         <Select
                                             className={classes.text}
-                                            value={this.state.kek}
-                                            onChange={this.handleChangeSelect}
-                                            /*classes={{
-                                                Paper: classes.backi,
-                                                paper: classes.backi,
-                                                root: classes.backi,
-                                                MuiPaper: classes.backi,
-                                            }}
-                                            style={{backgroundColor: '#000'}}*/
-                                        >
+                                            value={this.state.workGroup}
+                                            onChange={this.handleChangeSelect}>
                                             <MenuItem value={0}>Не выбрано</MenuItem>
-                                            <MenuItem value={2}>Ten</MenuItem>
-                                            <MenuItem value={3}>Twenty</MenuItem>
-                                            <MenuItem value={4}>Thirty</MenuItem>
+                                            <MenuItem value={'Разработка'}>Разработка</MenuItem>
+                                            <MenuItem value={'Бухгалтерия'}>Бухгалтерия</MenuItem>
+                                            <MenuItem value={'Реклама'}>Реклама</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </form>
-
                             </div>
                         </div>
 
                         <div className={classes.signIn}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                className={classes.submit}
-                                /* component={props => <Link to="/login" {...props} />}*/>
-                                Пригласить
-                            </Button>
+                            <Button type="submit" variant="contained" className={classes.submit}>Пригласить</Button>
                         </div>
+
                     </form>
                 </Paper>
             </div>
+        )
+    };
+
+    secondStepForm = () => {
+        const {classes, theme,} = this.props;
+        return (
+            <div>
+                <Typography variant="h6" className={classes.text}>Ссылка для приглашения:
+                    http://localhost:3000/login/invite/:{this.state.inviteId.invite_id}</Typography>
+                <div className={classes.signIn}>
+                    <Button variant="contained" className={classes.submit}
+                            onClick={this.handleReset}>Новый инвайт</Button>
+                </div>
+            </div>
+        )
+    };
+
+    render() {
+        const {classes, theme,} = this.props;
+        const steps = ["Согласование", "Обработка"];
+        return (
+            <div>
+                <Stepper
+                    classes={{
+                        root: classes.paperRoot,
+                    }}
+                    activeStep={this.state.activeStep}>
+                    {
+                        steps.map((label) => {
+                            return (
+                                <Step key={label} classes={{}}>
+                                    <StepLabel classes={{
+                                        label: classes.labelRoot,
+                                        completed: classes.completed,
+                                        active: classes.labelRoot,
+                                    }}>
+                                        {label}
+                                    </StepLabel>
+                                </Step>
+                            );
+                        })
+                    }
+                </Stepper>
+                <div>
+                    {this.getStepContent(this.state.activeStep)}
+                </div>
+            </div>
         );
     }
-
-
 }
 
 export default withStyles(styles)(InviteForm);

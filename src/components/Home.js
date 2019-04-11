@@ -106,11 +106,10 @@ const styles = theme => ({
         flexGrow: 1,
         position: 'static',
         //  flexShrink: 1,
-        width: 'auto',
+      //  width: 'auto',
         minHeight: '100vh',
         [theme.breakpoints.down('xs')]: {
             // minHeight: '-webkit-fill-available',
-            // minHeight: 'auto',
             zIndex: 1,
         },
         borderLeft: ` ${
@@ -122,7 +121,7 @@ const styles = theme => ({
         // backgroundImage: 'url(' + Background + ')',
         //  backgroundSize: 'cover',
         //zIndex: 1503,
-        boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+       // boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
     logo: {
         width: 150,

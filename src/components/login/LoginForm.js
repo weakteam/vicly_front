@@ -14,8 +14,9 @@ import Background from "../../images/login.jpg"
 import Dark from "../../images/rer.jpg"
 // import Background from "../../images/loginBack.jpg"
 import rootStore from "../../store/RootStore";
-const {accountStore, messagesStore} = rootStore;
+import history from "../../store/history"
 
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {
@@ -154,12 +155,21 @@ const styles = theme => ({
 @observer
 class LoginForm extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.history = history;
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(e.target.login.value + "  " + e.target.password.value);
         //const { login, password } = this.state;
         accountStore.loginUser(e.target.login.value, e.target.password.value);
         //this.props.setLoading();
+    };
+
+    goToInviteLogin = () => {
+        this.history.push(`login/invite/:uuid`);
     };
 
     render() {
@@ -212,6 +222,14 @@ class LoginForm extends React.Component {
                                     variant="contained"
                                     className={classes.submit}>
                                     Войти
+                                </Button>
+                            </div>
+                            <div className={classes.signIn}>
+                                <Button
+                                    type="submit"
+                                    className={classes.submit}
+                                onClick={this.goToInviteLogin}>
+                                    Войти по приглашению
                                 </Button>
                             </div>
                         </form>
