@@ -5,13 +5,16 @@ import Home from "./components/Home";
 import {Router, Redirect, Route, Switch} from "react-router-dom";
 import {PrivateRoute} from 'react-router-with-props';
 import {observer} from "mobx-react";
-import InviteForm from "./components/login/InviteForm";
+import InviteForm from "./components/InviteForm";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DevTools from "mobx-react-devtools";
 import rootStore from "./store/RootStore";
 import history from "./store/history"
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
+import InviteIcon from "./components/InviteIcon"
+import ChatWindow from "./components/ChatWindow";
+import InviteLogin from "./components/login/InviteLogin";
 
 if (history.location.pathname.startsWith("/home/chat")) {
     rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
@@ -23,10 +26,13 @@ history.listen((location, action) => {
 });
 
 const themeOptions = {
+    typography: {
+        useNextVariants: true,
+    },
     palette: {
         primary: {
             light: "#ffffff",
-            main: "#fffffc", //аппбар и серчбар
+            main: "#43a296", //аппбар и серчбар
             mainElem: "#075454",
             dark: "#1c212d",
             darkSecondary: '#323a4d',
@@ -47,7 +53,7 @@ const themeOptions = {
         text: {
             primary: "#1d1c28",
             secondary: "rgba(0, 0, 0, 0.54)",
-            disabled: "rgba(0, 0, 0, 0.38)",
+            disabled: "rgba(110,190,134,0.38)",
             hint: "rgba(0, 0, 0, 0.38)",
         },
         background: {
@@ -116,15 +122,20 @@ class App extends Component {
                             authStatus ?
                                 (
                                     <Switch>
-                                        <Route path="/home" render={() => <Home changeThemeType={this.changeThemeType.bind(this)}/>}/>
+                                        <Route   path="/home" render={() => <Home changeThemeType={this.changeThemeType.bind(this)}/>}/>
                                         <Route render={() => <Redirect to="/home"/>}/>
+
                                     </Switch>
                                 )
                                 :
                                 (
                                     <Switch>
                                         <Route exact path="/login" component={Login}/>
-                                        <Route exact path="/invite/:invite_id" component={InviteForm}/>
+                                        <Route path="/login/invite/:uuid"
+                                               render={(routeProps) =>
+                                                   <InviteLogin
+                                                       {...routeProps}
+                                                   />}/>
                                         <Route render={() => <Redirect to="/login"/>}/>
                                     </Switch>
                                 )

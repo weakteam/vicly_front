@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import div from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import {fade} from "@material-ui/core/styles/colorManipulator";
-import AvatarColor from "./AvatarColor"
+import AvatarColor from "../services/AvatarColor"
 
 const styles = theme => ({
     root: {

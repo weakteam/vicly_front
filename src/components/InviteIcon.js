@@ -3,10 +3,11 @@ import {withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import PersonAdd from '@material-ui/icons/PersonAddOutlined'
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import InviteForm from "./login/InviteForm";
-
+import InviteForm from "./InviteForm";
+import history from "../store/history"
 import rootStore from "../store/RootStore";
-const {accountStore,messagesStore} = rootStore;
+
+const {accountStore, messagesStore} = rootStore;
 
 function getModalStyle() {
     const top = 50;
@@ -27,15 +28,17 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
+        borderRadius: 5,
+        padding: 30,
         [theme.breakpoints.down('xs')]: {
-            width: '96%',
+            width: '90%',
         },
-        width: '45%',
+        width: 585,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
+       // padding: theme.spacing.unit * 4,
     },
     textField: {
         width: '-webkit-fill-available',
@@ -56,16 +59,10 @@ class InviteIcon extends React.Component {
         open: false,
     };
 
-    handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
-    };
-    handleChangeSurname = surname => event => {
-        this.setState({
-            [surname]: event.target.value,
-        });
-    };
+    constructor(props) {
+        super(props);
+        this.history = history;
+    }
 
     handleOpen = () => {
         this.setState({open: true});
@@ -89,19 +86,14 @@ class InviteIcon extends React.Component {
                     open={this.state.open}
                     onClose={this.handleClose}
                     style={{zIndex: 1200}}>
-
                     <div style={getModalStyle()} className={classes.paper}>
-                        <InviteForm/>
+                        <InviteForm   style={{zIndex: 1201}} />
                     </div>
-
                 </Modal>
             </div>
         );
     }
 }
-
 // We need an intermediary variable for handling the recursive nesting.
 const SimpleModalWrapped = withStyles(styles)(InviteIcon);
-
-
 export default SimpleModalWrapped;

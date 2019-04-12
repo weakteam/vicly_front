@@ -5,9 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import ExitToApp from '@material-ui/icons/ExitToApp'
-import PersonOutline from '@material-ui/icons/PersonOutline'
-import Settings from '@material-ui/icons/Settings'
+import AvatarColor from '../services/AvatarColor'
 import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import Modal from "@material-ui/core/Modal";
 import UserProfile from "./UserProfile";

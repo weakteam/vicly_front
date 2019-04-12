@@ -4,7 +4,8 @@ import '../css/MessageList.css'
 
 import rootStore from "../store/RootStore";
 import {observer} from "mobx-react";
-const {accountStore,messagesStore} = rootStore;
+
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {
@@ -62,8 +63,10 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div id='messageList'>
-                {messages}
+            <div>
+                <div id='messageList'>
+                    {messages}
+                </div>
                 <div ref={this.messagesEnd}/>
             </div>
         );

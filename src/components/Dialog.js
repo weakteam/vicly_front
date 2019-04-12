@@ -12,7 +12,7 @@ import ToastService from '../services/toastService'
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import MessagePush from "./MessagePush";
 import rootStore from "../store/RootStore";
-import AvatarColor from "./AvatarColor"
+import AvatarColor from "../services/AvatarColor"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -142,8 +142,7 @@ class Dialog extends React.Component {
             unreadCount = 0;
             lastMessage = "";
         }
-        const name = dialog.first_name[0];
-        let colorChange = AvatarColor.getColor(name);
+        let colorChange = AvatarColor.getColor(dialog.first_name[0]);
         return (
             <div>
                 <Hidden implementation="css" smUp>
