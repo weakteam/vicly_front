@@ -26,10 +26,13 @@ history.listen((location, action) => {
 });
 
 const themeOptions = {
+    typography: {
+        useNextVariants: true,
+    },
     palette: {
         primary: {
             light: "#ffffff",
-            main: "#fffffc", //аппбар и серчбар
+            main: "#43a296", //аппбар и серчбар
             mainElem: "#075454",
             dark: "#1c212d",
             darkSecondary: '#323a4d',
@@ -50,7 +53,7 @@ const themeOptions = {
         text: {
             primary: "#1d1c28",
             secondary: "rgba(0, 0, 0, 0.54)",
-            disabled: "rgba(0, 0, 0, 0.38)",
+            disabled: "rgba(110,190,134,0.38)",
             hint: "rgba(0, 0, 0, 0.38)",
         },
         background: {

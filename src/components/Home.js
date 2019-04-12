@@ -71,7 +71,7 @@ const styles = theme => ({
     },
 
     appBar: {
-        zIndex: 1962,
+        zIndex: 1162,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
@@ -305,6 +305,7 @@ class Home extends React.Component {
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             onOpen={this.handleDrawerToggle}
+                            style={{zIndex:1100}}
                             classes={{
                                 paper: classes.drawerPaper,
                             }}

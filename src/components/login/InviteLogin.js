@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -12,9 +11,11 @@ import InputBase from "@material-ui/core/InputBase";
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import Background from "../../images/login.jpg"
 import Dark from "../../images/rer.jpg"
+import history from "../../store/history"
 // import Background from "../../images/loginBack.jpg"
 import rootStore from "../../store/RootStore";
-import Avatar from "@material-ui/core/Avatar";
+import {BACKEND_URL} from "../../common";
+
 const {accountStore, messagesStore} = rootStore;
 
 
@@ -218,10 +219,38 @@ const styles = theme => ({
 });
 
 @observer
-class LoginForm extends React.Component {
-    handleDialogClick = () => {
-        this.props.history.push(`login/invite/${this.props.uuid}`);
+class InviteLogin extends React.Component {
+
+    state = {
+        inviteInfo: null,
+        status: null,
+
+        formValues: {
+            login: '',
+            password: '',
+        },
     };
+
+    componentDidMount() {
+        this.handleGetInviteInfo();
+    }
+
+
+    handleGetInviteInfo = () => {
+        this.getInviteInfo(this.props.match.params.uuid);
+    };
+
+    handleSingUp = () => {
+        this.singUp(this.props.match.params.uuid, this.state.formValues.login, this.state.formValues.password);
+    };
+
+    constructor(props) {
+        super(props);
+        this.history = history;
+        this.accountStore = accountStore;
+    }
+
+
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -231,44 +260,113 @@ class LoginForm extends React.Component {
         //this.props.setLoading();
     };
 
+    async getInviteInfo(uuid) {
+        try {
+            const response = await fetch(BACKEND_URL + "/invite/" + uuid, {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(json => {
+                    this.setState({
+                        inviteInfo: json
+                    })
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+     singUp(uuid, login, password) {
+        try {
+            const response = fetch(BACKEND_URL + "/invite/signup", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    uuid: uuid,
+                    login: login,
+                    password: password,
+                })
+            })
+                .then(response => response.json())
+                .then(json => {
+                    this.setState({
+                        status: json
+                    })
+                });
+            console.log('response');
+            if (!response.ok) {
+                console.log("Invite doesn't created")
+            } else {
+                console.log("Invite created")
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    handleChange1 = (event) => {
+        event.preventDefault();
+        let formValues = this.state.formValues;
+        let name = event.target.name;
+        formValues[name] = event.target.value;
+
+        this.setState({formValues})
+    };
+
     render() {
         const {classes} = this.props;
+     //   const getInfo = this.getInviteInfo(this.props.match.params.uuid);
+        //const pathToRegexp = require(this.props.history);
+        //  const keys = [];
+        // const regexp = pathToRegexp('/login/invite/:uuid', keys);
+
         return (
+
             <div className={classes.root}>
                 <main className={classes.main}>
                     <Paper
                         className={classes.paper}>
                         <Typography variant="h5" className={classes.header}>
-                            Добро пожаловать в Vickly
+                            Добро пожаловать в Vickly {this.props.match.params.uuid}
                         </Typography>
-                        <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
+
+                        <form className={classes.form}>
                             <div>
                                 <Divider/>
                                 <form className={classes.form}>
                                     <div className={classes.blockForm}>
                                         <div className={classes.block}>
-                                            <Typography variant="overline" className={classes.textInf}>Данные профиля</Typography>
+                                            <Typography variant="overline" className={classes.textInf}>Данные
+                                                профиля</Typography>
                                             <div className={classes.infBlock}>
                                                 <Typography variant="h6" className={classes.text}>ФИО:</Typography>
-                                                <Typography variant="h6" className={classes.text2}>Вася Пупкинский</Typography>
+                                                <Typography variant="h6" className={classes.text2}>{ this.state.inviteInfo ? (this.state.inviteInfo.first_name + ' ' + this.state.inviteInfo.last_name) : ('rtr')}</Typography>
                                             </div>
                                             <Divider/>
                                             <div className={classes.infBlock}>
-                                                <Typography variant="h6" className={classes.text}>Должность:</Typography>
-                                                <Typography variant="h6" className={classes.text2}>Старший программист</Typography>
+                                                <Typography variant="h6"
+                                                            className={classes.text}>Должность:</Typography>
+                                                <Typography variant="h6" className={classes.text2}>Старший
+                                                    программист</Typography>
                                             </div>
                                             <Divider/>
                                             <div className={classes.infBlock}>
-                                                <Typography variant="h6" className={classes.text}>Рабочие группы:</Typography>
+                                                <Typography variant="h6" className={classes.text}>Рабочие
+                                                    группы:</Typography>
                                                 <div className={classes.text2}>
-                                                    <Typography variant="h6" className={classes.text2}>Бухгалтерия</Typography>
-                                                    <Typography variant="h6" className={classes.text2}>Разработка</Typography>
+                                                    <Typography variant="h6"
+                                                                className={classes.text2}>Бухгалтерия</Typography>
+                                                    <Typography variant="h6"
+                                                                className={classes.text2}>Разработка</Typography>
                                                 </div>
                                             </div>
                                             <Divider/>
 
                                             <div className={classes.infBlock}>
-                                                <Typography variant="h6" className={classes.text}>Придумайте логин и пароль</Typography>
+                                                <Typography variant="h6" className={classes.text}>Придумайте логин и
+                                                    пароль</Typography>
                                             </div>
                                             <Divider/>
 
@@ -281,6 +379,8 @@ class LoginForm extends React.Component {
                                                     name="login"
                                                     placeholder="Логин"
                                                     type="login"
+                                                    value={this.state.formValues["login"]}
+                                                    onChange={this.handleChange1.bind(this)}
                                                     classes={{input: classes.active}}
                                                 />
                                             </FormControl>
@@ -293,6 +393,8 @@ class LoginForm extends React.Component {
                                                     id="password"
                                                     name="password"
                                                     type="password"
+                                                    value={this.state.formValues["password"]}
+                                                    onChange={this.handleChange1.bind(this)}
                                                     placeholder="Пароль"
                                                     classes={{
                                                         input: classes.active
@@ -301,13 +403,24 @@ class LoginForm extends React.Component {
                                             {this.props.uuid}
                                             <div className={classes.signIn}>
                                                 <Button
-                                                    type="submit"
                                                     className={classes.submit}
-                                                    onClick={this.goToInviteLogin}>
+                                                    onClick={this.handleSingUp}>
                                                     Войти по приглашению
                                                 </Button>
 
-                                                <Button variant={"contained"} onClick={this.handleDialogClick}>lol</Button>
+                                                <Button
+                                                    type="submit"
+                                                    className={classes.submit}
+                                                    onClick={this.goToInviteLogin}>
+                                                    fff
+                                                </Button>
+
+
+                                                <Button variant={"contained"}
+                                                        onClick={this.handleGetInviteInfo}>lol</Button>
+
+                                                {this.state.formValues.login}
+                                                {this.state.formValues.password}
                                             </div>
                                         </div>
                                     </div>
@@ -321,4 +434,4 @@ class LoginForm extends React.Component {
     }
 }
 
-export default withStyles(styles)(LoginForm);
+export default withStyles(styles)(InviteLogin);

@@ -28,15 +28,17 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
+        borderRadius: 5,
+        padding: 30,
         [theme.breakpoints.down('xs')]: {
-            width: '96%',
+            width: '90%',
         },
-        width: '45%',
+        width: 585,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
+       // padding: theme.spacing.unit * 4,
     },
     textField: {
         width: '-webkit-fill-available',
@@ -85,7 +87,7 @@ class InviteIcon extends React.Component {
                     onClose={this.handleClose}
                     style={{zIndex: 1200}}>
                     <div style={getModalStyle()} className={classes.paper}>
-                        <InviteForm/>
+                        <InviteForm   style={{zIndex: 1201}} />
                     </div>
                 </Modal>
             </div>
