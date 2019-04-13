@@ -1,5 +1,5 @@
 import {BACKEND_URL} from "../common";
-import {autorun, observable, reaction, runInAction} from "mobx";
+import {autorun, observable, reaction, runInAction, when} from "mobx";
 import toastService from "../services/toastService";
 
 export default class MessagesStore {
@@ -15,7 +15,7 @@ export default class MessagesStore {
 
     constructor(RootStore) {
         this.accountStore = RootStore.accountStore;
-        reaction(() => this.accountStore.token,
+        when(() => this.accountStore.token,
             () => this.fetchChats(),
             {fireImmediately: true},
         );
