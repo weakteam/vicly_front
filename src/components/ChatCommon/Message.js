@@ -147,7 +147,7 @@ class Message extends React.Component {
         // Was the message sent by the current user. If so, add a css class
         const fromMe = this.props.fromMe ? 'from-me' : '';
         const {classes} = this.props;
-        const name = this.props.chatUser.first_name[0];
+        const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
 
         let kek;
@@ -174,14 +174,14 @@ class Message extends React.Component {
             kek = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
                     <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
-                        {this.props.chatUser.first_name[0].toUpperCase()}
+                        {this.props.userInfo.first_name[0].toUpperCase()}
                     </Avatar>
                 </div>
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
-                            style={{minWidth: 'max-content'}}>{`${this.props.chatUser.first_name} ${this.props.chatUser.last_name}`}</Typography>
+                            style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -198,7 +198,7 @@ class Message extends React.Component {
                         <div className={classes.messageBlock}>
                             <div className={classes.avatar}>
                                 <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
-                                    {this.props.chatUser.first_name[0].toUpperCase()}
+                                    {this.props.userInfo.first_name[0].toUpperCase()}
                                 </Avatar>
                             </div>
                             <div className={fromMe ? classes.fromMe : classes.toMe}>
@@ -215,7 +215,7 @@ class Message extends React.Component {
                                         ) : (
                                             <Typography
                                                 variant="body2"
-                                                style={{minWidth: 'max-content'}}>{`${this.props.chatUser.first_name} ${this.props.chatUser.last_name}`}</Typography>
+                                                style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                                         )
                                     }
 

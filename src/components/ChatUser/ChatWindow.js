@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles/index';
 import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
 import SendMessageBar from "../ChatCommon/SendMessageBar";
-import MessageList from "../ChatCommon/Message";
+import MessageList from "../ChatCommon/MessageList";
 import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
