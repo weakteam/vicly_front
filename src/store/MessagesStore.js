@@ -8,6 +8,7 @@ export default class MessagesStore {
     @observable fetchFail = false;
     @observable currentChatId = null;
     isCurrentChatForUser = null;
+    @observable chatsFetched = false;
     err_message = "";
     @observable messagesLoading = false;
 
@@ -79,6 +80,7 @@ export default class MessagesStore {
                         return groupChatObject;
                     });
                 this.groups = content.with_group.map(elem => elem.group);
+                this.chatsFetched = true;
             });
         } catch (err) {
             console.log(err);

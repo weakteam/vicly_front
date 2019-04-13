@@ -23,6 +23,7 @@ import Background from '../images/gif.gif';
 import {Item, Menu, MenuProvider} from "react-contexify";
 import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
+import ChatWindowEmpty from "./ChatCommon/ChatWindowEmpty";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -341,20 +342,31 @@ class Home extends React.Component {
                             <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
                             <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
                         </Menu>*/}
-                    <Route path="/home/chat/user/:userId"
-                           render={(routeProps) =>
-                               <ChatWindow
-                                   {...routeProps}
-                                   handleDrawerToggle={this.handleDrawerToggle}
-                                   chat={this.messagesStore.getCurrentChat()}
-                               />}/>
-                    <Route path="/home/chat/group/:chatId"
-                           render={(routeProps) =>
-                               <GroupChatWindow
-                                   {...routeProps}
-                                   handleDrawerToggle={this.handleDrawerToggle}
-                                   chat={this.messagesStore.getCurrentChat()}
-                               />}/>
+                    {
+                        this.messagesStore.chatsFetched ?
+                            (<div>
+                                <Route path="/home/chat/user/:userId"
+                                       render={(routeProps) =>
+                                           <ChatWindow
+                                               {...routeProps}
+                                               handleDrawerToggle={this.handleDrawerToggle}
+                                               chat={this.messagesStore.getCurrentChat()}
+                                           />}/>
+                                <Route path="/home/chat/group/:chatId"
+                                       render={(routeProps) =>
+                                           <GroupChatWindow
+                                               {...routeProps}
+                                               handleDrawerToggle={this.handleDrawerToggle}
+                                               chat={this.messagesStore.getCurrentChat()}
+                                           />}/>
+                            </div>)
+                            :
+                            (
+                                <Route path={["/home/chat/user/:userId","/home/chat/group/:chatId"]}
+                                       render={(routeProps) => <ChatWindowEmpty/>}/>
+                            )
+                    }
+
                 </main>
             </div>
         );
