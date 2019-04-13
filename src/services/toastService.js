@@ -6,8 +6,8 @@ import MessagePush from "../components/ChatCommon/MessagePush";
 class ToastService {
     toasts = toast;
 
-    toastNewMessage(title, message){
-        this.toast(<MessagePush title={title} message={message}/>);
+    toastNewMessage(title, message, url){
+        this.toast(<MessagePush title={title} message={message} url={url}/>);
     }
 
     toast(component) {

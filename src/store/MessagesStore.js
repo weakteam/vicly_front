@@ -100,10 +100,10 @@ export default class MessagesStore {
         const myselfUserId = this.accountStore.userId;
         // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
         let chat;
-        if (message.chat.chat_type === "user"){
-            let userId = message.chat.user_ids.filter(id=>id!==this.accountStore.userId)[0];
+        if (message.chat.chat_type === "user") {
+            let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
             chat = this.findUserChat(userId)
-        }else{
+        } else {
             let chatId = message.chat.id;
             chat = this.findGroupChat(chatId);
         }
@@ -120,8 +120,9 @@ export default class MessagesStore {
                     this.readMessage(message.id);
                 } else {
                     chat.unread++;
-                    const title = message.chat.chat_type==="user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
-                        toastService.toastNewMessage(title, message);
+                    const title = message.chat.chat_type === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
+                    const url = message.chat.chat_type === "user" ? "/home/chat/user/"+chat.user.id : "/home/chat/group/"+chat.chat.id;
+                    toastService.toastNewMessage(title, message, url);
                 }
             }
         } else {
