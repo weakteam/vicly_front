@@ -47,10 +47,10 @@ class MessagePush extends React.Component {
                     <Grid item xs zeroMinWidth>
                         <Typography variant="body2"
                                     noWrap
-                                    className={classes.userName1}>{"Mock !!!!"}</Typography>
+                                    className={classes.userName1}>{this.props.title}</Typography>
                         <Typography variant="caption"
                                     noWrap
-                                    className={classes.message2}>{message ? message.message : "Нет сообщений"}</Typography>
+                                    className={classes.message2}>{message.message}</Typography>
                     </Grid>
                 </Grid>
             </div>

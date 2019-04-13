@@ -72,7 +72,6 @@ export default class WebsocketService {
         switch (payload.event) {
             case NEW_MESSAGE:
                 this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
-                toastService.toastNewMessage(payload.message.message);
                 break;
             default:
                 break;

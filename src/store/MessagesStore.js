@@ -1,5 +1,6 @@
 import {BACKEND_URL} from "../common";
 import {autorun, observable, reaction, runInAction} from "mobx";
+import toastService from "../services/toastService";
 
 export default class MessagesStore {
     @observable groups = [];
@@ -119,6 +120,8 @@ export default class MessagesStore {
                     this.readMessage(message.id);
                 } else {
                     chat.unread++;
+                    const title = message.chat.chat_type==="user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
+                        toastService.toastNewMessage(title, message);
                 }
             }
         } else {
