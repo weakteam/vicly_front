@@ -11,6 +11,7 @@ export default class AccountStore {
     groupId = null;
     @observable status = "unauthed";
     err_message = "";
+    theme = 'light';
 
     constructor(RootStore) {
         this.fullName = sessionStorage.getItem("fullName");
@@ -20,6 +21,12 @@ export default class AccountStore {
         this.userId = parseInt(sessionStorage.getItem("userId"), 10);
         this.groupId = parseInt(sessionStorage.getItem("groupId"), 10);
         this.login = sessionStorage.getItem("login");
+        let theme = sessionStorage.getItem("theme");
+        if (theme) {
+            this.theme = theme;
+        } else {
+            sessionStorage.setItem("theme", this.theme);
+        }
         if (this.token) {
             this.status = "authed";
         }
@@ -87,5 +94,9 @@ export default class AccountStore {
         this.login = null;
         this.status = "unauthed";
         sessionStorage.clear();
+    }
+
+    setTheme (isLight) {
+        sessionStorage.setItem("theme", isLight ? 'light' : 'dark');
     }
 }

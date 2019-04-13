@@ -5,6 +5,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Divider from "@material-ui/core/es/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
+import Close from "@material-ui/icons/Close"
+import {IconButton} from "@material-ui/core";
 
 const styles = theme => ({
     root: {
@@ -16,7 +18,7 @@ const styles = theme => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
-         borderRadius: 0,
+        borderRadius: 0,
         justifyContent: 'center',
         // padding: 30,
         boxShadow: theme.shadows[0],
@@ -27,35 +29,42 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(90,114,151)'
+            theme.palette.type === 'light' ? '#66a1a6' : 'rgb(90,114,151)'
             }`,
         //height: 85,
         width: '100%',
-        padding: 15,
+        padding: 18,
         display: 'flex',
         alignItems: 'start',
         //borderRadius: '5px 5px 0px 0px',
     },
     header: {
         textAlign: 'start',
-        marginBottom: 20,
         fontSize: '1em',
         marginLeft: 10,
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
             }`,
     },
     fixWidth: {
         marginLeft: 10,
         display: 'flex',
+        alignItems: 'center',
     },
     userName: {
         marginLeft: 10,
     },
     userName1: {
-        //fontSize: '1rem',
+        fontSize: '1.4rem',
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
+            }`,
+        marginBottom: 5,
+    },
+    role: {
+        fontSize: '1rem',
+        color: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#a7b6ce'
             }`,
     },
     message2: {
@@ -104,6 +113,16 @@ const styles = theme => ({
 
         textAlign: 'end',
     },
+    avatar: {
+        width: 75,
+        height: 75,
+    },
+    closeIcon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+        cursor: 'pointer',
+    },
 });
 
 class UserProfile extends React.Component {
@@ -115,22 +134,28 @@ class UserProfile extends React.Component {
         return (
             <div>
                 <div className={classes.headerBlock}>
-                    <div>
-                        <Typography variant="overline" className={classes.header}>
-                            Профиль
-                        </Typography>
+                    <div style={{width: '100%'}}>
+                        <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
+                            <Typography variant="overline" className={classes.header}>
+                                Профиль
+                            </Typography>
+                            <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleMenuClose}>
+                                <Close className={classes.closeIcon}/>
+                            </IconButton>
+
+                        </div>
 
                         <div className={classes.fixWidth}>
                             <Avatar
-                                src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg"
                                 className={classes.avatar}>
+                                AA
                             </Avatar>
                             <div className={classes.userName}>
                                 <Typography variant="h5"
                                             className={classes.userName1}>Вася пупкен</Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.userName1}>(Главный разработчик)</Typography>
+                                            className={classes.role}>(Главный разработчик)</Typography>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid/index';
+import Avatar from '@material-ui/core/Avatar/index';
+import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";

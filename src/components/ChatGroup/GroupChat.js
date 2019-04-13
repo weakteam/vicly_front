@@ -1,18 +1,19 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid/index';
+import Avatar from '@material-ui/core/Avatar/index';
+import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
 import {withRouter} from "react-router-dom";
-import ToastService from '../services/toastService'
+import ToastService from '../../services/toastService'
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
-import MessagePush from "./MessagePush";
-import rootStore from "../store/RootStore";
-import AvatarColor from "../services/AvatarColor"
+import MessagePush from "../ChatCommon/MessagePush";
+import rootStore from "../../store/RootStore";
+import AvatarColor from "../../services/AvatarColor"
+import Group from "@material-ui/icons/Group";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -69,7 +70,7 @@ const styles = theme => ({
 });
 
 @observer
-class Dialog extends React.Component {
+class GroupChat extends React.Component {
 
     constructor(props) {
         super(props);
@@ -77,43 +78,14 @@ class Dialog extends React.Component {
         this.chatsStore = messagesStore;
     }
 
-    getRandomColor = (letter) => {
-        let col = this.colorMap[letter];
-        if (col) {
-            return col;
-        } else {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-    };
-
-    colorMap = {
-        "Р": "#2ab49b",
-        "А": "#d15c17",
-        "И": "#9e72cf"
-
-    };
     handleDialogClick = () => {
-        this.props.history.push(`/home/chat/${this.props.chatId}`);
-        // FIXME comment is fix for url chat page reload dafauck mafuck
-        //this.messagesStore.currentChatId = this.props.chatId;
-        // ToastService.toast(<MessagePush {...this.props}/>);
-        
+        messagesStore.isCurrentChatForUser = true;
+        this.props.history.push(`/home/chat/group/${this.props.chatId}`);
     };
 
     handleDialogClickMob = () => {
-        this.props.history.push(`/home/chat/${this.props.chatId}`);
-        // FIXME comment is fix for url chat page reload dafauck mafuck
-        //this.messagesStore.currentChatId = this.props.chatId;
-        ToastService.toast(<MessagePush {...this.props}/>);
-
+        this.props.history.push(`/home/chat/group/${this.props.chatId}`);
         this.props.handleDrawerToggle();
-        //this.messagesStore.currentChatId = this.props.chatId;
     };
 
     formatDate = (timestamp) => {
@@ -130,19 +102,11 @@ class Dialog extends React.Component {
     };
 
     render() {
-        const {classes, dialog} = this.props;
-        const selected = this.props.chatId === this.chatsStore.currentChatId;
+        const {classes, chatId, chatTitle, lastMessageUser, lastMessage, countUnread, lastMessageDatetime} = this.props;
+        // TODO work ONLY FOR USERS CHATS
+        const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser===false;
 
-        const chatObj = this.messagesStore.findChat(this.props.chatId, "user");
-        let unreadCount=0, lastMessage="";
-        if (chatObj) {
-            unreadCount = chatObj.unread;
-            lastMessage = chatObj.messages.length ? chatObj.messages[chatObj.messages.length-1] : chatObj.last;
-        } else {
-            unreadCount = 0;
-            lastMessage = "";
-        }
-        let colorChange = AvatarColor.getColor(dialog.first_name[0]);
+        let colorChange = AvatarColor.getColor(chatTitle[0]);
         return (
             <div>
                 <Hidden implementation="css" smUp>
@@ -158,7 +122,7 @@ class Dialog extends React.Component {
                             <Grid item md={16}>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
-                                    {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
+                                    {chatTitle[0].toUpperCase()}
                                 </Avatar>
                             </Grid>
 
@@ -167,22 +131,23 @@ class Dialog extends React.Component {
                                             color="secondary"
                                             noWrap
                                             className={classes.userName}>
-                                    {dialog.first_name + " " + dialog.last_name}
+                                    {chatTitle}
                                 </Typography>
+                                <Group className={classes.dialogIco}/>
                                 <Typography variant="caption"
                                             noWrap
                                             className={classes.message}>
-                                    {unreadCount ? lastMessage.message : "Нет сообщений"}
+                                    {lastMessage ? lastMessage : "Нет сообщений"}
                                 </Typography>
                             </Grid>
 
                             <Grid item style={{padding: 0, marginRight: 7,}}>
                                 <Typography
-                                    className={classes.time}>{lastMessage ? this.formatDate(lastMessage.timestamp_post.timestamp) : ""}</Typography>
+                                    className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             {
-                                unreadCount ? (
-                                    <Badge badgeContent={unreadCount} classes={{badge: classes.margin}}/>) : ("")
+                                countUnread ? (
+                                    <Badge badgeContent={countUnread} classes={{badge: classes.margin}}/>) : ("")
                             }
                         </Grid>
                     </ListItem>
@@ -201,7 +166,7 @@ class Dialog extends React.Component {
                             <Grid item md={16}>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
-                                    {dialog.first_name[0].toUpperCase() + dialog.last_name[0].toUpperCase()}
+                                    {chatTitle[0].toUpperCase()}
                                 </Avatar>
                             </Grid>
 
@@ -209,18 +174,18 @@ class Dialog extends React.Component {
                                 <Typography variant="body2"
                                             color="secondary"
                                             noWrap
-                                            className={classes.userName}>{dialog.first_name + " " + dialog.last_name}</Typography>
+                                            className={classes.userName}>{chatTitle}</Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>{unreadCount ? lastMessage.message : "Нет сообщений"}</Typography>
+                                            className={classes.message}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
                             </Grid>
 
                             <Grid item style={{padding: 0, marginRight: 7,}}>
                                 <Typography
-                                    className={classes.time}>{lastMessage ? this.formatDate(lastMessage.timestamp_post.timestamp) : ""}</Typography>
+                                    className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             {
-                                unreadCount ? (<Badge color="secondary" badgeContent={unreadCount}
+                                countUnread ? (<Badge color="secondary" badgeContent={countUnread}
                                                       classes={{badge: classes.margin}}/>) : ("")
                             }
                         </Grid>
@@ -231,6 +196,6 @@ class Dialog extends React.Component {
     }
 }
 
-const styledComponent = withStyles(styles, {withTheme: true})(withRouter(Dialog));
+const styledComponent = withStyles(styles, {withTheme: true})(withRouter(GroupChat));
 
 export default styledComponent;

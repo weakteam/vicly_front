@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChatWindow from "./ChatWindow"
+import ChatWindow from "./ChatUser/ChatWindow"
 import Workgroup from "./Workgroup";
 import SearchBar from "./SearchBar";
 import ProfileIco from "./ProfileIco";
@@ -22,6 +22,7 @@ import Background from '../images/gif.gif';
 //import Button from "@material-ui/core/es/Button/Button";
 import {Item, Menu, MenuProvider} from "react-contexify";
 import rootStore from "../store/RootStore";
+import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -106,7 +107,7 @@ const styles = theme => ({
         flexGrow: 1,
         position: 'static',
         //  flexShrink: 1,
-      //  width: 'auto',
+        //  width: 'auto',
         minHeight: '100vh',
         [theme.breakpoints.down('xs')]: {
             // minHeight: '-webkit-fill-available',
@@ -121,7 +122,7 @@ const styles = theme => ({
         // backgroundImage: 'url(' + Background + ')',
         //  backgroundSize: 'cover',
         //zIndex: 1503,
-       // boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+        // boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
     logo: {
         width: 150,
@@ -195,9 +196,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#a8a8a8' : '#7583a5'
             }`,
     },
-    loader: {
-
-    },
+    loader: {},
 });
 
 @observer
@@ -221,20 +220,22 @@ class Home extends React.Component {
         if (this.messagesStore.groups.length) {
             return this.messagesStore.groups.map(
                 workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
-                                        workgroup={workgroup} chats={
-                    this.messagesStore.userChats.filter(
-                        userChat => userChat.user.group_id === workgroup.id)}/>
+                                        workgroup={workgroup}
+                                        userChats={this.messagesStore.userChats.filter(userChat => userChat.user.group_id === workgroup.id)}
+                                        groupChats={this.messagesStore.groupChats.filter(groupChat => groupChat.chat.group_id === workgroup.id)}/>
             )
 
 
         } else {
             return (
-                <div style={{ display: 'flex',
+                <div style={{
+                    display: 'flex',
                     alignItems: 'center',
                     width: '100%',
                     height: 'calc(100vh - 109px)',
                 }}>
-              {this.state.type === "light" ? <Loader active >Loading</Loader> : <Loader inverted active >Loading</Loader>}
+                    {this.state.type === "light" ? <Loader active>Loading</Loader> :
+                        <Loader inverted active>Loading</Loader>}
                 </div>
             )
         }
@@ -305,7 +306,7 @@ class Home extends React.Component {
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             onOpen={this.handleDrawerToggle}
-                            style={{zIndex:1100}}
+                            style={{zIndex: 1100}}
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
@@ -340,9 +341,16 @@ class Home extends React.Component {
                             <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
                             <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
                         </Menu>*/}
-                    <Route path="/home/chat/:chat_id"
+                    <Route path="/home/chat/user/:userId"
                            render={(routeProps) =>
                                <ChatWindow
+                                   {...routeProps}
+                                   handleDrawerToggle={this.handleDrawerToggle}
+                                   chat={this.messagesStore.getCurrentChat()}
+                               />}/>
+                    <Route path="/home/chat/group/:chatId"
+                           render={(routeProps) =>
+                               <GroupChatWindow
                                    {...routeProps}
                                    handleDrawerToggle={this.handleDrawerToggle}
                                    chat={this.messagesStore.getCurrentChat()}

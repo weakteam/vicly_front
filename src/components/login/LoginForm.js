@@ -29,51 +29,51 @@ const styles = theme => ({
         justifyContent: 'center',
         minHeight: '100vh',
         alignItems: 'center',
-        [theme.breakpoints.down('xs')]: {},
         [theme.breakpoints.down('xs')]: {
             minHeight: '100%',
         },
         backgroundSize: 'cover',
-        backgroundImage: ` ${
-            theme.palette.type === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
-            }`,
+        backgroundImage: 'url(' + Background + ')',
         backgroundColor: theme.palette.primary.main,
     },
     main: {
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.down('xs')]: {
-            width: 300,
+            width: '80%',
         },
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-        },
-        boxShadow: theme.shadows[10],
+        width: 435,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        boxShadow: theme.shadows[12],
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 30,
         boxShadow: theme.shadows[0],
-        paddingBottom: 30,
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+        backgroundColor: '#ffffff00',
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: 15,
+        padding: 30,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            }`,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
     },
     submit: {
-        width: '100%',
+        width: '50%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
+            theme.palette.type === 'light' ? '#66a1a6' : '#2e374c'
             }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#2e374c' : '#3e4b67'
+                theme.palette.type === 'light' ? '#3a6d71' : '#3e4b67'
                 }`,
         },
     },
@@ -107,7 +107,7 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#a9a9a9' : theme.palette.secondary.dark
             }`,
     },
     password: {
@@ -123,16 +123,25 @@ const styles = theme => ({
     checkbox: {
         padding: 0,
         marginLeft: 5,
-        color: ` ${
+        /*color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+            }`,*/
     },
     header: {
         textAlign: 'center',
-        marginBottom: 10,
+        fontSize: '1.6em',
+        padding: 26,
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#ffffff' : theme.palette.secondary.dark
             }`,
+    },
+    headerDiv: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? 'rgba(86, 160, 159, 0.31)' : 'rgba(46, 55, 76, 0.8)'
+            }`,
+        width: '100%',
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
     },
     signIn: {
         display: 'flex',
@@ -149,6 +158,14 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+    },
+    checked: {
+        '&:not($checked)': {
+            color: '#000000',
+        },
+        '&$checked': {
+            color: '#43a296',
+        },
     },
 });
 
@@ -177,12 +194,12 @@ class LoginForm extends React.Component {
         return (
             <div className={classes.root}>
                 <main className={classes.main}>
-                    <Paper
-                        className={classes.paper}>
-                        <Typography variant="h5" className={classes.header}>
-                            Добро пожаловать в Vickly
-                        </Typography>
-                        <Divider/>
+                    <Paper className={classes.paper}>
+                        <div className={classes.headerDiv}>
+                            <Typography variant="h5" className={classes.header}>
+                                Добро пожаловать в Vickly
+                            </Typography>
+                        </div>
                         <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
                             <FormControl required fullWidth>
                                 {/*<InputLabel shrink className={classes.label}>
@@ -213,7 +230,9 @@ class LoginForm extends React.Component {
 
                             <div className={classes.remember}>
                                 <Typography variant="caption" className={classes.label}>Запомнить меня?</Typography>
-                                <Checkbox value="remember" className={classes.checkbox}/>
+                                <Checkbox value="remember" classes={{
+                                    checked: classes.checked
+                                }} className={classes.checkbox}/>
                             </div>
 
                             <div className={classes.signIn}>
@@ -222,14 +241,6 @@ class LoginForm extends React.Component {
                                     variant="contained"
                                     className={classes.submit}>
                                     Войти
-                                </Button>
-                            </div>
-                            <div className={classes.signIn}>
-                                <Button
-                                    type="submit"
-                                    className={classes.submit}
-                                onClick={this.goToInviteLogin}>
-                                    Войти по приглашению
                                 </Button>
                             </div>
                         </form>

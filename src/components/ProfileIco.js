@@ -65,7 +65,9 @@ const styles = theme => ({
 class ProfileIco extends React.Component {
     constructor(props) {
         super(props);
-        this.accountStore = accountStore;
+       // this.accountStore = accountStore;
+        this.messagesStore = messagesStore;
+        this.chatsStore = messagesStore;
     }
 
     state = {
@@ -97,9 +99,10 @@ class ProfileIco extends React.Component {
     };
 
     render() {
-        const {classes, theme} = this.props;
+        const {classes, theme, chat} = this.props;
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
+        let colorChange = AvatarColor.getColor(accountStore.first_name[0]);
 
         return (
             <div className={classes.root}>
@@ -112,7 +115,7 @@ class ProfileIco extends React.Component {
                                     aria-haspopup="true"
                                     onClick={this.handleMenu}
                                     color="secondary">
-                                    <Avatar> {this.props.name} </Avatar>
+                                    <Avatar style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
                                 </IconButton>
 
                                 <Menu
@@ -149,7 +152,7 @@ class ProfileIco extends React.Component {
                                     style={{zIndex: 1200}}>
 
                                     <div style={getModalStyle()} className={classes.paper}>
-                                        <UserProfile {...this.props} />
+                                        <UserProfile handleMenuClose={this.handleMenuClose} />
                                     </div>
 
                                 </Modal>

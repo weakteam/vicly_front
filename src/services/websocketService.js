@@ -69,13 +69,10 @@ export default class WebsocketService {
             console.log("ws pong");
             return;
         }
-        console.log("ws message");
         switch (payload.event) {
             case NEW_MESSAGE:
-                if (payload){
-                    this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
-                    toastService.toastNewMessage(payload.message.message);
-                }
+                this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
+                toastService.toastNewMessage(payload.message.message);
                 break;
             default:
                 break;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MessagePush from "../components/MessagePush";
+import MessagePush from "../components/ChatCommon/MessagePush";
 
 class ToastService {
     toasts = toast;

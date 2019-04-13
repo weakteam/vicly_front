@@ -2,12 +2,12 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import 'typeface-roboto';
-import SendMessageBar from "./SendMessageBar";
-import MessageList from "./MessageList";
-import ChatBar from "./ChatBar";
+import SendMessageBar from "../ChatCommon/SendMessageBar";
+import MessageList from "../ChatCommon/MessageList";
 import {observer} from "mobx-react";
-import rootStore from "../store/RootStore";
+import rootStore from "../../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
+import GroupChatBar from "./GroupChatBar"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -55,7 +55,7 @@ const styles = theme => ({
 });
 
 @observer
-class ChatWindow extends React.Component {
+class GroupChatWindow extends React.Component {
     constructor(props) {
         super(props);
         this.messagesStore = messagesStore;
@@ -71,7 +71,7 @@ class ChatWindow extends React.Component {
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
-        this.messagesStore.postMessage(message.message, this.messagesStore.currentChatId);
+        this.messagesStore.postMessageInGroupChat(message.message, this.props.chat.chat_id);
         this.scrollToBottom();
     };
 
@@ -82,19 +82,6 @@ class ChatWindow extends React.Component {
             this.messageList.current.scrollToEnd();
         }
     };
-
-    componentWillMount() {
-        //this.messagesStore.getAllMessagesByChatId(this.messagesStore.currentChatId);
-    }
-
-    componentWillUpdate(nextProps, nextState, nextContext) {
-        // Need update MessagesStore too
-        // I THINK FIXED
-        // const router_chat_id = parseInt(this.props.match.params.chat_id, 10);
-        // if (router_chat_id !== this.messagesStore.currentChatId) {
-        //     this.messagesStore.currentChatId = router_chat_id;
-        // }
-    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
@@ -118,7 +105,7 @@ class ChatWindow extends React.Component {
             }
             return (
                 <div className={classes.chat}>
-                    <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
+                    <GroupChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
 
                     {
                         messagesStore.messagesLoading ?
@@ -158,6 +145,6 @@ class ChatWindow extends React.Component {
     }
 }
 
-const styledWindow = withStyles(styles, {withTheme: true})(ChatWindow);
+const styledWindow = withStyles(styles, {withTheme: true})(GroupChatWindow);
 
 export default styledWindow;
