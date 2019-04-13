@@ -133,6 +133,7 @@ class Workgroup extends React.Component {
                                             lastMessage={groupChat.last ? groupChat.last.message : null}
                                             lastMessageDatetime={groupChat.last ? groupChat.last.timestamp_post.timestamp: null}
                                             countUnread={groupChat.unread}
+                                            handleDrawerToggle={this.props.handleDrawerToggle}
                                         />
                                     )
                                 }
