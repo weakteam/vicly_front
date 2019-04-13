@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import rootStore from "../store/RootStore";
 import GroupChat from "./ChatGroup/GroupChat";
+import {observer} from "mobx-react";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -41,6 +42,7 @@ const styles = theme => ({
     },
 });
 
+@observer
 class Workgroup extends React.Component {
     state = {
         open: true,

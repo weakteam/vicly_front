@@ -70,7 +70,6 @@ class GroupChatWindow extends React.Component {
 
 
     handleSendMessage = (message) => {
-        console.log("send message!!!");
         this.messagesStore.postMessageInGroupChat(message.message, this.props.chat.chat_id);
         this.scrollToBottom();
     };

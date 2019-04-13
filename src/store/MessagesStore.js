@@ -94,9 +94,16 @@ export default class MessagesStore {
     //TO ONLY WS USING
     addMessageToEnd(message) {
         //TODO for websocket push
-        const myselfUserId = parseInt(this.accountStore.userId, 10);
+        const myselfUserId = this.accountStore.userId;
         // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
-        const chat = this.findChat(message.chat.id);
+        let chat;
+        if (message.chat.chat_type === "user"){
+            let userId = message.chat.user_ids.filter(id=>id!==this.accountStore.userId)[0];
+            chat = this.findUserChat(userId)
+        }else{
+            let chatId = message.chat.id;
+            chat = this.findGroupChat(chatId);
+        }
         // WE MUST ALWAYS FIND CHAT!!!
         if (chat) {
             if (this.accountStore.userId === message.from) {
@@ -113,7 +120,7 @@ export default class MessagesStore {
                 }
             }
         } else {
-            this.updateGroupChat(message.chat.id, message.chat.chat_type, message.chat.unread, message);
+            // TODO FETCH CHAT INFO
         }
     }
 
@@ -288,7 +295,7 @@ export default class MessagesStore {
 
 
     findGroupChat(chatId) {
-        return this.userChats.find(elem => elem.chat_id === chatId);
+        return this.groupChats.find(elem => elem.chat_id === chatId);
     }
 
     findUserChat(userId) {
