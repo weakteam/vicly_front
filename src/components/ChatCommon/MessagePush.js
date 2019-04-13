@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";
+import history from "../../store/history";
+import Button from "@material-ui/core/es/Button/Button";
 
 
 const styles = theme => ({
@@ -27,10 +29,14 @@ const styles = theme => ({
 @observer
 class MessagePush extends React.Component {
 
+    handleClick() {
+        history.push(this.props.url);
+    }
+
     render() {
         const {classes, message} = this.props;
         return (
-            <div className={classes.root}>
+            <div onClick={this.handleClick.bind(this)} className={classes.root}>
                 <Typography variant="h6">Новое сообщение</Typography>
                 <Grid container className={classes.fixWidth}
                       wrap="nowrap"
