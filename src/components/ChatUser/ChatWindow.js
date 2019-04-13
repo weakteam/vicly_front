@@ -117,7 +117,7 @@ class ChatWindow extends React.Component {
                                 <div className={classes.list}>
                                     <MessageList
                                         myselfUser={myselfUser}
-                                        chatUser={chat.user}
+                                        chatUsers={[chat.user]}
                                         messages={messages}
                                         ref={this.messageList}/>
                                 </div>

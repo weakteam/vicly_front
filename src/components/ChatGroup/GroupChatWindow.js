@@ -102,6 +102,7 @@ class GroupChatWindow extends React.Component {
             if (chat) {
                 messages = chat.messages;
             }
+            let users = chat.user_ids.map(id=>this.messagesStore.findUserById(id));
             return (
                 <div className={classes.chat}>
                     <GroupChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
@@ -117,7 +118,7 @@ class GroupChatWindow extends React.Component {
 
                                     <MessageList
                                         myselfUser={myselfUser}
-                                        chatUser={chat.user}
+                                        chatUsers={users}
                                         messages={messages}
                                         ref={this.messageList}/>
                                 </div>

@@ -51,10 +51,11 @@ class MessageList extends React.Component {
 
         const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from === myUserId;//int == string !!!
+            const user = this.props.chatUsers.find(user=>message.from===user.id);
             return (
                 <Message
                     key={i}
-                    userInfo={fromMe ? this.props.myselfUser : this.props.chatUser}
+                    userInfo={fromMe ? this.props.myselfUser : user}
                     message={message.message}
                     messageInfo={message}
                     fromMe={fromMe}/>
