@@ -76,6 +76,7 @@ const styles = theme => ({
         paddingLeft: 10,
         paddingRight: 10,
         maxHeight: 150,
+        height: '20px!important',
     },
 });
 
