@@ -1,5 +1,6 @@
 import {BACKEND_URL} from "../common";
-import {autorun, observable, reaction, runInAction} from "mobx";
+import {autorun, observable, reaction, runInAction, when} from "mobx";
+import toastService from "../services/toastService";
 
 export default class MessagesStore {
     @observable groups = [];
@@ -7,31 +8,27 @@ export default class MessagesStore {
     @observable groupChats = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
+    isCurrentChatForUser = null;
+    @observable chatsFetched = false;
     err_message = "";
     @observable messagesLoading = false;
 
     constructor(RootStore) {
         this.accountStore = RootStore.accountStore;
-        autorun(() => {
-            this.fetchChats();
-        });
+        when(() => this.accountStore.token,
+            () => this.fetchChats(),
+            {fireImmediately: true},
+        );
         reaction(
             () => this.currentChatId,
             (currentChatId) => {
                 if (currentChatId) {
-                    this.loadMessagesByChatId(this.currentChatId, 'user');
-                    const chat = this.userChats.find(elem => elem.chatId === currentChatId);
-                    chat.messages.forEach((elem) => {
-                        if (elem.from !== this.accountStore.userId) {
-                            if (!elem.timestamp_delivery) {
-                                this.deliveryMessage(elem.id, 1, 'user');
-                            }
-                            if (!elem.timestamp_read) {
-                                this.readMessage(elem.id, 'user');
-
-                            }
-                        }
-                    });
+                    // If opened user chat
+                    if (this.isCurrentChatForUser === true) {
+                        this.getAllUserChatMessages(currentChatId);
+                    } else {
+                        this.getAllGroupChatMessages(currentChatId);
+                    }
                 }
             },
             {fireImmediately: true}
@@ -62,16 +59,29 @@ export default class MessagesStore {
             }
             const content = await userListResponse.json();
             runInAction("Update users info", () => {
-                content.with_group
+                this.userChats = content.with_group
                     .flatMap((elem => elem.users))
-                    .forEach(chat => {
-                        this.createChatObject(chat.user, chat.user.id, "user", chat.unread, chat.last);
-                        // this.updateChatInfo(chat.user,chat.user.id, "user", chat.unread, chat.last);
+                    .map(userObject => {
+                        return {
+                            chat_id: userObject.user_chat ? userObject.user_chat.id : null,
+                            user_ids: userObject.user_chat ? userObject.user_chat.user_ids : null,
+                            chat_type: "user",
+                            user: userObject.user,
+                            last: userObject.last,
+                            unread: userObject.unread,
+                            messages: []
+                        }
                     });
-                this.groupChats = content.with_group.flatMap((elem => elem.group_chats));
-                this.groups = content.with_group.map(elem => {
-                    return elem.group;
-                });
+                this.groupChats = content.with_group
+                    .flatMap((elem => elem.group_chats))
+                    .map(groupChatObject => {
+                        groupChatObject.messages = [];
+                        groupChatObject.chat_type = "group";
+                        groupChatObject.user_ids = groupChatObject.chat.user_ids;
+                        return groupChatObject;
+                    });
+                this.groups = content.with_group.map(elem => elem.group);
+                this.chatsFetched = true;
             });
         } catch (err) {
             console.log(err);
@@ -83,47 +93,49 @@ export default class MessagesStore {
     }
 
 
-    async loadMessagesByChatId(chatId, chatType) {
-        // this.messagesLoading = true;
-        const chat = this.findChat(chatId, chatType);
-        const lol = 5;
-        if (chat && chat.messages && chat.messages.length) {
-            console.log("Chatid " + chatId + " already loaded! need to resolve only inreaded messages");
-        } else {
-            await this.getAllMessagesByChatId(chatId, chatType)
-        }
-    }
-
     //@action
     //TO ONLY WS USING
     addMessageToEnd(message) {
         //TODO for websocket push
-        const myselfUserId = parseInt(this.accountStore.userId, 10);
+        const myselfUserId = this.accountStore.userId;
         // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
-        const idChat = message.chat.user_ids.filter(elem=>elem!==this.accountStore.userId)[0];
-        const chat = this.findChat(idChat, message.chat.chat_type);
+        let chat;
+        if (message.chat.chat_type === "user") {
+            let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            chat = this.findUserChat(userId)
+        } else {
+            let chatId = message.chat.id;
+            chat = this.findGroupChat(chatId);
+        }
+        // WE MUST ALWAYS FIND CHAT!!!
         if (chat) {
-            if (chat.chat_type === 'user') {
-                if (this.currentChatId == message.from) {
-                    chat.messages.push(message);
-                    chat.last = message;
-                    this.deliveryMessage(message.id, message.chat.id, 'user');
-                    this.readMessage(message.id, 'user');
+            if (this.accountStore.userId === message.from) {
+                chat.messages.push(message);
+                chat.last = message;
+            } else {
+                chat.messages.push(message);
+                chat.last = message;
+                this.deliveryMessage(message.id, message.chat.id);
+                if ((this.isCurrentChatForUser && this.currentChatId === message.from) || (!this.isCurrentChatForUser && this.currentChatId === message.chat.id)) {
+                    this.readMessage(message.id);
                 } else {
-                    chat.messages.push(message);
                     chat.unread++;
-                    chat.last = message;
-                    this.deliveryMessage(message.id, message.chat.id, 'user');
+                    const title = message.chat.chat_type === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
+                    const url = message.chat.chat_type === "user" ? "/home/chat/user/"+chat.user.id : "/home/chat/group/"+chat.chat.id;
+                    toastService.toastNewMessage(title, message, url);
                 }
             }
         } else {
-            this.updateChatInfo(message.chat.id, message.chat.chat_type, message.chat.unread, message);
+            // TODO FETCH CHAT INFO
         }
     }
 
-    async getAllMessagesByChatId(chatId, chat_type) {
+    async getAllGroupChatMessages(chatId) {
+        //TODO messages loading
+        // this.messagesLoading = true;
+        // this.messagesLoading = false;
         try {
-            const response = await fetch(BACKEND_URL + `/message/chat/${chatId}/user/0`, {
+            const response = await fetch(BACKEND_URL + `/message/chat/group/${chatId}/0`, {
                 method: 'GET',
                 headers: {
                     'Authorization': this.accountStore.token,
@@ -134,17 +146,8 @@ export default class MessagesStore {
                 alert("fetch messages failed")
             }
             let messages = await response.json();
-            let countUnreaded = 0;
-            let lastUnread = null;
-            messages = messages.sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
-            messages.forEach(message => {
-                if (!message.timestamp_read && this.accountStore.userId == message.from) {
-                    countUnreaded++;
-                    lastUnread = message;
-                }
-            });
             runInAction("getAllMessagesById", () => {
-                this.updateChatInfo(chatId, chat_type, countUnreaded, lastUnread, messages);
+                this.updateGroupChat(chatId, messages);
             })
         } catch (err) {
             console.log(err);
@@ -152,44 +155,67 @@ export default class MessagesStore {
         }
     }
 
-    //IT'S MY NAMING STYLE !!!!
-    //@action("updateChatInfo")
-    createChatObject(userObj, chatId, chatType, countUnread, lastUnread, newMessages) {
-        const chat = this.findChat(chatId, chatType);
-        if (!chat) {
-            const newChat = {
-                chatId: chatId,
-                chat_type: chatType,
-                last: lastUnread,
-                unread: countUnread,
-                messages: newMessages || [],
-                user: userObj
-            };
-            this.userChats.push(newChat);
-        }
-    }
-
-    updateChatInfo(chatId, chatType, countUnread, lastUnread, newMessages) {
-        const chat = this.findChat(chatId, chatType);
-        if (chat) {
-            chat.messages = newMessages || chat.messages;
-            chat.last = lastUnread;
-            chat.unread = countUnread;
-        }
-    }
-
-
-    async postMessage(message, toId) {
+    async getAllUserChatMessages(userId) {
+        //TODO messages loading
+        // this.messagesLoading = true;
+        // this.messagesLoading = false;
         try {
-            const response = await fetch(BACKEND_URL + "/message/post", {
+            const response = await fetch(BACKEND_URL + `/message/chat/user/${userId}/0`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': this.accountStore.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                alert("fetch messages failed")
+            }
+            let messages = await response.json();
+            runInAction("getAllMessagesById", () => {
+                this.updateUserChat(userId, messages);
+            })
+        } catch (err) {
+            console.log(err);
+            // return dispatch(setChatList(err))
+        }
+    }
+
+    updateGroupChat(chatId, newMessages) {
+        const chat = this.findGroupChat(chatId);
+        chat.messages = newMessages || chat.messages;
+        chat.last = chat.messages[chat.messages.length - 1];
+        let unread = 0;
+        for (let message of chat.messages) {
+            if (message.from !== this.accountStore.userId && !message.timestamp_read) {
+                unread++;
+            }
+        }
+        chat.unread = unread;
+    }
+
+    updateUserChat(userId, newMessages) {
+        const chat = this.findUserChat(userId);
+        chat.messages = newMessages || chat.messages;
+        chat.last = chat.messages[chat.messages.length - 1];
+        let unread = 0;
+        for (let message of chat.messages) {
+            if (message.from !== this.accountStore.userId && !message.timestamp_read) {
+                unread++;
+            }
+        }
+        chat.unread = unread;
+    }
+
+    async postMessageInGroupChat(message, chatId) {
+        try {
+            const response = await fetch(BACKEND_URL + "/message/postnewchat", {
                 method: 'POST',
                 headers: {
                     'Authorization': this.accountStore.token,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "id": toId,
-                    "type": "user",
+                    "chat_id": chatId,
                     "message": message
                 })
             });
@@ -204,9 +230,31 @@ export default class MessagesStore {
         }
     }
 
-    async deliveryMessage(messageId, chatId, chatType) {
+    async postMessageToUser(message, userId) {
         try {
-            const response = await fetch(BACKEND_URL + "/message/delivery", {
+            const response = await fetch(BACKEND_URL + "/message/postnewuser", {
+                method: 'POST',
+                headers: {
+                    'Authorization': this.accountStore.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "chat_id": userId,
+                    "message": message
+                })
+            });
+            if (!response.ok) {
+                alert("post message failed")
+            }
+        } catch (err) {
+            console.log(err);
+            // return dispatch(setChatList(err))
+        }
+    }
+
+    async deliveryMessage(messageId, chatId) {
+        try {
+            const response = await fetch(BACKEND_URL + "/message/deliverynew", {
                 method: 'POST',
                 headers: {
                     'Authorization': this.accountStore.token,
@@ -221,7 +269,7 @@ export default class MessagesStore {
             if (!response.ok) {
                 console.log("mark delivered message failed")
             }
-            const message = this.findMessage(messageId, chatId, chatType);
+            // const message = this.findMessage(messageId, chatId);
             // message.
         } catch (err) {
             console.log(err);
@@ -229,9 +277,9 @@ export default class MessagesStore {
         }
     }
 
-    async readMessage(messageId, chatType) {
+    async readMessage(messageId) {
         try {
-            const response = await fetch(BACKEND_URL + "/message/read", {
+            const response = await fetch(BACKEND_URL + "/message/readnew", {
                 method: 'POST',
                 headers: {
                     'Authorization': this.accountStore.token,
@@ -239,7 +287,6 @@ export default class MessagesStore {
                 },
                 body: JSON.stringify({
                     "id": messageId,
-                    "chat_type": 'user'
                 })
             });
             if (!response.ok) {
@@ -252,12 +299,13 @@ export default class MessagesStore {
         }
     }
 
-    findChat(chatId, chatType) {
-        if (chatType === "user") {
-            return this.userChats.find(elem => elem.user.id === chatId);
-        } else {
-            console.log("Not ready yet!");
-        }
+
+    findGroupChat(chatId) {
+        return this.groupChats.find(elem => elem.chat_id === chatId);
+    }
+
+    findUserChat(userId) {
+        return this.userChats.find(elem => elem.user.id === userId);
     }
 
     findMessage(messageId, chatId, chatType) {
@@ -265,7 +313,14 @@ export default class MessagesStore {
         chat.messages.find(elem => elem.id === messageId);
     }
 
+    findUserById(userId) {
+        const userChat = this.userChats.find(
+            userChat => userChat.user.id === userId
+        );
+        return userChat ? userChat.user : null;
+    }
+
     getCurrentChat() {
-        return this.findChat(this.currentChatId, "user");
+        return this.isCurrentChatForUser ? this.findUserChat(this.currentChatId) : this.findGroupChat(this.currentChatId);
     }
 }

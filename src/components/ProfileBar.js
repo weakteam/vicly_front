@@ -9,7 +9,7 @@ import rootStore from "../store/RootStore";
 import {Route} from "react-router-dom";
 import InviteForm from "./InviteForm";
 import {Link} from "react-router-dom";
-import ChatWindow from "./ChatWindow";
+import ChatWindow from "./ChatUser/ChatWindow";
 
 const {accountStore} = rootStore;
 
@@ -91,11 +91,9 @@ class ProfileBar extends React.Component {
 
                 <div className={classes.wrap}>
                     <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>
-                    <Typography variant="subtitle1" className={classes.online}>
-                        <Badge color="secondary" classes={{badge: classes.bage}}>
+                        <Badge  classes={{badge: classes.bage}}>
                             Online
                         </Badge>
-                    </Typography>
                 </div>
 
                 <InviteIcon />

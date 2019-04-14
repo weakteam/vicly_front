@@ -13,14 +13,22 @@ import rootStore from "./store/RootStore";
 import history from "./store/history"
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import InviteIcon from "./components/InviteIcon"
-import ChatWindow from "./components/ChatWindow";
+import ChatWindow from "./components/ChatUser/ChatWindow";
 import InviteLogin from "./components/login/InviteLogin";
 
-if (history.location.pathname.startsWith("/home/chat")) {
+if (history.location.pathname.startsWith("/home/chat/user")) {
+    rootStore.messagesStore.isCurrentChatForUser = true;
+    rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+} else if (history.location.pathname.startsWith("/home/chat/group")) {
+    rootStore.messagesStore.isCurrentChatForUser = false;
     rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
 }
 history.listen((location, action) => {
-    if (history.location.pathname.startsWith("/home/chat")) {
+    if (history.location.pathname.startsWith("/home/chat/user")) {
+        rootStore.messagesStore.isCurrentChatForUser = true;
+        rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    }else if (history.location.pathname.startsWith("/home/chat/group")) {
+        rootStore.messagesStore.isCurrentChatForUser = false;
         rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
     }
 });
@@ -68,7 +76,7 @@ const themeOptions = {
             disabled: "rgba(158, 158, 158, 0.68)",
             disabledBackground: "rgba(0, 0, 0, 0.12)",
         },
-        type: "light",
+        type: rootStore.accountStore.theme,
     },
 };
 
@@ -103,6 +111,7 @@ class App extends Component {
 
     changeThemeType() {
         this.setState((prevState) => {
+            rootStore.accountStore.setTheme(!(prevState.themeOpt.palette.type === "light"));
             prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
             return prevState;
         });
@@ -122,7 +131,8 @@ class App extends Component {
                             authStatus ?
                                 (
                                     <Switch>
-                                        <Route   path="/home" render={() => <Home changeThemeType={this.changeThemeType.bind(this)}/>}/>
+                                        <Route path="/home" render={() => <Home
+                                            changeThemeType={this.changeThemeType.bind(this)}/>}/>
                                         <Route render={() => <Redirect to="/home"/>}/>
 
                                     </Switch>
@@ -141,7 +151,7 @@ class App extends Component {
                                 )
                         }
                     </Router>
-                    <ToastContainer position="bottom-right"/>
+                    <div onClick={console.log('q')}>   <ToastContainer position="bottom-right"/> </div>
                 </div>
             </MuiThemeProvider>
         )

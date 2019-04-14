@@ -8,7 +8,7 @@ import MoreVert from '@material-ui/icons/MoreVert'
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
 import Group from '@material-ui/icons/Group';
-import rootStore from "../store/RootStore";
+import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase";
 
 const {accountStore, messagesStore} = rootStore;

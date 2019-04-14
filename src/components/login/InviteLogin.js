@@ -30,47 +30,45 @@ const styles = theme => ({
         justifyContent: 'center',
         minHeight: '100vh',
         alignItems: 'center',
-        [theme.breakpoints.down('xs')]: {},
         [theme.breakpoints.down('xs')]: {
             minHeight: '100%',
         },
         backgroundSize: 'cover',
-        backgroundImage: ` ${
-            theme.palette.type === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
-            }`,
+        /*    backgroundImage: ` ${
+                theme.palette.type === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
+                }`,*/
+        backgroundImage: 'url(' + Background + ')',
         backgroundColor: theme.palette.primary.main,
     },
     main: {
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.down('xs')]: {
-            width: 300,
+            width: '90%',
         },
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-        },
-        boxShadow: theme.shadows[10],
+        width: 450,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        boxShadow: theme.shadows[12],
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 30,
         boxShadow: theme.shadows[0],
-        paddingBottom: 30,
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+        backgroundColor: '#ffffff00',
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
     },
     submit: {
         width: '100%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
+            theme.palette.type === 'light' ? '#66a1a6' : '#2e374c'
             }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#2e374c' : '#3e4b67'
+                theme.palette.type === 'light' ? '#3a6d71' : '#3e4b67'
                 }`,
         },
     },
@@ -106,7 +104,7 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 50,
     },
     inviteBut: {
         display: 'flex',
@@ -127,11 +125,12 @@ const styles = theme => ({
     },
     header: {
         textAlign: 'center',
-        marginBottom: 20,
-        fontSize: '1.5em',
-        marginLeft: 10,
+        //marginBottom: 20,
+        fontSize: '1.6em',
+        // marginLeft: 10,
+        padding: 32,
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#ffffff' : theme.palette.secondary.dark
             }`,
     },
     fixWidth: {
@@ -169,6 +168,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        fontSize: '1.175rem',
         marginBottom: 5,
     },
     block: {
@@ -181,9 +181,21 @@ const styles = theme => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
+        padding: 30,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            }`,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
     },
     textInf: {
         marginBottom: 30,
+        fontSize: '1em',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    textInf2: {
         fontSize: '1em',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
@@ -216,6 +228,21 @@ const styles = theme => ({
     password: {
         marginTop: 10,
     },
+    headerDiv: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? 'rgba(86, 160, 159, 0.71)' : 'rgba(46, 55, 76, 0.8)'
+            }`,
+        width: '100%',
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+    },
+    width: {
+        width: '100%',
+    },
+    display: {
+        display: 'inline-block',
+    },
+
 });
 
 @observer
@@ -240,7 +267,8 @@ class InviteLogin extends React.Component {
         this.getInviteInfo(this.props.match.params.uuid);
     };
 
-    handleSingUp = () => {
+    handleSingUp = (event) => {
+        event.preventDefault();
         this.singUp(this.props.match.params.uuid, this.state.formValues.login, this.state.formValues.password);
     };
 
@@ -249,7 +277,6 @@ class InviteLogin extends React.Component {
         this.history = history;
         this.accountStore = accountStore;
     }
-
 
 
     handleSubmit = (e) => {
@@ -276,7 +303,7 @@ class InviteLogin extends React.Component {
         }
     };
 
-     singUp(uuid, login, password) {
+    singUp(uuid, login, password) {
         try {
             const response = fetch(BACKEND_URL + "/invite/signup", {
                 method: 'POST',
@@ -317,7 +344,7 @@ class InviteLogin extends React.Component {
 
     render() {
         const {classes} = this.props;
-     //   const getInfo = this.getInviteInfo(this.props.match.params.uuid);
+        //   const getInfo = this.getInviteInfo(this.props.match.params.uuid);
         //const pathToRegexp = require(this.props.history);
         //  const keys = [];
         // const regexp = pathToRegexp('/login/invite/:uuid', keys);
@@ -326,105 +353,99 @@ class InviteLogin extends React.Component {
 
             <div className={classes.root}>
                 <main className={classes.main}>
-                    <Paper
-                        className={classes.paper}>
-                        <Typography variant="h5" className={classes.header}>
-                            Добро пожаловать в Vickly {this.props.match.params.uuid}
-                        </Typography>
+                    <Paper className={classes.paper}>
+                        <div className={classes.headerDiv}>
+                            <Typography variant="caption" className={classes.header}>
+                                Добро пожаловать в Vicly
+                            </Typography>
+                        </div>
 
-                        <form className={classes.form}>
+                        <form onSubmit={this.handleSingUp} className={classes.form}>
+                            <Typography variant="overline" className={classes.textInf}>Данные
+                                профиля</Typography>
                             <div>
-                                <Divider/>
-                                <form className={classes.form}>
-                                    <div className={classes.blockForm}>
-                                        <div className={classes.block}>
-                                            <Typography variant="overline" className={classes.textInf}>Данные
-                                                профиля</Typography>
-                                            <div className={classes.infBlock}>
-                                                <Typography variant="h6" className={classes.text}>ФИО:</Typography>
-                                                <Typography variant="h6" className={classes.text2}>{ this.state.inviteInfo ? (this.state.inviteInfo.first_name + ' ' + this.state.inviteInfo.last_name) : ('rtr')}</Typography>
-                                            </div>
-                                            <Divider/>
-                                            <div className={classes.infBlock}>
-                                                <Typography variant="h6"
-                                                            className={classes.text}>Должность:</Typography>
-                                                <Typography variant="h6" className={classes.text2}>Старший
-                                                    программист</Typography>
-                                            </div>
-                                            <Divider/>
-                                            <div className={classes.infBlock}>
-                                                <Typography variant="h6" className={classes.text}>Рабочие
-                                                    группы:</Typography>
-                                                <div className={classes.text2}>
-                                                    <Typography variant="h6"
-                                                                className={classes.text2}>Бухгалтерия</Typography>
-                                                    <Typography variant="h6"
-                                                                className={classes.text2}>Разработка</Typography>
-                                                </div>
-                                            </div>
-                                            <Divider/>
 
-                                            <div className={classes.infBlock}>
-                                                <Typography variant="h6" className={classes.text}>Придумайте логин и
-                                                    пароль</Typography>
-                                            </div>
-                                            <Divider/>
+                                <div className={classes.block}>
 
-                                            <FormControl required fullWidth>
-                                                {/*<InputLabel shrink className={classes.label}>
-                                    <Typography variant="subtitle1" className={classes.text}>Логин</Typography>
-                                </InputLabel>*/}
-                                                <InputBase
-                                                    id="login"
-                                                    name="login"
-                                                    placeholder="Логин"
-                                                    type="login"
-                                                    value={this.state.formValues["login"]}
-                                                    onChange={this.handleChange1.bind(this)}
-                                                    classes={{input: classes.active}}
-                                                />
-                                            </FormControl>
-
-                                            <FormControl required fullWidth className={classes.password}>
-                                                {/*<InputLabel shrink className={classes.label}>
-                                    <Typography variant="subtitle1 ">Пароль</Typography>
-                                </InputLabel>*/}
-                                                <InputBase
-                                                    id="password"
-                                                    name="password"
-                                                    type="password"
-                                                    value={this.state.formValues["password"]}
-                                                    onChange={this.handleChange1.bind(this)}
-                                                    placeholder="Пароль"
-                                                    classes={{
-                                                        input: classes.active
-                                                    }}/>
-                                            </FormControl>
-                                            {this.props.uuid}
-                                            <div className={classes.signIn}>
-                                                <Button
-                                                    className={classes.submit}
-                                                    onClick={this.handleSingUp}>
-                                                    Войти по приглашению
-                                                </Button>
-
-                                                <Button
-                                                    type="submit"
-                                                    className={classes.submit}
-                                                    onClick={this.goToInviteLogin}>
-                                                    fff
-                                                </Button>
-
-
-                                                <Button variant={"contained"}
-                                                        onClick={this.handleGetInviteInfo}>lol</Button>
-
-                                                {this.state.formValues.login}
-                                                {this.state.formValues.password}
-                                            </div>
+                                    <div className={classes.infBlock}>
+                                        <Typography className={classes.text}>ФИО:</Typography>
+                                        <Typography
+                                            className={classes.text2}>{this.state.inviteInfo ? (this.state.inviteInfo.first_name + ' ' + this.state.inviteInfo.last_name) : ('')}</Typography>
+                                    </div>
+                                    <Divider/>
+                                    <div className={classes.infBlock}>
+                                        <Typography className={classes.text}>Должность:</Typography>
+                                        <Typography className={classes.text2}>Старший
+                                            программист</Typography>
+                                    </div>
+                                    <Divider/>
+                                    <div className={classes.infBlock}>
+                                        <Typography className={classes.text}>Рабочие
+                                            группы:</Typography>
+                                        <div className={classes.text2}>
+                                            <Typography className={classes.text2}>Бухгалтерия</Typography>
+                                            <Typography className={classes.text2}>Разработка</Typography>
                                         </div>
                                     </div>
-                                </form>
+                                    <Divider/>
+
+                                    <div className={classes.infBlock}>
+                                        <Typography variant="overline" className={classes.textInf2}>Придумайте логин и
+                                            пароль</Typography>
+                                    </div>
+
+                                    <div style={{width: '100%', textAlign: 'center'}}>
+                                        <FormControl required fullWidth
+                                                     classes={{
+                                                         root: classes.display,
+                                                     }}>
+                                            {/*<InputLabel shrink className={classes.label}>
+                                    <Typography variant="subtitle1" className={classes.text}>Логин</Typography>
+                                </InputLabel>*/}
+                                            <InputBase
+                                                id="login"
+                                                name="login"
+                                                placeholder="Логин"
+                                                type="login"
+                                                value={this.state.formValues["login"]}
+                                                onChange={this.handleChange1.bind(this)}
+                                                classes={{
+                                                    input: classes.active,
+                                                    root: classes.width
+                                                }}
+                                            />
+                                        </FormControl>
+
+                                        <FormControl required
+                                                     fullWidth
+                                            //className={classes.password}
+                                                     classes={{
+                                                         root: classes.display,
+                                                     }}>
+                                            {/*<InputLabel shrink className={classes.label}>
+                                    <Typography variant="subtitle1 ">Пароль</Typography>
+                                </InputLabel>*/}
+                                            <InputBase
+                                                id="password"
+                                                name="password"
+                                                type="password"
+                                                value={this.state.formValues["password"]}
+                                                onChange={this.handleChange1.bind(this)}
+                                                placeholder="Пароль"
+                                                classes={{
+                                                    input: classes.active,
+                                                    root: classes.width
+                                                }}/>
+                                        </FormControl>
+                                    </div>
+                                    <div className={classes.signIn}>
+                                        <Button
+                                            type="submit"
+                                            className={classes.submit}>
+                                            Зарегистрироваться
+                                        </Button>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </Paper>

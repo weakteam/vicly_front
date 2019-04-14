@@ -6,7 +6,6 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import InviteForm from "./InviteForm";
 import history from "../store/history"
 import rootStore from "../store/RootStore";
-
 const {accountStore, messagesStore} = rootStore;
 
 function getModalStyle() {
@@ -83,11 +82,13 @@ class InviteIcon extends React.Component {
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
+                    borderColor={'red.500'}
+                    border={5}
                     open={this.state.open}
                     onClose={this.handleClose}
                     style={{zIndex: 1200}}>
                     <div style={getModalStyle()} className={classes.paper}>
-                        <InviteForm   style={{zIndex: 1201}} />
+                        <InviteForm style={{zIndex: 1201}} />
                     </div>
                 </Modal>
             </div>

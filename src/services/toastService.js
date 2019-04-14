@@ -1,13 +1,13 @@
 import React from 'react';
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MessagePush from "../components/MessagePush";
+import MessagePush from "../components/ChatCommon/MessagePush";
 
 class ToastService {
     toasts = toast;
 
-    toastNewMessage(message){
-        this.toast(<MessagePush message={message}/>);
+    toastNewMessage(title, message, url){
+        this.toast(<MessagePush title={title} message={message} url={url}/>);
     }
 
     toast(component) {
@@ -18,7 +18,7 @@ class ToastService {
                 hideProgressBar: true,
                 draggable: true,
                 // Close directly after the enter transition
-                autoClose: 2000,
+                autoClose: 120 * 10000,
 
             }
         );

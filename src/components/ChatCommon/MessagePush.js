@@ -1,10 +1,12 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid/index';
+import Avatar from '@material-ui/core/Avatar/index';
+import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";
+import history from "../../store/history";
+import Button from "@material-ui/core/es/Button/Button";
 
 
 const styles = theme => ({
@@ -27,10 +29,14 @@ const styles = theme => ({
 @observer
 class MessagePush extends React.Component {
 
+    handleClick() {
+        history.push(this.props.url);
+    }
+
     render() {
         const {classes, message} = this.props;
         return (
-            <div className={classes.root}>
+            <div onClick={this.handleClick.bind(this)} className={classes.root}>
                 <Typography variant="h6">Новое сообщение</Typography>
                 <Grid container className={classes.fixWidth}
                       wrap="nowrap"
@@ -47,10 +53,10 @@ class MessagePush extends React.Component {
                     <Grid item xs zeroMinWidth>
                         <Typography variant="body2"
                                     noWrap
-                                    className={classes.userName1}>{"Mock !!!!"}</Typography>
+                                    className={classes.userName1}>{this.props.title}</Typography>
                         <Typography variant="caption"
                                     noWrap
-                                    className={classes.message2}>{message ? message.message : "Нет сообщений"}</Typography>
+                                    className={classes.message2}>{message.message}</Typography>
                     </Grid>
                 </Grid>
             </div>

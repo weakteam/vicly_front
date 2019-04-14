@@ -58,7 +58,7 @@ const styles = theme => ({
         marginTop: 15,
     },
     submit: {
-        width: 300,
+        width: '100%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#74ada6' : '#2e374c'
@@ -170,6 +170,8 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        padding: 0,
+        paddingTop: 20
     },
     labelRoot: {
         color: ` ${
@@ -213,7 +215,7 @@ class InviteForm extends React.Component {
             patronymic: '',
             role: '',
         },
-
+        err: false,
         inviteId: null,
     };
 
@@ -256,34 +258,32 @@ class InviteForm extends React.Component {
     };
 
     createInvite(name, surname, role) {
-        try {
-            const response = fetch(BACKEND_URL + "/invite", {
-                method: 'POST',
-                headers: {
-                    'Authorization': this.accountStore.token,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    first_name: name,
-                    last_name: surname,
-                    role_id: role,
-                })
+        fetch(BACKEND_URL + "/invite", {
+            method: 'POST',
+            headers: {
+                'Authorization': this.accountStore.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: name,
+                last_name: surname,
+                role_id: role,
             })
-                .then(response => response.json())
-                .then(json => {
-                    this.setState({
-                        inviteId: json
-                    })
+        })
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    inviteId: json
                 });
-            console.log(this.accountStore.token);
-            if (!response.ok) {
+                console.log("Invite created");
+                this.handleChangeStep();
+            })
+            .catch((err) => {
+                this.setState({
+                    err: true,
+                });
                 console.log("Invite doesn't created")
-            } else {
-                console.log("Invite created")
-            }
-        } catch (err) {
-            console.log(err);
-        }
+            });
     }
 
 
@@ -297,9 +297,10 @@ class InviteForm extends React.Component {
     };
 
 
-    handleClick = () => {
+    handleClick = (event) => {
+        event.preventDefault();
         this.createInvite(this.state.formValues.name, this.state.formValues.surname, this.state.formValues.role);
-        this.handleChangeStep()
+
     };
 
     firstStepForm = () => {
@@ -449,6 +450,13 @@ class InviteForm extends React.Component {
                             <Button type="submit" variant="contained" className={classes.submit}>Пригласить</Button>
                         </div>
                     </form>
+                    {
+                        this.state.err ?
+                            (
+                                <Typography color={"error"}>ERRRRRRRRROOOOOOOOOOOOOOOOOOOOOR</Typography>
+                            ) : ""
+                    }
+
                 </Paper>
             </div>
         )
@@ -458,8 +466,11 @@ class InviteForm extends React.Component {
         const {classes, theme,} = this.props;
         return (
             <div>
-                <Typography variant="h6" className={classes.text}>Ссылка для приглашения:
-                    http://localhost:3000/login/invite/{this.state.inviteId != null ? this.state.inviteId.invite_id : '' }</Typography>
+                <div style={{display: 'flex'}}>
+                    <Typography variant="h6" className={classes.text}>Ссылка для приглашения: </Typography>
+                    <Typography
+                        variant="caption"> http://localhost:3000/login/invite/{this.state.inviteId != null ? this.state.inviteId.invite_id : ''}</Typography>
+                </div>
                 <div className={classes.signIn}>
                     <Button variant="contained" className={classes.submit}
                             onClick={this.handleReset}>Новый инвайт</Button>
@@ -502,9 +513,6 @@ class InviteForm extends React.Component {
                         })
                     }
                 </Stepper>
-
-   
-
 
 
             </div>
