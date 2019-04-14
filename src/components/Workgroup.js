@@ -11,6 +11,8 @@ import Divider from "@material-ui/core/es/Divider/Divider";
 import rootStore from "../store/RootStore";
 import GroupChat from "./ChatGroup/GroupChat";
 import {observer} from "mobx-react";
+import Badge from "@material-ui/core/Badge";
+import Loyalty from "@material-ui/icons/Loyalty"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -22,13 +24,13 @@ const styles = theme => ({
     },
     text: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
         fontSize: '0.9rem'
     },
     icon: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
     },
     root: {
@@ -39,6 +41,24 @@ const styles = theme => ({
     gutters: {
         paddingTop: 6,
         paddingBottom: 6,
+    },
+
+    badge: {
+        marginLeft: 10,
+    },
+    workgroupName: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    WorkGroupBack: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#2b3346'
+            }`,
+        borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            }`,
+
+        marginBottom: 3
     },
 });
 
@@ -59,26 +79,13 @@ class Workgroup extends React.Component {
 
     workGroupColor = (letter) => {
         let col = this.colorMap[letter];
-        let back = this.colorMapBack[letter];
         if (col) return col;
-        if (back) return col;
-    };
-    workGroupColorBack = (letter) => {
-        let back = this.colorMapBack[letter];
-        if (back) return back;
     };
 
     colorMap = {
-        "t": "#005b92",
-        "Б": "#546e7a",
+        "t": "#009bed",
+        "Б": "#6aa8b4",
         "И": "#9e72cf"
-
-    };
-
-    colorMapBack = {
-        "t": "#003559",
-        "Б": "#33434d",
-        "И": "#7551a1"
 
     };
 
@@ -87,18 +94,19 @@ class Workgroup extends React.Component {
         const lol = workgroup.name;
         let wcolor = lol.charAt(0);
         let colorName = this.workGroupColor(wcolor);
-        let colorBack = this.workGroupColorBack(wcolor);
 
         return (
-            <div>
-                <ListItem button onClick={this.handleClick} className={classes.groupName}
-                          style={{backgroundColor: `${colorName}`}}>
+            <div className={classes.WorkGroupBack}>
+                <ListItem button onClick={this.handleClick} className={classes.groupName}>
                     <ListItem disableGutters classes={{
                         root: classes.gutters,
                     }}>
-                        <Typography variant='h6' className={classes.text}>
-                            {workgroup.name}
-                        </Typography>
+                        <div className={classes.workgroupName}>
+                            <Typography variant='button' className={classes.text}>
+                                {workgroup.name}
+                            </Typography>
+                            <Loyalty style={{color: `${colorName}`}} className={classes.badge}/>
+                        </div>
                     </ListItem>
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
@@ -131,7 +139,7 @@ class Workgroup extends React.Component {
                                             chatTitle={groupChat.chat.name}
                                             lastMessageUser={lastMessageUsername}
                                             lastMessage={groupChat.last ? groupChat.last.message : null}
-                                            lastMessageDatetime={groupChat.last ? groupChat.last.timestamp_post.timestamp: null}
+                                            lastMessageDatetime={groupChat.last ? groupChat.last.timestamp_post.timestamp : null}
                                             countUnread={groupChat.unread}
                                             handleDrawerToggle={this.props.handleDrawerToggle}
                                         />
@@ -141,7 +149,7 @@ class Workgroup extends React.Component {
                         }
                     </List>
                 </Collapse>
-                {/* <Divider classes={{root: classes.root}}/>*/}
+               {/* <Divider classes={{root: classes.root}}/>*/}
             </div>
         )
     }

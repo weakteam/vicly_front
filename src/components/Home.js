@@ -15,15 +15,13 @@ import InviteIcon from "./InviteIcon";
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import Typography from "@material-ui/core/es/Typography/Typography";
-import Background from '../images/gif.gif';
-
-//import Button from "@material-ui/core/es/Button/Button";
-import {Item, Menu, MenuProvider} from "react-contexify";
 import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatWindowEmpty";
+import CircularProgress from "@material-ui/core/CircularProgress";
+//import Background from '../images/gif.gif';
+//import {Item, Menu, MenuProvider} from "react-contexify";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -99,30 +97,26 @@ const styles = theme => ({
 
     workG: {
         [theme.breakpoints.down('xs')]: {
-            marginTop: 105,
+            marginTop: 110,
         },
-        marginTop: 109,
+        marginTop: 130,
         padding: 0,
+        marginBottom: 70
     },
     content: {
+        minHeight: '-webkit-fill-available',
         flexGrow: 1,
-        position: 'static',
-        //  flexShrink: 1,
-        //  width: 'auto',
-        minHeight: '100vh',
-        [theme.breakpoints.down('xs')]: {
-            // minHeight: '-webkit-fill-available',
-            zIndex: 1,
-        },
-        borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            }`,
+        right: 0,
+        left: 0,
+        bottom: 0,
+        top: 0,
+        flexShrink: 1,
+        width: 'auto',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
         // backgroundImage: 'url(' + Background + ')',
         //  backgroundSize: 'cover',
-        //zIndex: 1503,
         // boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
     },
     logo: {
@@ -163,7 +157,11 @@ const styles = theme => ({
         marginLeft: 'auto',
     },
     load: {
-        marginTop: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+        height: '-webkit-fill-available',
     },
     icon: {
         color: ` ${
@@ -218,6 +216,7 @@ class Home extends React.Component {
     };
 
     workgroups() {
+        const {classes} = this.props;
         if (this.messagesStore.groups.length) {
             return this.messagesStore.groups.map(
                 workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
@@ -229,14 +228,11 @@ class Home extends React.Component {
 
         } else {
             return (
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    height: 'calc(100vh - 109px)',
-                }}>
-                    {this.state.type === "light" ? <Loader active>Loading</Loader> :
-                        <Loader inverted active>Loading</Loader>}
+                <div className={classes.load}>
+                        <div style={{textAlign: "center"}}>
+                            <CircularProgress/>
+                            <Typography variant="overline" className={classes.text}>Загрузка</Typography>
+                        </div>
                 </div>
             )
         }
@@ -332,7 +328,7 @@ class Home extends React.Component {
                 </nav>
 
                 <main className={classes.content}>
-                    <div className={classes.toolbar}/>
+                    {/*   <div className={classes.toolbar}/>*/}
                     {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
                     {/*<MenuProvider id={"menu_id"}>
                             Это ниработает лол
@@ -362,11 +358,11 @@ class Home extends React.Component {
                             </div>)
                             :
                             (
-                                <Route path={["/home/chat/user/:userId","/home/chat/group/:chatId"]}
+                                <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}
                                        render={(routeProps) => <ChatWindowEmpty/>}/>
                             )
                     }
-
+                    {/*   <div style={{height: 60}}/>*/}
                 </main>
             </div>
         );

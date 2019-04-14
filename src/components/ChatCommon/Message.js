@@ -9,10 +9,10 @@ import AvatarColor from "../../services/AvatarColor"
 
 const styles = theme => ({
     root: {
-        margin: '0px 0px 15px 25px',
+        paddingBottom: 20,
     },
     rootMob: {
-        margin: '0px 25px 15px 0px',
+        paddingBottom: 20,
         display: 'flex',
         justifyContent: 'flex-end',
     },
@@ -84,10 +84,10 @@ const styles = theme => ({
     },
     wrap: {
         maxWidth: 500,
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('xs')]: {
             maxWidth: 300,
         },
         padding: 11,

@@ -1,6 +1,6 @@
 import React from 'react';
 import Message from './Message';
-import '../../css/MessageList.css'
+//import '../../css/MessageList.css'
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
 
@@ -13,9 +13,9 @@ const styles = theme => ({
         flexWrap: 'wrap'
     },
     listMessages: {
-        marginLeft: 40,
-        marginBottom: 205,
-        marginTop: 23,
+        //marginLeft: 40,
+       // marginBottom: 205,
+       // marginTop: 23,
     },
     chip: {
         margin: theme.spacing.unit,
@@ -64,11 +64,13 @@ class MessageList extends React.Component {
 
         return (
             <div>
-                <div id='messageList'>
+                <div>
                     {messages}
                 </div>
                 <div ref={this.messagesEnd}/>
             </div>
+
+
         );
     }
 }

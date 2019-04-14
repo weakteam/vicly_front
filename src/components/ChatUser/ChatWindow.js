@@ -8,23 +8,10 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
+import ChatWindowEmpty from "../ChatCommon/ChatWindowEmpty";
 
 const {accountStore, messagesStore} = rootStore;
-
-
 const styles = theme => ({
-    button: {
-        margin: theme.spacing.unit,
-    },
-    leftIcon: {
-        marginRight: theme.spacing.unit,
-    },
-    rightIcon: {
-        marginLeft: theme.spacing.unit,
-    },
-    iconSmall: {
-        fontSize: 20,
-    },
     emptyChat: {
         top: 40,
         bottom: 0,
@@ -38,20 +25,17 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    empty: {},
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
     },
-    list: {
+    chatWindow: {
+        padding: '70px 0 60px 20px',
         [theme.breakpoints.down('xs')]: {
-            paddingTop: 65,
+            padding: '123px 5px 60px 20px',
         },
-        paddingTop: 6,
-        paddingBottom: 55,
     },
-
 });
 
 @observer
@@ -63,11 +47,9 @@ class ChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-
     componentDidMount() {
         console.log("componentDidMount chatWindow");
     }
-
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
@@ -104,23 +86,18 @@ class ChatWindow extends React.Component {
                 messages = chat.messages;
             }
             return (
-                <div className={classes.chat}>
+                <div className={classes.chatWindow}>
                     <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
-
                     {
                         messagesStore.messagesLoading ?
                             (
                                 <Loader active inverted>Loading</Loader>
-                            )
-                            :
-                            chat && messages && messages.length > 0 ? (
-                                <div className={classes.list}>
-                                    <MessageList
-                                        myselfUser={myselfUser}
-                                        chatUsers={[chat.user]}
-                                        messages={messages}
-                                        ref={this.messageList}/>
-                                </div>
+                            ) : chat && messages && messages.length > 0 ? (
+                                <MessageList
+                                    myselfUser={myselfUser}
+                                    chatUsers={[chat.user]}
+                                    messages={messages}
+                                    ref={this.messageList}/>
                             ) : (
                                 <div className={classes.emptyChat}>
                                     <Typography className={classes.text} variant="h5">История сообщения
@@ -128,22 +105,14 @@ class ChatWindow extends React.Component {
                                 </div>
                             )
                     }
-
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
         } else {
-            return (
-                <div className={classes.emptyChat}>
-                    <div className={classes.empty}>
-                        <Typography variant="h5" className={classes.text}>Выберите диалог...</Typography>
-                    </div>
-                </div>
-            );
+            return (<ChatWindowEmpty />);
         }
     }
 }
 
 const styledWindow = withStyles(styles, {withTheme: true})(ChatWindow);
-
 export default styledWindow;

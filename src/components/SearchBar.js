@@ -28,7 +28,7 @@ const styles = theme => ({
         position: "fixed",
         alignItems: 'center',
         height: 55,
-        top: 55,
+        top: 76,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
