@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import InviteForm from "./InviteForm";
 import history from "../store/history"
 import rootStore from "../store/RootStore";
+
 const {accountStore, messagesStore} = rootStore;
 
 function getModalStyle() {
@@ -23,21 +24,21 @@ const styles = theme => ({
     root: {
         alignSelf: 'center',
         marginLeft: 'auto',
-        zIndex: 1000,
+        //    zIndex: 1000,
     },
     paper: {
         position: 'absolute',
         borderRadius: 5,
         padding: 30,
         [theme.breakpoints.down('xs')]: {
-            width: '90%',
+            width: '80%',
         },
         width: 585,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,
         boxShadow: theme.shadows[5],
-       // padding: theme.spacing.unit * 4,
+        // padding: theme.spacing.unit * 4,
     },
     textField: {
         width: '-webkit-fill-available',
@@ -50,6 +51,9 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
             }`,
+    },
+    rootIndex: {
+        zIndex: 1300,
     },
 });
 
@@ -86,15 +90,19 @@ class InviteIcon extends React.Component {
                     border={5}
                     open={this.state.open}
                     onClose={this.handleClose}
-                    style={{zIndex: 1200}}>
+                    classes={{
+                        root: classes.rootIndex,
+                    }}
+                >
                     <div style={getModalStyle()} className={classes.paper}>
-                        <InviteForm style={{zIndex: 1201}} />
+                        <InviteForm handleClose={this.handleClose}/>
                     </div>
                 </Modal>
             </div>
         );
     }
 }
+
 // We need an intermediary variable for handling the recursive nesting.
 const SimpleModalWrapped = withStyles(styles)(InviteIcon);
 export default SimpleModalWrapped;

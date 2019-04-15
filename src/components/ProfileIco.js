@@ -35,7 +35,7 @@ const styles = theme => ({
     paper: {
         position: 'absolute',
         [theme.breakpoints.down('xs')]: {
-            width: '96%',
+            width: '90%',
         },
         width: 500,
         backgroundColor: ` ${
@@ -149,7 +149,7 @@ class ProfileIco extends React.Component {
                                     aria-describedby="simple-modal-description"
                                     open={this.state.open}
                                     onClose={this.handleMenuClose}
-                                    style={{zIndex: 1200}}>
+                                    style={{zIndex: 1303}}>
 
                                     <div style={getModalStyle()} className={classes.paper}>
                                         <UserProfile handleMenuClose={this.handleMenuClose} />

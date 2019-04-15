@@ -56,7 +56,7 @@ const styles = theme => ({
         borderTopRightRadius: 5,
     },
     form: {
-        width: '100%', // Fix IE 11 issue.
+      //  width: '100%', // Fix IE 11 issue.
         padding: 30,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'

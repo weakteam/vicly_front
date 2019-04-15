@@ -35,11 +35,11 @@ const styles = theme => ({
     fromMe: {
         boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
         maxWidth: 500,
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: 300,
-        },
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
+        },
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 250,
         },
         padding: 11,
         backgroundColor: '#d5f0ff',
@@ -99,7 +99,14 @@ const styles = theme => ({
         boxShadow: `${fade('#ef0511', 0.25)} 0 0 0 0.2rem`,
         border: '1px solid #000',
     },
-    mess: {},
+    mess: {
+        fontSize: '0.8rem'
+    },
+    senderName: {
+        minWidth: 'max-content',
+        fontWeight: 500,
+        color: '#2176a5'
+    },
 });
 
 function handleDelete() {
@@ -149,16 +156,15 @@ class Message extends React.Component {
         const {classes} = this.props;
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
-
-        let kek;
+        let mobileMessage;
 
         if (fromMe) {
-            kek = <div className={classes.messageBlock}>
+            mobileMessage = <div className={classes.messageBlock}>
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
-                            style={{minWidth: 'max-content'}}>Я</Typography>
+                            className={classes.senderName}>Я</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -171,7 +177,7 @@ class Message extends React.Component {
                 </div>
             </div>
         } else {
-            kek = <div className={classes.messageBlock}>
+            mobileMessage = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
                     <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
                         {this.props.userInfo.first_name[0].toUpperCase()}
@@ -181,7 +187,7 @@ class Message extends React.Component {
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
-                            style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                            className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                         <Typography variant="caption"
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
@@ -211,11 +217,11 @@ class Message extends React.Component {
                                         fromMe ?  (
                                             <Typography
                                             variant="body2"
-                                            style={{minWidth: 'max-content'}}>Я</Typography>
+                                            className={classes.senderName}>Я</Typography>
                                         ) : (
                                             <Typography
                                                 variant="body2"
-                                                style={{minWidth: 'max-content'}}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                                className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                                         )
                                     }
 
@@ -230,7 +236,7 @@ class Message extends React.Component {
 
                 <Hidden mdUp implementation="css">
                     <div className={fromMe ? classes.rootMob : classes.root}>
-                        {kek}
+                        {mobileMessage}
                     </div>
                 </Hidden>
 

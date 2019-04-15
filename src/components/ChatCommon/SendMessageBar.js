@@ -15,10 +15,10 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
         borderTop: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
         borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
         left: 400,
         [theme.breakpoints.down('md')]: {

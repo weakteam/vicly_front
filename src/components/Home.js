@@ -20,6 +20,7 @@ import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatWindowEmpty";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Select from "@material-ui/core/Select";
 //import Background from '../images/gif.gif';
 //import {Item, Menu, MenuProvider} from "react-contexify";
 
@@ -71,9 +72,9 @@ const styles = theme => ({
     },
 
     appBar: {
-        zIndex: 1162,
+       zIndex: 1300,
         borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
         height: 55,
         boxShadow: theme.shadows[0],
@@ -104,6 +105,7 @@ const styles = theme => ({
         marginBottom: 70
     },
     content: {
+        zIndex: 1201,
         minHeight: '-webkit-fill-available',
         flexGrow: 1,
         right: 0,
@@ -112,12 +114,16 @@ const styles = theme => ({
         top: 0,
         flexShrink: 1,
         width: 'auto',
+        boxShadow: '10px 0px 20px 20px rgba(0, 0, 0, 0.06)',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            }`,
         // backgroundImage: 'url(' + Background + ')',
         //  backgroundSize: 'cover',
-        // boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+
     },
     logo: {
         width: 150,
@@ -137,7 +143,7 @@ const styles = theme => ({
         position: 'fixed',
         top: 0,
 
-        zIndex: 1000
+      //  zIndex: 1000
     },
     emptyChat: {
         top: 40,
@@ -179,23 +185,26 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
-        zIndex: 400,
+       // zIndex: 400,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 55,
+        height: 59,
         bottom: 0,
         position: 'fixed',
-        backgroundColor: ` ${
+       /* backgroundColor: ` ${
             theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
-            }`,
+            }`,*/
     },
     logoText: {
         color: ` ${
-            theme.palette.type === 'light' ? '#a8a8a8' : '#7583a5'
+            theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'
             }`,
     },
     loader: {},
+    rootIndex: {
+        zIndex: 1299,
+    },
 });
 
 @observer
@@ -303,13 +312,14 @@ class Home extends React.Component {
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             onOpen={this.handleDrawerToggle}
-                            style={{zIndex: 1100}}
+                        //    style={{zIndex: 1100}}
                             classes={{
                                 paper: classes.drawerPaper,
+                                root: classes.rootIndex,
                             }}
-                            ModalProps={{
+                           /* ModalProps={{
                                 keepMounted: true, // Better open performance on mobile.
-                            }}
+                            }}*/
                         >
                             {drawer}
                         </Drawer>
@@ -364,6 +374,7 @@ class Home extends React.Component {
                     }
                     {/*   <div style={{height: 60}}/>*/}
                 </main>
+
             </div>
         );
     }

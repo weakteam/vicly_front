@@ -29,6 +29,7 @@ const styles = theme => ({
         padding: 'unset'
     },
     margin: {
+        zIndex: 0,
         top: 41,
         right: 17,
         backgroundColor: ` ${

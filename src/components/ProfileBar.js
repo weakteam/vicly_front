@@ -26,7 +26,7 @@ const styles = theme => ({
             width: '100%',
         },
         padding: '6px 0px 6px 0px',
-        zIndex: 2000,
+       zIndex: 1,
         position: 'fixed',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
@@ -98,7 +98,7 @@ class ProfileBar extends React.Component {
                 <div className={classes.wrap}>
                     <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>
                         <Badge  classes={{badge: classes.bage}}>
-                            <div className={classes.text}> online </div>
+                            <Typography className={classes.text}> online </Typography>
                         </Badge>
                 </div>
 
