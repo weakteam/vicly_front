@@ -8,22 +8,15 @@ import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import GroupChatBar from "./GroupChatBar"
+import ChatWindowEmpty from "../ChatCommon/ChatWindowEmpty";
 
 const {accountStore, messagesStore} = rootStore;
-
-
 const styles = theme => ({
-    button: {
-        margin: theme.spacing.unit,
-    },
-    leftIcon: {
-        marginRight: theme.spacing.unit,
-    },
-    rightIcon: {
-        marginLeft: theme.spacing.unit,
-    },
-    iconSmall: {
-        fontSize: 20,
+    chatWindow: {
+        padding: '70px 0 60px 20px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '123px 5px 60px 20px',
+        },
     },
     emptyChat: {
         top: 40,
@@ -38,20 +31,11 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    empty: {},
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
     },
-    list: {
-        [theme.breakpoints.down('xs')]: {
-            paddingTop: 65,
-        },
-        paddingTop: 6,
-        paddingBottom: 55,
-    },
-
 });
 
 @observer
@@ -63,11 +47,9 @@ class GroupChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-
     componentDidMount() {
         console.log("componentDidMount chatWindow");
     }
-
 
     handleSendMessage = (message) => {
         this.messagesStore.postMessageInGroupChat(message.message, this.props.chat.chat_id);
@@ -102,11 +84,10 @@ class GroupChatWindow extends React.Component {
             if (chat) {
                 messages = chat.messages;
             }
-            let users = chat.user_ids.map(id=>this.messagesStore.findUserById(id));
+            let users = chat.user_ids.map(id => this.messagesStore.findUserById(id));
             return (
-                <div className={classes.chat}>
+                <div className={classes.chatWindow}>
                     <GroupChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
-
                     {
                         messagesStore.messagesLoading ?
                             (
@@ -114,14 +95,11 @@ class GroupChatWindow extends React.Component {
                             )
                             :
                             chat && messages && messages.length > 0 ? (
-                                <div className={classes.list}>
-
-                                    <MessageList
-                                        myselfUser={myselfUser}
-                                        chatUsers={users}
-                                        messages={messages}
-                                        ref={this.messageList}/>
-                                </div>
+                                <MessageList
+                                    myselfUser={myselfUser}
+                                    chatUsers={users}
+                                    messages={messages}
+                                    ref={this.messageList}/>
                             ) : (
                                 <div className={classes.emptyChat}>
                                     <Typography className={classes.text} variant="h5">История сообщения
@@ -129,22 +107,16 @@ class GroupChatWindow extends React.Component {
                                 </div>
                             )
                     }
-
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
         } else {
             return (
-                <div className={classes.emptyChat}>
-                    <div className={classes.empty}>
-                        <Typography variant="h5" className={classes.text}>Выберите диалог...</Typography>
-                    </div>
-                </div>
+                <ChatWindowEmpty />
             );
         }
     }
 }
 
 const styledWindow = withStyles(styles, {withTheme: true})(GroupChatWindow);
-
 export default styledWindow;

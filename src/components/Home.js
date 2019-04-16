@@ -15,15 +15,14 @@ import InviteIcon from "./InviteIcon";
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ProfileBar from "./ProfileBar";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import Typography from "@material-ui/core/es/Typography/Typography";
-import Background from '../images/gif.gif';
-
-//import Button from "@material-ui/core/es/Button/Button";
-import {Item, Menu, MenuProvider} from "react-contexify";
 import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatWindowEmpty";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Select from "@material-ui/core/Select";
+//import Background from '../images/gif.gif';
+//import {Item, Menu, MenuProvider} from "react-contexify";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -73,9 +72,9 @@ const styles = theme => ({
     },
 
     appBar: {
-        zIndex: 1162,
+       zIndex: 1300,
         borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
         height: 55,
         boxShadow: theme.shadows[0],
@@ -99,31 +98,32 @@ const styles = theme => ({
 
     workG: {
         [theme.breakpoints.down('xs')]: {
-            marginTop: 105,
+            marginTop: 110,
         },
-        marginTop: 109,
+        marginTop: 130,
         padding: 0,
+        marginBottom: 70
     },
     content: {
+        zIndex: 1201,
+        minHeight: '-webkit-fill-available',
         flexGrow: 1,
-        position: 'static',
-        //  flexShrink: 1,
-        //  width: 'auto',
-        minHeight: '100vh',
-        [theme.breakpoints.down('xs')]: {
-            // minHeight: '-webkit-fill-available',
-            zIndex: 1,
-        },
-        borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            }`,
+        right: 0,
+        left: 0,
+        bottom: 0,
+        top: 0,
+        flexShrink: 1,
+        width: 'auto',
+        boxShadow: '10px 0px 20px 20px rgba(0, 0, 0, 0.06)',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
             }`,
+        borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            }`,
         // backgroundImage: 'url(' + Background + ')',
         //  backgroundSize: 'cover',
-        //zIndex: 1503,
-        // boxShadow: '-2px 0px 20px 0px rgba(0, 0, 0, 0.08)',
+
     },
     logo: {
         width: 150,
@@ -143,7 +143,7 @@ const styles = theme => ({
         position: 'fixed',
         top: 0,
 
-        zIndex: 1000
+      //  zIndex: 1000
     },
     emptyChat: {
         top: 40,
@@ -163,7 +163,11 @@ const styles = theme => ({
         marginLeft: 'auto',
     },
     load: {
-        marginTop: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+        height: '-webkit-fill-available',
     },
     icon: {
         color: ` ${
@@ -181,23 +185,26 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
-        zIndex: 400,
+       // zIndex: 400,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 55,
+        height: 59,
         bottom: 0,
         position: 'fixed',
-        backgroundColor: ` ${
+       /* backgroundColor: ` ${
             theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
-            }`,
+            }`,*/
     },
     logoText: {
         color: ` ${
-            theme.palette.type === 'light' ? '#a8a8a8' : '#7583a5'
+            theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'
             }`,
     },
     loader: {},
+    rootIndex: {
+        zIndex: 1299,
+    },
 });
 
 @observer
@@ -218,6 +225,7 @@ class Home extends React.Component {
     };
 
     workgroups() {
+        const {classes} = this.props;
         if (this.messagesStore.groups.length) {
             return this.messagesStore.groups.map(
                 workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
@@ -229,14 +237,11 @@ class Home extends React.Component {
 
         } else {
             return (
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                    height: 'calc(100vh - 109px)',
-                }}>
-                    {this.state.type === "light" ? <Loader active>Loading</Loader> :
-                        <Loader inverted active>Loading</Loader>}
+                <div className={classes.load}>
+                        <div style={{textAlign: "center"}}>
+                            <CircularProgress/>
+                            <Typography variant="overline" className={classes.text}>Загрузка</Typography>
+                        </div>
                 </div>
             )
         }
@@ -307,13 +312,14 @@ class Home extends React.Component {
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             onOpen={this.handleDrawerToggle}
-                            style={{zIndex: 1100}}
+                        //    style={{zIndex: 1100}}
                             classes={{
                                 paper: classes.drawerPaper,
+                                root: classes.rootIndex,
                             }}
-                            ModalProps={{
+                           /* ModalProps={{
                                 keepMounted: true, // Better open performance on mobile.
-                            }}
+                            }}*/
                         >
                             {drawer}
                         </Drawer>
@@ -332,7 +338,7 @@ class Home extends React.Component {
                 </nav>
 
                 <main className={classes.content}>
-                    <div className={classes.toolbar}/>
+                    {/*   <div className={classes.toolbar}/>*/}
                     {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
                     {/*<MenuProvider id={"menu_id"}>
                             Это ниработает лол
@@ -362,12 +368,13 @@ class Home extends React.Component {
                             </div>)
                             :
                             (
-                                <Route path={["/home/chat/user/:userId","/home/chat/group/:chatId"]}
+                                <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}
                                        render={(routeProps) => <ChatWindowEmpty/>}/>
                             )
                     }
-
+                    {/*   <div style={{height: 60}}/>*/}
                 </main>
+
             </div>
         );
     }

@@ -16,6 +16,9 @@ import StepLabel from "@material-ui/core/StepLabel/index";
 import Step from "@material-ui/core/Step/index";
 import {BACKEND_URL} from "../common";
 import rootStore from "../store/RootStore";
+import {IconButton} from "@material-ui/core";
+import Close from "@material-ui/icons/Close"
+import Modal from "@material-ui/core/Modal";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -24,7 +27,7 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
             }`,
-        zIndex: 10000,
+      //  zIndex: 10000,
     },
     radio: {
         display: 'flex'
@@ -157,6 +160,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        zIndex: 1303,
     },
     backi: {
         backgroundColor: ` ${
@@ -193,6 +197,15 @@ const styles = theme => ({
     },
     labelPlace: {
         marginLeft: 0,
+    },
+    closeIcon: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+        cursor: 'pointer',
+    },
+    rootIndex: {
+        zIndex: 1304,
     },
 });
 
@@ -428,13 +441,20 @@ class InviteForm extends React.Component {
                                     </RadioGroup>
                                 </FormControl>*/}
 
-                                <FormControl style={{zIndex: 5000, marginTop: 25}} required fullWidth>
+                                <FormControl
+                                    classes={{
+                                        root: classes.rootIndex,
+                                    }}
+                                    style={{marginTop: 25}} required fullWidth>
                                     {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
                                         </InputLabel>*/}
                                     <InputLabel className={classes.text} htmlFor="age-simple">Рабочая
                                         группа</InputLabel>
                                     <Select
+                                        classes={{
+                                            root: classes.rootIndex,
+                                        }}
                                         className={classes.text}
                                         value={this.state.workGroup}
                                         onChange={this.handleChangeSelect}>
@@ -484,9 +504,14 @@ class InviteForm extends React.Component {
         const steps = ["Создание", "Приглашение"];
         return (
             <div>
+                <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
                 <Typography variant="h5" className={classes.header}>
-                    Приглашение нового пользователя
+                    Приглашение пользователя
                 </Typography>
+                <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleClose}>
+                    <Close className={classes.closeIcon}/>
+                </IconButton>
+                </div>
                 <div>
                     {this.getStepContent(this.state.activeStep)}
                 </div>

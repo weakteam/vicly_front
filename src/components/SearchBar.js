@@ -20,6 +20,8 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
             top: 55,
+            position: "fixed",
+            borderBottom: 0,
         },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
@@ -28,11 +30,11 @@ const styles = theme => ({
         position: "fixed",
         alignItems: 'center',
         height: 55,
-        top: 55,
+        top: 76,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        zIndex: 1499,
+        zIndex: 1,
     },
     textField: {
         width: 'calc(100% - 54px)',

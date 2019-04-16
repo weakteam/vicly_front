@@ -72,7 +72,7 @@ const themeOptions = {
             active: "rgb(72, 170, 210)",
             hover: "rgba(198,190,200,0.21)",
             hoverOpacity: 0.08,
-            selected: "rgba(60, 60, 60, 0.08)",
+            selected: "#2d807f",
             disabled: "rgba(158, 158, 158, 0.68)",
             disabledBackground: "rgba(0, 0, 0, 0.12)",
         },

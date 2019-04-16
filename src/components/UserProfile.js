@@ -13,7 +13,7 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
             }`,
-        zIndex: 10000,
+      // zIndex: 1300,
     },
     paper: {
         display: 'flex',
@@ -32,7 +32,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#66a1a6' : 'rgb(90,114,151)'
             }`,
         //height: 85,
-        width: '100%',
+       // width: '100%',
         padding: 18,
         display: 'flex',
         alignItems: 'start',

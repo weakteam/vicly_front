@@ -30,7 +30,7 @@ const styles = theme => ({
         padding: 'unset'
     },
     margin: {
-        top: 34,
+        top: 41,
         right: 17,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightBadge : theme.palette.secondary.dark
@@ -56,16 +56,25 @@ const styles = theme => ({
     },
     message: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.lightSecondary : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
             }`,
         fontSize: '0.9rem'
     },
     time: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.lightSecondary : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
             }`,
-        padding: 0,
-        marginTop: 4,
+
+    },
+    dialogIco: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#adadad' : theme.palette.secondary.dark
+            }`,
+        marginLeft: 9,
+    },
+    chatTitleWithIcon: {
+        display: 'flex',
+        alignItems: 'flex-end',
     },
 });
 
@@ -104,7 +113,7 @@ class GroupChat extends React.Component {
     render() {
         const {classes, chatId, chatTitle, lastMessageUser, lastMessage, countUnread, lastMessageDatetime} = this.props;
         // TODO work ONLY FOR USERS CHATS
-        const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser===false;
+        const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === false;
 
         let colorChange = AvatarColor.getColor(chatTitle[0]);
         return (
@@ -127,21 +136,27 @@ class GroupChat extends React.Component {
                             </Grid>
 
                             <Grid item xs zeroMinWidth>
-                                <Typography variant="body2"
-                                            color="secondary"
-                                            noWrap
-                                            className={classes.userName}>
-                                    {chatTitle}
-                                </Typography>
-                                <Group className={classes.dialogIco}/>
+                                <div className={classes.chatTitleWithIcon}>
+                                    <Typography variant="body2"
+                                                color="secondary"
+                                                noWrap
+                                                className={classes.userName}
+                                                style={{color: selected ? '#fff' : ''}}>
+                                        {chatTitle}
+                                    </Typography>
+                                    <Group className={classes.dialogIco}
+                                           style={{color: selected ? '#b5dcdc' : ''}}/>
+                                </div>
+
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>
+                                            className={classes.message}
+                                            style={{color: selected ? '#b5dcdc' : ''}}>
                                     {lastMessage ? lastMessage : "Нет сообщений"}
                                 </Typography>
                             </Grid>
 
-                            <Grid item style={{padding: 0, marginRight: 7,}}>
+                            <Grid item>
                                 <Typography
                                     className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
@@ -171,18 +186,27 @@ class GroupChat extends React.Component {
                             </Grid>
 
                             <Grid item xs zeroMinWidth>
-                                <Typography variant="body2"
-                                            color="secondary"
-                                            noWrap
-                                            className={classes.userName}>{chatTitle}</Typography>
+                                <div className={classes.chatTitleWithIcon}>
+                                    <Typography variant="body2"
+                                                color="secondary"
+                                                noWrap
+                                                className={classes.userName}
+                                                style={{color: selected ? '#fff' : ''}}>
+                                        {chatTitle}
+                                    </Typography>
+                                    <Group className={classes.dialogIco}
+                                           style={{color: selected ? '#b5dcdc' : ''}}/>
+                                </div>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
+                                            className={classes.message}
+                                            style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
                             </Grid>
 
-                            <Grid item style={{padding: 0, marginRight: 7,}}>
+                            <Grid item>
                                 <Typography
-                                    className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
+                                    className={classes.time}
+                                    style={{color: selected ? '#b5dcdc' : ''}}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             {
                                 countUnread ? (<Badge color="secondary" badgeContent={countUnread}

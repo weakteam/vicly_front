@@ -25,8 +25,8 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
-        height: 55,
-        zIndex: 2000,
+        padding: '6px 0px 6px 0px',
+       zIndex: 1,
         position: 'fixed',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
@@ -40,9 +40,15 @@ const styles = theme => ({
         backgroundColor: '#41ff9c',
         minWidth: 8,
         height: 8,
-        left: 40,
-        top: 12,
+        color: '#fff',
+        left: 42,
+        top: 11,
         width: 8,
+    },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? 'rgb(140, 140, 140)' : 'rgb(159, 171, 199)'
+            }`,
     },
     marginInvite: {
         marginLeft: 'auto',
@@ -92,15 +98,15 @@ class ProfileBar extends React.Component {
                 <div className={classes.wrap}>
                     <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>
                         <Badge  classes={{badge: classes.bage}}>
-                            Online
+                            <Typography className={classes.text}> online </Typography>
                         </Badge>
                 </div>
 
                 <InviteIcon />
 
 
-                <IconButton>
-                    <ExitToApp className={classes.icon} onClick={this.accountStore.unauth.bind(accountStore)}/>
+                <IconButton onClick={this.accountStore.unauth.bind(accountStore)}>
+                    <ExitToApp className={classes.icon}/>
                 </IconButton>
             </div>
         );

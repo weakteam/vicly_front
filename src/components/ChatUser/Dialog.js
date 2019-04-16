@@ -29,7 +29,8 @@ const styles = theme => ({
         padding: 'unset'
     },
     margin: {
-        top: 34,
+        zIndex: 0,
+        top: 41,
         right: 17,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightBadge : theme.palette.secondary.dark
@@ -52,19 +53,17 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
-    },
+        },
     message: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.lightSecondary : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
             }`,
         fontSize: '0.9rem'
     },
     time: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.lightSecondary : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
             }`,
-        padding: 0,
-        marginTop: 4,
     },
 });
 
@@ -128,19 +127,22 @@ class Dialog extends React.Component {
                                 <Typography variant="body2"
                                             color="secondary"
                                             noWrap
-                                            className={classes.userName}>
+                                            className={classes.userName}
+                                style={{color: selected ? '#fff' : '' }}>
                                     {firstName + " " + lastName}
                                 </Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>
+                                            className={classes.message}
+                                            style={{color: selected ? '#b5dcdc' : ''}}>
                                     {lastMessage ? lastMessage : "Нет сообщений"}
                                 </Typography>
                             </Grid>
 
-                            <Grid item style={{padding: 0, marginRight: 7,}}>
+                            <Grid item>
                                 <Typography
-                                    className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
+                                    className={classes.time}
+                                    style={{color: selected ? '#b5dcdc' : ''}}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             {
                                 countUnread ? (
@@ -171,15 +173,18 @@ class Dialog extends React.Component {
                                 <Typography variant="body2"
                                             color="secondary"
                                             noWrap
-                                            className={classes.userName}>{firstName + " " + lastName}</Typography>
+                                            className={classes.userName}
+                                            style={{color: selected ? '#fff' : '' }}>{firstName + " " + lastName}</Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.message}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
+                                            className={classes.message}
+                                style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
                             </Grid>
 
-                            <Grid item style={{padding: 0, marginRight: 7,}}>
+                            <Grid item>
                                 <Typography
-                                    className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
+                                    className={classes.time}
+                                    style={{color: selected ? '#b5dcdc' : ''}}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             {
                                 countUnread ? (<Badge color="secondary" badgeContent={countUnread}
