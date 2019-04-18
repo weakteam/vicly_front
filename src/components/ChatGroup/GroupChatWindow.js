@@ -8,7 +8,7 @@ import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import GroupChatBar from "./GroupChatBar"
-import ChatWindowEmpty from "../ChatCommon/ChatWindowEmpty";
+import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({

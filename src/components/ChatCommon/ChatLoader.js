@@ -31,7 +31,7 @@ const styles = theme => ({
 });
 
 @observer
-class ChatWindowEmpty extends React.Component {
+class ChatLoader extends React.Component {
     render() {
         const {classes} = this.props;
         return (
@@ -45,6 +45,6 @@ class ChatWindowEmpty extends React.Component {
     }
 }
 
-const styledWindow = withStyles(styles, {withTheme: true})(ChatWindowEmpty);
+const styledWindow = withStyles(styles, {withTheme: true})(ChatLoader);
 
 export default styledWindow;

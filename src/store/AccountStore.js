@@ -7,6 +7,7 @@ export default class AccountStore {
     last_name = "";
     @observable token = "";
     @observable login = "";
+    position = "";
     userId = null;
     groupId = null;
     @observable status = "unauthed";
@@ -15,7 +16,9 @@ export default class AccountStore {
 
     constructor(RootStore) {
         this.fullName = sessionStorage.getItem("fullName");
+        this.position = sessionStorage.getItem("position");
         this.first_name = sessionStorage.getItem("first_name");
+        this.surname = sessionStorage.getItem("surname");
         this.last_name = sessionStorage.getItem("last_name");
         this.token = sessionStorage.getItem("token");
         this.userId = parseInt(sessionStorage.getItem("userId"), 10);
@@ -60,14 +63,15 @@ export default class AccountStore {
                 this.fullName = content.first_name + " " + content.last_name;
                 this.first_name = content.first_name;
                 this.last_name = content.last_name;
+                this.position = content.position;
                 this.token = content.token;
                 this.login = login;
                 this.status = "authed";
                 this.userId = content.id;
                 this.groupId = content.group_id;
-                this.saveInLocalStorage(this.fullName,this.first_name, this.last_name, this.token, this.userId, this.groupId, this.login);
+                this.saveInLocalStorage(this.fullName,this.first_name, this.last_name, this.token, this.userId, this.groupId, this.login, this.position);
             });
-            this.rootStore.webSocketService.run(this.token);
+            this.rootStore.webSocketService.run();
         } catch (err) {
             console.log(err);
             runInAction("Auth failed", () => {
@@ -77,7 +81,7 @@ export default class AccountStore {
         }
     };
 
-    saveInLocalStorage(fullName,first_name, last_name, token, userId, groupId, login) {
+    saveInLocalStorage(fullName,first_name, last_name, token, userId, groupId, login, position) {
         sessionStorage.setItem("fullName", fullName);
         sessionStorage.setItem("first_name", first_name);
         sessionStorage.setItem("last_name", last_name);
@@ -85,6 +89,7 @@ export default class AccountStore {
         sessionStorage.setItem("userId", userId);
         sessionStorage.setItem("groupId",groupId);
         sessionStorage.setItem("login",login);
+        sessionStorage.setItem("position",position ? position : '');
     }
 
     @action

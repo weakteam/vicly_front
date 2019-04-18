@@ -104,7 +104,7 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 50,
+        marginTop: '11%',
     },
     inviteBut: {
         display: 'flex',
@@ -128,7 +128,7 @@ const styles = theme => ({
         //marginBottom: 20,
         fontSize: '1.6em',
         // marginLeft: 10,
-        padding: 32,
+        padding: '6%',
         color: ` ${
             theme.palette.type === 'light' ? '#ffffff' : theme.palette.secondary.dark
             }`,
@@ -180,8 +180,8 @@ const styles = theme => ({
         padding: 20,
     },
     form: {
-        width: '100%', // Fix IE 11 issue.
-        padding: 30,
+       // width: '100%', // Fix IE 11 issue.
+        padding: '6%',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
             }`,
@@ -270,6 +270,7 @@ class InviteLogin extends React.Component {
     handleSingUp = (event) => {
         event.preventDefault();
         this.singUp(this.props.match.params.uuid, this.state.formValues.login, this.state.formValues.password);
+        this.props.history.push(`/home/chat/user/${this.props.userId}`);
     };
 
     constructor(props) {
@@ -370,21 +371,19 @@ class InviteLogin extends React.Component {
                                     <div className={classes.infBlock}>
                                         <Typography className={classes.text}>ФИО:</Typography>
                                         <Typography
-                                            className={classes.text2}>{this.state.inviteInfo ? (this.state.inviteInfo.first_name + ' ' + this.state.inviteInfo.last_name) : ('')}</Typography>
+                                            className={classes.text2}>{this.state.inviteInfo ? (this.state.inviteInfo.first_name + ' ' + this.state.inviteInfo.surname  + ' ' + this.state.inviteInfo.last_name) : ('')}</Typography>
                                     </div>
                                     <Divider/>
                                     <div className={classes.infBlock}>
                                         <Typography className={classes.text}>Должность:</Typography>
-                                        <Typography className={classes.text2}>Старший
-                                            программист</Typography>
+                                        <Typography className={classes.text2}>{this.state.inviteInfo ? this.state.inviteInfo.position : ('')}</Typography>
                                     </div>
                                     <Divider/>
                                     <div className={classes.infBlock}>
                                         <Typography className={classes.text}>Рабочие
                                             группы:</Typography>
                                         <div className={classes.text2}>
-                                            <Typography className={classes.text2}>Бухгалтерия</Typography>
-                                            <Typography className={classes.text2}>Разработка</Typography>
+                                            <Typography className={classes.text2}>{this.state.inviteInfo ? this.state.inviteInfo.group_name + ' ' + this.state.inviteInfo.group_id : ('')}</Typography>
                                         </div>
                                     </div>
                                     <Divider/>

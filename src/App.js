@@ -3,17 +3,13 @@ import './App.css';
 import Login from "./components/login/LoginForm";
 import Home from "./components/Home";
 import {Router, Redirect, Route, Switch} from "react-router-dom";
-import {PrivateRoute} from 'react-router-with-props';
 import {observer} from "mobx-react";
-import InviteForm from "./components/InviteForm";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DevTools from "mobx-react-devtools";
 import rootStore from "./store/RootStore";
 import history from "./store/history"
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
-import InviteIcon from "./components/InviteIcon"
-import ChatWindow from "./components/ChatUser/ChatWindow";
 import InviteLogin from "./components/login/InviteLogin";
 
 if (history.location.pathname.startsWith("/home/chat/user")) {
@@ -82,7 +78,6 @@ const themeOptions = {
 
 @observer
 class App extends Component {
-    websocketService;
 
     constructor(props) {
         super(props);
@@ -97,17 +92,6 @@ class App extends Component {
             loading: true
         })
     };
-
-    // componentWillMount() {
-    //     this.websocketService = new WebsocketService(this.addMessage.bind(this));
-    // }
-    //
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (AccountStore.status === "authed") {
-    //         messagesStore.fetchChats()
-    //     }
-    // }
-
 
     changeThemeType() {
         this.setState((prevState) => {

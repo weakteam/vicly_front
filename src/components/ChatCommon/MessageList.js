@@ -1,6 +1,5 @@
 import React from 'react';
 import Message from './Message';
-//import '../../css/MessageList.css'
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
 

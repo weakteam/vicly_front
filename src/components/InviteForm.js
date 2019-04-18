@@ -19,6 +19,10 @@ import rootStore from "../store/RootStore";
 import {IconButton} from "@material-ui/core";
 import Close from "@material-ui/icons/Close"
 import Modal from "@material-ui/core/Modal";
+import Tooltip from "@material-ui/core/Tooltip";
+import Message from "./ChatCommon/Message";
+import Workgroup from "./Workgroup";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -27,7 +31,7 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
             }`,
-      //  zIndex: 10000,
+        //  zIndex: 10000,
     },
     radio: {
         display: 'flex'
@@ -162,6 +166,14 @@ const styles = theme => ({
             }`,
         zIndex: 1303,
     },
+    link: {
+        fontSize: '1.1rem'
+    },
+    link2: {
+
+        color: '#fff',
+        padding: 10,
+    },
     backi: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
@@ -207,6 +219,29 @@ const styles = theme => ({
     rootIndex: {
         zIndex: 1304,
     },
+    inputRoot: {
+        width: '100%',
+        color: "#fff",
+        paddingLeft: 8,
+        cursor: 'pointer',
+    },
+    inputMain: {
+        cursor: 'pointer',
+    },
+    disabledColor: {
+        color: '#fff',
+    },
+    lightTooltip: {
+        marginTop: 3,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#bebebe' : '#49519b'
+            }`,
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
+            }`,
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
 });
 
 @observer
@@ -215,12 +250,14 @@ class InviteForm extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
+        this.messagesStore = messagesStore;
     }
 
     state = {
         value: 'male',
-        workGroup: '',
+        workGroup: null,
         activeStep: 0,
+        copied: false,
 
         formValues: {
             name: '',
@@ -230,6 +267,19 @@ class InviteForm extends React.Component {
         },
         err: false,
         inviteId: null,
+    };
+
+    copyToClipboard = () => {
+        let link = document.getElementById("linked");
+        link.select();
+        let lol = document.execCommand('copy');
+
+        if (lol) {
+            this.setState({
+                copied: true,
+            });
+        }
+
     };
 
     handleReset = () => {
@@ -270,18 +320,26 @@ class InviteForm extends React.Component {
         });
     };
 
-    createInvite(name, surname, role) {
+    createInvite(name, surname, patronymic, position, workgroup) {
+        let data = {
+            first_name: name,
+            last_name: surname,
+            group_id: workgroup,
+        };
+        if (patronymic) {
+            data.surname = patronymic
+        }
+        if (position) {
+            data.position = position
+        }
+
         fetch(BACKEND_URL + "/invite", {
             method: 'POST',
             headers: {
                 'Authorization': this.accountStore.token,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                first_name: name,
-                last_name: surname,
-                role_id: role,
-            })
+            body: JSON.stringify(data)
         })
             .then(response => response.json())
             .then(json => {
@@ -312,12 +370,14 @@ class InviteForm extends React.Component {
 
     handleClick = (event) => {
         event.preventDefault();
-        this.createInvite(this.state.formValues.name, this.state.formValues.surname, this.state.formValues.role);
+        this.createInvite(this.state.formValues.name, this.state.formValues.surname, this.state.formValues.patronymic, this.state.formValues.role, this.state.workGroup);
 
     };
 
     firstStepForm = () => {
         const {classes} = this.props;
+        const workGroup = this.messagesStore.groups.map(workgroup => <MenuItem
+            value={workgroup.id}>{workgroup.name}</MenuItem>);
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -361,7 +421,7 @@ class InviteForm extends React.Component {
                                 <FormControl classes={{
                                     fullWidth: classes.controlForm,
                                 }}
-                                             required fullWidth>
+                                             fullWidth>
                                     <InputLabel shrink className={classes.label}>
                                         <Typography variant="subtitle1" className={classes.text}> Отчество </Typography>
                                     </InputLabel>
@@ -380,7 +440,7 @@ class InviteForm extends React.Component {
                                 <FormControl classes={{
                                     fullWidth: classes.controlForm,
                                 }}
-                                             required fullWidth>
+                                             fullWidth>
                                     <InputLabel shrink className={classes.label}>
                                         <Typography variant="subtitle1"
                                                     className={classes.text}>Должность
@@ -445,11 +505,11 @@ class InviteForm extends React.Component {
                                     classes={{
                                         root: classes.rootIndex,
                                     }}
-                                    style={{marginTop: 25}} required fullWidth>
+                                    style={{marginTop: 25}} fullWidth>
                                     {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
                                         </InputLabel>*/}
-                                    <InputLabel className={classes.text} htmlFor="age-simple">Рабочая
+                                    <InputLabel className={classes.text}>Рабочая
                                         группа</InputLabel>
                                     <Select
                                         classes={{
@@ -458,10 +518,8 @@ class InviteForm extends React.Component {
                                         className={classes.text}
                                         value={this.state.workGroup}
                                         onChange={this.handleChangeSelect}>
-                                        <MenuItem value={0}>Не выбрано</MenuItem>
-                                        <MenuItem value={'Разработка'}>Разработка</MenuItem>
-                                        <MenuItem value={'Бухгалтерия'}>Бухгалтерия</MenuItem>
-                                        <MenuItem value={'Реклама'}>Реклама</MenuItem>
+
+                                        {workGroup}
                                     </Select>
                                 </FormControl>
                             </div>
@@ -473,7 +531,8 @@ class InviteForm extends React.Component {
                     {
                         this.state.err ?
                             (
-                                <Typography color={"error"}>ERRRRRRRRROOOOOOOOOOOOOOOOOOOOOR</Typography>
+                                <Typography variant="overline" color={"error"}>Не удалось создать
+                                    приглашение</Typography>
                             ) : ""
                     }
 
@@ -486,10 +545,31 @@ class InviteForm extends React.Component {
         const {classes, theme,} = this.props;
         return (
             <div>
-                <div style={{display: 'flex'}}>
-                    <Typography variant="h6" className={classes.text}>Ссылка для приглашения: </Typography>
-                    <Typography
-                        variant="caption"> http://localhost:3000/login/invite/{this.state.inviteId != null ? this.state.inviteId.invite_id : ''}</Typography>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                    <Typography variant="body1" className={classes.link}>Ссылка для
+                        приглашения:</Typography>
+                    <Tooltip title={this.state.copied ? 'Ссылка скопирована' : 'Нажмите чтобы скопировать'}
+                             classes={{tooltip: classes.lightTooltip}}>
+                        <div onClick={this.copyToClipboard}
+                             style={{
+                                 backgroundColor: 'rgb(83, 130, 199)',
+                                 borderRadius: 5,
+                                 marginLeft: 10,
+                                 width: '100%',
+                             }}>
+                            <InputBase
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputMain,
+                                    disabled: classes.disabledColor,
+                                }}
+
+                                id="linked"
+                                type="text"
+                                value={"http://localhost:3000/login/invite/" + (this.state.inviteId != null ? this.state.inviteId.invite_id : 'noneInvite')}/>
+                        </div>
+                    </Tooltip>
+
                 </div>
                 <div className={classes.signIn}>
                     <Button variant="contained" className={classes.submit}
@@ -505,12 +585,12 @@ class InviteForm extends React.Component {
         return (
             <div>
                 <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
-                <Typography variant="h5" className={classes.header}>
-                    Приглашение пользователя
-                </Typography>
-                <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleClose}>
-                    <Close className={classes.closeIcon}/>
-                </IconButton>
+                    <Typography variant="h5" className={classes.header}>
+                        Приглашение пользователя
+                    </Typography>
+                    <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleClose}>
+                        <Close className={classes.closeIcon}/>
+                    </IconButton>
                 </div>
                 <div>
                     {this.getStepContent(this.state.activeStep)}

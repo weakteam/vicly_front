@@ -1,5 +1,6 @@
 import {IP} from "../common";
 import toastService from "./toastService";
+import {when} from "mobx";
 
 const NEW_MESSAGE = 0;
 const USER_ACTIVITY = 10;
@@ -8,23 +9,27 @@ let websocket_url = `ws://${IP}/ws/`;
 
 export default class WebsocketService {
     socket;
-    token;
     running = false;
 
     constructor(RootStore) {
         this.rootStore = RootStore;
+        when(
+            () => this.rootStore.accountStore.token===0,
+            ()=>this.disconnect(),
+            {fireImmediately: true}
+        );
     }
 
 
-    run(token) {
+    run(tokennn) {
         if (this.running)
             return;
+        let token = tokennn ? tokennn : this.rootStore.accountStore.token;
         websocket_url += !!token ? token : "";
         // if (token) {
         //     throw Error("Cannot create websocket connection in unath session");
         // }
         this.running = true;
-        this.token = token;
 
         this.socket = new WebSocket(websocket_url);
         this.socket.onmessage = this.onMessage;
@@ -49,12 +54,10 @@ export default class WebsocketService {
         };
 
         this.socket.onclose = (event) => {
-            if (event.wasClean) {
-                alert('Соединение закрыто чисто');
-            } else {
+            if (event.code !== 1000) {
                 alert('Обрыв соединения');
             }
-            alert('Код: ' + event.code + ' причина: ' + event.reason);
+            //alert('Код: ' + event.code + ' причина: ' + event.reason);
             if (token) {
                 this.running = false;
                 this.run();
@@ -78,16 +81,9 @@ export default class WebsocketService {
         }
     };
 
-    onError = (error) => {
-        console.log(error);
-    };
-
-    updateMessageInChat = (chatId) => {
-        // getAllMessages(chatId);
-    };
-
-    updateUserList = () => {
-        // fetchChats();
-    };
+    disconnect() {
+        this.socket.close(1000);
+        this.running = false;
+    }
 
 }

@@ -157,7 +157,6 @@ class Message extends React.Component {
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
         let mobileMessage;
-
         if (fromMe) {
             mobileMessage = <div className={classes.messageBlock}>
                 <div className={fromMe ? classes.fromMe : classes.toMe}>

@@ -7,7 +7,9 @@ import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
 import {IconButton} from "@material-ui/core";
+import rootStore from "../store/RootStore";
 
+const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     root: {
         backgroundColor: ` ${
@@ -126,10 +128,18 @@ const styles = theme => ({
 });
 
 class UserProfile extends React.Component {
+    constructor(props) {
+        super(props);
+        this.accountStore = accountStore;
+        this.messagesStore = messagesStore;
+    }
+
     state = {};
 
     render() {
         const {classes} = this.props;
+        const workgroup = this.messagesStore.groups.find(elem => elem.id === this.accountStore.groupId);
+
 
         return (
             <div>
@@ -152,10 +162,10 @@ class UserProfile extends React.Component {
                             </Avatar>
                             <div className={classes.userName}>
                                 <Typography variant="h5"
-                                            className={classes.userName1}>Вася пупкен</Typography>
+                                            className={classes.userName1}>{this.accountStore.login}</Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.role}>(Главный разработчик)</Typography>
+                                            className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
                             </div>
                         </div>
                     </div>
@@ -172,7 +182,7 @@ class UserProfile extends React.Component {
                             <Divider/>
                             <div className={classes.infBlock}>
                                 <Typography variant="h6" className={classes.text}>Логин</Typography>
-                                <Typography variant="h6" className={classes.text2}>@lol</Typography>
+                                <Typography variant="h6" className={classes.text2}>@{this.accountStore.login}</Typography>
                             </div>
                             <Divider/>
                             <div className={classes.infBlock}>
@@ -192,8 +202,7 @@ class UserProfile extends React.Component {
                                 <Typography variant="h6" className={classes.text}>Доступные рабочие
                                     группы</Typography>
                                 <div className={classes.text2}>
-                                    <Typography variant="h6" className={classes.text2}>Бухгалтерия</Typography>
-                                    <Typography variant="h6" className={classes.text2}>Разработка</Typography>
+                                    <Typography variant="h6" className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
                                 </div>
                             </div>
                             <Divider/>
