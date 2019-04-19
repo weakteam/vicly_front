@@ -104,6 +104,9 @@ export default class MessagesStore {
                 this.groups = content.with_group.map(elem => elem.group);
                 this.chatsFetched = true;
             });
+            this.userChats.map(userChat => {
+                this.rootStore.imageService.getAvatar(userChat.user.id);
+            })
         } catch (err) {
             console.log(err);
             runInAction("Failed fetch users info", () => {
