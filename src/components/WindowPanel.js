@@ -4,7 +4,7 @@ import 'typeface-roboto';
 import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import ChatWindow from "./Home";
-import ChatWindowEmpty from "./ChatCommon/ChatWindowEmpty";
+import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 
 import rootStore from "../store/RootStore";
 const {accountStore,messagesStore} = rootStore;

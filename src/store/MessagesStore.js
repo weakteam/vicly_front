@@ -13,14 +13,42 @@ export default class MessagesStore {
     err_message = "";
     @observable messagesLoading = false;
 
+    invalidate() {
+        this.groupChats = [];
+        this.groups = [];
+        this.userChats = [];
+        this.fetchFail = false;
+        this.currentChatId = null;
+        this.isCurrentChatForUser = null;
+        this.chatsFetched = false;
+        this.err_message = "";
+        this.messagesLoading = false;
+    }
+
     constructor(RootStore) {
+        this.rootStore = RootStore;
         this.accountStore = RootStore.accountStore;
-        when(() => this.accountStore.token,
-            () => this.fetchChats(),
-            {fireImmediately: true},
+        autorun(
+            () => {
+                if(this.accountStore.token === null){
+                    this.invalidate();
+                }
+            }
+        );
+        autorun(
+            () => {
+                if (this.accountStore.token) {
+                    this.fetchChats()
+                }
+            }
         );
         reaction(
-            () => this.currentChatId,
+            () => {
+                if (this.chatsFetched){
+                    return this.currentChatId
+                } else return null;
+
+            },
             (currentChatId) => {
                 if (currentChatId) {
                     // If opened user chat
@@ -43,13 +71,6 @@ export default class MessagesStore {
                     'Authorization': this.accountStore.token,
                 }
             });
-            // TODO fetching group chats
-            // const groupChatsResponse =  await fetch(api + "/user/list", {
-            //     method: 'GET',
-            //     headers: {
-            //         'Authorization': AccountStore.getToken(),
-            //     }
-            // });
             if (!userListResponse.ok) {
                 alert("fetch chats failed");
                 runInAction("Failed fetch users info", () => {
@@ -83,6 +104,9 @@ export default class MessagesStore {
                 this.groups = content.with_group.map(elem => elem.group);
                 this.chatsFetched = true;
             });
+            this.userChats.map(userChat => {
+                this.rootStore.imageService.getAvatar(userChat.user.id);
+            })
         } catch (err) {
             console.log(err);
             runInAction("Failed fetch users info", () => {
@@ -121,7 +145,7 @@ export default class MessagesStore {
                 } else {
                     chat.unread++;
                     const title = message.chat.chat_type === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
-                    const url = message.chat.chat_type === "user" ? "/home/chat/user/"+chat.user.id : "/home/chat/group/"+chat.chat.id;
+                    const url = message.chat.chat_type === "user" ? "/home/chat/user/" + chat.user.id : "/home/chat/group/" + chat.chat.id;
                     toastService.toastNewMessage(title, message, url);
                 }
             }

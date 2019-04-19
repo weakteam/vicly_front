@@ -28,7 +28,7 @@ const styles = theme => ({
             }`,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-          //  theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            //  theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''

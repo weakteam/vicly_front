@@ -103,6 +103,7 @@ class ProfileIco extends React.Component {
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
         let colorChange = AvatarColor.getColor(accountStore.first_name[0]);
+        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === rootStore.accountStore.userId);
 
         return (
             <div className={classes.root}>
@@ -115,7 +116,17 @@ class ProfileIco extends React.Component {
                                     aria-haspopup="true"
                                     onClick={this.handleMenu}
                                     color="secondary">
-                                    <Avatar style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
+                                    {
+                                        avatar_image ?
+                                            (
+                                                <Avatar style={{backgroundColor: `${colorChange}`}} src={avatar_image.blob}/>
+                                            )
+                                            :
+                                            (
+                                                <Avatar style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
+                                            )
+                                    }
+
                                 </IconButton>
 
                                 <Menu

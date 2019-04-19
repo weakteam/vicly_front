@@ -1,19 +1,20 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Divider from "@material-ui/core/es/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
-import {IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
+import rootStore from "../store/RootStore";
 
+const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     root: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
             }`,
-      // zIndex: 1300,
+        // zIndex: 1300,
     },
     paper: {
         display: 'flex',
@@ -32,7 +33,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#66a1a6' : 'rgb(90,114,151)'
             }`,
         //height: 85,
-       // width: '100%',
+        // width: '100%',
         padding: 18,
         display: 'flex',
         alignItems: 'start',
@@ -126,10 +127,55 @@ const styles = theme => ({
 });
 
 class UserProfile extends React.Component {
-    state = {};
+    constructor(props) {
+        super(props);
+        this.accountStore = accountStore;
+        this.messagesStore = messagesStore;
+        this.avatarInput = React.createRef();
+    }
+
+    state = {
+        avatar_image: null,
+        blob: null
+    };
+
+    handleImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            this.setState({
+                avatar_image: URL.createObjectURL(event.target.files[0]),
+                blob: event.target.files[0]
+            });
+        }
+        // rootStore.imageService.loadFromInput(event, (result, blob) => {
+        //         this.setState({
+        //             avatar_image: result,
+        //             blob:blob
+        //         });
+        //     }
+        // );
+    };
+
+    componentDidMount() {
+        // rootStore.imageService.getAvatar(rootStore.accountStore.userId)
+        //     .then(avatar => {
+        //         this.setState({
+        //             avatar_image: avatar.blob
+        //         })
+        //     });
+    }
+
+    handleAvatarUpload = () => {
+        if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {
+            rootStore.imageService.uploadAvatar(this.avatarInput.current.files[0]);
+        }
+    };
 
     render() {
         const {classes} = this.props;
+        const workgroup = this.messagesStore.groups.find(elem => elem.id === this.accountStore.groupId);
+        const user = this.messagesStore.userChats.find(elem => elem.user.id === this.accountStore.userId).user;
+
+        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === this.accountStore.userId);
 
         return (
             <div>
@@ -146,17 +192,37 @@ class UserProfile extends React.Component {
                         </div>
 
                         <div className={classes.fixWidth}>
-                            <Avatar
-                                className={classes.avatar}>
-                                AA
-                            </Avatar>
+
+                            {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
+                            <label htmlFor='avatar-input'>
+                                {
+                                    this.state.avatar_image || avatar_image  ?
+                                        (
+                                            <Avatar
+                                                className={classes.avatar}
+                                                src={this.state.avatar_image || avatar_image.blob}/>
+                                        )
+                                        :
+                                        (
+                                            <Avatar className={classes.avatar}>
+                                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                            </Avatar>
+                                        )
+                                }
+
+                            </label>
+                            <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
+                                   accept="image/x-png,image/jpeg"
+                                   ref={this.avatarInput}/>
                             <div className={classes.userName}>
                                 <Typography variant="h5"
-                                            className={classes.userName1}>Вася пупкен</Typography>
+                                            className={classes.userName1}>{this.accountStore.login}</Typography>
                                 <Typography variant="caption"
                                             noWrap
-                                            className={classes.role}>(Главный разработчик)</Typography>
+                                            className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
                             </div>
+                            <Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
+                                avatar!</Button>
                         </div>
                     </div>
                 </div>
@@ -172,7 +238,8 @@ class UserProfile extends React.Component {
                             <Divider/>
                             <div className={classes.infBlock}>
                                 <Typography variant="h6" className={classes.text}>Логин</Typography>
-                                <Typography variant="h6" className={classes.text2}>@lol</Typography>
+                                <Typography variant="h6"
+                                            className={classes.text2}>@{this.accountStore.login}</Typography>
                             </div>
                             <Divider/>
                             <div className={classes.infBlock}>
@@ -192,8 +259,8 @@ class UserProfile extends React.Component {
                                 <Typography variant="h6" className={classes.text}>Доступные рабочие
                                     группы</Typography>
                                 <div className={classes.text2}>
-                                    <Typography variant="h6" className={classes.text2}>Бухгалтерия</Typography>
-                                    <Typography variant="h6" className={classes.text2}>Разработка</Typography>
+                                    <Typography variant="h6"
+                                                className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
                                 </div>
                             </div>
                             <Divider/>

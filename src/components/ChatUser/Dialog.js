@@ -53,7 +53,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
-        },
+    },
     message: {
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
@@ -74,6 +74,11 @@ class Dialog extends React.Component {
         super(props);
         this.messagesStore = messagesStore;
     }
+
+    state = {
+        avatar_fetched: false,
+        avatar_image: null
+    };
 
     handleDialogClick = () => {
         messagesStore.isCurrentChatForUser = true;
@@ -99,11 +104,31 @@ class Dialog extends React.Component {
         }
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // if (!this.state.avatar_fetched) {
+        //     rootStore.imageService.getAvatar(this.props.userId)
+        //         .then(avatar => {
+        //             this.setState({
+        //                 avatar_image: avatar.blob,
+        //                 avatar_fetched: true
+        //             })
+        //         })
+        //         .catch(err => {
+        //             this.setState({
+        //                 avatar_fetched: true
+        //             })
+        //         })
+        // }
+
+    }
+
     render() {
         const {classes, userId, firstName, lastName, lastMessage, countUnread, lastMessageDatetime} = this.props;
         // TODO work ONLY FOR USERS CHATS
         const selected = userId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === true;
         let colorChange = AvatarColor.getColor(firstName[0]);
+        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === this.props.userId);
+
         return (
             <div>
                 <Hidden implementation="css" smUp>
@@ -117,10 +142,24 @@ class Dialog extends React.Component {
                               wrap="nowrap"
                               spacing={16}>
                             <Grid item md={16}>
-                                <Avatar
-                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
-                                    {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
-                                </Avatar>
+                                {
+                                    avatar_image ?
+                                        (
+                                            <Avatar
+                                                className={classes.avatar}
+                                                style={{backgroundColor: `${colorChange}`}}
+                                                src={avatar_image}/>
+                                        )
+                                        :
+                                        (
+                                            <Avatar
+                                                className={classes.avatar}
+                                                style={{backgroundColor: `${colorChange}`}}>
+                                                {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                            </Avatar>
+                                        )
+                                }
+
                             </Grid>
 
                             <Grid item xs zeroMinWidth>
@@ -128,7 +167,7 @@ class Dialog extends React.Component {
                                             color="secondary"
                                             noWrap
                                             className={classes.userName}
-                                style={{color: selected ? '#fff' : '' }}>
+                                            style={{color: selected ? '#fff' : ''}}>
                                     {firstName + " " + lastName}
                                 </Typography>
                                 <Typography variant="caption"
@@ -163,10 +202,22 @@ class Dialog extends React.Component {
                               wrap="nowrap"
                               spacing={16}>
                             <Grid item md={16}>
-                                <Avatar
-                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
-                                    {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
-                                </Avatar>
+                                {
+                                    avatar_image ?
+                                        (
+                                            <Avatar
+                                                className={classes.avatar} style={{backgroundColor: `${colorChange}`}}
+                                                src={avatar_image.blob}/>
+                                        )
+                                        :
+                                        (
+                                            <Avatar
+                                                className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
+                                                {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                            </Avatar>
+                                        )
+                                }
+
                             </Grid>
 
                             <Grid item xs zeroMinWidth>
@@ -174,11 +225,11 @@ class Dialog extends React.Component {
                                             color="secondary"
                                             noWrap
                                             className={classes.userName}
-                                            style={{color: selected ? '#fff' : '' }}>{firstName + " " + lastName}</Typography>
+                                            style={{color: selected ? '#fff' : ''}}>{firstName + " " + lastName}</Typography>
                                 <Typography variant="caption"
                                             noWrap
                                             className={classes.message}
-                                style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
+                                            style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
                             </Grid>
 
                             <Grid item>

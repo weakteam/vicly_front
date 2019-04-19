@@ -18,11 +18,15 @@ import ProfileBar from "./ProfileBar";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
-import ChatWindowEmpty from "./ChatCommon/ChatWindowEmpty";
+import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
-//import Background from '../images/gif.gif';
+import BackgroundLight from '../images/fon3b.jpg';
+import {Item, Menu, MenuProvider} from "react-contexify";
+import 'react-contexify/dist/ReactContexify.min.css';
+import HomeScreen from './HomeScreen'
 //import {Item, Menu, MenuProvider} from "react-contexify";
+import Delete from "@material-ui/icons/Delete"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -31,8 +35,8 @@ const styles = theme => ({
         display: 'flex',
         top: 0,
         bottom: 0,
-        left: 100,
-        right: 100,
+        left: 0,
+        right: 0,
         flexGrow: 1,
     },
     text: {
@@ -52,7 +56,6 @@ const styles = theme => ({
             width: 0,
         },
         flexShrink: 0,
-        //zIndex: 500,
     },
     drawerPaper: {
         width: 400,
@@ -72,7 +75,7 @@ const styles = theme => ({
     },
 
     appBar: {
-       zIndex: 1300,
+        zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
@@ -95,7 +98,6 @@ const styles = theme => ({
     toolbar: {
         height: 55,
     },
-
     workG: {
         [theme.breakpoints.down('xs')]: {
             marginTop: 110,
@@ -108,22 +110,32 @@ const styles = theme => ({
         zIndex: 1201,
         minHeight: '-webkit-fill-available',
         flexGrow: 1,
-        right: 0,
-        left: 0,
-        bottom: 0,
-        top: 0,
         flexShrink: 1,
-        width: 'auto',
+        width: '100%',
         boxShadow: '10px 0px 20px 20px rgba(0, 0, 0, 0.06)',
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? "#f1f1f1" : '#3c465d'
-            }`,
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
-        // backgroundImage: 'url(' + Background + ')',
-        //  backgroundSize: 'cover',
-
+        '&:before': {
+            content: " '' ",
+            backgroundSize: 'cover',
+            backgroundImage: 'url(' + BackgroundLight + ')',
+            position: 'fixed',
+            left: 400,
+            [theme.breakpoints.down('md')]: {
+                left: 280,
+            },
+            [theme.breakpoints.down('sm')]: {
+                left: 250
+            },
+            [theme.breakpoints.down('xs')]: {
+                left: 0,
+            },
+            right: 0,
+            top: 0,
+            bottom: 0,
+            zIndex: '-1',
+        },
     },
     logo: {
         width: 150,
@@ -142,8 +154,6 @@ const styles = theme => ({
         },
         position: 'fixed',
         top: 0,
-
-      //  zIndex: 1000
     },
     emptyChat: {
         top: 40,
@@ -185,25 +195,24 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
-       // zIndex: 400,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         height: 59,
         bottom: 0,
         position: 'fixed',
-       /* backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
-            }`,*/
+        /* backgroundColor: ` ${
+             theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
+             }`,*/
     },
     logoText: {
-        color: ` ${
-            theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'
-            }`,
+        color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'}`,
     },
-    loader: {},
     rootIndex: {
         zIndex: 1299,
+        overflowY: 'auto',
+        overflow: 'scroll',
+        WebkitOverflowScrolling: 'touch',
     },
 });
 
@@ -234,14 +243,13 @@ class Home extends React.Component {
                                         groupChats={this.messagesStore.groupChats.filter(groupChat => groupChat.chat.group_id === workgroup.id)}/>
             )
 
-
         } else {
             return (
                 <div className={classes.load}>
-                        <div style={{textAlign: "center"}}>
-                            <CircularProgress/>
-                            <Typography variant="overline" className={classes.text}>Загрузка</Typography>
-                        </div>
+                    <div style={{textAlign: "center"}}>
+                        <CircularProgress/>
+                        <Typography variant="overline" className={classes.text}>Загрузка</Typography>
+                    </div>
                 </div>
             )
         }
@@ -266,7 +274,7 @@ class Home extends React.Component {
                     <ProfileBar
                         changeThemeType={this.props.changeThemeType}
                         handleChangeType={this.handleChangeType} chats={this.props.chats}
-                        andleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                        handleLogout={this.accountStore.unauth.bind(accountStore)}/>
                     <div className={classes.logoDrawer}>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
@@ -275,7 +283,6 @@ class Home extends React.Component {
                 <List className={classes.workG}>
                     {this.workgroups()}
                 </List>
-
             </div>
         );
 
@@ -312,14 +319,14 @@ class Home extends React.Component {
                             open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             onOpen={this.handleDrawerToggle}
-                        //    style={{zIndex: 1100}}
+                            //    style={{zIndex: 1100}}
                             classes={{
                                 paper: classes.drawerPaper,
                                 root: classes.rootIndex,
                             }}
-                           /* ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
-                            }}*/
+                            /* ModalProps={{
+                                 keepMounted: true, // Better open performance on mobile.
+                             }}*/
                         >
                             {drawer}
                         </Drawer>
@@ -332,22 +339,21 @@ class Home extends React.Component {
                             variant="permanent"
                             open
                         >
-                            {drawer}
+                            <MenuProvider id={"menu_id"}>
+                                {drawer}
+                            </MenuProvider>
+                            <Menu style={{zIndex: 5000}} id='menu_id'>
+                                <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
+                                <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
+                                <Item onClick={() => alert("ТЫ МОЧА")}><Typography
+                                    variant="button"><Delete/> Удалить</Typography>
+                                </Item>
+                            </Menu>
                         </Drawer>
                     </Hidden>
                 </nav>
-
                 <main className={classes.content}>
-                    {/*   <div className={classes.toolbar}/>*/}
-                    {/*   <Button varian="outlined" onClick={this.props.changeThemeType}>rtr</Button>*/}
-                    {/*<MenuProvider id={"menu_id"}>
-                            Это ниработает лол
-                        </MenuProvider>
-                        <Menu id='menu_id'>
-                            <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
-                            <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
-                            <Item onClick={() => alert("ТЫ МОЧА")}>МОЧА</Item>
-                        </Menu>*/}
+                    <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?
                             (<div>
@@ -372,9 +378,7 @@ class Home extends React.Component {
                                        render={(routeProps) => <ChatWindowEmpty/>}/>
                             )
                     }
-                    {/*   <div style={{height: 60}}/>*/}
                 </main>
-
             </div>
         );
     }
