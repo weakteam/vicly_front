@@ -22,7 +22,6 @@ import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
 import BackgroundLight from '../images/fon3b.jpg';
-import BackgroundDark from '../images/fon5.jpg';
 import {Item, Menu, MenuProvider} from "react-contexify";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'

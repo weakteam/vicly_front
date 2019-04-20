@@ -5,7 +5,7 @@ import {when} from "mobx";
 const NEW_MESSAGE = 0;
 const USER_ACTIVITY = 10;
 
-let websocket_url = `ws://${IP}/ws/`;
+
 
 export default class WebsocketService {
     socket;
@@ -25,6 +25,7 @@ export default class WebsocketService {
         if (this.running)
             return;
         let token = tokennn ? tokennn : this.rootStore.accountStore.token;
+        let websocket_url = `ws://${IP}/ws/`;
         websocket_url += !!token ? token : "";
         // if (token) {
         //     throw Error("Cannot create websocket connection in unath session");
