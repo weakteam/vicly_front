@@ -25,7 +25,7 @@ export default class ImageService {
         let avatar = this.avatars.find(elem => elem.userId === userId);
         if (avatar)
             return avatar;
-        const response = await fetch(`${BACKEND_URL}/attachment/downloadAvatar/${userId}`, {
+        const response = await fetch(`${BACKEND_URL}/attachment/download_avatar/${userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': this.rootStore.accountStore.token
@@ -53,7 +53,7 @@ export default class ImageService {
         ajax.upload.addEventListener("progress", innerProgressHandler, false);
         ajax.addEventListener("load", completeHandler, false);
         ajax.addEventListener("error", errorHandler, false);
-        ajax.open("POST", BACKEND_URL + "/attachment/uploadAvatar");
+        ajax.open("POST", BACKEND_URL + "/attachment/upload_avatar");
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send(formdata);
     }
