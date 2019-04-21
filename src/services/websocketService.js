@@ -1,27 +1,34 @@
 import {IP} from "../common";
 import toastService from "./toastService";
-import {when} from "mobx";
+import {autorun, when} from "mobx";
 
 const NEW_MESSAGE = 0;
+const USER_ONLINE = 11;
+const USER_OFFLINE = 12;
 const USER_ACTIVITY = 10;
-
 
 
 export default class WebsocketService {
     socket;
     running = false;
+    autoDisconnectDisposer = null;
 
     constructor(RootStore) {
         this.rootStore = RootStore;
-        when(
-            () => this.rootStore.accountStore.token===0,
-            ()=>this.disconnect(),
-            {fireImmediately: true}
-        );
     }
 
 
     run(tokennn) {
+        if (!this.autoDisconnectDisposer) {
+            this.autoDisconnectDisposer = autorun(
+                () => {
+                    if (this.rootStore.accountStore.token === null) {
+                        this.disconnect();
+                    }
+                }
+            );
+        }
+
         if (this.running)
             return;
         let token = tokennn ? tokennn : this.rootStore.accountStore.token;
@@ -56,8 +63,12 @@ export default class WebsocketService {
 
         this.socket.onclose = (event) => {
             if (event.code !== 1000) {
-                alert('Обрыв соединения');
+                //alert('Обрыв соединения');
+                console.log("ws was closed with bad code:" + event.code);
+            } else {
+                console.log("ws was closed clean!");
             }
+
             //alert('Код: ' + event.code + ' причина: ' + event.reason);
             if (token) {
                 this.running = false;
@@ -77,12 +88,19 @@ export default class WebsocketService {
             case NEW_MESSAGE:
                 this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
                 break;
+            case USER_ONLINE:
+                this.rootStore.accountStore.showOnline(payload.message.id);
+                break;
+            case USER_OFFLINE:
+                this.rootStore.accountStore.showOffline(payload.message.id);
+                break;
             default:
                 break;
         }
     };
 
     disconnect() {
+
         this.socket.close(1000);
         this.running = false;
     }

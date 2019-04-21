@@ -10,6 +10,7 @@ import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import Modal from "@material-ui/core/Modal";
 import UserProfile from "./UserProfile";
 import rootStore from "../store/RootStore";
+import {observer} from "mobx-react";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -62,12 +63,12 @@ const styles = theme => ({
     },
 });
 
+@observer
 class ProfileIco extends React.Component {
     constructor(props) {
         super(props);
-       // this.accountStore = accountStore;
+        this.accountStore = accountStore;
         this.messagesStore = messagesStore;
-        this.chatsStore = messagesStore;
     }
 
     state = {
@@ -119,14 +120,14 @@ class ProfileIco extends React.Component {
                                     {
                                         avatar_image ?
                                             (
-                                                <Avatar style={{backgroundColor: `${colorChange}`}} src={avatar_image.blob}/>
+                                                <Avatar src={avatar_image.blob}/>
                                             )
                                             :
                                             (
-                                                <Avatar style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
+                                                <Avatar
+                                                    style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
                                             )
                                     }
-
                                 </IconButton>
 
                                 <Menu
@@ -163,7 +164,7 @@ class ProfileIco extends React.Component {
                                     style={{zIndex: 1303}}>
 
                                     <div style={getModalStyle()} className={classes.paper}>
-                                        <UserProfile handleMenuClose={this.handleMenuClose} />
+                                        <UserProfile handleMenuClose={this.handleMenuClose}/>
                                     </div>
 
                                 </Modal>

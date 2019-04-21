@@ -29,9 +29,9 @@ const styles = theme => ({
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        borderLeft: ` ${
+      /*  borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            }`,
+            }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,
@@ -132,6 +132,7 @@ class ChatBar extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
+        this.messagesStore = messagesStore;
     }
 
     handleChange = event => {
@@ -149,8 +150,10 @@ class ChatBar extends React.Component {
     render() {
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
-        const {classes, theme} = this.props;
+        const {classes, theme, match} = this.props;
         const type = this.state.type;
+
+        const chatName = this.messagesStore.groupChats.find(elem => elem.chat_id === +match);
 
         return (
             <div className={classes.position}>
@@ -169,7 +172,7 @@ class ChatBar extends React.Component {
                 </div>
 
                 <div className={classes.namePosition}>
-                    <Typography variant="h6" className={classes.text} noWrap>{this.accountStore.fullName}</Typography>
+                    <Typography variant="h6" className={classes.text} noWrap>{chatName.name}</Typography>
                     <IconButton>
                         <Group className={classes.dialogIco}/>
                     </IconButton>
