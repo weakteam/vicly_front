@@ -173,17 +173,41 @@ class Message extends React.Component {
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
                 </div>
                 <div className={classes.avatarMob}>
-                    <Avatar className={classes.avatarIco} style={{backgroundColor: `${colorChange}`}}>
-                        {name.toUpperCase()}
-                    </Avatar>
+                    {
+                        this.props.avatar ?
+                            (
+                                <Avatar className={classes.avatarIco}
+                                        style={{backgroundColor: `${colorChange}`}}
+                                        src={this.props.avatar.blob}/>
+                            )
+                            :
+                            (
+                                <Avatar className={classes.avatarIco}
+                                        style={{backgroundColor: `${colorChange}`}}>
+                                    {this.props.userInfo.first_name[0].toUpperCase()}
+                                </Avatar>
+                            )
+                    }
                 </div>
             </div>
         } else {
             mobileMessage = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
-                    <Avatar className={classes.avatarIco} style={{backgroundColor: `${colorChange}`}}>
-                        {this.props.userInfo.first_name[0].toUpperCase()}
-                    </Avatar>
+                    {
+                        this.props.avatar ?
+                            (
+                                <Avatar className={classes.avatarIco}
+                                        style={{backgroundColor: `${colorChange}`}}
+                                        src={this.props.avatar.blob}/>
+                            )
+                            :
+                            (
+                                <Avatar className={classes.avatarIco}
+                                        style={{backgroundColor: `${colorChange}`}}>
+                                    {this.props.userInfo.first_name[0].toUpperCase()}
+                                </Avatar>
+                            )
+                    }
                 </div>
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
