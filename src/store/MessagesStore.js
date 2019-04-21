@@ -4,6 +4,7 @@ import toastService from "../services/toastService";
 
 export default class MessagesStore {
     @observable groups = [];
+    users = [];
     @observable userChats = [];
     @observable groupChats = [];
     @observable fetchFail = false;
@@ -97,11 +98,15 @@ export default class MessagesStore {
                     .flatMap((elem => elem.group_chats))
                     .map(groupChatObject => {
                         groupChatObject.messages = [];
+                        groupChatObject.name =  groupChatObject.chat.name ;
                         groupChatObject.chat_type = "group";
                         groupChatObject.user_ids = groupChatObject.chat.user_ids;
                         return groupChatObject;
                     });
                 this.groups = content.with_group.map(elem => elem.group);
+              this.users =  content.with_group
+                  .flatMap((elem => elem.users))
+                  .map(elem => elem.user);
                 this.chatsFetched = true;
             });
             this.userChats.map(userChat => {

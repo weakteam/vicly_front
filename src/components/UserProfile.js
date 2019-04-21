@@ -173,7 +173,6 @@ class UserProfile extends React.Component {
     render() {
         const {classes} = this.props;
         const workgroup = this.messagesStore.groups.find(elem => elem.id === this.accountStore.groupId);
-        const user = this.messagesStore.userChats.find(elem => elem.user.id === this.accountStore.userId).user;
 
         let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === this.accountStore.userId);
 
@@ -216,7 +215,7 @@ class UserProfile extends React.Component {
                                    ref={this.avatarInput}/>
                             <div className={classes.userName}>
                                 <Typography variant="h5"
-                                            className={classes.userName1}>{this.accountStore.login}</Typography>
+                                            className={classes.userName1}>l</Typography>
                                 <Typography variant="caption"
                                             noWrap
                                             className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>

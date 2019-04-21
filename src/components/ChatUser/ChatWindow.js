@@ -87,7 +87,7 @@ class ChatWindow extends React.Component {
             }
             return (
                 <div className={classes.chatWindow}>
-                    <ChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
+                    <ChatBar match={this.props.match.params.userId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
                             (

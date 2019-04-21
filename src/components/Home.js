@@ -69,7 +69,7 @@ const styles = theme => ({
             width: '100%',
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? '#ededed' : theme.palette.primary.dark
             }`,
         borderRight: 0,
     },

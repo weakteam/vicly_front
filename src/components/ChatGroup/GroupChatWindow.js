@@ -87,7 +87,7 @@ class GroupChatWindow extends React.Component {
             let users = chat.user_ids.map(id => this.messagesStore.findUserById(id));
             return (
                 <div className={classes.chatWindow}>
-                    <GroupChatBar handleDrawerToggle={this.props.handleDrawerToggle}/>
+                    <GroupChatBar match={this.props.match.params.chatId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
                             (

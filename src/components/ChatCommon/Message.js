@@ -41,7 +41,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             maxWidth: 250,
         },
-        padding: 11,
+        padding: 8,
         backgroundColor: '#d5f0ff',
         borderRadius: 10,
     },
@@ -54,7 +54,7 @@ const styles = theme => ({
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
-        padding: 11,
+        padding: 8,
         backgroundColor: '#e2f0f1',
         borderRadius: 10,
         boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
@@ -67,7 +67,7 @@ const styles = theme => ({
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
-        padding: 11,
+        padding: 8,
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
         boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
@@ -90,7 +90,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             maxWidth: 300,
         },
-        padding: 11,
+        padding: 8,
         backgroundColor: '#efefef',
         borderRadius: 10,
     },
