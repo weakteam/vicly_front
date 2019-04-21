@@ -3,6 +3,8 @@ import toastService from "./toastService";
 import {when} from "mobx";
 
 const NEW_MESSAGE = 0;
+const USER_ONLINE = 11;
+const USER_OFFLINE = 12;
 const USER_ACTIVITY = 10;
 
 
@@ -76,6 +78,12 @@ export default class WebsocketService {
         switch (payload.event) {
             case NEW_MESSAGE:
                 this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
+                break;
+            case USER_ONLINE:
+                this.rootStore.accountStore.showOnline(payload.message.id);
+                break;
+            case USER_OFFLINE:
+                this.rootStore.accountStore.showOffline(payload.message.id);
                 break;
             default:
                 break;

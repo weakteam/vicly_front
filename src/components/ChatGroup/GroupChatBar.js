@@ -29,9 +29,9 @@ const styles = theme => ({
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        borderLeft: ` ${
+      /*  borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            }`,
+            }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,

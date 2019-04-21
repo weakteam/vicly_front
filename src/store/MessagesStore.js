@@ -17,6 +17,7 @@ export default class MessagesStore {
     invalidate() {
         this.groupChats = [];
         this.groups = [];
+        this.users = [];
         this.userChats = [];
         this.fetchFail = false;
         this.currentChatId = null;
@@ -158,6 +159,8 @@ export default class MessagesStore {
             // TODO FETCH CHAT INFO
         }
     }
+
+
 
     async getAllGroupChatMessages(chatId) {
         //TODO messages loading

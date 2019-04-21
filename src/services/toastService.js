@@ -18,7 +18,7 @@ class ToastService {
                 hideProgressBar: true,
                 draggable: true,
                 // Close directly after the enter transition
-                autoClose: 120 * 10000,
+                autoClose: 100000,
 
             }
         );

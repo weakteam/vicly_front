@@ -17,9 +17,9 @@ const styles = theme => ({
         borderTop: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
-        borderLeft: ` ${
+        /*borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+            }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,
@@ -105,7 +105,7 @@ class SendMessageBar extends React.Component {
 
     onEnterDown = (event) => {
         // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
-        if (event.key === 'Enter') {
+        if (event.keyCode == 13 && event.shiftKey) {
             event.preventDefault();
             event.stopPropagation();
             this.handleSendButton();

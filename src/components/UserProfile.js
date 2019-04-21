@@ -114,13 +114,20 @@ const styles = theme => ({
 
         textAlign: 'end',
     },
+    kek: {
+        '&:hover': {
+            backgroundColor: '#000',
+            borderRadius: '50%',
+            zIndex: 2
+        },
+    },
     avatar: {
         width: 75,
         height: 75,
     },
     closeIcon: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
             }`,
         cursor: 'pointer',
     },
@@ -197,9 +204,11 @@ class UserProfile extends React.Component {
                                 {
                                     this.state.avatar_image || avatar_image  ?
                                         (
+                                            <div className={classes.kek}>
                                             <Avatar
                                                 className={classes.avatar}
                                                 src={this.state.avatar_image || avatar_image.blob}/>
+                                            </div>
                                         )
                                         :
                                         (
@@ -215,7 +224,7 @@ class UserProfile extends React.Component {
                                    ref={this.avatarInput}/>
                             <div className={classes.userName}>
                                 <Typography variant="h5"
-                                            className={classes.userName1}>l</Typography>
+                                            className={classes.userName1}>{this.accountStore.fullName}</Typography>
                                 <Typography variant="caption"
                                             noWrap
                                             className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
@@ -249,10 +258,6 @@ class UserProfile extends React.Component {
                                            defaultValue="Naked input"/>
                             </div>
                             <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Должность</Typography>
-                                <Typography variant="h6" className={classes.text2}>Старший программист</Typography>
-                            </div>
                             <Divider/>
                             <div className={classes.infBlock}>
                                 <Typography variant="h6" className={classes.text}>Доступные рабочие

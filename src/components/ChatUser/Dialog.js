@@ -65,6 +65,22 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
             }`,
     },
+    onlineNotSelected: {
+        backgroundColor: '#66ff80',
+        zIndex: 0,
+        top: 35,
+        right: 6,
+        border: ` ${
+            theme.palette.type === 'light' ? '3px solid #fff' : '3px solid #2b3346'
+            }`,
+    },
+    onlineSelected: {
+        backgroundColor: '#66ff80',
+        zIndex: 0,
+        top: 35,
+        right: 6,
+        border: '3px solid #2d807f',
+    },
 });
 
 @observer
@@ -73,6 +89,7 @@ class Dialog extends React.Component {
     constructor(props) {
         super(props);
         this.messagesStore = messagesStore;
+        this.accountStore = accountStore;
     }
 
     state = {
@@ -129,6 +146,8 @@ class Dialog extends React.Component {
         let colorChange = AvatarColor.getColor(firstName[0]);
         let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === this.props.userId);
 
+        const online = this.accountStore.online.find(elem => elem === userId);
+
         return (
             <div>
                 <Hidden implementation="css" smUp>
@@ -145,18 +164,35 @@ class Dialog extends React.Component {
                                 {
                                     avatar_image ?
                                         (
-                                            <Avatar
-                                                className={classes.avatar}
-                                                style={{backgroundColor: `${colorChange}`}}
-                                                src={avatar_image}/>
-                                        )
-                                        :
-                                        (
-                                            <Avatar
-                                                className={classes.avatar}
-                                                style={{backgroundColor: `${colorChange}`}}>
-                                                {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
-                                            </Avatar>
+                                            online ? (
+                                                <Badge color="secondary" classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
+                                                    <Avatar
+                                                        className={classes.avatar}
+                                                        // style={{backgroundColor: `${colorChange}`}}
+                                                        src={avatar_image.blob}/>
+                                                </Badge>
+                                            ) : (
+                                                <Avatar
+                                                    className={classes.avatar}
+                                                    //style={{backgroundColor: `${colorChange}`}}
+                                                    src={avatar_image.blob}/>
+                                            )
+                                        ) : (
+                                            online ? (
+                                                <Badge color="secondary" classes={{badge: classes.onlineNotSelected}}>
+                                                    <Avatar
+                                                        className={classes.avatar}
+                                                        style={{backgroundColor: `${colorChange}`}}>
+                                                        {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                                    </Avatar>
+                                                </Badge>
+                                            ) : (
+                                                <Avatar
+                                                    className={classes.avatar}
+                                                    style={{backgroundColor: `${colorChange}`}}>
+                                                    {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                                </Avatar>
+                                            )
                                         )
                                 }
 
@@ -205,16 +241,35 @@ class Dialog extends React.Component {
                                 {
                                     avatar_image ?
                                         (
-                                            <Avatar
-                                                className={classes.avatar} style={{backgroundColor: `${colorChange}`}}
-                                                src={avatar_image.blob}/>
-                                        )
-                                        :
-                                        (
-                                            <Avatar
-                                                className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
-                                                {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
-                                            </Avatar>
+                                            online ? (
+                                                <Badge color="secondary" classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
+                                                    <Avatar
+                                                        className={classes.avatar}
+                                                       // style={{backgroundColor: `${colorChange}`}}
+                                                        src={avatar_image.blob}/>
+                                                </Badge>
+                                            ) : (
+                                                <Avatar
+                                                    className={classes.avatar}
+                                                   // style={{backgroundColor: `${colorChange}`}}
+                                                    src={avatar_image.blob}/>
+                                            )
+                                        ) : (
+                                            online ? (
+                                                <Badge color="secondary" classes={{badge: classes.onlineNotSelected}}>
+                                                    <Avatar
+                                                        className={classes.avatar}
+                                                        style={{backgroundColor: `${colorChange}`}}>
+                                                        {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                                    </Avatar>
+                                                </Badge>
+                                            ) : (
+                                                <Avatar
+                                                    className={classes.avatar}
+                                                    style={{backgroundColor: `${colorChange}`}}>
+                                                    {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                                </Avatar>
+                                            )
                                         )
                                 }
 

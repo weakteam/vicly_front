@@ -45,7 +45,7 @@ const styles = theme => ({
             }`,
     },
     drawer: {
-        width: 400,
+        width: 399,
         [theme.breakpoints.down('md')]: {
             width: 280,
         },
@@ -118,8 +118,11 @@ const styles = theme => ({
             }`,
         '&:before': {
             content: " '' ",
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? theme.palette.primary.light : "#3b455c"
+                }`,
             backgroundSize: 'cover',
-            backgroundImage: 'url(' + BackgroundLight + ')',
+           // backgroundImage: 'url(' + BackgroundLight + ')',
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {

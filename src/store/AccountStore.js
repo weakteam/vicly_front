@@ -13,6 +13,7 @@ export default class AccountStore {
     @observable status = "unauthed";
     err_message = "";
     theme = 'light';
+    @observable online = [];
 
     constructor(RootStore) {
         this.fullName = sessionStorage.getItem("fullName");
@@ -104,4 +105,27 @@ export default class AccountStore {
     setTheme (isLight) {
         sessionStorage.setItem("theme", isLight ? 'light' : 'dark');
     }
+
+    showOnline(onlineId) {
+        let count = 0;
+
+        for (let i = 0; i < this.online.length; i++) {
+            if (this.online[i] === onlineId) {
+                count++
+            }
+        }
+        if (count === 0) {
+            this.online.push(onlineId)
+        }
+        console.log('Old inline massive',  this.online)
+        };
+
+    showOffline(onlineId) {
+        for (let i = 0; i < this.online.length; i++) {
+            if (this.online[i] === onlineId) {
+                this.online.splice(i, 1)
+            }
+        }
+        console.log('New online massive',  this.online)
+    };
 }
