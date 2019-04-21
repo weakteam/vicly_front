@@ -121,24 +121,6 @@ class Dialog extends React.Component {
         }
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // if (!this.state.avatar_fetched) {
-        //     rootStore.imageService.getAvatar(this.props.userId)
-        //         .then(avatar => {
-        //             this.setState({
-        //                 avatar_image: avatar.blob,
-        //                 avatar_fetched: true
-        //             })
-        //         })
-        //         .catch(err => {
-        //             this.setState({
-        //                 avatar_fetched: true
-        //             })
-        //         })
-        // }
-
-    }
-
     render() {
         const {classes, userId, firstName, lastName, lastMessage, countUnread, lastMessageDatetime} = this.props;
         // TODO work ONLY FOR USERS CHATS

@@ -6,6 +6,8 @@ import div from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import AvatarColor from "../../services/AvatarColor"
+import {observer} from "mobx-react";
+import rootStore from "../../store/RootStore";
 
 const styles = theme => ({
     root: {
@@ -156,6 +158,7 @@ class Message extends React.Component {
         const {classes} = this.props;
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
+
         let mobileMessage;
         if (fromMe) {
             mobileMessage = <div className={classes.messageBlock}>
@@ -170,7 +173,7 @@ class Message extends React.Component {
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
                 </div>
                 <div className={classes.avatarMob}>
-                    <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
+                    <Avatar className={classes.avatarIco} style={{backgroundColor: `${colorChange}`}}>
                         {name.toUpperCase()}
                     </Avatar>
                 </div>
@@ -178,7 +181,7 @@ class Message extends React.Component {
         } else {
             mobileMessage = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
-                    <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
+                    <Avatar className={classes.avatarIco} style={{backgroundColor: `${colorChange}`}}>
                         {this.props.userInfo.first_name[0].toUpperCase()}
                     </Avatar>
                 </div>
@@ -202,9 +205,22 @@ class Message extends React.Component {
                     <div className={classes.root}>
                         <div className={classes.messageBlock}>
                             <div className={classes.avatar}>
-                                <Avatar className={classes.avatarIco} style={{ backgroundColor: `${colorChange}`}}>
-                                    {this.props.userInfo.first_name[0].toUpperCase()}
-                                </Avatar>
+                                {
+                                    this.props.avatar ?
+                                        (
+                                            <Avatar className={classes.avatarIco}
+                                                    style={{backgroundColor: `${colorChange}`}}
+                                                    src={this.props.avatar.blob}/>
+                                        )
+                                        :
+                                        (
+                                            <Avatar className={classes.avatarIco}
+                                                    style={{backgroundColor: `${colorChange}`}}>
+                                                {this.props.userInfo.first_name[0].toUpperCase()}
+                                            </Avatar>
+                                        )
+                                }
+
                             </div>
                             <div className={fromMe ? classes.fromMe : classes.toMe}>
                                 <div style={{
@@ -213,10 +229,10 @@ class Message extends React.Component {
                                     width: '-webkit-fill-available'
                                 }}>
                                     {
-                                        fromMe ?  (
+                                        fromMe ? (
                                             <Typography
-                                            variant="body2"
-                                            className={classes.senderName}>Я</Typography>
+                                                variant="body2"
+                                                className={classes.senderName}>Я</Typography>
                                         ) : (
                                             <Typography
                                                 variant="body2"

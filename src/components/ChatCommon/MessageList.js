@@ -13,8 +13,8 @@ const styles = theme => ({
     },
     listMessages: {
         //marginLeft: 40,
-       // marginBottom: 205,
-       // marginTop: 23,
+        // marginBottom: 205,
+        // marginTop: 23,
     },
     chip: {
         margin: theme.spacing.unit,
@@ -48,16 +48,23 @@ class MessageList extends React.Component {
         const myUserId = this.accountStore.userId;
         console.log("myUserId:" + myUserId);
 
+        const avatar_images = this.props.chatUsers.map(chatUser =>
+            rootStore.imageService.avatars.find(elem =>  elem.userId === chatUser.id) || null
+        );
+        avatar_images.push(rootStore.imageService.avatars.find(elem =>  elem.userId === myUserId) || null)
+
         const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from === myUserId;//int == string !!!
-            const user = this.props.chatUsers.find(user=>message.from===user.id);
+            const user = this.props.chatUsers.find(user => message.from === user.id);
+            const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
             return (
                 <Message
                     key={i}
                     userInfo={fromMe ? this.props.myselfUser : user}
                     message={message.message}
                     messageInfo={message}
-                    fromMe={fromMe}/>
+                    fromMe={fromMe}
+                    avatar={avatar}/>
             );
         });
 
