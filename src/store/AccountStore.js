@@ -35,6 +35,10 @@ export default class AccountStore {
             this.status = "authed";
         }
         this.rootStore = RootStore;
+
+    }
+
+    start(){
         if(this.token)
             this.rootStore.webSocketService.run(this.token);
     }
