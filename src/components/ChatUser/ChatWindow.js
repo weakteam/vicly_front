@@ -9,6 +9,7 @@ import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import ChatWindowEmpty from "../ChatCommon/ChatLoader";
+import AttachmentBar from "../ChatCommon/AttachmentBar";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -32,6 +33,9 @@ const styles = theme => ({
     },
     chatWindow: {
         padding: '70px 0 60px 20px',
+        [theme.breakpoints.down('md')]: {
+            padding: '123px 20px 60px 20px',
+        },
         [theme.breakpoints.down('xs')]: {
             padding: '123px 5px 60px 20px',
         },
@@ -105,6 +109,7 @@ class ChatWindow extends React.Component {
                                 </div>
                             )
                     }
+                    <AttachmentBar />
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )

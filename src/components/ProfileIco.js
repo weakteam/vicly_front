@@ -39,9 +39,6 @@ const styles = theme => ({
             width: '90%',
         },
         width: 500,
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
         boxShadow: theme.shadows[5],
     },
     menu: {

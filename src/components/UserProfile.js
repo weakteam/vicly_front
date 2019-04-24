@@ -11,9 +11,6 @@ import rootStore from "../store/RootStore";
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     root: {
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
-            }`,
         // zIndex: 1300,
     },
     paper: {
@@ -24,13 +21,11 @@ const styles = theme => ({
         // padding: 30,
         boxShadow: theme.shadows[0],
         // paddingBottom: 10,
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+        backgroundColor: '',
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#66a1a6' : 'rgb(90,114,151)'
+            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.71)' : 'rgb(90,114,151)'
             }`,
         //height: 85,
         // width: '100%',
@@ -76,7 +71,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
-        fontSize: '1.15rem',
+        fontSize: '0.95rem',
     },
     infBlock: {
         display: 'flex',
@@ -87,6 +82,7 @@ const styles = theme => ({
 
     },
     text: {
+        fontSize: '0.95rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
@@ -98,10 +94,13 @@ const styles = theme => ({
     blockForm: {
         display: 'flex',
         alignItems: 'flex-start',
-        padding: 20,
+        padding: '30px 50px 30px 50px',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,
     },
     textInf: {
         marginBottom: 30,

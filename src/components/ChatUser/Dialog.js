@@ -161,7 +161,7 @@ class Dialog extends React.Component {
                                             )
                                         ) : (
                                             online ? (
-                                                <Badge color="secondary" classes={{badge: classes.onlineNotSelected}}>
+                                                <Badge color="secondary" classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                     <Avatar
                                                         className={classes.avatar}
                                                         style={{backgroundColor: `${colorChange}`}}>
@@ -238,7 +238,7 @@ class Dialog extends React.Component {
                                             )
                                         ) : (
                                             online ? (
-                                                <Badge color="secondary" classes={{badge: classes.onlineNotSelected}}>
+                                                <Badge color="secondary" classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                     <Avatar
                                                         className={classes.avatar}
                                                         style={{backgroundColor: `${colorChange}`}}>
