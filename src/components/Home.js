@@ -27,6 +27,7 @@ import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
 //import {Item, Menu, MenuProvider} from "react-contexify";
 import Delete from "@material-ui/icons/Delete"
+import {Scrollbars} from 'react-custom-scrollbars';
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -119,10 +120,10 @@ const styles = theme => ({
         '&:before': {
             content: " '' ",
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? theme.palette.primary.light : "#3b455c"
+                theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
                 }`,
             backgroundSize: 'cover',
-           // backgroundImage: 'url(' + BackgroundLight + ')',
+            // backgroundImage: 'url(' + BackgroundLight + ')',
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
@@ -272,21 +273,21 @@ class Home extends React.Component {
         const {classes, theme, chats} = this.props;
 
         let drawer = (
-            <div>
-                <Hidden xsDown implementation="css">
-                    <ProfileBar
-                        changeThemeType={this.props.changeThemeType}
-                        handleChangeType={this.handleChangeType} chats={this.props.chats}
-                        handleLogout={this.accountStore.unauth.bind(accountStore)}/>
-                    <div className={classes.logoDrawer}>
-                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
-                    </div>
-                </Hidden>
-                <SearchBar/>
-                <List className={classes.workG}>
-                    {this.workgroups()}
-                </List>
-            </div>
+                <div>
+                    <Hidden xsDown implementation="css">
+                        <ProfileBar
+                            changeThemeType={this.props.changeThemeType}
+                            handleChangeType={this.handleChangeType} chats={this.props.chats}
+                            handleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                        <div className={classes.logoDrawer}>
+                            <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                        </div>
+                    </Hidden>
+                    <SearchBar/>
+                    <List className={classes.workG}>
+                        {this.workgroups()}
+                    </List>
+                </div>
         );
 
         return (
@@ -342,8 +343,8 @@ class Home extends React.Component {
                             variant="permanent"
                             open
                         >
-                            <MenuProvider id={"menu_id"}>
-                                {drawer}
+                            {drawer}
+                            {/* <MenuProvider id={"menu_id"}>
                             </MenuProvider>
                             <Menu style={{zIndex: 5000}} id='menu_id'>
                                 <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
@@ -351,7 +352,7 @@ class Home extends React.Component {
                                 <Item onClick={() => alert("ТЫ МОЧА")}><Typography
                                     variant="button"><Delete/> Удалить</Typography>
                                 </Item>
-                            </Menu>
+                            </Menu>*/}
                         </Drawer>
                     </Hidden>
                 </nav>
@@ -374,9 +375,7 @@ class Home extends React.Component {
                                                handleDrawerToggle={this.handleDrawerToggle}
                                                chat={this.messagesStore.getCurrentChat()}
                                            />}/>
-                            </div>)
-                            :
-                            (
+                            </div>) : (
                                 <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}
                                        render={(routeProps) => <ChatWindowEmpty/>}/>
                             )

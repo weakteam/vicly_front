@@ -7,6 +7,8 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import FormControl from "@material-ui/core/FormControl/index";
 import InputBase from "@material-ui/core/InputBase/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = theme => ({
     position: {
@@ -78,11 +80,47 @@ const styles = theme => ({
         maxHeight: 150,
         height: 'auto',
     },
+    menu: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#efefef' : "#49536d"
+            }`,
+    },
+    menuItem: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
+            }`,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 5,
+    },
 });
 
 class SendMessageBar extends React.Component {
     state = {
-        messageText: ""
+        messageText: "",
+        auth: true,
+        anchorEl: null,
+        open: false,
+    };
+
+
+    handleMenu = event => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+
+    handleClose = () => {
+        this.setState({anchorEl: null});
+    };
+
+    handleMenuOpen = () => {
+        this.setState({open: true});
+
+        this.handleClose();
+    };
+
+    handleMenuClose = () => {
+        this.setState({open: false});
     };
 
     handleSendButton = () => {
@@ -114,11 +152,13 @@ class SendMessageBar extends React.Component {
 
     render() {
         const {classes, theme} = this.props;
+        const {auth, anchorEl} = this.state;
+        const open = Boolean(anchorEl);
 
         return (
             <div className={classes.position}>
 
-                <IconButton className={classes.iconButton}>
+                <IconButton className={classes.iconButton}  onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
 
@@ -137,8 +177,31 @@ class SendMessageBar extends React.Component {
                                             onClick={this.handleSendButton.bind(this)}>
                                     <SendOutlined/>
                                 </IconButton>
-                            </InputAdornment>
+                            </InputAdornment >
                         }/>
+                    <Menu
+                        style={{zIndex: 2000}}
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        classes={{
+                            paper: classes.menu,
+                        }}
+                        open={open}
+                        onClose={this.handleClose}>
+                        <MenuItem onClick={this.handleMenuOpen}
+                                  className={classes.menuItem}>Изображение</MenuItem>
+                        <MenuItem onClick={this.handleClose}
+                                  className={classes.menuItem}>Видео</MenuItem>
+                        <MenuItem  className={classes.menuItem} onClick={this.handleClose}>Документ</MenuItem>
+                    </Menu>
                 </FormControl>
             </div>
         )

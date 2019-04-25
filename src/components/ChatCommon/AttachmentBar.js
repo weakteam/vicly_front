@@ -1,0 +1,111 @@
+import React from 'react';
+import withStyles from "@material-ui/core/es/styles/withStyles";
+import SendOutlined from '@material-ui/icons/SendOutlined';
+import AttachFile from '@material-ui/icons/AttachFile';
+import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import FormControl from "@material-ui/core/FormControl/index";
+import InputBase from "@material-ui/core/InputBase/index";
+import {fade} from "@material-ui/core/styles/colorManipulator";
+import img1 from '../../images/fon3b.jpg';
+
+const styles = theme => ({
+    position: {
+    //  height: 100,
+       // width: '100%',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : theme.palette.primary.darkSecondary
+            }`,
+        overflowX: 'auto',
+        /*borderLeft: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            }`,*/
+        left: 400,
+        [theme.breakpoints.down('md')]: {
+            left: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            left: 250,
+        },
+        [theme.breakpoints.down('xs')]: {
+            left: 0,
+        },
+        bottom: 59,
+        display: 'inline-flex',
+        position: 'fixed',
+        alignItems: 'center',
+        right: 0,
+    },
+    attached: {
+       // width: 70,
+       // height: 70,
+        maxWidth: 80,
+        maxHeight: '8%',
+        borderRadius: 5
+    },
+    attachDiv: {
+        margin: '5px 15px 5px 5px',
+    },
+});
+
+class AttachmentBar extends React.Component {
+    state = {
+        messageText: ""
+    };
+
+    handleSendButton = () => {
+        if (!this.state.messageText.trim())
+            return;
+        this.props.handleSendMessage({
+            message: this.state.messageText,
+            fromMe: true
+        });
+        this.setState({
+            messageText: ""
+        })
+    };
+
+    handleOnTextChange = (e) => {
+        this.setState({
+            messageText: e.target.value
+        });
+    };
+
+    onEnterDown = (event) => {
+        // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
+        if (event.keyCode == 13 && event.shiftKey) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.handleSendButton();
+        }
+    };
+
+    render() {
+        const {classes, theme} = this.props;
+
+        return (
+            <div className={classes.position}>
+                <div className={classes.attachDiv}>
+                    <img src={img1} alt="kek" className={classes.attached}/>
+                </div>
+                <div className={classes.attachDiv}>
+                    <img src={img1} alt="kek" className={classes.attached}/>
+                </div>
+                <div className={classes.attachDiv}>
+                    <img src={img1} alt="kek" className={classes.attached}/>
+                </div>
+                <div className={classes.attachDiv}>
+                    <img src={img1} alt="kek" className={classes.attached}/>
+                </div>
+                <div className={classes.attachDiv}>
+                    <img src={img1} alt="kek" className={classes.attached}/>
+                </div>
+                <div className={classes.attachDiv}>
+                    <img src={img1} alt="kek" className={classes.attached}/>
+                </div>
+            </div>
+        )
+    }
+}
+
+export default withStyles(styles, {withTheme: true})(AttachmentBar);

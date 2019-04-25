@@ -32,7 +32,7 @@ export default class MessagesStore {
         this.accountStore = RootStore.accountStore;
         autorun(
             () => {
-                if(this.accountStore.token === null){
+                if (this.accountStore.token === null) {
                     this.invalidate();
                 }
             }
@@ -46,7 +46,7 @@ export default class MessagesStore {
         );
         reaction(
             () => {
-                if (this.chatsFetched){
+                if (this.chatsFetched) {
                     return this.currentChatId
                 } else return null;
 
@@ -99,19 +99,19 @@ export default class MessagesStore {
                     .flatMap((elem => elem.group_chats))
                     .map(groupChatObject => {
                         groupChatObject.messages = [];
-                        groupChatObject.name =  groupChatObject.chat.name ;
+                        groupChatObject.name = groupChatObject.chat.name;
                         groupChatObject.chat_type = "group";
                         groupChatObject.user_ids = groupChatObject.chat.user_ids;
                         return groupChatObject;
                     });
                 this.groups = content.with_group.map(elem => elem.group);
-              this.users =  content.with_group
-                  .flatMap((elem => elem.users))
-                  .map(elem => elem.user);
+                this.users = content.with_group
+                    .flatMap((elem => elem.users))
+                    .map(elem => elem.user);
                 this.chatsFetched = true;
             });
             this.userChats.map(userChat => {
-                this.rootStore.imageService.getAvatar(userChat.user.id);
+                this.rootStore.imageService.getAvatarThumbnail(userChat.user.id);
             })
         } catch (err) {
             console.log(err);
@@ -160,6 +160,35 @@ export default class MessagesStore {
         }
     }
 
+    onDeliveryMessage(message_id, chat, message) {
+        let innerChat = null;
+        if (chat.chat_type === "user") {
+            let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            innerChat = this.findUserChat(userId)
+        } else {
+            innerChat = this.findGroupChat(chat.id);
+        }
+        if (innerChat) {
+            let innerMessage = innerChat.messages.find(mess => mess.id === message_id);
+            innerMessage.timestamp_delivery = message.timestamp_delivery;
+        }
+    }
+
+    onReadMessage(message_id, chat, message) {
+        let innerChat = null;
+        if (chat.chat_type === "user") {
+            let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            innerChat = this.findUserChat(userId)
+        } else {
+            innerChat = this.findGroupChat(chat.id);
+        }
+        if (innerChat) {
+            let innerMessage = innerChat.messages.find(mess => mess.id === message_id);
+            innerMessage.timestamp_delivery = message.timestamp_delivery;
+            innerMessage.timestamp_read = message.timestamp_read;
+            innerChat.unread--;
+        }
+    }
 
 
     async getAllGroupChatMessages(chatId) {
@@ -293,9 +322,7 @@ export default class MessagesStore {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "id": messageId,
-                    "chat_id": chatId,
-                    "chat_type": 'user'
+                    "message_id": messageId
                 })
             });
             if (!response.ok) {
@@ -318,7 +345,7 @@ export default class MessagesStore {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "id": messageId,
+                    "message_id": messageId
                 })
             });
             if (!response.ok) {
@@ -354,5 +381,19 @@ export default class MessagesStore {
 
     getCurrentChat() {
         return this.isCurrentChatForUser ? this.findUserChat(this.currentChatId) : this.findGroupChat(this.currentChatId);
+    }
+
+    chatChanged(chatType, chatId) {
+        let innerChat = null;
+        if (chatType === "user") {
+            innerChat = this.findUserChat(chatId)
+        } else {
+            innerChat = this.findGroupChat(chatId);
+        }
+        innerChat.messages.forEach(message => {
+            if (!message.timestamp_read) {
+                this.readMessage(message.id);
+            }
+        })
     }
 }

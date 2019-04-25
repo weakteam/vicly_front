@@ -99,6 +99,7 @@ class Dialog extends React.Component {
 
     handleDialogClick = () => {
         messagesStore.isCurrentChatForUser = true;
+        messagesStore.chatChanged("user", this.props.userId);
         this.props.history.push(`/home/chat/user/${this.props.userId}`);
     };
 
@@ -147,7 +148,8 @@ class Dialog extends React.Component {
                                     avatar_image ?
                                         (
                                             online ? (
-                                                <Badge color="secondary" classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
+                                                <Badge color="secondary"
+                                                       classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                     <Avatar
                                                         className={classes.avatar}
                                                         // style={{backgroundColor: `${colorChange}`}}
@@ -161,7 +163,8 @@ class Dialog extends React.Component {
                                             )
                                         ) : (
                                             online ? (
-                                                <Badge color="secondary" classes={{badge: classes.onlineNotSelected}}>
+                                                <Badge color="secondary"
+                                                       classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                     <Avatar
                                                         className={classes.avatar}
                                                         style={{backgroundColor: `${colorChange}`}}>
@@ -224,21 +227,23 @@ class Dialog extends React.Component {
                                     avatar_image ?
                                         (
                                             online ? (
-                                                <Badge color="secondary" classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
+                                                <Badge color="secondary"
+                                                       classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                     <Avatar
                                                         className={classes.avatar}
-                                                       // style={{backgroundColor: `${colorChange}`}}
+                                                        // style={{backgroundColor: `${colorChange}`}}
                                                         src={avatar_image.blob}/>
                                                 </Badge>
                                             ) : (
                                                 <Avatar
                                                     className={classes.avatar}
-                                                   // style={{backgroundColor: `${colorChange}`}}
+                                                    // style={{backgroundColor: `${colorChange}`}}
                                                     src={avatar_image.blob}/>
                                             )
                                         ) : (
                                             online ? (
-                                                <Badge color="secondary" classes={{badge: classes.onlineNotSelected}}>
+                                                <Badge color="secondary"
+                                                       classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                     <Avatar
                                                         className={classes.avatar}
                                                         style={{backgroundColor: `${colorChange}`}}>
