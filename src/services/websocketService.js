@@ -1,11 +1,13 @@
 import {IP} from "../common";
 import toastService from "./toastService";
-import {autorun, when} from "mobx";
+import {autorun} from "mobx";
 
 const NEW_MESSAGE = 0;
+const MARK_DELIVERY = 4;
+const MARK_READ = 5;
+const USER_ACTIVITY = 10;
 const USER_ONLINE = 11;
 const USER_OFFLINE = 12;
-const USER_ACTIVITY = 10;
 
 
 export default class WebsocketService {
@@ -93,6 +95,12 @@ export default class WebsocketService {
                 break;
             case USER_OFFLINE:
                 this.rootStore.accountStore.showOffline(payload.message.id);
+                break;
+            case MARK_DELIVERY:
+                this.rootStore.messagesStore.onDeliveryMessage(payload.message.message_id,payload.message.chat, payload.message.message);
+                break;
+            case MARK_READ:
+                this.rootStore.messagesStore.onReadMessage(payload.message.message_id,payload.message.chat, payload.message.message);
                 break;
             default:
                 break;

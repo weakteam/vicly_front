@@ -162,7 +162,7 @@ class UserProfile extends React.Component {
     };
 
     componentDidMount() {
-        // rootStore.imageService.getAvatar(rootStore.accountStore.userId)
+        // rootStore.imageService.getAvatarThumbnail(rootStore.accountStore.userId)
         //     .then(avatar => {
         //         this.setState({
         //             avatar_image: avatar.blob
@@ -201,12 +201,12 @@ class UserProfile extends React.Component {
                             {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
                             <label htmlFor='avatar-input'>
                                 {
-                                    this.state.avatar_image || avatar_image  ?
+                                    this.state.avatar_image || avatar_image ?
                                         (
                                             <div className={classes.kek}>
-                                            <Avatar
-                                                className={classes.avatar}
-                                                src={this.state.avatar_image || avatar_image.blob}/>
+                                                <Avatar
+                                                    className={classes.avatar}
+                                                    src={this.state.avatar_image || avatar_image.blob}/>
                                             </div>
                                         )
                                         :

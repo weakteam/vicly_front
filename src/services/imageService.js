@@ -21,19 +21,19 @@ export default class ImageService {
         }
     }
 
-    async getAvatar(userId) {
+    async getAvatarThumbnail(userId) {
         let avatar = this.avatars.find(elem => elem.userId === userId);
         if (avatar)
             return avatar;
-        const response = await fetch(`${BACKEND_URL}/attachment/download_avatar/${userId}`, {
+        const response = await fetch(`${BACKEND_URL}/attachment/download_avatar/${userId}?width=200`, {
             method: 'GET',
             headers: {
                 'Authorization': this.rootStore.accountStore.token
             }
         });
         if (!response.ok) {
-            console.log("There are no avatar for user:"+userId);
-        }else {
+            console.log("There are no avatar for user:" + userId);
+        } else {
             avatar = {
                 userId: userId,
                 blob: URL.createObjectURL(await response.blob())
