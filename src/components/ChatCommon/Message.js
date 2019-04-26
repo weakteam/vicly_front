@@ -102,7 +102,8 @@ const styles = theme => ({
         border: '1px solid #000',
     },
     mess: {
-        fontSize: '0.8rem'
+        fontSize: '0.8rem',
+        whiteSpace: 'pre'
     },
     senderName: {
         minWidth: 'max-content',

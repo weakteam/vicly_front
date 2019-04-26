@@ -54,11 +54,23 @@ export default class MessagesStore {
             (currentChatId) => {
                 if (currentChatId) {
                     // If opened user chat
-                    if (this.isCurrentChatForUser === true) {
-                        this.getAllUserChatMessages(currentChatId);
+                    let currentChat = this.getCurrentChat(currentChatId);
+                    if (!currentChat.messages.length) {
+                        if (this.isCurrentChatForUser === true) {
+
+                            this.getUserChatMessages(currentChatId, currentChat.page);
+                        } else {
+                            this.getGroupChatMessages(currentChatId, currentChat.page);
+                        }
                     } else {
-                        this.getAllGroupChatMessages(currentChatId);
+                        const lastMsgId = currentChat.messages[currentChat.messages.length - 1];
+                        if (this.isCurrentChatForUser === true) {
+                            this.getUserChatMessagesAfter(currentChatId, lastMsgId.id);
+                        } else {
+                            this.getGroupChatMessagesAfter(currentChatId, lastMsgId.id);
+                        }
                     }
+
                 }
             },
             {fireImmediately: true}
@@ -92,13 +104,15 @@ export default class MessagesStore {
                             user: userObject.user,
                             last: userObject.last,
                             unread: userObject.unread,
-                            messages: []
+                            messages: [],
+                            page: 0
                         }
                     });
                 this.groupChats = content.with_group
                     .flatMap((elem => elem.group_chats))
                     .map(groupChatObject => {
                         groupChatObject.messages = [];
+                        groupChatObject.page = 0;
                         groupChatObject.name = groupChatObject.chat.name;
                         groupChatObject.chat_type = "group";
                         groupChatObject.user_ids = groupChatObject.chat.user_ids;
@@ -190,13 +204,56 @@ export default class MessagesStore {
         }
     }
 
+    async getGroupChatMessagesAfter(chatId, messageId) {
+        try {
+            const response = await fetch(BACKEND_URL + `/message/chat/group/from/${chatId}/${messageId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': this.accountStore.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                alert("fetch messages failed")
+            }
+            let messages = await response.json();
+            runInAction("getAllMessagesById", () => {
+                this.addMessagesToGroupChat(chatId, messages);
+            })
+        } catch (err) {
+            console.log(err);
+            // return dispatch(setChatList(err))
+        }
+    }
 
-    async getAllGroupChatMessages(chatId) {
+    async getUserChatMessagesAfter(userId, messageId) {
+        try {
+            const response = await fetch(BACKEND_URL + `/message/chat/user/from/${userId}/${messageId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': this.accountStore.token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                alert("fetch messages failed")
+            }
+            let messages = await response.json();
+            runInAction("getAllMessagesById", () => {
+                this.addMessagesToUserChat(userId, messages);
+            })
+        } catch (err) {
+            console.log(err);
+            // return dispatch(setChatList(err))
+        }
+    }
+
+    async getGroupChatMessages(chatId, page) {
         //TODO messages loading
         // this.messagesLoading = true;
         // this.messagesLoading = false;
         try {
-            const response = await fetch(BACKEND_URL + `/message/chat/group/${chatId}/0`, {
+            const response = await fetch(BACKEND_URL + `/message/chat/group/${chatId}/${page}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': this.accountStore.token,
@@ -216,12 +273,12 @@ export default class MessagesStore {
         }
     }
 
-    async getAllUserChatMessages(userId) {
+    async getUserChatMessages(userId, page) {
         //TODO messages loading
         // this.messagesLoading = true;
         // this.messagesLoading = false;
         try {
-            const response = await fetch(BACKEND_URL + `/message/chat/user/${userId}/0`, {
+            const response = await fetch(BACKEND_URL + `/message/chat/user/${userId}/${page}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': this.accountStore.token,
@@ -241,9 +298,21 @@ export default class MessagesStore {
         }
     }
 
+    addMessagesToGroupChat(chatId, newMessages) {
+        const chat = this.findGroupChat(chatId);
+        chat.messages = chat.messages.concat(newMessages);
+        chat.last = chat.messages[chat.messages.length - 1];
+    }
+
+    addMessagesToUserChat(userId, newMessages) {
+        const chat = this.findUserChat(userId);
+        chat.messages = chat.messages.concat(newMessages);
+        chat.last = chat.messages[chat.messages.length - 1];
+    }
+
     updateGroupChat(chatId, newMessages) {
         const chat = this.findGroupChat(chatId);
-        chat.messages = newMessages || chat.messages;
+        chat.messages = chat.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         chat.last = chat.messages[chat.messages.length - 1];
         let unread = 0;
         for (let message of chat.messages) {
@@ -256,7 +325,7 @@ export default class MessagesStore {
 
     updateUserChat(userId, newMessages) {
         const chat = this.findUserChat(userId);
-        chat.messages = newMessages || chat.messages;
+        chat.messages = chat.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         chat.last = chat.messages[chat.messages.length - 1];
         let unread = 0;
         for (let message of chat.messages) {
@@ -395,5 +464,22 @@ export default class MessagesStore {
                 this.readMessage(message.id);
             }
         })
+    }
+
+    nextPage(chatType, chatId) {
+        let chat = null;
+        if (chatType === "user") {
+            chat = this.findUserChat(chatId)
+        } else {
+            chat = this.findGroupChat(chatId);
+        }
+        if (chat) {
+            chat.page++;
+            if (chatType === "user") {
+                this.getUserChatMessages(chatId, chat.page);
+            } else {
+                this.getGroupChatMessages(chatId, chat.page);
+            }
+        }
     }
 }

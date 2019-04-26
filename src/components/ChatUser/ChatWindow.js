@@ -52,8 +52,17 @@ class ChatWindow extends React.Component {
     }
 
     componentDidMount() {
-        console.log("componentDidMount chatWindow");
-    }
+        window.onscroll = () => {
+            if(window.pageYOffset === 0) {
+                messagesStore.nextPage("user", this.messagesStore.currentChatId);
+                alert('I AM AT THE TOP');
+            }
+        };
+    };
+
+    componentWillUnmount() {
+        window.onscroll = null;
+    };
 
     handleSendMessage = (message) => {
         console.log("send message!!!");

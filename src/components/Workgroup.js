@@ -116,13 +116,7 @@ class Workgroup extends React.Component {
                             userChats.map(
                                 userChat =>
                                     <Dialog
-                                        userId={userChat.user.id}
-                                        firstName={userChat.user.first_name}
-                                        lastName={userChat.user.last_name}
-                                        lastMessage={userChat.last ? userChat.last.message : null}
-                                        lastMessageDatetime={userChat.last ? userChat.last.timestamp_post.timestamp : null}
-                                        countUnread={userChat.unread}
-                                        userAvatar={userChat.user.avatar}
+                                        userChat={userChat}
                                         handleDrawerToggle={this.props.handleDrawerToggle}/>
                             )
                         }
