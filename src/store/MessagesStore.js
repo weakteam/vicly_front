@@ -1,6 +1,9 @@
 import {BACKEND_URL} from "../common";
 import {autorun, observable, reaction, runInAction, when} from "mobx";
 import toastService from "../services/toastService";
+import api from "./api/ViclyApi";
+import User from "./models/User";
+import Chat from "./models/Chat";
 
 export default class MessagesStore {
     @observable groups = [];
@@ -93,6 +96,7 @@ export default class MessagesStore {
                 });
             }
             const content = await userListResponse.json();
+
             runInAction("Update users info", () => {
                 this.userChats = content.with_group
                     .flatMap((elem => elem.users))
@@ -123,10 +127,45 @@ export default class MessagesStore {
                     .flatMap((elem => elem.users))
                     .map(elem => elem.user);
                 this.chatsFetched = true;
+
+
             });
+
+            // NEW ARCH !!!!
+            this.users_new = content.with_group
+                .flatMap((elem => elem.users))
+                .map(elem => new User(elem.user));
+
+            this.userChats_new = content.with_group
+                .flatMap((elem => elem.users))
+                .map(userObject => {
+                    const users = this.users_new.filter(user => {
+                        if (userObject.user_chat) {
+                            return userObject.user_chat.user_ids.includes(user.id);
+                        } else {
+                            return [this.users_new.find(user => user.id === userObject.user.id)];
+                        }
+                    });
+                    new Chat(userObject, users);
+                    // return {
+                    //     chat_id: userObject.user_chat ? userObject.user_chat.id : null,
+                    //     user_ids: userObject.user_chat ? userObject.user_chat.user_ids : null,
+                    //     chat_type: "user",
+                    //     user: userObject.user,
+                    //     last: userObject.last,
+                    //     unread: userObject.unread,
+                    //     messages: [],
+                    //     page: 0
+                    // }
+                });
+            // END
+            // NEW
+            // ARCH
+            // !
+            
             this.userChats.map(userChat => {
                 this.rootStore.imageService.getAvatarThumbnail(userChat.user.id);
-            })
+            });
         } catch (err) {
             console.log(err);
             runInAction("Failed fetch users info", () => {
