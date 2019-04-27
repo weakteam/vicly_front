@@ -10,21 +10,24 @@ const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        width: 400,
+        margin: '0 8px 0 8px',
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        width: 'calc(400px - 16px)',
         [theme.breakpoints.down('md')]: {
-            width: 280,
+            width: 'calc(280px - 16px)',
         },
         [theme.breakpoints.down('sm')]: {
-            width: 250,
+            width: 'calc(250px - 16px)',
         },
         [theme.breakpoints.down('xs')]: {
-            width: '100%',
+            width: '96%',
             top: 55,
             position: "fixed",
             borderBottom: 0,
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
         display: 'inline-flex',
         position: "fixed",
@@ -32,7 +35,8 @@ const styles = theme => ({
         height: 55,
         top: 76,
         borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            //theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
         zIndex: 1,
     },

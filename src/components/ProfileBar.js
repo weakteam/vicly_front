@@ -15,21 +15,24 @@ const {accountStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        width: 400,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        width: 'calc(400px - 16px)',
         [theme.breakpoints.down('md')]: {
-            width: 280,
+            width: 'calc(280px - 16px)',
         },
         [theme.breakpoints.down('sm')]: {
-            width: 250,
+            width: 'calc(250px - 16px)',
         },
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
+        margin: '0px 8px 0px 8px',
         padding: '6px 0px 6px 0px',
        zIndex: 1,
         position: 'fixed',
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
         display: 'inline-flex',
         alignItems: 'center',

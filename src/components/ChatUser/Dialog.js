@@ -26,7 +26,8 @@ const styles = theme => ({
         height: 45,
     },
     listItemPadding: {
-        padding: 'unset'
+        padding: 'unset',
+        borderRadius: 5,
     },
     margin: {
         zIndex: 0,
