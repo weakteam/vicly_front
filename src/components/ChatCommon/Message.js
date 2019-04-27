@@ -8,6 +8,11 @@ import {fade} from "@material-ui/core/styles/colorManipulator";
 import AvatarColor from "../../services/AvatarColor"
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
+import img1 from '../../images/fon3b.jpg';
+import img2 from '../../images/fon2.jpg';
+import img3 from '../../images/fon1.jpg';
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
 
 const styles = theme => ({
     root: {
@@ -35,7 +40,7 @@ const styles = theme => ({
         boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
     },
     fromMe: {
-        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
+        boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
         maxWidth: 500,
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
@@ -43,7 +48,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             maxWidth: 250,
         },
-        padding: 8,
+        padding: '3px 14px 3px 14px',
         backgroundColor: '#d5f0ff',
         borderRadius: 10,
     },
@@ -56,10 +61,10 @@ const styles = theme => ({
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
-        padding: 8,
+        padding: '3px 14px 3px 14px',
         backgroundColor: '#e2f0f1',
         borderRadius: 10,
-        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
+        boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
     },
     toMe: {
         maxWidth: 500,
@@ -69,10 +74,10 @@ const styles = theme => ({
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
-        padding: 8,
+        padding: '3px 14px 3px 14px',
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
-        boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.08)',
+        boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
     },
     messageBlock: {
         wordWrap: 'break-word',
@@ -103,12 +108,23 @@ const styles = theme => ({
     },
     mess: {
         fontSize: '0.8rem',
-        whiteSpace: 'pre'
+        color: '#181818',
+        whiteSpace: 'pre',
     },
     senderName: {
         minWidth: 'max-content',
         fontWeight: 500,
         color: '#2176a5'
+    },
+    gridList: {
+        margin: '10px!important',
+        maxWidth: 500,
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 300,
+        },
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: 300,
+        },
     },
 });
 
@@ -163,13 +179,15 @@ class Message extends React.Component {
         let mobileMessage;
         if (fromMe) {
             mobileMessage = <div className={classes.messageBlock}>
+                <Typography variant="caption"
+                            className={classes.caption}
+                            style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
                             className={classes.senderName}>Я</Typography>
-                        <Typography variant="caption"
-                                    className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
                 </div>
@@ -219,7 +237,32 @@ class Message extends React.Component {
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                    <GridList cellHeight={150} className={classes.gridList} cols={2}>
+                        <GridListTile key="1" cols={1}>
+                            <img src={img1} alt="lol"/>
+                        </GridListTile>
+                        <GridListTile key="1" cols={1}>
+                            <img src={img2} alt="lol"/>
+                        </GridListTile>
+                        <GridListTile key="1" cols={2}>
+                            <img src={img3} alt="lol"/>
+                        </GridListTile>
+                        <GridListTile key="1" cols={1}>
+                            <img src={img1} alt="lol"/>
+                        </GridListTile>
+                        <GridListTile key="1" cols={1}>
+                            <img src={img1} alt="lol"/>
+                        </GridListTile>
+                        <GridListTile key="1" cols={1}>
+                            <img src={img1} alt="lol"/>
+                        </GridListTile>
+                        <GridListTile key="1" cols={1}>
+                            <img src={img1} alt="lol"/>
+                        </GridListTile>
+                    </GridList>
                 </div>
+                <Typography variant="caption"
+                            className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
 
             </div>
         }
@@ -265,11 +308,36 @@ class Message extends React.Component {
                                         )
                                     }
 
-                                    <Typography variant="caption"
-                                                className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                                 </div>
-                                <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                                <Typography variant="body1" className={classes.mess}>
+                                    {this.props.message}
+                                </Typography>
+                                <GridList cellHeight={150} className={classes.gridList} cols={2}>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img1} alt="lol"/>
+                                    </GridListTile>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img2} alt="lol"/>
+                                    </GridListTile>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img3} alt="lol"/>
+                                    </GridListTile>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img1} alt="lol"/>
+                                    </GridListTile>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img1} alt="lol"/>
+                                    </GridListTile>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img1} alt="lol"/>
+                                    </GridListTile>
+                                    <GridListTile key="1" cols={1}>
+                                        <img src={img1} alt="lol"/>
+                                    </GridListTile>
+                                </GridList>
                             </div>
+                            <Typography variant="caption"
+                                        className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                         </div>
                     </div>
                 </Hidden>

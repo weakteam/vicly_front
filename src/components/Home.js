@@ -70,7 +70,7 @@ const styles = theme => ({
             width: '100%',
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#ededed' : theme.palette.primary.dark
+            theme.palette.type === 'light' ? '#e4e4e4' : theme.palette.primary.dark
             }`,
         borderRight: 0,
     },
@@ -103,7 +103,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             marginTop: 110,
         },
-        marginTop: 130,
+        marginTop: 136,
         padding: 0,
         marginBottom: 70
     },
