@@ -1,6 +1,8 @@
-import {observable} from "mobx";
+import {observable, runInAction} from "mobx";
 import Message from "./Message";
 import Chat from "./Chat";
+import rootStore from "../RootStore";
+
 
 export default class GroupChat extends Chat {
 
@@ -9,6 +11,7 @@ export default class GroupChat extends Chat {
     purpose = "";
     // Array of User objects
     users = [];
+
     constructor(chatObject, chatType, users) {
         super(chatObject, "group", users);
         // usersNew must be ARRAY!!!! instances of User
@@ -28,4 +31,48 @@ export default class GroupChat extends Chat {
         }
         this.unread = chatObject.unread;
     }
+
+    async postMessage(message) {
+        try {
+            const response = await rootStore.api.postMessageInGroupChat(message, this.chatId)
+            if (!response.ok) {
+                alert("post message failed")
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async loadMessages(page) {
+        try {
+            const response = this.rootStore.api.getGroupChatMessages(this.chatId, page);
+            if (!response.ok) {
+                alert("fetch messages failed")
+            }
+            let messages = await response.json();
+            runInAction("getAllMessagesById", () => {
+                this.updateChat(messages);
+            })
+        } catch (err) {
+            console.log(err);
+            // return dispatch(setChatList(err))
+        }
+    }
+
+    async loadMessagesAfter(messageId) {
+        try {
+            const response = await rootStore.api.getGroupChatMessages(this.chatId, messageId);
+            if (!response.ok) {
+                alert("fetch messages failed")
+            }
+            let messages = await response.json();
+            runInAction("getAllMessagesById", () => {
+                this.updateChat(messages);
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
 }

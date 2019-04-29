@@ -1,4 +1,6 @@
 import {observable} from "mobx";
+import {BACKEND_URL} from "../../common";
+import rootStore from "../RootStore";
 
 
 export default class Message {
@@ -19,6 +21,7 @@ export default class Message {
         this.id = messageObject.id;
         this.from = messageObject.from;
         this.key = messageObject.key;
+        this.chat_id = null;
         this.message = messageObject.message;
         this.reply_for = messageObject.reply_for;
         this.attachments = messageObject.attachments;
@@ -26,5 +29,29 @@ export default class Message {
         this.timestamp_post = messageObject.timestamp_post;
         this.timestamp_delivery = messageObject.timestamp_delivery;
         this.timestamp_read = messageObject.timestamp_read;
+    }
+
+
+    async deliveryMessage() {
+        try {
+            const response = await rootStore.api.deliveryMessage(this.id);
+            if (!response.ok) {
+                console.log("mark delivered message failed")
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async readMessage() {
+        try {
+            const response = await rootStore.api.readMessage(this.id);
+            if (!response.ok) {
+                console.log("mark delivered message failed")
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
     }
 }

@@ -7,7 +7,6 @@ import div from "@material-ui/core/Grid/Grid";
 import MoreVert from '@material-ui/icons/MoreVert'
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
-import Group from '@material-ui/icons/Group';
 import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase/index";
 import history from "../../store/history";
@@ -160,7 +159,7 @@ class ChatBar extends React.Component {
         const open = Boolean(anchorEl);
         const {classes, theme, match} = this.props;
 
-        let interlocutorName = this.messagesStore.users.find(elem => elem.id === +match);
+        let interlocutorName = this.messagesStore.users_new.find(elem => elem.id === +match);
 
         return (
             <div className={classes.position}>
