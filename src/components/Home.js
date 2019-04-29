@@ -243,8 +243,10 @@ class Home extends React.Component {
             return this.messagesStore.groups.map(
                 workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
                                         workgroup={workgroup}
-                                        userChats={this.messagesStore.userChats.filter(userChat => userChat.user.group_id === workgroup.id)}
-                                        groupChats={this.messagesStore.groupChats.filter(groupChat => groupChat.chat.group_id === workgroup.id)}/>
+                                        userChats={this.messagesStore.userChats.filter(userChat => userChat.user.groupId === workgroup.id)}
+                                        groupChats={this.messagesStore.groupChats.filter(groupChat => groupChat.chat.groupId === workgroup.id)}
+                                        userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                                        groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
             )
 
         } else {
@@ -273,21 +275,21 @@ class Home extends React.Component {
         const {classes, theme, chats} = this.props;
 
         let drawer = (
-                <div>
-                    <Hidden xsDown implementation="css">
-                        <ProfileBar
-                            changeThemeType={this.props.changeThemeType}
-                            handleChangeType={this.handleChangeType} chats={this.props.chats}
-                            handleLogout={this.accountStore.unauth.bind(accountStore)}/>
-                        <div className={classes.logoDrawer}>
-                            <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
-                        </div>
-                    </Hidden>
-                    <SearchBar/>
-                    <List className={classes.workG}>
-                        {this.workgroups()}
-                    </List>
-                </div>
+            <div>
+                <Hidden xsDown implementation="css">
+                    <ProfileBar
+                        changeThemeType={this.props.changeThemeType}
+                        handleChangeType={this.handleChangeType} chats={this.props.chats}
+                        handleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                    <div className={classes.logoDrawer}>
+                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                    </div>
+                </Hidden>
+                <SearchBar/>
+                <List className={classes.workG}>
+                    {this.workgroups()}
+                </List>
+            </div>
         );
 
         return (

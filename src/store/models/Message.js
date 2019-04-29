@@ -5,7 +5,7 @@ export default class Message {
     // Array of Attachment objects
     attachments = [];
     from = null;
-    _id = null;
+    id = null;
     key = null;
     message = null;
     reply_for = null;
@@ -16,7 +16,7 @@ export default class Message {
     timestamp_read = null;
 
     constructor(messageObject) {
-        this._id = messageObject._id;
+        this.id = messageObject.id;
         this.from = messageObject.from;
         this.key = messageObject.key;
         this.message = messageObject.message;

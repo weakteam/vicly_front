@@ -1,23 +1,25 @@
 import {observable} from "mobx";
+import Message from "./Message";
 
 export default class Chat {
-    chat_id = null;
-    user_ids = null;
-    // Array of User objects
-    @observable.ref
-    users = [];
-    chat_type = null;
-    user = null;
+    chatId = null;
+    groupId = null;
+    // user or group
+    chatType = null;
+    userIds = null;
     last = null;
     unread = 0;
     // Array of Message objects
     messages = [];
     page = 0;
 
-    constructor(chatObject, usersNew) {
-        this.chat_id = chatObject.chat_id;
-        this.user_ids = chatObject.user_ids;
-        this.chat_type = chatObject.chat_type;
-        this.users = usersNew;
+    constructor(chatObject, chatType, usersNew) {
+        this.chatType = chatType;
+        // Messages objects init
+        this.last = chatObject.last ? new Message(chatObject.last) : null;
+        if (chatObject.messages && chatObject.messages.length) {
+            this.messages = chatObject.messages.map(message => new Message(message))
+        }
+        this.unread = chatObject.unread;
     }
 }

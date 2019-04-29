@@ -112,8 +112,19 @@ class GroupChat extends React.Component {
     };
 
     render() {
-        const {classes, chatId, chatTitle, lastMessageUser, lastMessage, countUnread, lastMessageDatetime} = this.props;
-        // TODO work ONLY FOR USERS CHATS
+        const {classes} = this.props;
+        const {chatId, title: chatTitle, last, unread: countUnread} = this.props.groupChat;
+        let lastMessageUser = null;
+        let lastMessage = "";
+        let lastMessageDatetime = null;
+        if (last){
+            lastMessage = last.message;
+            lastMessageDatetime = last.timestamp_post.timestamp;
+            if (last) {
+                const user = rootStore.messagesStore.findUserById(last.from);
+                lastMessageUser = user ? user.first_name : "error";
+            }
+        }
         const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === false;
 
         let colorChange = AvatarColor.getColor(chatTitle[0]);

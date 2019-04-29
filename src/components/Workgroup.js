@@ -93,7 +93,7 @@ class Workgroup extends React.Component {
     };
 
     render() {
-        const {classes, theme, workgroup, groupChats, userChats, messagesStore} = this.props;
+        const {classes, theme, workgroup, groupChats, userChats, messagesStore, userChatsNew, groupChatsNew} = this.props;
         const lol = workgroup.name;
         let wcolor = lol.charAt(0);
         let colorName = this.workGroupColor(wcolor);
@@ -116,7 +116,7 @@ class Workgroup extends React.Component {
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className={classes.active}>
                         {
-                            userChats.map(
+                            userChatsNew.map(
                                 userChat =>
                                     <Dialog
                                         userChat={userChat}
@@ -124,21 +124,11 @@ class Workgroup extends React.Component {
                             )
                         }
                         {
-                            groupChats.map(
+                            groupChatsNew.map(
                                 groupChat => {
-                                    let lastMessageUsername = "";
-                                    if (groupChat.last) {
-                                        const user = rootStore.messagesStore.findUserById(groupChat.last.from);
-                                        lastMessageUsername = user ? user.first_name : "error";
-                                    }
                                     return (
                                         <GroupChat
-                                            chatId={groupChat.chat.id}
-                                            chatTitle={groupChat.chat.name}
-                                            lastMessageUser={lastMessageUsername}
-                                            lastMessage={groupChat.last ? groupChat.last.message : null}
-                                            lastMessageDatetime={groupChat.last ? groupChat.last.timestamp_post.timestamp : null}
-                                            countUnread={groupChat.unread}
+                                            groupChat={groupChat}
                                             handleDrawerToggle={this.props.handleDrawerToggle}
                                         />
                                     )
@@ -147,7 +137,7 @@ class Workgroup extends React.Component {
                         }
                     </List>
                 </Collapse>
-               {/* <Divider classes={{root: classes.root}}/>*/}
+                {/* <Divider classes={{root: classes.root}}/>*/}
             </div>
         )
     }

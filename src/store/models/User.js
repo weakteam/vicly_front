@@ -24,7 +24,7 @@ export default class User {
         this.last_name = userObject.last_name;
         this.archive = userObject.archive;
         this.avatar = userObject.avatar;
-        this.group_id = userObject.group_id;
+        this.group_id = userObject.groupId;
         this.id = userObject.id;
         this.is_active = userObject.is_active;
         this.join_time = userObject.join_time;

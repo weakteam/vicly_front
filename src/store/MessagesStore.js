@@ -4,10 +4,14 @@ import toastService from "../services/toastService";
 import api from "./api/ViclyApi";
 import User from "./models/User";
 import Chat from "./models/Chat";
+import UserChat from "./models/UserChat";
+import GroupChat from "./models/GroupChat";
 
 export default class MessagesStore {
     @observable groups = [];
     users = [];
+    @observable userChatsNew = [];
+    @observable groupChatsNew = [];
     @observable userChats = [];
     @observable groupChats = [];
     @observable fetchFail = false;
@@ -118,7 +122,7 @@ export default class MessagesStore {
                         groupChatObject.messages = [];
                         groupChatObject.page = 0;
                         groupChatObject.name = groupChatObject.chat.name;
-                        groupChatObject.chat_type = "group";
+                        groupChatObject.chatType = "group";
                         groupChatObject.user_ids = groupChatObject.chat.user_ids;
                         return groupChatObject;
                     });
@@ -136,33 +140,24 @@ export default class MessagesStore {
                 .flatMap((elem => elem.users))
                 .map(elem => new User(elem.user));
 
-            this.userChats_new = content.with_group
+            this.userChatsNew = content.with_group
                 .flatMap((elem => elem.users))
                 .map(userObject => {
-                    const users = this.users_new.filter(user => {
-                        if (userObject.user_chat) {
-                            return userObject.user_chat.user_ids.includes(user.id);
-                        } else {
-                            return [this.users_new.find(user => user.id === userObject.user.id)];
-                        }
-                    });
-                    new Chat(userObject, users);
-                    // return {
-                    //     chat_id: userObject.user_chat ? userObject.user_chat.id : null,
-                    //     user_ids: userObject.user_chat ? userObject.user_chat.user_ids : null,
-                    //     chat_type: "user",
-                    //     user: userObject.user,
-                    //     last: userObject.last,
-                    //     unread: userObject.unread,
-                    //     messages: [],
-                    //     page: 0
-                    // }
+                    const user = this.users_new.find(user => user.id === userObject.user.id);
+                    return new UserChat(userObject, user);
+                });
+
+            this.groupChatsNew = content.with_group
+                .flatMap((elem => elem.group_chats))
+                .map(groupChatObject => {
+                    const users = this.users_new.filter(user => groupChatObject.chat.user_ids.includes(user.id));
+                    return new GroupChat(groupChatObject, users);
                 });
             // END
             // NEW
             // ARCH
             // !
-            
+
             this.userChats.map(userChat => {
                 this.rootStore.imageService.getAvatarThumbnail(userChat.user.id);
             });
@@ -183,7 +178,7 @@ export default class MessagesStore {
         const myselfUserId = this.accountStore.userId;
         // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
         let chat;
-        if (message.chat.chat_type === "user") {
+        if (message.chat.chatType === "user") {
             let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
             chat = this.findUserChat(userId)
         } else {
@@ -203,8 +198,8 @@ export default class MessagesStore {
                     this.readMessage(message.id);
                 } else {
                     chat.unread++;
-                    const title = message.chat.chat_type === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
-                    const url = message.chat.chat_type === "user" ? "/home/chat/user/" + chat.user.id : "/home/chat/group/" + chat.chat.id;
+                    const title = message.chat.chatType === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
+                    const url = message.chat.chatType === "user" ? "/home/chat/user/" + chat.user.id : "/home/chat/group/" + chat.chat.id;
                     toastService.toastNewMessage(title, message, url);
                 }
             }
@@ -215,7 +210,7 @@ export default class MessagesStore {
 
     onDeliveryMessage(message_id, chat, message) {
         let innerChat = null;
-        if (chat.chat_type === "user") {
+        if (chat.chatType === "user") {
             let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
             innerChat = this.findUserChat(userId)
         } else {
@@ -229,7 +224,7 @@ export default class MessagesStore {
 
     onReadMessage(message_id, chat, message) {
         let innerChat = null;
-        if (chat.chat_type === "user") {
+        if (chat.chatType === "user") {
             let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
             innerChat = this.findUserChat(userId)
         } else {
