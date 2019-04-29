@@ -17,6 +17,11 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
+        margin: '0px 5px 5px 5px',
+        borderRadius: 5,
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
+            }`,
         position: 'fixed',
         top: 0,
         right: 0,
@@ -31,9 +36,9 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             //  theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-      /*  borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,*/
+        /*  borderLeft: ` ${
+              theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+              }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,

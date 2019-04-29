@@ -9,9 +9,28 @@ import InputBase from "@material-ui/core/InputBase/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import UserProfile from "../UserProfile";
+import Modal from "@material-ui/core/Modal";
+import DocumentWindow from "./DocumentWindow";
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
 
 const styles = theme => ({
     position: {
+        margin: '5px 5px 0px 5px',
+        borderRadius: 5,
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
+            }`,
         height: 'auto',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
@@ -37,6 +56,14 @@ const styles = theme => ({
         position: 'fixed',
         alignItems: 'center',
         right: 0,
+    },
+    paper: {
+        position: 'absolute',
+        [theme.breakpoints.down('xs')]: {
+            width: '90%',
+        },
+        width: 500,
+        boxShadow: theme.shadows[5],
     },
     iconButton: {
         width: 48,
@@ -200,9 +227,23 @@ class SendMessageBar extends React.Component {
                                   className={classes.menuItem}>Изображение</MenuItem>
                         <MenuItem onClick={this.handleClose}
                                   className={classes.menuItem}>Видео</MenuItem>
-                        <MenuItem  className={classes.menuItem} onClick={this.handleClose}>Документ</MenuItem>
+                        <MenuItem  className={classes.menuItem} onClick={this.handleMenuOpen}>Документ</MenuItem>
                     </Menu>
                 </FormControl>
+
+                <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.handleMenuClose}
+                    style={{zIndex: 1303}}>
+
+                    <div style={getModalStyle()} className={classes.paper}>
+                        <DocumentWindow handleMenuClose={this.handleMenuClose}/>
+                    </div>
+
+                </Modal>
+
             </div>
         )
     }

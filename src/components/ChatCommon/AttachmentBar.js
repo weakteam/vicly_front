@@ -15,6 +15,10 @@ import img3 from '../../images/fon1.jpg';
 
 const styles = theme => ({
     position: {
+        margin: '5px 5px 5px 5px',
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
+            }`,
         //  height: 100,
         // width: '100%',
         backgroundColor: ` ${

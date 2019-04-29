@@ -123,7 +123,7 @@ const styles = theme => ({
             maxWidth: 300,
         },
         [theme.breakpoints.down('xs')]: {
-            maxWidth: 300,
+            maxWidth: 250,
         },
     },
 });
@@ -178,16 +178,17 @@ class Message extends React.Component {
 
         let mobileMessage;
         if (fromMe) {
-            mobileMessage = <div className={classes.messageBlock}>
-                <Typography variant="caption"
-                            className={classes.caption}
-                            style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+            mobileMessage =
+                <div className={classes.messageBlock}>
+
                 <div className={fromMe ? classes.fromMe : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
                             className={classes.senderName}>Я</Typography>
-
+                        <Typography variant="caption"
+                                    className={classes.caption}
+                                    style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
                 </div>
@@ -261,9 +262,6 @@ class Message extends React.Component {
                         </GridListTile>
                     </GridList>
                 </div>
-                <Typography variant="caption"
-                            className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
-
             </div>
         }
 

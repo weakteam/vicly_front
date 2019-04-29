@@ -25,7 +25,7 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.71)' : 'rgb(90,114,151)'
+            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.95)' : 'rgb(90,114,151)'
             }`,
         //height: 85,
         // width: '100%',
@@ -193,11 +193,9 @@ class UserProfile extends React.Component {
                             <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleMenuClose}>
                                 <Close className={classes.closeIcon}/>
                             </IconButton>
-
                         </div>
 
                         <div className={classes.fixWidth}>
-
                             {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
                             <label htmlFor='avatar-input'>
                                 {
@@ -233,7 +231,6 @@ class UserProfile extends React.Component {
                         </div>
                     </div>
                 </div>
-                <Divider/>
                 <form className={classes.form}>
                     <div className={classes.blockForm}>
                         <div className={classes.block}>

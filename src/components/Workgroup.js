@@ -34,6 +34,7 @@ const styles = theme => ({
             }`,
     },
     root: {
+
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
             }`,
@@ -51,6 +52,9 @@ const styles = theme => ({
         alignItems: 'center'
     },
     WorkGroupBack: {
+        margin: 8,
+        borderRadius: 5,
+        boxShadow: '0px 0px 4px 0px #9f9f9f3b',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#2b3346'
             }`,
@@ -58,7 +62,6 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
 
-        marginBottom: 3
     },
 });
 

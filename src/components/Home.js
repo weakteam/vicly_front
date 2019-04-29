@@ -101,9 +101,9 @@ const styles = theme => ({
     },
     workG: {
         [theme.breakpoints.down('xs')]: {
-            marginTop: 110,
+            marginTop: 120,
         },
-        marginTop: 136,
+        marginTop: 143,
         padding: 0,
         marginBottom: 70
     },
@@ -356,6 +356,7 @@ class Home extends React.Component {
                         </Drawer>
                     </Hidden>
                 </nav>
+
                 <main className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
