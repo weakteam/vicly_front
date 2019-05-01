@@ -13,19 +13,23 @@ import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import InviteLogin from "./components/login/InviteLogin";
 
 if (history.location.pathname.startsWith("/home/chat/user")) {
-    rootStore.messagesStore.isCurrentChatForUser = true;
-    rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    rootStore.messagesStore.setCurrentChatId(chatId, true);
+    //rootStore.messagesStore.isCurrentChatForUser = true;
+    //rootStore.messagesStore.currentChatId = chatId;
 } else if (history.location.pathname.startsWith("/home/chat/group")) {
-    rootStore.messagesStore.isCurrentChatForUser = false;
-    rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+    rootStore.messagesStore.setCurrentChatId(chatId, false);
+    // rootStore.messagesStore.isCurrentChatForUser = false;
+    // rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
 }
 history.listen((location, action) => {
     if (history.location.pathname.startsWith("/home/chat/user")) {
-        rootStore.messagesStore.isCurrentChatForUser = true;
-        rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+        const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+        rootStore.messagesStore.setCurrentChatId(chatId, true);
     }else if (history.location.pathname.startsWith("/home/chat/group")) {
-        rootStore.messagesStore.isCurrentChatForUser = false;
-        rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+        const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
+        rootStore.messagesStore.setCurrentChatId(chatId, false);
     }
 });
 

@@ -17,7 +17,9 @@ export default class MessagesStore {
     @observable groupChats = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
+    previousCurrentChatId= null;
     isCurrentChatForUser = null;
+    previousIsCurrentChatForUser = null;
     @observable chatsFetched = false;
     err_message = "";
     @observable messagesLoading = false;
@@ -145,40 +147,25 @@ export default class MessagesStore {
 
     // //@action
     // //TO ONLY WS USING
-    // addMessageToEnd(message) {
-    //     //TODO for websocket push
-    //     const myselfUserId = this.accountStore.userId;
-    //     // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
-    //     let chat;
-    //     if (message.chat.chatType === "user") {
-    //         let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
-    //         chat = this.findUserChat(userId)
-    //     } else {
-    //         let chatId = message.chat.id;
-    //         chat = this.findGroupChat(chatId);
-    //     }
-    //     // WE MUST ALWAYS FIND CHAT!!!
-    //     if (chat) {
-    //         if (this.accountStore.userId === message.from) {
-    //             chat.messages.push(message);
-    //             chat.last = message;
-    //         } else {
-    //             chat.messages.push(message);
-    //             chat.last = message;
-    //             this.deliveryMessage(message.id, message.chat.id);
-    //             if ((this.isCurrentChatForUser && this.currentChatId === message.from) || (!this.isCurrentChatForUser && this.currentChatId === message.chat.id)) {
-    //                 this.readMessage(message.id);
-    //             } else {
-    //                 chat.unread++;
-    //                 const title = message.chat.chatType === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
-    //                 const url = message.chat.chatType === "user" ? "/home/chat/user/" + chat.user.id : "/home/chat/group/" + chat.chat.id;
-    //                 toastService.toastNewMessage(title, message, url);
-    //             }
-    //         }
-    //     } else {
-    //         // TODO FETCH CHAT INFO
-    //     }
-    // }
+    addMessageToEnd(message) {
+        //TODO for websocket push
+        const myselfUserId = this.accountStore.userId;
+        // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
+        let chat;
+        if (message.chat.chat_type === "user") {
+            let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            chat = this.findUserChatNew(userId)
+        } else {
+            let chatId = message.chat.id;
+            chat = this.findGroupChatNew(chatId);
+        }
+        // WE MUST ALWAYS FIND CHAT!!!
+        if (chat) {
+            chat.addMessageToEnd(new Message(message));
+        } else {
+            // TODO FETCH CHAT INFO
+        }
+    }
 
     onDeliveryMessage(message_id, chat, message) {
         // let innerChat = null;
@@ -266,5 +253,16 @@ export default class MessagesStore {
                 this.getGroupChatMessages(chatId, chat.page);
             }
         }
+    }
+
+    setCurrentChatId(newCurrentChatId,isNewCurrentChatForUser){
+        this.previousCurrentChatId = this.currentChatId;
+        this.currentChatId = newCurrentChatId;
+        this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
+        this.isCurrentChatForUser = isNewCurrentChatForUser;
+    }
+
+    isChatChanged(){
+        return this.currentChatId !== this.previousCurrentChatId || this.isCurrentChatForUser !== this.previousIsCurrentChatForUser;
     }
 }

@@ -92,6 +92,10 @@ export default class Chat {
         this.loadMessages(++this.page);
     }
 
+    postMessage(message){
+        // ABSTRACT
+    }
+
     messageDelivered(mesageId, messageObject) {
         let innerMessage = this.messages.find(mess => mess.id === mesageId);
         innerMessage.timestamp_delivery = messageObject.timestamp_delivery;

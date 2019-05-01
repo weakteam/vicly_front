@@ -84,7 +84,7 @@ class ChatWindow extends React.Component {
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
-        this.messagesStore.postMessageToUser(message.message, this.props.chat.user.id);
+        this.props.chat.postMessage(message.message);
         this.scrollToBottom();
     };
 
@@ -98,7 +98,7 @@ class ChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (chat !== prevProps.chat) {
+        if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
