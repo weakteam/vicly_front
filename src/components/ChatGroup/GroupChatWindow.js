@@ -56,8 +56,38 @@ class GroupChatWindow extends React.Component {
         console.log("componentDidMount chatWindow");
     }
 
+    componentDidMount() {
+        window.onscroll = () => {
+            if (window.pageYOffset === 0) {
+                this.props.chat.loadMessages(++this.props.chat.page);
+                //messagesStore.nextPage("user", this.messagesStore.currentChatId);
+                alert('I AM AT THE TOP');
+            }
+        };
+    };
+
+    componentWillUnmount() {
+        window.onscroll = null;
+    };
+
+    scrollHandler = (target) => {
+        let scrolledOnTop = false;
+        return () => {
+            console.log(target.scrollTop);
+
+            if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
+                scrolledOnTop = true;
+                this.props.chat.nextPage();
+                //alert("IAMONTOPFUCKU");
+            } else if (target.scrollTop > (target.scrollHeight / 10) && scrolledOnTop) {
+                scrolledOnTop = false;
+            }
+        };
+    };
+
     handleSendMessage = (message) => {
-        this.messagesStore.postMessageInGroupChat(message.message, this.props.chat.chat_id);
+        console.log("send message!!!");
+        this.props.chat.postMessage(message.message);
         this.scrollToBottom();
     };
 
@@ -71,7 +101,7 @@ class GroupChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (chat && chat.messages.length) {
+        if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
@@ -92,7 +122,7 @@ class GroupChatWindow extends React.Component {
             let users = chat.user_ids.map(id => this.messagesStore.findUserByIdNew(id));
             return (
                 <div className={classes.chatWindow}>
-                    <GroupChatBar match={this.props.match.params.chatId} handleDrawerToggle={this.props.handleDrawerToggle}/>
+                    <GroupChatBar chat={this.props.chat} match={this.props.match.params.chatId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
                             (
@@ -104,6 +134,7 @@ class GroupChatWindow extends React.Component {
                                     myselfUser={myselfUser}
                                     chatUsers={users}
                                     messages={messages}
+                                    scrollHandler={this.scrollHandler}
                                     ref={this.messageList}/>
                             ) : (
                                 <div className={classes.emptyChat}>

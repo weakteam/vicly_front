@@ -98,7 +98,7 @@ class ChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (messagesStore.isChatChanged() ) {
+        if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
@@ -138,7 +138,7 @@ class ChatWindow extends React.Component {
                                 </div>
                             )
                     }
-                    {/*   <AttachmentBar/>*/}
+                    <AttachmentBar/>
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )

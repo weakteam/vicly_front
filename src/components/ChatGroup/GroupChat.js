@@ -89,12 +89,11 @@ class GroupChat extends React.Component {
     }
 
     handleDialogClick = () => {
-        messagesStore.isCurrentChatForUser = true;
-        this.props.history.push(`/home/chat/group/${this.props.chatId}`);
+        this.props.history.push(`/home/chat/group/${this.props.groupChat.chatId}`);
     };
 
     handleDialogClickMob = () => {
-        this.props.history.push(`/home/chat/group/${this.props.chatId}`);
+        this.props.history.push(`/home/chat/group/${this.props.groupChat.chatId}`);
         this.props.handleDrawerToggle();
     };
 

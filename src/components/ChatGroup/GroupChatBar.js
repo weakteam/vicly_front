@@ -179,10 +179,8 @@ class ChatBar extends React.Component {
     render() {
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
-        const {classes, theme, match} = this.props;
+        const {classes, theme, match, chat} = this.props;
         const type = this.state.type;
-
-        const chatName = this.messagesStore.groupChats.find(elem => elem.chat_id === +match);
 
         return (
             <div className={classes.position}>
@@ -201,7 +199,7 @@ class ChatBar extends React.Component {
                 </div>
 
                 <div className={classes.namePosition}>
-                    <Typography variant="h6" className={classes.text} noWrap>{chatName.name}</Typography>
+                    <Typography variant="h6" className={classes.text} noWrap>{chat.name}</Typography>
                     <IconButton>
                         <Group className={classes.dialogIco}/>
                     </IconButton>

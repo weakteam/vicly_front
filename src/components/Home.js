@@ -378,7 +378,7 @@ class Home extends React.Component {
                                            <GroupChatWindow
                                                {...routeProps}
                                                handleDrawerToggle={this.handleDrawerToggle}
-                                               chat={this.messagesStore.getCurrentChat()}
+                                               chat={this.messagesStore.getCurrentChatNew()}
                                            />}/>
                             </div>) : (
                                 <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}
