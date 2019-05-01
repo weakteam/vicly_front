@@ -89,6 +89,7 @@ export default class Chat {
     }
 
     nextPage(){
+        rootStore.messagesStore.invalidateChatChanged();
         this.loadMessages(++this.page);
     }
 

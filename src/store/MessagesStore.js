@@ -265,4 +265,9 @@ export default class MessagesStore {
     isChatChanged(){
         return this.currentChatId !== this.previousCurrentChatId || this.isCurrentChatForUser !== this.previousIsCurrentChatForUser;
     }
+
+    invalidateChatChanged(){
+        this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
+        this.previousCurrentChatId = this.currentChatId;
+    }
 }
