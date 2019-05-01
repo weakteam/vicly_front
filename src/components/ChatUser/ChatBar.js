@@ -16,10 +16,10 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        margin: '0px 5px 5px 5px',
-        borderRadius: '0 0 5px 5px',
+        margin: '5px 5px 5px 5px',
+        borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
-            theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
+            theme.palette.type === 'light' ? 'inset 0px -1px 0px 1px rgba(49, 49, 49, 0.1)' : 'inset 0px -2px 0px 1px rgba(45, 53, 70, 0.86)'
             }`,
         position: 'fixed',
         top: 0,

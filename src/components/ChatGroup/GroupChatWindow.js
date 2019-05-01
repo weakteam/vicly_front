@@ -18,7 +18,7 @@ const styles = theme => ({
             padding: '65px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
-            padding: '123px 5px 60px 20px',
+            padding: '116px 5px 60px 20px',
         },
         height: '100%',
         overflow: 'hidden',
