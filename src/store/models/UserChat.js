@@ -31,7 +31,7 @@ export default class UserChat extends Chat {
 
     async loadMessages(page) {
         try {
-            const response = this.rootStore.api.getUserChatMessages(this.user.id, page);
+            const response = await rootStore.api.getUserChatMessages(this.user.id, page);
             if (!response.ok) {
                 alert("fetch messages failed")
             }

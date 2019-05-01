@@ -45,7 +45,7 @@ export default class GroupChat extends Chat {
 
     async loadMessages(page) {
         try {
-            const response = this.rootStore.api.getGroupChatMessages(this.chatId, page);
+            const response = await rootStore.api.getGroupChatMessages(this.chatId, page);
             if (!response.ok) {
                 alert("fetch messages failed")
             }

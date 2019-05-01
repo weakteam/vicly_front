@@ -13,7 +13,7 @@ export default class Chat {
     last = null;
     unread = 0;
     // Array of Message objects
-    messages = [];
+    @observable messages = [];
     page = 0;
 
     //common properties
@@ -75,7 +75,11 @@ export default class Chat {
         //ABSTRACT
     }
 
-    loadMessages(page) {
+    // loadMessages(page) {
+    //     //ABSTRACT
+    // }
+
+    loadMessagesAfter(messageId){
         //ABSTRACT
     }
 

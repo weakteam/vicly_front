@@ -62,21 +62,22 @@ export default class MessagesStore {
             (currentChatId) => {
                 if (currentChatId) {
                     // If opened user chat
-                    let currentChat = this.getCurrentChat(currentChatId);
+                    let currentChat = this.getCurrentChatNew(currentChatId);
                     if (!currentChat.messages.length) {
-                        if (this.isCurrentChatForUser === true) {
-
-                            this.getUserChatMessages(currentChatId, currentChat.page);
-                        } else {
-                            this.getGroupChatMessages(currentChatId, currentChat.page);
-                        }
+                        currentChat.loadMessages(currentChat.page);
+                        // if (this.isCurrentChatForUser === true) {
+                        //     this.getUserChatMessages(currentChatId, currentChat.page);
+                        // } else {
+                        //     this.getGroupChatMessages(currentChatId, currentChat.page);
+                        // }
                     } else {
                         const lastMsgId = currentChat.messages[currentChat.messages.length - 1];
-                        if (this.isCurrentChatForUser === true) {
-                            this.getUserChatMessagesAfter(currentChatId, lastMsgId.id);
-                        } else {
-                            this.getGroupChatMessagesAfter(currentChatId, lastMsgId.id);
-                        }
+                        currentChat.loadMessagesAfter(lastMsgId);
+                        // if (this.isCurrentChatForUser === true) {
+                        //     this.getUserChatMessagesAfter(currentChatId, lastMsgId.id);
+                        // } else {
+                        //     this.getGroupChatMessagesAfter(currentChatId, lastMsgId.id);
+                        // }
                     }
 
                 }
@@ -217,7 +218,7 @@ export default class MessagesStore {
 
 
     findUserChatNew(userId) {
-        return this.userChats.find(elem => elem.user.id === userId);
+        return this.userChatsNew.find(elem => elem.user.id === userId);
     }
 
     findMessage(messageId, chatId, chatType) {
@@ -237,17 +238,17 @@ export default class MessagesStore {
     }
 
     chatChanged(chatType, chatId) {
-        let innerChat = null;
-        if (chatType === "user") {
-            innerChat = this.findUserChat(chatId)
-        } else {
-            innerChat = this.findGroupChat(chatId);
-        }
-        innerChat.messages.forEach(message => {
-            if (!message.timestamp_read) {
-                this.readMessage(message.id);
-            }
-        })
+        // let innerChat = null;
+        // if (chatType === "user") {
+        //     innerChat = this.findUserChatNew(chatId)
+        // } else {
+        //     innerChat = this.findGroupChatNew(chatId);
+        // }
+        // innerChat.messages.forEach(message => {
+        //     if (!message.timestamp_read) {
+        //         this.readMessage(message.id);
+        //     }
+        // })
     }
 
     nextPage(chatType, chatId) {
