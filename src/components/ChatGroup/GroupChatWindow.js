@@ -13,7 +13,7 @@ import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     chatWindow: {
-        padding: '64px 0 58px 20px',
+        padding: '60px 0 58px 20px',
         [theme.breakpoints.down('md')]: {
             padding: '65px 20px 60px 20px',
         },
@@ -89,7 +89,7 @@ class GroupChatWindow extends React.Component {
             if (chat) {
                 messages = chat.messages;
             }
-            let users = chat.user_ids.map(id => this.messagesStore.findUserById(id));
+            let users = chat.user_ids.map(id => this.messagesStore.findUserByIdNew(id));
             return (
                 <div className={classes.chatWindow}>
                     <GroupChatBar match={this.props.match.params.chatId} handleDrawerToggle={this.props.handleDrawerToggle}/>

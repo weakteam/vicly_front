@@ -34,12 +34,12 @@ const styles = theme => ({
     chatWindow: {
         height: '100%',
         overflow: 'hidden',
-        padding: '64px 0 58px 20px',
-        [theme.breakpoints.down('md')]: {
-            padding: '65px 20px 60px 20px',
+        padding: '55px 0 58px 20px',
+      [theme.breakpoints.down('md')]: {
+            padding: '55px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
-            padding: '123px 5px 60px 20px',
+            padding: '111px 5px 60px 20px',
         },
     },
 });
