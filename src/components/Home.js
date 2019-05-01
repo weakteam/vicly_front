@@ -76,6 +76,7 @@ const styles = theme => ({
     },
 
     appBar: {
+        borderRadius: '0px 0px 5px 5px',
         zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''

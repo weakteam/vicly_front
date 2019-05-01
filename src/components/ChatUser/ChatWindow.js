@@ -39,7 +39,7 @@ const styles = theme => ({
             padding: '55px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
-            padding: '111px 5px 60px 20px',
+            padding: '116px 5px 60px 20px',
         },
     },
 });
