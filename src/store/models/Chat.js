@@ -71,16 +71,25 @@ export default class Chat {
         this.unread = unread;
     }
 
+    prependChat(newMessages) {
+        newMessages = newMessages.map(message => new Message(message));
+        this.messages = this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
+    }
+
     postMessage() {
         //ABSTRACT
     }
 
-    // loadMessages(page) {
-    //     //ABSTRACT
-    // }
-
-    loadMessagesAfter(messageId){
+    loadMessages(page) {
         //ABSTRACT
+    }
+
+    loadMessagesAfter(messageId) {
+        //ABSTRACT
+    }
+
+    nextPage(){
+        this.loadMessages(++this.page);
     }
 
     messageDelivered(mesageId, messageObject) {

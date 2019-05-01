@@ -35,7 +35,7 @@ const styles = theme => ({
         height: '100%',
         overflow: 'hidden',
         padding: '64px 0 58px 20px',
-      [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('md')]: {
             padding: '65px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
@@ -56,7 +56,8 @@ class ChatWindow extends React.Component {
     componentDidMount() {
         window.onscroll = () => {
             if (window.pageYOffset === 0) {
-                messagesStore.nextPage("user", this.messagesStore.currentChatId);
+                this.props.chat.loadMessages(++this.props.chat.page);
+                //messagesStore.nextPage("user", this.messagesStore.currentChatId);
                 alert('I AM AT THE TOP');
             }
         };
@@ -64,6 +65,20 @@ class ChatWindow extends React.Component {
 
     componentWillUnmount() {
         window.onscroll = null;
+    };
+
+    scrollHandler = (target) => {
+        let scrolledOnTop = false;
+        return () => {
+            console.log(target.scrollTop);
+            if (target.scrollTop <= 500 && !scrolledOnTop) {
+                scrolledOnTop = true;
+                this.props.chat.nextPage();
+                alert("IAMONTOPFUCKU");
+            } else if (target.scrollTop > 500 && scrolledOnTop) {
+                scrolledOnTop = false;
+            }
+        };
     };
 
     handleSendMessage = (message) => {
@@ -82,7 +97,7 @@ class ChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (chat && chat.messages.length) {
+        if (chat !== prevProps.chat) {
             this.scrollToBottom();
         }
     };
@@ -112,15 +127,17 @@ class ChatWindow extends React.Component {
                                     myselfUser={myselfUser}
                                     chatUsers={[chat.user]}
                                     messages={messages}
+                                    scrollHandler={this.scrollHandler}
                                     ref={this.messageList}/>
                             ) : (
                                 <div className={classes.emptyChat}>
-                                    <Typography className={classes.text} variant="h5">История сообщения
-                                        пуста...</Typography>
+                                    <Typography className={classes.text} variant="h5">
+                                        История сообщения пуста...
+                                    </Typography>
                                 </div>
                             )
                     }
-                 {/*   <AttachmentBar/>*/}
+                    {/*   <AttachmentBar/>*/}
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
