@@ -52,24 +52,6 @@ class GroupChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-    componentDidMount() {
-        console.log("componentDidMount chatWindow");
-    }
-
-    componentDidMount() {
-        window.onscroll = () => {
-            if (window.pageYOffset === 0) {
-                this.props.chat.loadMessages(++this.props.chat.page);
-                //messagesStore.nextPage("user", this.messagesStore.currentChatId);
-                alert('I AM AT THE TOP');
-            }
-        };
-    };
-
-    componentWillUnmount() {
-        window.onscroll = null;
-    };
-
     scrollHandler = (target) => {
         let scrolledOnTop = false;
         return () => {
@@ -105,6 +87,13 @@ class GroupChatWindow extends React.Component {
             this.scrollToBottom();
         }
     };
+
+    componentDidMount() {
+        const {chat} = this.props;
+        if (messagesStore.isChatChanged()) {
+            this.scrollToBottom();
+        }
+    }
 
     render() {
         const {classes, chat} = this.props;

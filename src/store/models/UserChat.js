@@ -17,9 +17,9 @@ export default class UserChat extends Chat {
         this.groupId = chatObject.user.group_id;
     }
 
-    async postMessage(message) {
+    async postMessage(message, attachments = []) {
         try {
-            const response = await rootStore.api.postMessageToUser(message, this.user.id);
+            const response = await rootStore.api.postMessageToUser(message, attachments, this.user.id);
             if (!response.ok) {
                 alert("post message failed")
             }

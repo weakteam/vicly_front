@@ -13,8 +13,6 @@ export default class MessagesStore {
     users = [];
     @observable userChatsNew = [];
     @observable groupChatsNew = [];
-    @observable userChats = [];
-    @observable groupChats = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
     previousCurrentChatId= null;
@@ -67,19 +65,11 @@ export default class MessagesStore {
                     let currentChat = this.getCurrentChatNew(currentChatId);
                     if (!currentChat.messages.length) {
                         currentChat.loadMessages(currentChat.page);
-                        // if (this.isCurrentChatForUser === true) {
-                        //     this.getUserChatMessages(currentChatId, currentChat.page);
-                        // } else {
-                        //     this.getGroupChatMessages(currentChatId, currentChat.page);
-                        // }
                     } else {
-                        const lastMsgId = currentChat.messages[currentChat.messages.length - 1];
-                        currentChat.loadMessagesAfter(lastMsgId);
-                        // if (this.isCurrentChatForUser === true) {
-                        //     this.getUserChatMessagesAfter(currentChatId, lastMsgId.id);
-                        // } else {
-                        //     this.getGroupChatMessagesAfter(currentChatId, lastMsgId.id);
-                        // }
+                        const lastMessage = currentChat.messages[currentChat.messages.length - 1];
+                        if (lastMessage) {
+                            currentChat.loadMessagesAfter(lastMessage.id);
+                        }
                     }
 
                 }
@@ -104,10 +94,6 @@ export default class MessagesStore {
             runInAction("Update users info", () => {
                 this.groups = content.with_group.map(elem => elem.group);
 
-
-                // NEW
-                // ARCH
-                // !!!!
                 this.users_new = content.with_group
                     .flatMap((elem => elem.users))
                     .map(elem => new User(elem.user));
@@ -125,14 +111,10 @@ export default class MessagesStore {
                         const users = this.users_new.filter(user => groupChatObject.chat.user_ids.includes(user.id));
                         return new GroupChat(groupChatObject, users);
                     });
-                // END
-                // NEW
-                // ARCH
-                // !
                 this.chatsFetched = true;
             });
 
-            this.userChats.map(userChat => {
+            this.userChatsNew.map(userChat => {
                 this.rootStore.imageService.getAvatarThumbnail(userChat.user.id);
             });
         } catch (err) {

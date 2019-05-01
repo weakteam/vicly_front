@@ -59,7 +59,7 @@ export default class ViclyApi {
         });
     }
 
-    async postMessageInGroupChat(message, chatId) {
+    async postMessageInGroupChat(message,attachments, chatId) {
         return await fetch(BACKEND_URL + "/message/postnewchat", {
             method: 'POST',
             headers: {
@@ -68,12 +68,13 @@ export default class ViclyApi {
             },
             body: JSON.stringify({
                 "chat_id": chatId,
-                "message": message
+                "message": message,
+                "attachments":attachments
             })
         });
     }
 
-    async postMessageToUser(message, userId) {
+    async postMessageToUser(message,attachments, userId) {
         return await fetch(BACKEND_URL + "/message/postnewuser", {
             method: 'POST',
             headers: {
@@ -82,7 +83,8 @@ export default class ViclyApi {
             },
             body: JSON.stringify({
                 "chat_id": userId,
-                "message": message
+                "message": message,
+                "attachments":attachments
             })
         });
     }

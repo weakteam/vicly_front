@@ -32,9 +32,9 @@ export default class GroupChat extends Chat {
         this.unread = chatObject.unread;
     }
 
-    async postMessage(message) {
+    async postMessage(message, attachments = []) {
         try {
-            const response = await rootStore.api.postMessageInGroupChat(message, this.chatId)
+            const response = await rootStore.api.postMessageInGroupChat(message, attachments, this.chatId);
             if (!response.ok) {
                 alert("post message failed")
             }

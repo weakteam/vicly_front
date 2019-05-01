@@ -245,8 +245,6 @@ class Home extends React.Component {
             return this.messagesStore.groups.map(
                 workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
                                         workgroup={workgroup}
-                                        userChats={this.messagesStore.userChats.filter(userChat => userChat.user.groupId === workgroup.id)}
-                                        groupChats={this.messagesStore.groupChats.filter(groupChat => groupChat.chat.groupId === workgroup.id)}
                                         userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
                                         groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
             )

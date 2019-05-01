@@ -199,7 +199,7 @@ class ChatBar extends React.Component {
                 </div>
 
                 <div className={classes.namePosition}>
-                    <Typography variant="h6" className={classes.text} noWrap>{chat.name}</Typography>
+                    <Typography variant="h6" className={classes.text} noWrap>{chat.title}</Typography>
                     <IconButton>
                         <Group className={classes.dialogIco}/>
                     </IconButton>

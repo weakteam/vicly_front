@@ -12,6 +12,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import UserProfile from "../UserProfile";
 import Modal from "@material-ui/core/Modal";
 import DocumentWindow from "./DocumentWindow";
+import Avatar from "@material-ui/core/Avatar";
+import rootStore from "../../store/RootStore";
+import AttachmentBar from "./AttachmentBar";
 
 function getModalStyle() {
     const top = 50;
@@ -125,11 +128,18 @@ const styles = theme => ({
 });
 
 class SendMessageBar extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.fileInput = React.createRef();
+    }
+
     state = {
         messageText: "",
         auth: true,
         anchorEl: null,
         open: false,
+        attachments: []
     };
 
 
@@ -143,19 +153,22 @@ class SendMessageBar extends React.Component {
 
     handleMenuOpen = () => {
         this.setState({open: true});
-
         this.handleClose();
     };
+
 
     handleMenuClose = () => {
         this.setState({open: false});
     };
 
     handleSendButton = () => {
-        if (!this.state.messageText.trim())
+        const attachReady = this.state.attachments.every(attach=>attach.status==="ready");
+        if (!this.state.messageText.trim() && attachReady){
             return;
+        }
         this.props.handleSendMessage({
             message: this.state.messageText,
+            attachments:this.state.attachments.map(attach=>attach.id),
             fromMe: true
         });
         this.setState({
@@ -167,6 +180,29 @@ class SendMessageBar extends React.Component {
         this.setState({
             messageText: e.target.value
         });
+    };
+
+    handleFileChange = (event) => {
+        if (event.target.files && event.target.files.length > 0) {
+            let attachments = [];
+            for (var i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let a = rootStore.attachmentService.uploadFile(file, (progress) => console.log("Progress:" + progress));
+                attachments.push(a);
+            }
+            this.setState((prevState) => {
+                let attachs = prevState.attachments.concat(attachments);
+                return {
+                    attachments: attachs
+                }
+            });
+        }
+    };
+
+    handleAddAttachments = (accept) => (e) => {
+        this.handleClose();
+        this.fileInput.current.accept = accept;
+        this.fileInput.current.click();
     };
 
     onEnterDown = (event) => {
@@ -185,8 +221,18 @@ class SendMessageBar extends React.Component {
 
         return (
             <div className={classes.position}>
+                {
+                    this.state.attachments.length ?
+                        (
+                            <AttachmentBar attachments={this.state.attachments}/>
+                        )
+                        :
+                        (
+                            ""
+                        )
+                }
 
-                <IconButton className={classes.iconButton}  onClick={this.handleMenu}>
+                <IconButton className={classes.iconButton} onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
 
@@ -205,7 +251,7 @@ class SendMessageBar extends React.Component {
                                             onClick={this.handleSendButton.bind(this)}>
                                     <SendOutlined/>
                                 </IconButton>
-                            </InputAdornment >
+                            </InputAdornment>
                         }/>
                     <Menu
                         style={{zIndex: 2000}}
@@ -224,12 +270,23 @@ class SendMessageBar extends React.Component {
                         }}
                         open={open}
                         onClose={this.handleClose}>
-                        <MenuItem onClick={this.handleMenuOpen}
-                                  className={classes.menuItem}>Изображение</MenuItem>
-                        <MenuItem onClick={this.handleClose}
-                                  className={classes.menuItem}>Видео</MenuItem>
-                        <MenuItem  className={classes.menuItem} onClick={this.handleMenuOpen}>Документ</MenuItem>
+                        <MenuItem onClick={this.handleAddAttachments("image/x-png,image/jpeg")}
+                                  className={classes.menuItem}>
+                            Изображение
+                        </MenuItem>
+                        <MenuItem onClick={this.handleAddAttachments("image/x-png,image/jpeg")}
+                                  className={classes.menuItem}>
+                            Видео
+                        </MenuItem>
+                        <MenuItem className={classes.menuItem}
+                                  onClick={this.handleAddAttachments("image/x-png,image/jpeg")}>
+                            Документ
+                        </MenuItem>
                     </Menu>
+
+                    <input onChange={this.handleFileChange} hidden id="file-input" type="file"
+                           ref={this.fileInput}
+                           multiple/>
                 </FormControl>
 
                 <Modal

@@ -8,10 +8,12 @@ import FormControl from "@material-ui/core/FormControl/index";
 import InputBase from "@material-ui/core/InputBase/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import Close from "@material-ui/icons/Close";
-import {Badge} from "@material-ui/core";
+import {Badge, CircularProgress} from "@material-ui/core";
 import img1 from '../../images/fon3b.jpg';
 import img2 from '../../images/fon2.jpg';
 import img3 from '../../images/fon1.jpg';
+import {observer} from "mobx-react";
+import Attachment from "./Attachment";
 
 const styles = theme => ({
     position: {
@@ -69,6 +71,7 @@ const styles = theme => ({
     },
 });
 
+@observer
 class AttachmentBar extends React.Component {
     state = {
         messageText: ""
@@ -106,30 +109,24 @@ class AttachmentBar extends React.Component {
 
         return (
             <div className={classes.position}>
-                <div className={classes.attachDiv}>
-                    <Close className={classes.deleteIcon}/>
-                    <img src={img1} alt="kek" className={classes.attached}/>
-                </div>
-                <div className={classes.attachDiv}>
-                    <Close className={classes.deleteIcon}/>
-                    <img src={img2} alt="kek" className={classes.attached}/>
-                </div>
-                <div className={classes.attachDiv}>
-                    <Close className={classes.deleteIcon}/>
-                    <img src={img3} alt="kek" className={classes.attached}/>
-                </div>
-                <div className={classes.attachDiv}>
-                    <Close className={classes.deleteIcon}/>
-                    <img src={img1} alt="kek" className={classes.attached}/>
-                </div>
-                <div className={classes.attachDiv}>
-                    <Close className={classes.deleteIcon}/>
-                    <img src={img2} alt="kek" className={classes.attached}/>
-                </div>
-                <div className={classes.attachDiv}>
-                    <Close className={classes.deleteIcon}/>
-                    <img src={img3} alt="kek" className={classes.attached}/>
-                </div>
+                {
+                    this.props.attachments.map(attachment =>
+                        (
+                            <Attachment attachment={attachment}/>
+                            // <>
+                            //     <div className={classes.attachDiv}>
+                            //         <Close className={classes.deleteIcon}/>
+                            //         {attachment.filename}
+                            //         <CircularProgress
+                            //             variant="determinate"
+                            //             value={attachment.progress}
+                            //         />
+                            //         <img src={img1} alt="kek" className={classes.attached}/>
+                            //     </div>
+                            // </>
+                        ))
+
+                }
             </div>
         )
     }

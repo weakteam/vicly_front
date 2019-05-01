@@ -73,7 +73,7 @@ export default class AccountStore {
                 this.login = login;
                 this.status = "authed";
                 this.userId = content.id;
-                this.groupId = content.groupId;
+                this.groupId = content.group_id;
                 this.saveInLocalStorage(this.fullName,this.first_name, this.last_name, this.token, this.userId, this.groupId, this.login, this.position);
             });
             this.rootStore.webSocketService.run();

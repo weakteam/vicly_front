@@ -53,20 +53,6 @@ class ChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-    componentDidMount() {
-        window.onscroll = () => {
-            if (window.pageYOffset === 0) {
-                this.props.chat.loadMessages(++this.props.chat.page);
-                //messagesStore.nextPage("user", this.messagesStore.currentChatId);
-                alert('I AM AT THE TOP');
-            }
-        };
-    };
-
-    componentWillUnmount() {
-        window.onscroll = null;
-    };
-
     scrollHandler = (target) => {
         let scrolledOnTop = false;
         return () => {
@@ -84,7 +70,7 @@ class ChatWindow extends React.Component {
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
-        this.props.chat.postMessage(message.message);
+        this.props.chat.postMessage(message.message,message.attachments);
         this.scrollToBottom();
     };
 
@@ -102,6 +88,13 @@ class ChatWindow extends React.Component {
             this.scrollToBottom();
         }
     };
+
+    componentDidMount() {
+        const {chat} = this.props;
+        if (messagesStore.isChatChanged()) {
+            this.scrollToBottom();
+        }
+    }
 
     render() {
         const {classes, chat} = this.props;
@@ -138,7 +131,6 @@ class ChatWindow extends React.Component {
                                 </div>
                             )
                     }
-                    <AttachmentBar/>
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
