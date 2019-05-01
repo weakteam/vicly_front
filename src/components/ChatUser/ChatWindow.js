@@ -35,7 +35,7 @@ const styles = theme => ({
         height: '100%',
         overflow: 'hidden',
         padding: '55px 0 58px 20px',
-      [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('md')]: {
             padding: '55px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
@@ -71,11 +71,12 @@ class ChatWindow extends React.Component {
         let scrolledOnTop = false;
         return () => {
             console.log(target.scrollTop);
-            if (target.scrollTop <= 500 && !scrolledOnTop) {
+
+            if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
                 scrolledOnTop = true;
                 this.props.chat.nextPage();
-                alert("IAMONTOPFUCKU");
-            } else if (target.scrollTop > 500 && scrolledOnTop) {
+                //alert("IAMONTOPFUCKU");
+            } else if (target.scrollTop > (target.scrollHeight / 10) && scrolledOnTop) {
                 scrolledOnTop = false;
             }
         };

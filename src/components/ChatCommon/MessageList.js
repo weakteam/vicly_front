@@ -51,7 +51,6 @@ class MessageList extends React.Component {
 
     componentDidMount() {
         const target = this.messageList.current;
-
         if (target != null) {
             target.onscroll = this.props.scrollHandler(target);
         }
@@ -60,7 +59,7 @@ class MessageList extends React.Component {
 
     componentWillUnmount() {
         const target = this.messageList.current;
-        if (target!=null){
+        if (target != null) {
             target.onscroll = null;
         }
     }
@@ -103,7 +102,8 @@ class MessageList extends React.Component {
                 overflow: 'auto',
                 paddingTop: 15,
             }}
-                 id='messageList'>
+                 id='messageList'
+                 ref={this.messageList}>
                 {messages}
                 <div ref={this.messagesEnd}/>
             </div>
