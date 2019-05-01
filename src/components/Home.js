@@ -109,6 +109,7 @@ const styles = theme => ({
     },
     content: {
         zIndex: 1201,
+        overflow: 'hidden',
         minHeight: '-webkit-fill-available',
         flexGrow: 1,
         flexShrink: 1,

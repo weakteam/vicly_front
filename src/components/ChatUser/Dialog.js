@@ -151,7 +151,7 @@ class Dialog extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item >
                                 {
                                     avatar_image ?
                                         (
@@ -230,7 +230,7 @@ class Dialog extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item>
                                 {
                                     avatar_image ?
                                         (

@@ -25,14 +25,14 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.95)' : 'rgb(90,114,151)'
+            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.95  )' : 'rgb(90,114,151)'
             }`,
         //height: 85,
         // width: '100%',
         padding: 18,
         display: 'flex',
         alignItems: 'start',
-        //borderRadius: '5px 5px 0px 0px',
+        borderRadius: '5px 5px 0px 0px',
     },
     header: {
         textAlign: 'start',
@@ -97,6 +97,7 @@ const styles = theme => ({
         padding: '30px 50px 30px 50px',
     },
     form: {
+        borderRadius: '0px 0px 5px 5px',
         width: '100%', // Fix IE 11 issue.
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark

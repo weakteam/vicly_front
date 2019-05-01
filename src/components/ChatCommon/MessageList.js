@@ -7,9 +7,9 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
+        height: '100%',
+        width: '100%',
+        overflow: 'auto',
     },
     listMessages: {
         //marginLeft: 40,
@@ -49,9 +49,9 @@ class MessageList extends React.Component {
         console.log("myUserId:" + myUserId);
 
         const avatar_images = this.props.chatUsers.map(chatUser =>
-            rootStore.imageService.avatars.find(elem =>  elem.userId === chatUser.id) || null
+            rootStore.imageService.avatars.find(elem => elem.userId === chatUser.id) || null
         );
-        avatar_images.push(rootStore.imageService.avatars.find(elem =>  elem.userId === myUserId) || null)
+        avatar_images.push(rootStore.imageService.avatars.find(elem => elem.userId === myUserId) || null)
 
         const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from === myUserId;//int == string !!!
@@ -69,10 +69,13 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div>
-                <div>
+            <div style={{
+                height: '-webkit-fill-available',
+                width: '100%',
+                overflow: 'auto',
+            }}
+            id='messageList'>
                     {messages}
-                </div>
                 <div ref={this.messagesEnd}/>
             </div>
 

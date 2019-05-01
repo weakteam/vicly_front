@@ -7,8 +7,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
 import {Button, IconButton} from "@material-ui/core";
 import rootStore from "../../store/RootStore";
-import CloudDownload from '@material-ui/icons/CloudDownload'
-import InsertDriveFile from "@material-ui/icons/InsertDriveFile"
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -27,14 +25,14 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.71)' : 'rgb(90,114,151)'
+            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.95  )' : 'rgb(90,114,151)'
             }`,
         //height: 85,
         // width: '100%',
         padding: 18,
         display: 'flex',
         alignItems: 'start',
-        //borderRadius: '5px 5px 0px 0px',
+        borderRadius: '5px 5px 0px 0px',
     },
     header: {
         textAlign: 'start',
@@ -91,20 +89,15 @@ const styles = theme => ({
         marginBottom: 5,
     },
     block: {
-        display: 'flex',
-        padding: '10px 10px 0px 10px',
-        alignItems: 'center',
-        cursor: 'pointer',
-        '&:hover': {
-          backgroundColor: '#dedede',
-        },
+        width: '100%'
     },
     blockForm: {
-        // display: 'flex',
+        display: 'flex',
         alignItems: 'flex-start',
-        padding: '10px 0px 20px 0px',
+        padding: '30px 50px 30px 50px',
     },
     form: {
+        borderRadius: '0px 0px 5px 5px',
         width: '100%', // Fix IE 11 issue.
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
@@ -138,24 +131,9 @@ const styles = theme => ({
             }`,
         cursor: 'pointer',
     },
-    uploadButton: {
-        display: 'flex',
-        padding: 16,
-        cursor: 'pointer',
-        justifyContent: 'center',
-        alignItems: 'center',
-        '&:hover': {
-            backgroundColor: '#cecece',
-        }
-    },
-    fileIcon: {
-        padding: 10,
-        borderRadius: 5,
-        backgroundColor: '#dedede',
-    },
 });
 
-class DocumentWindow extends React.Component {
+class GroupChatInfo extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
@@ -211,56 +189,82 @@ class DocumentWindow extends React.Component {
                     <div style={{width: '100%'}}>
                         <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
                             <Typography variant="overline" className={classes.header}>
-                                Документы
+                                Групповой чат
                             </Typography>
                             <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleMenuClose}>
                                 <Close className={classes.closeIcon}/>
                             </IconButton>
                         </div>
 
+                        <div className={classes.fixWidth}>
+                            {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
+                            <label htmlFor='avatar-input'>
+                                {
+                                    this.state.avatar_image || avatar_image ?
+                                        (
+                                            <div className={classes.kek}>
+                                                <Avatar
+                                                    className={classes.avatar}
+                                                    src={this.state.avatar_image || avatar_image.blob}/>
+                                            </div>
+                                        )
+                                        :
+                                        (
+                                            <Avatar className={classes.avatar}>
+                                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                            </Avatar>
+                                        )
+                                }
+
+                            </label>
+                            <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
+                                   accept="image/x-png,image/jpeg"
+                                   ref={this.avatarInput}/>
+                            <div className={classes.userName}>
+                                <Typography variant="h5"
+                                            className={classes.userName1}>{this.accountStore.fullName}</Typography>
+                                <Typography variant="caption"
+                                            noWrap
+                                            className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
+                            </div>
+                            <Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
+                                avatar!</Button>
+                        </div>
                     </div>
                 </div>
                 <form className={classes.form}>
-
-                    <div className={classes.uploadButton}>
-                        <CloudDownload style={{marginRight: 15}}/>
-                        <Typography variant="h6">Загрузить файл</Typography>
-                    </div>
                     <div className={classes.blockForm}>
                         <div className={classes.block}>
-                            <InsertDriveFile className={classes.fileIcon}/>
-                            <div style={{marginLeft: 23}}>
-                                <Typography variant="h6">Name of file</Typography>
-                                <Typography variant="caption">meta data</Typography>
+                            <Typography variant="overline" className={classes.textInf}>Информация</Typography>
+                            <div className={classes.infBlockFirst}>
+                                <Typography variant="h6" className={classes.text}>Телефон</Typography>
+                                <Typography variant="h6" className={classes.text2}>8(988)996-29-14</Typography>
                             </div>
-                        </div>
-                        <div className={classes.block}>
-                            <InsertDriveFile className={classes.fileIcon}/>
-                            <div style={{marginLeft: 23}}>
-                                <Typography variant="h6">Name of file</Typography>
-                                <Typography variant="caption">meta data</Typography>
+                            <Divider/>
+                            <div className={classes.infBlock}>
+                                <Typography variant="h6" className={classes.text}>Логин</Typography>
+                                <Typography variant="h6"
+                                            className={classes.text2}>@{this.accountStore.login}</Typography>
                             </div>
-                        </div>
-                        <div className={classes.block}>
-                            <InsertDriveFile className={classes.fileIcon}/>
-                            <div style={{marginLeft: 23}}>
-                                <Typography variant="h6">Name of file</Typography>
-                                <Typography variant="caption">meta data</Typography>
+                            <Divider/>
+                            <div className={classes.infBlock}>
+                                <Typography variant="h6" className={classes.text}>Пароль</Typography>
+                                <InputBase classes={{input: classes.textPassword}}
+                                           className={classes.text2}
+                                           type="password"
+                                           defaultValue="Naked input"/>
                             </div>
-                        </div>
-                        <div className={classes.block}>
-                            <InsertDriveFile className={classes.fileIcon}/>
-                            <div style={{marginLeft: 23}}>
-                                <Typography variant="h6">Name of file</Typography>
-                                <Typography variant="caption">meta data</Typography>
+                            <Divider/>
+                            <Divider/>
+                            <div className={classes.infBlock}>
+                                <Typography variant="h6" className={classes.text}>Доступные рабочие
+                                    группы</Typography>
+                                <div className={classes.text2}>
+                                    <Typography variant="h6"
+                                                className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
+                                </div>
                             </div>
-                        </div>
-                        <div className={classes.block}>
-                            <InsertDriveFile className={classes.fileIcon}/>
-                            <div style={{marginLeft: 23}}>
-                                <Typography variant="h6">Name of file</Typography>
-                                <Typography variant="caption">meta data</Typography>
-                            </div>
+                            <Divider/>
                         </div>
                     </div>
                 </form>
@@ -269,6 +273,6 @@ class DocumentWindow extends React.Component {
     }
 }
 
-const Document = withStyles(styles)(DocumentWindow);
+const ChatInfo = withStyles(styles)(GroupChatInfo);
 
-export default Document;
+export default ChatInfo;
