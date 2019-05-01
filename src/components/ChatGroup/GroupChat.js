@@ -121,7 +121,7 @@ class GroupChat extends React.Component {
             lastMessage = last.message;
             lastMessageDatetime = last.timestamp_post.timestamp;
             if (last) {
-                const user = rootStore.messagesStore.findUserById(last.from);
+                const user = rootStore.messagesStore.findUserByIdNew(last.from);
                 lastMessageUser = user ? user.first_name : "error";
             }
         }

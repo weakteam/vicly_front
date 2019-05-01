@@ -10,6 +10,7 @@ const styles = theme => ({
         height: '100%',
         width: '100%',
         overflow: 'auto',
+        paddingTop: 15,
     },
     listMessages: {
         //marginLeft: 40,
@@ -73,13 +74,12 @@ class MessageList extends React.Component {
                 height: '-webkit-fill-available',
                 width: '100%',
                 overflow: 'auto',
+                paddingTop: 15,
             }}
-            id='messageList'>
-                    {messages}
+                 id='messageList'>
+                {messages}
                 <div ref={this.messagesEnd}/>
             </div>
-
-
         );
     }
 }
