@@ -27,7 +27,7 @@ function getModalStyle() {
 const styles = theme => ({
     position: {
         margin: '5px 5px 0px 5px',
-        borderRadius: 5,
+        borderRadius: '5px 5px 0 0',
         boxShadow: ` ${
             theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
             }`,
@@ -58,6 +58,7 @@ const styles = theme => ({
         right: 0,
     },
     paper: {
+        outline: 'none',
         position: 'absolute',
         [theme.breakpoints.down('xs')]: {
             width: '90%',

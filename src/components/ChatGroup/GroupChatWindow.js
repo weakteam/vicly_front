@@ -13,10 +13,15 @@ import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     chatWindow: {
-        padding: '70px 0 60px 20px',
+        padding: '64px 0 58px 20px',
+        [theme.breakpoints.down('md')]: {
+            padding: '65px 20px 60px 20px',
+        },
         [theme.breakpoints.down('xs')]: {
             padding: '123px 5px 60px 20px',
         },
+        height: '100%',
+        overflow: 'hidden',
     },
     emptyChat: {
         top: 40,

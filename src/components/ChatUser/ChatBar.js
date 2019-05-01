@@ -18,7 +18,7 @@ const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     position: {
         margin: '0px 5px 5px 5px',
-        borderRadius: 5,
+        borderRadius: '0 0 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
             }`,

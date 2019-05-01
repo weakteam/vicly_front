@@ -10,14 +10,27 @@ import Menu from "@material-ui/core/Menu/Menu";
 import Group from '@material-ui/icons/Group';
 import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase";
+import UserProfile from "../UserProfile";
+import Modal from "@material-ui/core/Modal";
+import GroupChatInfo from "./GroupChatInfo";
 
 const {accountStore, messagesStore} = rootStore;
 
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
 
 const styles = theme => ({
     position: {
         margin: '0px 5px 5px 5px',
-        borderRadius: 5,
+        borderRadius: '0 0 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
             }`,
@@ -130,6 +143,7 @@ const styles = theme => ({
 class ChatBar extends React.Component {
     state = {
         auth: true,
+        open: false,
         anchorEl: null,
         type: this.props.theme.palette.type,
     };
@@ -150,6 +164,16 @@ class ChatBar extends React.Component {
 
     handleClose = () => {
         this.setState({anchorEl: null});
+    };
+
+    handleMenuOpen = () => {
+        this.setState({open: true});
+
+        this.handleClose();
+    };
+
+    handleMenuClose = () => {
+        this.setState({open: false});
     };
 
     render() {
@@ -214,6 +238,20 @@ class ChatBar extends React.Component {
                         <MenuItem onClick={this.handleClose} className={classes.menuItem}>Выйти</MenuItem>
                     </Menu>
                 </div>
+
+                <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.handleMenuClose}
+                    style={{zIndex: 1303}}>
+
+                    <div style={getModalStyle()} className={classes.paper}>
+                        <GroupChatInfo handleMenuClose={this.handleMenuClose}/>
+                    </div>
+
+                </Modal>
+
             </div>
         )
     }

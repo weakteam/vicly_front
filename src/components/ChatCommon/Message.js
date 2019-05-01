@@ -238,7 +238,7 @@ class Message extends React.Component {
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
-                    <GridList cellHeight={150} className={classes.gridList} cols={2}>
+                    {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
                         <GridListTile key="1" cols={1}>
                             <img src={img1} alt="lol"/>
                         </GridListTile>
@@ -260,7 +260,7 @@ class Message extends React.Component {
                         <GridListTile key="1" cols={1}>
                             <img src={img1} alt="lol"/>
                         </GridListTile>
-                    </GridList>
+                    </GridList>*/}
                 </div>
             </div>
         }
@@ -310,7 +310,7 @@ class Message extends React.Component {
                                 <Typography variant="body1" className={classes.mess}>
                                     {this.props.message}
                                 </Typography>
-                                <GridList cellHeight={150} className={classes.gridList} cols={2}>
+                                {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
                                     <GridListTile key="1" cols={1}>
                                         <img src={img1} alt="lol"/>
                                     </GridListTile>
@@ -332,7 +332,7 @@ class Message extends React.Component {
                                     <GridListTile key="1" cols={1}>
                                         <img src={img1} alt="lol"/>
                                     </GridListTile>
-                                </GridList>
+                                </GridList>*/}
                             </div>
                             <Typography variant="caption"
                                         className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>

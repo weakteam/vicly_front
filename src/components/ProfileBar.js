@@ -15,8 +15,7 @@ const {accountStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+
         width: 'calc(400px - 16px)',
         [theme.breakpoints.down('md')]: {
             width: 'calc(280px - 16px)',

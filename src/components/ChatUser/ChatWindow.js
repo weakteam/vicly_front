@@ -32,9 +32,11 @@ const styles = theme => ({
             }`,
     },
     chatWindow: {
-        padding: '70px 0 60px 20px',
-        [theme.breakpoints.down('md')]: {
-            padding: '123px 20px 60px 20px',
+        height: '100%',
+        overflow: 'hidden',
+        padding: '64px 0 58px 20px',
+      [theme.breakpoints.down('md')]: {
+            padding: '65px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
             padding: '123px 5px 60px 20px',
@@ -53,7 +55,7 @@ class ChatWindow extends React.Component {
 
     componentDidMount() {
         window.onscroll = () => {
-            if(window.pageYOffset === 0) {
+            if (window.pageYOffset === 0) {
                 messagesStore.nextPage("user", this.messagesStore.currentChatId);
                 alert('I AM AT THE TOP');
             }
@@ -118,12 +120,12 @@ class ChatWindow extends React.Component {
                                 </div>
                             )
                     }
-                    <AttachmentBar />
+                 {/*   <AttachmentBar/>*/}
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
         } else {
-            return (<ChatWindowEmpty />);
+            return (<ChatWindowEmpty/>);
         }
     }
 }
