@@ -139,7 +139,7 @@ class GroupChat extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
                                     {chatTitle[0].toUpperCase()}
@@ -189,7 +189,7 @@ class GroupChat extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
                                     {chatTitle[0].toUpperCase()}

@@ -15,7 +15,7 @@ const {accountStore} = rootStore;
 
 const styles = theme => ({
     position: {
-
+        borderRadius: '5px 5px 0 0',
         width: 'calc(400px - 16px)',
         [theme.breakpoints.down('md')]: {
             width: 'calc(280px - 16px)',
@@ -26,10 +26,10 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '100%',
         },
-        margin: '0px 8px 0px 8px',
+        margin: '5px 8px 0px 8px',
         padding: '6px 0px 6px 0px',
        zIndex: 1,
-        position: 'fixed',
+        position: 'absolute',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,

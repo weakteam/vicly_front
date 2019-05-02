@@ -92,7 +92,7 @@ const styles = theme => ({
     },
     search: {
         position: 'relative',
-        margin: 12,
+        marginLeft: 12,
     },
     searchIcon: {
         height: '100%',
@@ -184,7 +184,10 @@ class ChatBar extends React.Component {
 
         return (
             <div className={classes.position}>
-                <div>
+                <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                }}>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon className={classes.iconSearch}/>

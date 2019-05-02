@@ -101,11 +101,16 @@ const styles = theme => ({
         height: 55,
     },
     workG: {
-        [theme.breakpoints.down('xs')]: {
+      /*  [theme.breakpoints.down('xs')]: {
             marginTop: 120,
-        },
-        marginTop: 143,
-        padding: 0,
+        },*/
+      //  marginTop: 143,
+      //  padding: 0,
+        height: '-webkit-fill-available',
+        width: '100%',
+        overflow: 'auto',
+       // paddingTop: 15,
+
         marginBottom: 70
     },
     content: {
@@ -216,9 +221,6 @@ const styles = theme => ({
     },
     rootIndex: {
         zIndex: 1299,
-        overflowY: 'auto',
-        overflow: 'scroll',
-        WebkitOverflowScrolling: 'touch',
     },
 });
 
@@ -275,7 +277,10 @@ class Home extends React.Component {
         const {classes, theme, chats} = this.props;
 
         let drawer = (
-            <div>
+            <div style={{
+                height: '-webkit-fill-available',
+                marginTop: 115,
+                overflow: 'hidden',}}>
                 <Hidden xsDown implementation="css">
                     <ProfileBar
                         changeThemeType={this.props.changeThemeType}
@@ -287,7 +292,9 @@ class Home extends React.Component {
                 </Hidden>
                 <SearchBar/>
                 <List className={classes.workG}>
+                    <div>
                     {this.workgroups()}
+                    </div>
                 </List>
             </div>
         );

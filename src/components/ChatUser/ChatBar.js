@@ -80,7 +80,7 @@ const styles = theme => ({
     },
     search: {
         position: 'relative',
-        margin: 12,
+        margin: 10,
     },
     searchIcon: {
         height: '100%',
