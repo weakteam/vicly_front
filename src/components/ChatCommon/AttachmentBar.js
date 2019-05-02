@@ -1,19 +1,8 @@
 import React from 'react';
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import SendOutlined from '@material-ui/icons/SendOutlined';
-import AttachFile from '@material-ui/icons/AttachFile';
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import FormControl from "@material-ui/core/FormControl/index";
-import InputBase from "@material-ui/core/InputBase/index";
-import {fade} from "@material-ui/core/styles/colorManipulator";
-import Close from "@material-ui/icons/Close";
-import {Badge, CircularProgress} from "@material-ui/core";
-import img1 from '../../images/fon3b.jpg';
-import img2 from '../../images/fon2.jpg';
-import img3 from '../../images/fon1.jpg';
 import {observer} from "mobx-react";
-import Attachment from "./Attachment";
+import AttachmentSmall from "./AttachmentSmall";
+import Attachment from "../../store/models/Attachment";
 
 const styles = theme => ({
     position: {
@@ -45,6 +34,7 @@ const styles = theme => ({
         position: 'fixed',
         alignItems: 'center',
         right: 0,
+        height:120
     },
     attached: {
         // width: 70,
@@ -106,27 +96,12 @@ class AttachmentBar extends React.Component {
 
     render() {
         const {classes, theme} = this.props;
-
+        let at = new Attachment({filename: "lolsdfsfsddfd.pptx", size: 1578824, progress: 33, status: 'loading'});
+        at.progress = 75;
+        at.status=  'loading';
         return (
             <div className={classes.position}>
-                {
-                    this.props.attachments.map(attachment =>
-                        (
-                            <Attachment attachment={attachment}/>
-                            // <>
-                            //     <div className={classes.attachDiv}>
-                            //         <Close className={classes.deleteIcon}/>
-                            //         {attachment.filename}
-                            //         <CircularProgress
-                            //             variant="determinate"
-                            //             value={attachment.progress}
-                            //         />
-                            //         <img src={img1} alt="kek" className={classes.attached}/>
-                            //     </div>
-                            // </>
-                        ))
-
-                }
+                <AttachmentSmall attachment={at}/>
             </div>
         )
     }

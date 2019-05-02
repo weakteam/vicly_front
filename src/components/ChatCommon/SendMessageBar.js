@@ -16,6 +16,7 @@ import Avatar from "@material-ui/core/Avatar";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
 
+
 function getModalStyle() {
     const top = 50;
     const left = 50;
@@ -222,7 +223,7 @@ class SendMessageBar extends React.Component {
         return (
             <div className={classes.position}>
                 {
-                    this.state.attachments.length ?
+                    this.state.attachments.length || true ?
                         (
                             <AttachmentBar attachments={this.state.attachments}/>
                         )
