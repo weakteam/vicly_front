@@ -13,7 +13,11 @@ export default class AttachmentService {
     uploadFile(file) {
 
 
-        let attachment = new Attachment({size: file.size, filename: file.name});
+        let attachment = new Attachment({size: file.size, filename: file.name, type: file.type,});
+
+        if (file.type.startsWith("image/")) {
+            attachment.previewSrc = URL.createObjectURL(file);
+        }
 
         const innerProgressHandler = (event) => {
             attachment.onLoadProgress((event.loaded / event.total) * 100);
@@ -21,10 +25,12 @@ export default class AttachmentService {
         var formdata = new FormData();
         formdata.append("file", file);
         let ajax = new XMLHttpRequest();
-        ajax.upload.addEventListener("progress", innerProgressHandler, false);
-        ajax.addEventListener("load", attachment.onLoadComplete(ajax), false);
-        ajax.addEventListener("error", attachment.onLoadError, false);
-        ajax.open("POST", BACKEND_URL + "/attachment/upload",true);
+        ajax.upload.onprogress = innerProgressHandler;
+        ajax.onload = attachment.onLoadComplete;
+        ajax.onerror = attachment.onLoadError;
+        ajax.onabort = attachment.onLoadError;
+
+        ajax.open("POST", BACKEND_URL + "/attachment/upload", true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send(formdata);
         return attachment;

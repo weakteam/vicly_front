@@ -163,13 +163,13 @@ class SendMessageBar extends React.Component {
     };
 
     handleSendButton = () => {
-        const attachReady = this.state.attachments.every(attach=>attach.status==="ready");
-        if (!this.state.messageText.trim() && attachReady){
+        const attachReady = this.state.attachments.every(attach => attach.status === "ready");
+        if (!this.state.messageText.trim() && attachReady) {
             return;
         }
         this.props.handleSendMessage({
             message: this.state.messageText,
-            attachments:this.state.attachments.map(attach=>attach.id),
+            attachments: this.state.attachments.map(attach => attach.id),
             fromMe: true
         });
         this.setState({
@@ -206,6 +206,15 @@ class SendMessageBar extends React.Component {
         this.fileInput.current.click();
     };
 
+    handleDeleteAttachment = (attachment) => {
+        this.setState((prevState) => {
+            return {
+                attachments: prevState.attachments.filter(file => file !== attachment)
+        }
+        })
+
+    };
+
     onEnterDown = (event) => {
         // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
         if (event.keyCode == 13 && event.shiftKey) {
@@ -223,9 +232,9 @@ class SendMessageBar extends React.Component {
         return (
             <div className={classes.position}>
                 {
-                    this.state.attachments.length || true ?
+                    this.state.attachments.length ?
                         (
-                            <AttachmentBar attachments={this.state.attachments}/>
+                            <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment} attachments={this.state.attachments}/>
                         )
                         :
                         (
@@ -275,12 +284,12 @@ class SendMessageBar extends React.Component {
                                   className={classes.menuItem}>
                             Изображение
                         </MenuItem>
-                        <MenuItem onClick={this.handleAddAttachments("image/x-png,image/jpeg")}
+                        <MenuItem onClick={this.handleAddAttachments("video/*")}
                                   className={classes.menuItem}>
                             Видео
                         </MenuItem>
                         <MenuItem className={classes.menuItem}
-                                  onClick={this.handleAddAttachments("image/x-png,image/jpeg")}>
+                                  onClick={this.handleAddAttachments("")}>
                             Документ
                         </MenuItem>
                     </Menu>

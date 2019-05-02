@@ -26,7 +26,7 @@ const styles = theme => ({
         width: 64,
         height: 64,
         objectFit: 'cover',
-        margin:16
+        margin: 16
     },
     attachDiv: {
         margin: '5px 15px 5px 5px',
@@ -58,9 +58,29 @@ const styles = theme => ({
     },
 });
 
+@observer
 class AttachmentSmall extends React.Component {
     state = {
         messageText: ""
+    };
+
+    preview() {
+        const {classes, theme, attachment} = this.props;
+        if (attachment.status === "ready") {
+            if (attachment.type.startsWith("image")) {
+                return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
+            } else {
+                return <img src={someIcon} alt="ico" className={classes.attachedIcon}/>
+            }
+        } else if (attachment.status === "loading") {
+            return <CircularProgress variant="static" value={attachment.progress}/>
+        } else if (attachment.status === "none" || attachment.status === "error") {
+            return "ERROR!"
+        }
+    }
+
+    handleCloseClick = () => {
+        this.props.handleDeleteAttachment(this.props.attachment)
     };
 
     render() {
@@ -68,32 +88,13 @@ class AttachmentSmall extends React.Component {
 
         return (
             <div className={classes.attachDiv}>
-                <Close className={classes.deleteIcon}/>
+                <Close onClick={this.handleCloseClick} className={classes.deleteIcon}/>
                 <Typography className={classes.filename} inline={true}>
                     {attachment.filename}
                 </Typography>
-                {/*{attachment.filename}*/}
-                {/*{*/}
-                {/*    attachment.status === "loading" ?*/}
-                {/*        (*/}
-                {/*            <CircularProgress*/}
-                {/*                variant="static"*/}
-                {/*                value={attachment.progress}*/}
-                {/*            />*/}
-                {/*        ) : null*/}
-                {/*}*/}
-
                 {
-                    attachment.type === "image" ?
-                        (
-                            <img src={img1} alt="kek" className={classes.attached}/>
-                        )
-                        :
-                        (
-                            <img src={someIcon} alt="ico" className={classes.attachedIcon}/>
-                        )
+                    this.preview()
                 }
-
             </div>
         )
     }

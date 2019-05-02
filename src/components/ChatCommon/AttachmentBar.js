@@ -34,7 +34,7 @@ const styles = theme => ({
         position: 'fixed',
         alignItems: 'center',
         right: 0,
-        height:120
+        height: 120
     },
     attached: {
         // width: 70,
@@ -96,12 +96,18 @@ class AttachmentBar extends React.Component {
 
     render() {
         const {classes, theme} = this.props;
-        let at = new Attachment({filename: "lolsdfsfsddfd.pptx", size: 1578824, progress: 33, status: 'loading'});
+        let at = new Attachment({filename: "lols.pptx", size: 1578824, progress: 33, status: 'loading'});
         at.progress = 75;
-        at.status=  'loading';
+        at.status = 'ready';
+        at.type = "image";
         return (
             <div className={classes.position}>
-                <AttachmentSmall attachment={at}/>
+                {/*<AttachmentSmall attachment={at}/>*/}
+                {
+                    this.props.attachments.map(attachment =>
+                        <AttachmentSmall handleDeleteAttachment={this.props.handleDeleteAttachment} attachment={attachment}/>
+                    )
+                }
             </div>
         )
     }

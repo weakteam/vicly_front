@@ -11,6 +11,7 @@ export default class Attachment {
     // Plain js object with any fields :(
     metadata = null;
     timestamp = null;
+    type = null;
     // One of ["none" | "loading" | ready]
     @observable status = "none";
     @observable progress = null;
@@ -24,6 +25,7 @@ export default class Attachment {
         this.is_avatar = attachmentObject.is_avatar || null;
         this.metadata = attachmentObject.metadata || null;
         this.timestamp = attachmentObject.timestamp || null;
+        this.type = attachmentObject.type || null;
     }
 
     onLoadProgress(progress) {
@@ -34,7 +36,13 @@ export default class Attachment {
         console.log("upload:" + progress + "%");
     }
 
-    onLoadComplete = (request) => (event) => {
+    onLoadComplete = (event) => {
+        let request = event.currentTarget;
+        if (request.status !== 200){
+            console.log(`Request code:${request.status} ||| text:${request.statusText}`);
+            this.status = "error";
+            return;
+        }
         let jsonResponse = JSON.parse(request.responseText);
         console.log("upload complete:"+request.responseText);
         ////////////////////////////////////////////////////
@@ -44,11 +52,15 @@ export default class Attachment {
         this.is_avatar = jsonResponse.is_avatar;
         this.timestamp = jsonResponse.timestamp;
         this.metadata = jsonResponse.metadata;
+        if (this.metadata && this.metadata["Content-Type"] && this.metadata["Content-Type"] !== this.type) {
+            console.log("Apache Tika mime != Browser mime!!!");
+        }
         this.status="ready";
     };
 
     onLoadError(err) {
         console.log("upload error:" + err);
+        this.status = "error"
     }
 
 }
