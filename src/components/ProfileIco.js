@@ -73,7 +73,7 @@ class ProfileIco extends React.Component {
         auth: true,
         anchorEl: null,
         open: false,
-        // type: this.props.theme.palette.type,
+        // mime: this.props.theme.palette.mime,
     };
     handleChange = event => {
         this.setState({auth: event.target.checked});

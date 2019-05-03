@@ -13,6 +13,9 @@ import img2 from '../../images/fon2.jpg';
 import img3 from '../../images/fon1.jpg';
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
+import Button from "@material-ui/core/Button";
+import {BACKEND_URL} from "../../common";
+import AttachmentSmall from "./AttachmentSmall";
 
 const styles = theme => ({
     root: {
@@ -169,6 +172,29 @@ class Message extends React.Component {
         }
     };
 
+    handleAttachmentDownload = (attachment) => () => {
+        fetch(BACKEND_URL+'/attachment/download/'+attachment.id,{
+            method:"GET",
+            headers: {
+                'Authorization': rootStore.accountStore.token,
+                //'Content-Type': 'application/json'
+            }
+        })
+            .then(request => request.blob())
+            .then(blob => URL.createObjectURL(blob))
+            .then(url => {
+                var a = document.createElement('a');
+                a.style = "display: none";
+                a.href = url;
+                a.download = attachment.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // URL.revokeObjectURL(url);
+            })
+            .catch(err => console.log(err));
+    };
+
     render() {
         // Was the message sent by the current user. If so, add a css class
         const fromMe = this.props.fromMe ? 'from-me' : '';
@@ -310,6 +336,16 @@ class Message extends React.Component {
                                 <Typography variant="body1" className={classes.mess}>
                                     {this.props.message}
                                 </Typography>
+                                {
+                                    this.props.messageInfo.attachments.map(atta => {
+                                        return (
+                                            <AttachmentSmall attachment={atta}/>
+                                            // <Button variant={"text"} onClick={this.handleAttachmentDownload(atta)}>
+                                            //     {atta.filename}
+                                            // </Button>
+                                        )
+                                    })
+                                }
                                 {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
                                     <GridListTile key="1" cols={1}>
                                         <img src={img1} alt="lol"/>

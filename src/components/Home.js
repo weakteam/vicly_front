@@ -213,7 +213,7 @@ const styles = theme => ({
         bottom: 0,
         position: 'fixed',
         /* backgroundColor: ` ${
-             theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
+             theme.palette.mime === 'light' ? '#f1f1f1' : '#171a20'
              }`,*/
     },
     logoText: {

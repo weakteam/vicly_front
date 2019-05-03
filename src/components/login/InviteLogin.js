@@ -35,7 +35,7 @@ const styles = theme => ({
         },
         backgroundSize: 'cover',
         /*    backgroundImage: ` ${
-                theme.palette.type === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
+                theme.palette.mime === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
                 }`,*/
         backgroundImage: 'url(' + Background + ')',
         backgroundColor: theme.palette.primary.main,

@@ -43,7 +43,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
         /*borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
@@ -165,6 +165,7 @@ class SendMessageBar extends React.Component {
     handleSendButton = () => {
         const attachReady = this.state.attachments.every(attach => attach.status === "ready");
         if (!this.state.messageText.trim() && attachReady) {
+            alert("There are broken attachments!!!!");
             return;
         }
         this.props.handleSendMessage({
@@ -173,7 +174,8 @@ class SendMessageBar extends React.Component {
             fromMe: true
         });
         this.setState({
-            messageText: ""
+            messageText: "",
+            attachments:[]
         })
     };
 

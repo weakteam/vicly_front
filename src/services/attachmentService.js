@@ -6,6 +6,14 @@ export default class AttachmentService {
     rootStore = null;
     attachments = new Map();
 
+    addAttachment(attachment) {
+        if (attachment instanceof Attachment) {
+            this.attachments.set(attachment.id, attachment);
+        } else {
+            throw Error("It's not Attachment instance");
+        }
+    }
+
     constructor(RootStore) {
         this.rootStore = RootStore;
     }
@@ -33,30 +41,34 @@ export default class AttachmentService {
         ajax.open("POST", BACKEND_URL + "/attachment/upload", true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send(formdata);
+
         return attachment;
     }
 
+    loadAttachmentInfo(attachmentId) {
+        let attachment = new Attachment({id: attachmentId});
+        const innerProgressHandler = (event) => {
+            attachment.onLoadProgress((event.loaded / event.total) * 100);
+        };
+        let ajax = new XMLHttpRequest();
+        ajax.upload.onprogress = innerProgressHandler;
+        ajax.onload = attachment.onLoadComplete;
+        ajax.onerror = attachment.onLoadError;
+        ajax.onabort = attachment.onLoadError;
 
-    // async getAvatarThumbnail(userId) {
-    //     let avatar = this.avatars.find(elem => elem.userId === userId);
-    //     if (avatar)
-    //         return avatar;
-    //     const response = await fetch(`${BACKEND_URL}/attachment/download_avatar/${userId}?width=200`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Authorization': this.rootStore.accountStore.token
-    //         }
-    //     });
-    //     if (!response.ok) {
-    //         console.log("There are no avatar for user:" + userId);
-    //     } else {
-    //         avatar = {
-    //             userId: userId,
-    //             blob: URL.createObjectURL(await response.blob())
-    //         };
-    //         this.avatars.push(avatar);
-    //     }
-    //     return avatar;
-    // }
+        ajax.open("GET", BACKEND_URL + "/attachment/" + attachmentId, true);
+        ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
+        ajax.send();
+
+        return attachment;
+    }
+
+    loadAttachment(attachment) {
+        if (!attachment instanceof Attachment) {
+            throw Error("It's not Attachment instance");
+        }
+
+    }
+
 
 }

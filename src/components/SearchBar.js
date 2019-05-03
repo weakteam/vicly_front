@@ -35,8 +35,8 @@ const styles = theme => ({
         alignItems: 'center',
         height: 55,
         /*borderBottom: ` ${
-            //theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            //theme.palette.mime === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'

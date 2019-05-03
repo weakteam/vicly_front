@@ -17,7 +17,7 @@ const styles = theme => ({
             }`,
         overflowX: 'auto',
         /*borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
@@ -99,7 +99,7 @@ class AttachmentBar extends React.Component {
         let at = new Attachment({filename: "lols.pptx", size: 1578824, progress: 33, status: 'loading'});
         at.progress = 75;
         at.status = 'ready';
-        at.type = "image";
+        at.mime = "image";
         return (
             <div className={classes.position}>
                 {/*<AttachmentSmall attachment={at}/>*/}

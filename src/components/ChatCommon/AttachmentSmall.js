@@ -67,7 +67,7 @@ class AttachmentSmall extends React.Component {
     preview() {
         const {classes, theme, attachment} = this.props;
         if (attachment.status === "ready") {
-            if (attachment.type.startsWith("image")) {
+            if (attachment.mime.startsWith("image")) {
                 return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
             } else {
                 return <img src={someIcon} alt="ico" className={classes.attachedIcon}/>
