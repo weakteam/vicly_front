@@ -27,7 +27,8 @@ const styles = theme => ({
         height: 45,
     },
     listItemPadding: {
-        padding: 'unset'
+        padding: 'unset',
+        borderRadius: 5,
     },
     margin: {
         top: 41,
@@ -88,12 +89,11 @@ class GroupChat extends React.Component {
     }
 
     handleDialogClick = () => {
-        messagesStore.isCurrentChatForUser = true;
-        this.props.history.push(`/home/chat/group/${this.props.chatId}`);
+        this.props.history.push(`/home/chat/group/${this.props.groupChat.chatId}`);
     };
 
     handleDialogClickMob = () => {
-        this.props.history.push(`/home/chat/group/${this.props.chatId}`);
+        this.props.history.push(`/home/chat/group/${this.props.groupChat.chatId}`);
         this.props.handleDrawerToggle();
     };
 
@@ -111,8 +111,19 @@ class GroupChat extends React.Component {
     };
 
     render() {
-        const {classes, chatId, chatTitle, lastMessageUser, lastMessage, countUnread, lastMessageDatetime} = this.props;
-        // TODO work ONLY FOR USERS CHATS
+        const {classes} = this.props;
+        const {chatId, title: chatTitle, last, unread: countUnread} = this.props.groupChat;
+        let lastMessageUser = null;
+        let lastMessage = "";
+        let lastMessageDatetime = null;
+        if (last){
+            lastMessage = last.message;
+            lastMessageDatetime = last.timestamp_post.timestamp;
+            if (last) {
+                const user = rootStore.messagesStore.findUserByIdNew(last.from);
+                lastMessageUser = user ? user.first_name : "error";
+            }
+        }
         const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === false;
 
         let colorChange = AvatarColor.getColor(chatTitle[0]);
@@ -128,7 +139,7 @@ class GroupChat extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
                                     {chatTitle[0].toUpperCase()}
@@ -178,7 +189,7 @@ class GroupChat extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
                                     {chatTitle[0].toUpperCase()}

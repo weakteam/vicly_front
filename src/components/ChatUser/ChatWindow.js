@@ -32,12 +32,14 @@ const styles = theme => ({
             }`,
     },
     chatWindow: {
-        padding: '70px 0 60px 20px',
+        height: '100%',
+        overflow: 'hidden',
+        padding: '55px 0 58px 20px',
         [theme.breakpoints.down('md')]: {
-            padding: '123px 20px 60px 20px',
+            padding: '55px 20px 60px 20px',
         },
         [theme.breakpoints.down('xs')]: {
-            padding: '123px 5px 60px 20px',
+            padding: '116px 5px 60px 20px',
         },
     },
 });
@@ -51,13 +53,24 @@ class ChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-    componentDidMount() {
-        console.log("componentDidMount chatWindow");
-    }
+    scrollHandler = (target) => {
+        let scrolledOnTop = false;
+        return () => {
+            console.log(target.scrollTop);
+
+            if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
+                scrolledOnTop = true;
+                this.props.chat.nextPage();
+                //alert("IAMONTOPFUCKU");
+            } else if (target.scrollTop > (target.scrollHeight / 10) && scrolledOnTop) {
+                scrolledOnTop = false;
+            }
+        };
+    };
 
     handleSendMessage = (message) => {
         console.log("send message!!!");
-        this.messagesStore.postMessageToUser(message.message, this.props.chat.user.id);
+        this.props.chat.postMessage(message.message,message.attachments);
         this.scrollToBottom();
     };
 
@@ -71,10 +84,17 @@ class ChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (chat && chat.messages.length) {
+        if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
+
+    componentDidMount() {
+        const {chat} = this.props;
+        if (messagesStore.isChatChanged()) {
+            this.scrollToBottom();
+        }
+    }
 
     render() {
         const {classes, chat} = this.props;
@@ -101,20 +121,21 @@ class ChatWindow extends React.Component {
                                     myselfUser={myselfUser}
                                     chatUsers={[chat.user]}
                                     messages={messages}
+                                    scrollHandler={this.scrollHandler}
                                     ref={this.messageList}/>
                             ) : (
                                 <div className={classes.emptyChat}>
-                                    <Typography className={classes.text} variant="h5">История сообщения
-                                        пуста...</Typography>
+                                    <Typography className={classes.text} variant="h5">
+                                        История сообщения пуста...
+                                    </Typography>
                                 </div>
                             )
                     }
-                    <AttachmentBar />
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>
             )
         } else {
-            return (<ChatWindowEmpty />);
+            return (<ChatWindowEmpty/>);
         }
     }
 }

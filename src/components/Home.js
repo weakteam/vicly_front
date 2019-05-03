@@ -70,12 +70,13 @@ const styles = theme => ({
             width: '100%',
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#ededed' : theme.palette.primary.dark
+            theme.palette.type === 'light' ? '#e4e4e4' : theme.palette.primary.dark
             }`,
         borderRight: 0,
     },
 
     appBar: {
+        borderRadius: '0px 0px 5px 5px',
         zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
@@ -100,15 +101,21 @@ const styles = theme => ({
         height: 55,
     },
     workG: {
-        [theme.breakpoints.down('xs')]: {
-            marginTop: 110,
-        },
-        marginTop: 130,
-        padding: 0,
+      /*  [theme.breakpoints.down('xs')]: {
+            marginTop: 120,
+        },*/
+      //  marginTop: 143,
+      //  padding: 0,
+        height: '-webkit-fill-available',
+        width: '100%',
+        overflow: 'auto',
+       // paddingTop: 15,
+
         marginBottom: 70
     },
     content: {
         zIndex: 1201,
+        overflow: 'hidden',
         minHeight: '-webkit-fill-available',
         flexGrow: 1,
         flexShrink: 1,
@@ -214,9 +221,6 @@ const styles = theme => ({
     },
     rootIndex: {
         zIndex: 1299,
-        overflowY: 'auto',
-        overflow: 'scroll',
-        WebkitOverflowScrolling: 'touch',
     },
 });
 
@@ -243,8 +247,8 @@ class Home extends React.Component {
             return this.messagesStore.groups.map(
                 workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
                                         workgroup={workgroup}
-                                        userChats={this.messagesStore.userChats.filter(userChat => userChat.user.group_id === workgroup.id)}
-                                        groupChats={this.messagesStore.groupChats.filter(groupChat => groupChat.chat.group_id === workgroup.id)}/>
+                                        userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                                        groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
             )
 
         } else {
@@ -273,21 +277,26 @@ class Home extends React.Component {
         const {classes, theme, chats} = this.props;
 
         let drawer = (
-                <div>
-                    <Hidden xsDown implementation="css">
-                        <ProfileBar
-                            changeThemeType={this.props.changeThemeType}
-                            handleChangeType={this.handleChangeType} chats={this.props.chats}
-                            handleLogout={this.accountStore.unauth.bind(accountStore)}/>
-                        <div className={classes.logoDrawer}>
-                            <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
-                        </div>
-                    </Hidden>
-                    <SearchBar/>
-                    <List className={classes.workG}>
-                        {this.workgroups()}
-                    </List>
-                </div>
+            <div style={{
+                height: '-webkit-fill-available',
+                marginTop: 115,
+                overflow: 'hidden',}}>
+                <Hidden xsDown implementation="css">
+                    <ProfileBar
+                        changeThemeType={this.props.changeThemeType}
+                        handleChangeType={this.handleChangeType} chats={this.props.chats}
+                        handleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                    <div className={classes.logoDrawer}>
+                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                    </div>
+                </Hidden>
+                <SearchBar/>
+                <List className={classes.workG}>
+                    <div>
+                    {this.workgroups()}
+                    </div>
+                </List>
+            </div>
         );
 
         return (
@@ -356,6 +365,7 @@ class Home extends React.Component {
                         </Drawer>
                     </Hidden>
                 </nav>
+
                 <main className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
@@ -366,14 +376,14 @@ class Home extends React.Component {
                                            <ChatWindow
                                                {...routeProps}
                                                handleDrawerToggle={this.handleDrawerToggle}
-                                               chat={this.messagesStore.getCurrentChat()}
+                                               chat={this.messagesStore.getCurrentChatNew()}
                                            />}/>
                                 <Route path="/home/chat/group/:chatId"
                                        render={(routeProps) =>
                                            <GroupChatWindow
                                                {...routeProps}
                                                handleDrawerToggle={this.handleDrawerToggle}
-                                               chat={this.messagesStore.getCurrentChat()}
+                                               chat={this.messagesStore.getCurrentChatNew()}
                                            />}/>
                             </div>) : (
                                 <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}

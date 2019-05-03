@@ -7,7 +7,6 @@ import div from "@material-ui/core/Grid/Grid";
 import MoreVert from '@material-ui/icons/MoreVert'
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Menu from "@material-ui/core/Menu/Menu";
-import Group from '@material-ui/icons/Group';
 import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase/index";
 import history from "../../store/history";
@@ -17,6 +16,11 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
+        margin: '5px 5px 5px 5px',
+        borderRadius: '5px 5px 5px 5px',
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? 'inset 0px -1px 0px 1px rgba(49, 49, 49, 0.1)' : 'inset 0px -2px 0px 1px rgba(45, 53, 70, 0.86)'
+            }`,
         position: 'fixed',
         top: 0,
         right: 0,
@@ -31,9 +35,9 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             //  theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-      /*  borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,*/
+        /*  borderLeft: ` ${
+              theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+              }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,
@@ -76,7 +80,7 @@ const styles = theme => ({
     },
     search: {
         position: 'relative',
-        margin: 12,
+        margin: 10,
     },
     searchIcon: {
         height: '100%',
@@ -155,7 +159,7 @@ class ChatBar extends React.Component {
         const open = Boolean(anchorEl);
         const {classes, theme, match} = this.props;
 
-        let interlocutorName = this.messagesStore.users.find(elem => elem.id === +match);
+        let interlocutorName = this.messagesStore.users_new.find(elem => elem.id === +match);
 
         return (
             <div className={classes.position}>

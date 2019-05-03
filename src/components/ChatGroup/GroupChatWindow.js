@@ -13,10 +13,15 @@ import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     chatWindow: {
-        padding: '70px 0 60px 20px',
-        [theme.breakpoints.down('xs')]: {
-            padding: '123px 5px 60px 20px',
+        padding: '60px 0 58px 20px',
+        [theme.breakpoints.down('md')]: {
+            padding: '65px 20px 60px 20px',
         },
+        [theme.breakpoints.down('xs')]: {
+            padding: '116px 5px 60px 20px',
+        },
+        height: '100%',
+        overflow: 'hidden',
     },
     emptyChat: {
         top: 40,
@@ -47,12 +52,24 @@ class GroupChatWindow extends React.Component {
         this.messageList = React.createRef();
     }
 
-    componentDidMount() {
-        console.log("componentDidMount chatWindow");
-    }
+    scrollHandler = (target) => {
+        let scrolledOnTop = false;
+        return () => {
+            console.log(target.scrollTop);
+
+            if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
+                scrolledOnTop = true;
+                this.props.chat.nextPage();
+                //alert("IAMONTOPFUCKU");
+            } else if (target.scrollTop > (target.scrollHeight / 10) && scrolledOnTop) {
+                scrolledOnTop = false;
+            }
+        };
+    };
 
     handleSendMessage = (message) => {
-        this.messagesStore.postMessageInGroupChat(message.message, this.props.chat.chat_id);
+        console.log("send message!!!");
+        this.props.chat.postMessage(message.message);
         this.scrollToBottom();
     };
 
@@ -66,10 +83,17 @@ class GroupChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (chat && chat.messages.length) {
+        if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
+
+    componentDidMount() {
+        const {chat} = this.props;
+        if (messagesStore.isChatChanged()) {
+            this.scrollToBottom();
+        }
+    }
 
     render() {
         const {classes, chat} = this.props;
@@ -84,10 +108,10 @@ class GroupChatWindow extends React.Component {
             if (chat) {
                 messages = chat.messages;
             }
-            let users = chat.user_ids.map(id => this.messagesStore.findUserById(id));
+            let users = chat.user_ids.map(id => this.messagesStore.findUserByIdNew(id));
             return (
                 <div className={classes.chatWindow}>
-                    <GroupChatBar match={this.props.match.params.chatId} handleDrawerToggle={this.props.handleDrawerToggle}/>
+                    <GroupChatBar chat={this.props.chat} match={this.props.match.params.chatId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
                             (
@@ -99,6 +123,7 @@ class GroupChatWindow extends React.Component {
                                     myselfUser={myselfUser}
                                     chatUsers={users}
                                     messages={messages}
+                                    scrollHandler={this.scrollHandler}
                                     ref={this.messageList}/>
                             ) : (
                                 <div className={classes.emptyChat}>

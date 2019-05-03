@@ -34,6 +34,7 @@ const styles = theme => ({
             }`,
     },
     root: {
+
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
             }`,
@@ -51,14 +52,16 @@ const styles = theme => ({
         alignItems: 'center'
     },
     WorkGroupBack: {
+        margin: 8,
+        borderRadius: 5,
+        paddingBottom: 5,
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            }`,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#2b3346'
             }`,
-        borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
 
-        marginBottom: 3
     },
 });
 
@@ -90,7 +93,7 @@ class Workgroup extends React.Component {
     };
 
     render() {
-        const {classes, theme, workgroup, groupChats, userChats, messagesStore} = this.props;
+        const {classes, theme, workgroup, groupChats, userChats, messagesStore, userChatsNew, groupChatsNew} = this.props;
         const lol = workgroup.name;
         let wcolor = lol.charAt(0);
         let colorName = this.workGroupColor(wcolor);
@@ -113,35 +116,19 @@ class Workgroup extends React.Component {
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className={classes.active}>
                         {
-                            userChats.map(
+                            userChatsNew.map(
                                 userChat =>
                                     <Dialog
-                                        userId={userChat.user.id}
-                                        firstName={userChat.user.first_name}
-                                        lastName={userChat.user.last_name}
-                                        lastMessage={userChat.last ? userChat.last.message : null}
-                                        lastMessageDatetime={userChat.last ? userChat.last.timestamp_post.timestamp : null}
-                                        countUnread={userChat.unread}
-                                        userAvatar={userChat.user.avatar}
+                                        userChat={userChat}
                                         handleDrawerToggle={this.props.handleDrawerToggle}/>
                             )
                         }
                         {
-                            groupChats.map(
+                            groupChatsNew.map(
                                 groupChat => {
-                                    let lastMessageUsername = "";
-                                    if (groupChat.last) {
-                                        const user = rootStore.messagesStore.findUserById(groupChat.last.from);
-                                        lastMessageUsername = user ? user.first_name : "error";
-                                    }
                                     return (
                                         <GroupChat
-                                            chatId={groupChat.chat.id}
-                                            chatTitle={groupChat.chat.name}
-                                            lastMessageUser={lastMessageUsername}
-                                            lastMessage={groupChat.last ? groupChat.last.message : null}
-                                            lastMessageDatetime={groupChat.last ? groupChat.last.timestamp_post.timestamp : null}
-                                            countUnread={groupChat.unread}
+                                            groupChat={groupChat}
                                             handleDrawerToggle={this.props.handleDrawerToggle}
                                         />
                                     )
@@ -150,7 +137,7 @@ class Workgroup extends React.Component {
                         }
                     </List>
                 </Collapse>
-               {/* <Divider classes={{root: classes.root}}/>*/}
+                {/* <Divider classes={{root: classes.root}}/>*/}
             </div>
         )
     }

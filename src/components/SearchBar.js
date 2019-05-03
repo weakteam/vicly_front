@@ -10,29 +10,36 @@ const {accountStore,messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        width: 400,
+        margin: '0 8px 0 8px',
+        borderRadius: '0 0 5px 5px',
+        width: 'calc(400px - 16px)',
+        top: 81,
         [theme.breakpoints.down('md')]: {
-            width: 280,
+            width: 'calc(280px - 16px)',
         },
         [theme.breakpoints.down('sm')]: {
-            width: 250,
+            width: 'calc(250px - 16px)',
         },
         [theme.breakpoints.down('xs')]: {
-            width: '100%',
-            top: 55,
-            position: "fixed",
+            width: '96%',
+            top: 58,
+            borderRadius: '5px 5px 5px 5px',
+            position: "absolute",
             borderBottom: 0,
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
         display: 'inline-flex',
         position: "fixed",
         alignItems: 'center',
         height: 55,
-        top: 76,
-        borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+        /*borderBottom: ` ${
+            //theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            }`,*/
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
             }`,
         zIndex: 1,
     },

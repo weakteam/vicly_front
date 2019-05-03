@@ -35,6 +35,7 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
+        outline: 'none',
         [theme.breakpoints.down('xs')]: {
             width: '90%',
         },

@@ -7,9 +7,10 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
+        height: '100%',
+        width: '100%',
+        overflow: 'auto',
+        paddingTop: 15,
     },
     listMessages: {
         //marginLeft: 40,
@@ -27,14 +28,40 @@ class MessageList extends React.Component {
         super(props);
         //console.log("messages:"+props.messages)
         this.messagesEnd = React.createRef();
+        this.messageList = React.createRef();
         this.accountStore = accountStore;
     }
 
-    componentDidUpdate() {
-        // There is a new message in the state, scroll to bottom of list
-        // const objDiv = document.getElementById('messageList');
-        // objDiv.scrollTop = objDiv.scrollHeight;
-        /*this.scrollToEnd();*/
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        // Are we adding new items to the list?
+        // Capture the scroll position so we can adjust scroll later.
+        if (prevProps.messages.length < this.props.messages.length) {
+            const list = this.messageList.current;
+            return list.scrollHeight - list.scrollTop;
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (snapshot !== null) {
+            const list = this.messageList.current;
+            list.scrollTop = list.scrollHeight - snapshot;
+        }
+    }
+
+    componentDidMount() {
+        const target = this.messageList.current;
+        if (target != null) {
+            target.onscroll = this.props.scrollHandler(target);
+        }
+    }
+
+
+    componentWillUnmount() {
+        const target = this.messageList.current;
+        if (target != null) {
+            target.onscroll = null;
+        }
     }
 
     scrollToEnd(smooth = false) {
@@ -49,9 +76,9 @@ class MessageList extends React.Component {
         console.log("myUserId:" + myUserId);
 
         const avatar_images = this.props.chatUsers.map(chatUser =>
-            rootStore.imageService.avatars.find(elem =>  elem.userId === chatUser.id) || null
+            rootStore.imageService.avatars.find(elem => elem.userId === chatUser.id) || null
         );
-        avatar_images.push(rootStore.imageService.avatars.find(elem =>  elem.userId === myUserId) || null)
+        avatar_images.push(rootStore.imageService.avatars.find(elem => elem.userId === myUserId) || null)
 
         const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from === myUserId;//int == string !!!
@@ -69,14 +96,17 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div>
-                <div>
-                    {messages}
-                </div>
+            <div style={{
+                height: '-webkit-fill-available',
+                width: '100%',
+                overflow: 'auto',
+                paddingTop: 15,
+            }}
+                 id='messageList'
+                 ref={this.messageList}>
+                {messages}
                 <div ref={this.messagesEnd}/>
             </div>
-
-
         );
     }
 }

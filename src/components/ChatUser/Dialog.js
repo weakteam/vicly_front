@@ -26,7 +26,8 @@ const styles = theme => ({
         height: 45,
     },
     listItemPadding: {
-        padding: 'unset'
+        padding: 'unset',
+        borderRadius: 5,
     },
     margin: {
         zIndex: 0,
@@ -99,12 +100,12 @@ class Dialog extends React.Component {
 
     handleDialogClick = () => {
         messagesStore.isCurrentChatForUser = true;
-        messagesStore.chatChanged("user", this.props.userId);
-        this.props.history.push(`/home/chat/user/${this.props.userId}`);
+        messagesStore.chatChanged("user", this.props.userChat.user.id);
+        this.props.history.push(`/home/chat/user/${this.props.userChat.user.id}`);
     };
 
     handleDialogClickMob = () => {
-        this.props.history.push(`/home/chat/user/${this.props.userId}`);
+        this.props.history.push(`/home/chat/user/${this.props.userChat.user.id}`);
         // FIXME comment is fix for url chat page reload dafauck mafuck
         this.props.handleDrawerToggle();
     };
@@ -123,11 +124,18 @@ class Dialog extends React.Component {
     };
 
     render() {
-        const {classes, userId, firstName, lastName, lastMessage, countUnread, lastMessageDatetime} = this.props;
+        const {classes} = this.props;
+        const userId = this.props.userChat.user.id;
+        const firstName = this.props.userChat.user.first_name;
+        const lastName = this.props.userChat.user.last_name;
+        const lastMessage = this.props.userChat.last ? this.props.userChat.last.message : null;
+        const countUnread = this.props.userChat.unread;
+        const lastMessageDatetime = this.props.userChat.last ? this.props.userChat.last.timestamp_post.timestamp : null;
+
         // TODO work ONLY FOR USERS CHATS
         const selected = userId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === true;
         let colorChange = AvatarColor.getColor(firstName[0]);
-        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === this.props.userId);
+        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === userId);
 
         const online = this.accountStore.online.find(elem => elem === userId);
 
@@ -143,7 +151,7 @@ class Dialog extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item >
                                 {
                                     avatar_image ?
                                         (
@@ -222,7 +230,7 @@ class Dialog extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item md={16}>
+                            <Grid item>
                                 {
                                     avatar_image ?
                                         (

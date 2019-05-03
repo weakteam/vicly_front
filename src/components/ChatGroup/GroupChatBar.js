@@ -10,12 +10,30 @@ import Menu from "@material-ui/core/Menu/Menu";
 import Group from '@material-ui/icons/Group';
 import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase";
+import UserProfile from "../UserProfile";
+import Modal from "@material-ui/core/Modal";
+import GroupChatInfo from "./GroupChatInfo";
 
 const {accountStore, messagesStore} = rootStore;
 
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
 
 const styles = theme => ({
     position: {
+        margin: '0px 5px 5px 5px',
+        borderRadius: '0 0 5px 5px',
+        boxShadow: ` ${
+            theme.palette.type === 'light' ? 'inset 0px -1px 0px 1px rgba(49, 49, 49, 0.1)' : 'inset 0px -2px 0px 1px rgba(45, 53, 70, 0.86)'
+            }`,
         position: 'fixed',
         top: 0,
         right: 0,
@@ -27,7 +45,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
         borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
       /*  borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
@@ -74,7 +92,7 @@ const styles = theme => ({
     },
     search: {
         position: 'relative',
-        margin: 12,
+        marginLeft: 12,
     },
     searchIcon: {
         height: '100%',
@@ -125,6 +143,7 @@ const styles = theme => ({
 class ChatBar extends React.Component {
     state = {
         auth: true,
+        open: false,
         anchorEl: null,
         type: this.props.theme.palette.type,
     };
@@ -147,17 +166,28 @@ class ChatBar extends React.Component {
         this.setState({anchorEl: null});
     };
 
+    handleMenuOpen = () => {
+        this.setState({open: true});
+
+        this.handleClose();
+    };
+
+    handleMenuClose = () => {
+        this.setState({open: false});
+    };
+
     render() {
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
-        const {classes, theme, match} = this.props;
+        const {classes, theme, match, chat} = this.props;
         const type = this.state.type;
-
-        const chatName = this.messagesStore.groupChats.find(elem => elem.chat_id === +match);
 
         return (
             <div className={classes.position}>
-                <div>
+                <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                }}>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon className={classes.iconSearch}/>
@@ -172,7 +202,7 @@ class ChatBar extends React.Component {
                 </div>
 
                 <div className={classes.namePosition}>
-                    <Typography variant="h6" className={classes.text} noWrap>{chatName.name}</Typography>
+                    <Typography variant="h6" className={classes.text} noWrap>{chat.title}</Typography>
                     <IconButton>
                         <Group className={classes.dialogIco}/>
                     </IconButton>
@@ -209,6 +239,20 @@ class ChatBar extends React.Component {
                         <MenuItem onClick={this.handleClose} className={classes.menuItem}>Выйти</MenuItem>
                     </Menu>
                 </div>
+
+                <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.handleMenuClose}
+                    style={{zIndex: 1303}}>
+
+                    <div style={getModalStyle()} className={classes.paper}>
+                        <GroupChatInfo handleMenuClose={this.handleMenuClose}/>
+                    </div>
+
+                </Modal>
+
             </div>
         )
     }

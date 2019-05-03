@@ -28,6 +28,7 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
+        outline: 'none',
         borderRadius: 5,
         padding: 30,
         [theme.breakpoints.down('xs')]: {
@@ -93,8 +94,9 @@ class InviteIcon extends React.Component {
                     classes={{
                         root: classes.rootIndex,
                     }}
+
                 >
-                    <div style={getModalStyle()} className={classes.paper}>
+                    <div  style={getModalStyle()} className={classes.paper}>
                         <InviteForm handleClose={this.handleClose}/>
                     </div>
                 </Modal>
