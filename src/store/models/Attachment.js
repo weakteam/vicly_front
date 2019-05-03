@@ -12,11 +12,11 @@ export default class Attachment {
     // Plain js object with any fields :(
     metadata = null;
     timestamp = null;
-    mime = null;
+    mime = "";
     // One of ["none" | "loading" | ready]
     @observable status = "none";
     @observable progress = null;
-    previewSrc = null;
+    @observable previewSrc = null;
 
     constructor(attachmentObject) {
         this.id = attachmentObject.id || null;
@@ -65,8 +65,19 @@ export default class Attachment {
             console.log("Apache Tika mime != Browser mime!!!");
         }
         this.status = "ready";
+        if (this.mime && this.mime.startsWith("image")) {
+            this.status = "loading";
+            rootStore.imageService.getImage(this.id, this)
+                .then(image => this.onImagePreviewLoaded(image))
+                .catch(err => console.log("Error while load image:" + err));
+        }
         rootStore.attachmentService.addAttachment(this);
     };
+
+    onImagePreviewLoaded(imageServiceObject) {
+        this.previewSrc =  imageServiceObject.big;
+        this.status = "ready";
+    }
 
     onLoadError(err) {
         console.log("upload error:" + err);

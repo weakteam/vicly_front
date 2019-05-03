@@ -76,9 +76,9 @@ class MessageList extends React.Component {
         console.log("myUserId:" + myUserId);
 
         const avatar_images = this.props.chatUsers.map(chatUser =>
-            rootStore.imageService.avatars.find(elem => elem.userId === chatUser.id) || null
+            rootStore.imageService.images.find(elem => elem.userId === chatUser.id) || null
         );
-        avatar_images.push(rootStore.imageService.avatars.find(elem => elem.userId === myUserId) || null)
+        avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null)
 
         const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from === myUserId;//int == string !!!
