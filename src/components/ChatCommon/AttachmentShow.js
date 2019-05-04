@@ -18,22 +18,22 @@ import getLinkFromMime from "../../utils/mimetypes";
 
 const styles = theme => ({
     attached: {
-        width: 110,
-        height: 110,
+        width: '100%',
+        height: '100%',
+        //  height: 110,
         objectFit: 'cover',
-        borderRadius: 4
     },
     attachedIcon: {
-        width: 64,
-        height: 64,
+        width: 35,
+        height: 35,
         objectFit: 'cover',
-        margin: 16
+        paddingRight: 5,
     },
     attachDiv: {
-        margin: '5px 15px 5px 5px',
-        width: 110,
-        height: 110,
-        backgroundColor: '#f5f5f5'
+        //  margin: '5px 15px 5px 5px',
+        //   width: 110,
+        height: '100%',
+        // backgroundColor: '#f5f5f5'
     },
     filename: {
         maxWidth: 100,
@@ -61,14 +61,18 @@ const styles = theme => ({
     },
     caption:
         {
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
             margin: "auto",
             display: "block",
-            width: "80%",
-            maxWidth: 700,
-            textAlign: "center",
-            color: " #ccc",
-            padding: 10,
-            height: 150,
+           // width: "80%",
+            maxWidth: 230,
+            fontSize: '0.75rem',
+            textAlign: "start",
+            color: "#252525",
+          // padding: 10,
+            // height: 150,
         },
     modal:
         {
@@ -119,7 +123,17 @@ class AttachmentShow extends React.Component {
                             className={classes.attached + " " + classes.imagePreview}/>
             } else {
                 const src = getLinkFromMime(attachment.mime);
-                return <img src={src || window.location.origin+"/icons/xml-icon-64x64.png"} alt="ico" className={classes.attachedIcon}/>
+                return (
+                    <div style={{display: "flex"}}>
+                        <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
+                             className={classes.attachedIcon}/>
+                        <div>
+                            <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
+                            <Typography className={classes.caption}>15 МБ</Typography>
+                        </div>
+                    </div>
+
+                )
             }
         } else if (attachment.status === "loading") {
             return <CircularProgress variant="indeterminate" value={attachment.progress}/>
@@ -173,22 +187,16 @@ class AttachmentShow extends React.Component {
                                 open={this.state.imageModal}
                                 onClose={this.imagePreviewModalClose}
                             >
-                                <div onClick={this.imagePreviewModalClose}  className={classes.modal}>
+                                <div onClick={this.imagePreviewModalClose} className={classes.modal}>
 
                                     <span className={classes.close}>&times;</span>
 
-                                    <img   className={classes.modalContent} src={attachment.previewSrc}/>
+                                    <img className={classes.modalContent} src={attachment.previewSrc}/>
 
-                                    <div className={classes.caption}>{attachment.filename}</div>
+                                    <Typography className={classes.caption}>{attachment.filename}</Typography>
                                 </div>
                             </Modal>
-                        )
-                        :
-                        (
-                            <Typography className={classes.filename} inline={true}>
-                                {attachment.filename}
-                            </Typography>
-                        )
+                        ) : ('')
                 }
 
                 {

@@ -121,8 +121,8 @@ const styles = theme => ({
         color: '#2176a5'
     },
     gridList: {
-        margin: '10px!important',
-        maxWidth: 500,
+        margin: '6px 0px 6px 0px!important',
+        maxWidth: 300,
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
@@ -180,6 +180,12 @@ class Message extends React.Component {
         const {classes} = this.props;
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
+        let colsNumber;
+         if (this.props.messageInfo.attachments.length === 1) {
+            colsNumber = 2;
+        } else {
+            colsNumber = 1;
+        }
 
         let mobileMessage;
         if (fromMe) {
@@ -312,25 +318,30 @@ class Message extends React.Component {
                                     }
 
                                 </div>
+                                <Typography variant="body1" className={classes.mess}>
+                                    {this.props.message}
+                                </Typography>
+
                                 {
                                     this.props.messageInfo.attachments.length ?
                                         (
-                                            <GridList cellHeight={150} className={classes.gridList} cols={2}>
+                                            <>
+                                            <GridList  className={classes.gridList} cols={2}>
                                                 {
                                                     this.props.messageInfo.attachments.map(atta => {
                                                         return (
-                                                            <GridListTile key={atta.id} cols={1}>
+                                                            <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
                                                                 <AttachmentShow attachment={atta}/>
                                                             </GridListTile>
                                                         )
                                                     })
                                                 }
                                             </GridList>
+
+                                            </>
                                         ) : null
                                 }
-                                <Typography variant="body1" className={classes.mess}>
-                                    {this.props.message}
-                                </Typography>
+
 
                             </div>
                             <Typography variant="caption"

@@ -97,7 +97,7 @@ class MessageList extends React.Component {
 
         return (
             <div style={{
-                height: '-webkit-fill-available',
+                height: 'calc(100vh - 134px)',
                 width: '100%',
                 overflow: 'auto',
                 paddingTop: 15,

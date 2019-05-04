@@ -56,7 +56,7 @@ const styles = theme => ({
         borderRadius: 5,
         paddingBottom: 5,
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(213, 213, 213)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
             }`,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#2b3346'

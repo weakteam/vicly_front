@@ -39,9 +39,9 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
-        borderTop: ` ${
+       /* borderTop: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+            }`,*/
         /*borderLeft: ` ${
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
@@ -86,13 +86,13 @@ const styles = theme => ({
             }`,
     },
     active: {
-        '&:focus': {
+       /* '&:focus': {
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             //   borderColor: '#819bff',
             boxShadow: `${fade('#3750ef', 0.25)} 0 0 0 0.2rem`,
             //   border: '1px solid #b9daff',
             // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
-        },
+        },*/
         /*'&:selected': {
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,

@@ -278,8 +278,11 @@ class Home extends React.Component {
 
         let drawer = (
             <div style={{
-                height: '-webkit-fill-available',
-                marginTop: 115,
+                height: '-webkit-fill-available'    ,
+                marginTop: 130,
+                [theme.breakpoints.down('xs')]: {
+                    marginTop: 109,
+                },
                 overflow: 'hidden',}}>
                 <Hidden xsDown implementation="css">
                     <ProfileBar
