@@ -10,6 +10,7 @@ import rootStore from "../../store/RootStore";
 import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 import AttachmentBar from "../ChatCommon/AttachmentBar";
+import {Scrollbars} from "react-custom-scrollbars";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -110,19 +111,21 @@ class ChatWindow extends React.Component {
                 messages = chat.messages;
             }
             return (
-                <div className={classes.chatWindow}>
+               <>
                     <ChatBar match={this.props.match.params.userId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
                             (
                                 <Loader active inverted>Loading</Loader>
                             ) : chat && messages && messages.length > 0 ? (
-                                <MessageList
-                                    myselfUser={myselfUser}
-                                    chatUsers={[chat.user]}
-                                    messages={messages}
-                                    scrollHandler={this.scrollHandler}
-                                    ref={this.messageList}/>
+                                <div className={classes.chatWindow}>
+                                    <MessageList
+                                        myselfUser={myselfUser}
+                                        chatUsers={[chat.user]}
+                                        messages={messages}
+                                        scrollHandler={this.scrollHandler}
+                                        ref={this.messageList}/>
+                                </div>
                             ) : (
                                 <div className={classes.emptyChat}>
                                     <Typography className={classes.text} variant="h5">
@@ -132,7 +135,7 @@ class ChatWindow extends React.Component {
                             )
                     }
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
-                </div>
+         </>
             )
         } else {
             return (<ChatWindowEmpty/>);

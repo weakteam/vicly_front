@@ -21,7 +21,7 @@ const styles = theme => ({
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -1px 0px 1px rgba(49, 49, 49, 0.1)' : 'inset 0px -2px 0px 1px rgba(45, 53, 70, 0.86)'
             }`,
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         right: 0,
         display: 'inline-flex',

@@ -2,6 +2,8 @@ import React from 'react';
 import Message from './Message';
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
+import {Scrollbars} from 'react-custom-scrollbars';
+import '../../css/IOS.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -96,17 +98,14 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div style={{
-                height: 'calc(100vh - 134px)',
-                width: '100%',
-                overflow: 'auto',
-                paddingTop: 15,
-            }}
-                 id='messageList'
-                 ref={this.messageList}>
+
+            <div className={"scroll scrollMessageArea"} id='messageList' ref={this.messageList}>
+                    <div>
                 {messages}
                 <div ref={this.messagesEnd}/>
+                    </div>
             </div>
+
         );
     }
 }

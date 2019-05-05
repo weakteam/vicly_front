@@ -202,6 +202,27 @@ class Message extends React.Component {
                                         style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                         </div>
                         <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+
+                        {
+                            this.props.messageInfo.attachments.length ?
+                                (
+                                    <>
+                                        <GridList  className={classes.gridList} cols={2}>
+                                            {
+                                                this.props.messageInfo.attachments.map(atta => {
+                                                    return (
+                                                        <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                            <AttachmentShow attachment={atta}/>
+                                                        </GridListTile>
+                                                    )
+                                                })
+                                            }
+                                        </GridList>
+
+                                    </>
+                                ) : null
+                        }
+
                     </div>
                     <div className={classes.avatarMob}>
                         {
@@ -249,6 +270,25 @@ class Message extends React.Component {
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                    {
+                        this.props.messageInfo.attachments.length ?
+                            (
+                                <>
+                                    <GridList  className={classes.gridList} cols={2}>
+                                        {
+                                            this.props.messageInfo.attachments.map(atta => {
+                                                return (
+                                                    <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                        <AttachmentShow attachment={atta}/>
+                                                    </GridListTile>
+                                                )
+                                            })
+                                        }
+                                    </GridList>
+
+                                </>
+                            ) : null
+                    }
                     {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
                         <GridListTile key="1" cols={1}>
                             <img src={img1} alt="lol"/>
