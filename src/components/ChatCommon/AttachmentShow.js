@@ -66,12 +66,12 @@ const styles = theme => ({
             textOverflow: 'ellipsis',
             margin: "auto",
             display: "block",
-           // width: "80%",
+            // width: "80%",
             maxWidth: 230,
             fontSize: '0.75rem',
             textAlign: "start",
             color: "#252525",
-          // padding: 10,
+            // padding: 10,
             // height: 150,
         },
     modal:
@@ -115,92 +115,123 @@ class AttachmentShow extends React.Component {
         })
     };
 
-    preview() {
-        const {classes, theme, attachment} = this.props;
-        if (attachment.status === "ready") {
-            if (attachment.previewSrc) {
-                return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
-                            className={classes.attached + " " + classes.imagePreview}/>
-            } else {
-                const src = getLinkFromMime(attachment.mime);
-                return (
-                    <div style={{display: "flex"}}>
-                        <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
-                             className={classes.attachedIcon}/>
-                        <div>
-                            <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
-                            <Typography className={classes.caption}>15 МБ</Typography>
-                        </div>
-                    </div>
+    // preview() {
+    //     const {classes, theme, attachment} = this.props;
+    //     if (attachment.statusFull === "ready") {
+    //         if (attachment.previewSrc) {
+    //             return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
+    //                         className={classes.attached + " " + classes.imagePreview}/>
+    //         } else {
+    //             const src = getLinkFromMime(attachment.mime);
+    //             return (
+    //                 <div style={{display: "flex"}}>
+    //                     <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
+    //                          className={classes.attachedIcon}/>
+    //                     <div>
+    //                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
+    //                         <Typography className={classes.caption}>15 МБ</Typography>
+    //                     </div>
+    //                 </div>
+    //
+    //             )
+    //         }
+    //     } else if (attachment.statusFull === "loading") {
+    //         return <CircularProgress variant="indeterminate" value={attachment.progressFull}/>
+    //     } else if (attachment.statusFull === "none" || attachment.statusFull === "error") {
+    //         return "ERROR!"
+    //     }
+    // }
 
-                )
-            }
-        } else if (attachment.status === "loading") {
-            return <CircularProgress variant="indeterminate" value={attachment.progress}/>
-        } else if (attachment.status === "none" || attachment.status === "error") {
+    viewableAttachment() {
+        const {classes, theme, attachment} = this.props;
+        if (attachment.statusPreview === "ready") {
+            return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
+                        className={classes.attached + " " + classes.imagePreview}/>
+        } else if (attachment.statusPreview === "loading") {
+            return <CircularProgress variant="static" value={attachment.progressPreview}/>
+        } else if (attachment.statusPreview === "none" || attachment.statusPreview === "error") {
             return "ERROR!"
         }
     }
 
-    handleCloseClick = () => {
-        this.props.handleDeleteAttachment(this.props.attachment)
-    };
+    non_viewableAttachment() {
+        const {classes, theme, attachment} = this.props;
+        if (attachment.dataFetched === "ready") {
+            const src = getLinkFromMime(attachment.mime);
+            return (
+                <div style={{display: "flex"}}>
+                    <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
+                         className={classes.attachedIcon}/>
+                    <div>
+                        <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
+                        <Typography className={classes.caption}>{attachment.size + "kb"}</Typography>
+                    </div>
+                </div>
+            )
+        } else if (attachment.dataFetched === "loading") {
+            return <CircularProgress variant="indeterminate"/>
+        } else if (attachment.dataFetched === "none" || attachment.statusPreview === "error") {
+            return "ERROR!"
+        }
+    }
 
-    handleAttachmentDownload = () => {
-        const {attachment} = this.props;
-        const mime = (attachment.mime && !attachment.mime.startsWith("image")) || false;
-        if (!mime)
-            return;
-        fetch(BACKEND_URL + '/attachment/download/' + attachment.id, {
-            method: "GET",
-            headers: {
-                'Authorization': rootStore.accountStore.token,
-                //'Content-Type': 'application/json'
-            }
-        })
-            .then(request => request.blob())
-            .then(blob => URL.createObjectURL(blob))
-            .then(url => {
-                var a = document.createElement('a');
-                a.style = "display: none";
-                a.href = url;
-                a.download = attachment.filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                // URL.revokeObjectURL(url);
-            })
-            .catch(err => console.log(err));
-    };
+    fullImage(wasError) {
+        const {classes, theme, attachment} = this.props;
+        if (attachment.statusFull === "none") {
+            attachment.loadFull();
+            return (
+                <CircularProgress variant="static" value={attachment.progressFull}/>
+            )
+        } else if (attachment.statusFull === "loading") {
+            return (
+                <CircularProgress variant="static" value={attachment.progressFull}/>
+            )
+        } else if (attachment.statusFull === "ready") {
+            return <img className={classes.modalContent} src={attachment.fullSrc}/>
+        } else if (attachment.statusFull === "error" && !wasError) {
+            return this.fullImage(true)
+        } else {
+            return "Everytthing is bad!";
+        }
+
+    }
+
 
     render() {
         const {classes, theme, attachment} = this.props;
-        const mime = (attachment.mime && attachment.mime.startsWith("image")) || false;
+        const canViewed = attachment.canShowPreview();
         return (
             <div onClick={this.handleAttachmentDownload} className={classes.attachDiv}>
                 {
-                    mime ?
+                    canViewed ?
                         (
-                            <Modal
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                                open={this.state.imageModal}
-                                onClose={this.imagePreviewModalClose}
-                            >
-                                <div onClick={this.imagePreviewModalClose} className={classes.modal}>
+                            <>
+                                <Modal
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.imageModal}
+                                    onClose={this.imagePreviewModalClose}
+                                >
+                                    <div onClick={this.imagePreviewModalClose} className={classes.modal}>
 
-                                    <span className={classes.close}>&times;</span>
+                                        <span className={classes.close}>&times;</span>
 
-                                    <img className={classes.modalContent} src={attachment.previewSrc}/>
+                                        {this.state.imageModal ? this.fullImage(false) : null}
 
-                                    <Typography className={classes.caption}>{attachment.filename}</Typography>
-                                </div>
-                            </Modal>
-                        ) : ('')
-                }
+                                        <Typography className={classes.caption}>{attachment.filename}</Typography>
+                                    </div>
+                                </Modal>
+                                {
+                                    this.viewableAttachment()
+                                }
+                            </>
 
-                {
-                    this.preview()
+
+                        )
+                        :
+                        (
+                            this.non_viewableAttachment()
+                        )
                 }
 
             </div>

@@ -69,15 +69,15 @@ class AttachmentSmall extends React.Component {
 
     preview() {
         const {classes, theme, attachment} = this.props;
-        if (attachment.status === "ready") {
-            if (attachment.mime.startsWith("image")) {
+        if (attachment.statusFull === "ready") {
+            if (attachment.canShowPreview()) {
                 return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
             } else {
                 return <img src={someIcon} alt="ico" className={classes.attachedIcon}/>
             }
-        } else if (attachment.status === "loading") {
-            return <CircularProgress variant="static" value={attachment.progress}/>
-        } else if (attachment.status === "none" || attachment.status === "error") {
+        } else if (attachment.statusFull === "loading") {
+            return <CircularProgress variant="static" value={attachment.progressFull}/>
+        } else if (attachment.statusFull === "none" || attachment.statusFull === "error") {
             return "ERROR!"
         }
     }

@@ -163,7 +163,7 @@ class SendMessageBar extends React.Component {
     };
 
     handleSendButton = () => {
-        const attachReady = this.state.attachments.every(attach => attach.status === "ready");
+        const attachReady = this.state.attachments.every(attach => attach.statusFull === "ready");
         if (!this.state.messageText.trim() && attachReady) {
             alert("There are broken attachments!!!!");
             return;

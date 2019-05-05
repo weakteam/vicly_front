@@ -13,10 +13,17 @@ export default class Attachment {
     metadata = null;
     timestamp = null;
     mime = "";
-    // One of ["none" | "loading" | ready]
-    @observable status = "none";
-    @observable progress = null;
+    @observable dataFetched = "none";
+    // One of ["none" | "loading" | ready | "error"]
+    @observable statusFull = "none";
+    // One of ["none" | "loading" | ready | "error"]
+    @observable statusPreview = "none";
+    @observable fullSrc = null;
     @observable previewSrc = null;
+    // int (percent)
+    @observable progressFull = null;
+    // int (percent)
+    @observable progressPreview = null;
 
     constructor(attachmentObject) {
         this.id = attachmentObject.id || null;
@@ -30,19 +37,36 @@ export default class Attachment {
         this.mime = attachmentObject.mime || null;
     }
 
-    onLoadProgress(progress) {
-        if (this.status !== "loading") {
-            this.status = "loading";
+    onUploadProgress(progress) {
+        if (this.statusFull !== "loading") {
+            this.statusFull = "loading";
         }
-        this.progress = progress;
+        this.progressFull = progress;
         console.log("upload:" + progress + "%");
     }
 
+    onLoadFullProgress(progress) {
+        if (this.statusFull !== "loading") {
+            this.statusFull = "loading";
+        }
+        this.progressFull = progress;
+        console.log("upload:" + progress + "%");
+    }
+
+    onLoadPreviewProgress(progress) {
+        if (this.statusPreview !== "loading") {
+            this.statusPreview = "loading";
+        }
+        this.progressPreview = progress;
+        console.log("download preview:" + progress + "%");
+    }
+
+    // TODO MAYBE NEED RENAME TO onFetched!?
     onLoadComplete = (event) => {
         let request = event.currentTarget;
         if (request.status !== 200) {
             console.log(`Request code:${request.status} ||| text:${request.statusText}`);
-            this.status = "error";
+            this.dataFetched = "error";
             return;
         }
         let jsonResponse = JSON.parse(request.responseText);
@@ -64,24 +88,62 @@ export default class Attachment {
         if (this.metadata && this.metadata["Content-Type"] && this.metadata["Content-Type"] !== this.mime) {
             console.log("Apache Tika mime != Browser mime!!!");
         }
-        this.status = "ready";
-        if (this.mime && this.mime.startsWith("image")) {
-            this.status = "loading";
-            rootStore.imageService.getImage(this.id, this)
-                .then(image => this.onImagePreviewLoaded(image))
+
+        this.dataFetched = "ready";
+
+        if (this.canShowPreview()) {
+            this.statusPreview = "loading";
+            rootStore.imageService.getImagePreview(this)
                 .catch(err => console.log("Error while load image:" + err));
         }
         rootStore.attachmentService.addAttachment(this);
     };
 
-    onImagePreviewLoaded(imageServiceObject) {
-        this.previewSrc =  imageServiceObject.big;
-        this.status = "ready";
+    loadFull() {
+        if (this.canShowPreview()) {
+            this.statusFull = "loading";
+            rootStore.imageService.getImage(this)
+                .catch(err => console.log("Error while load full image:" + err));
+        } else {
+            this.statusFull = "loading";
+            rootStore.attachmentService.downloadFile(this)
+                .catch(err => console.log("Error while load full image:" + err));
+        }
+    }
+
+    downloadAttachmentFromUrl() {
+        if (!this.fullSrc) {
+            alert("Файл еще не загружен...")
+        }
+        let a = document.createElement('a');
+        a.style = "display: none";
+        a.href = this.fullSrc;
+        a.download = this.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    onPreviewLoaded(imageServiceObject) {
+        this.previewSrc = imageServiceObject.small;
+        this.statusPreview = "ready";
+    }
+
+    onFullLoaded(imageServiceObject) {
+        this.fullSrc = imageServiceObject.big;
+        this.statusFull = "ready";
     }
 
     onLoadError(err) {
         console.log("upload error:" + err);
-        this.status = "error"
+        this.statusFull = "error"
+    }
+
+    canShowPreview() {
+        if (this.mime && this.mime.startsWith("image/")) {
+            return true;
+        }
+        return false;
     }
 
 }

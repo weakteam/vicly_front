@@ -1,5 +1,6 @@
 import {BACKEND_URL} from "../common";
 import {observable} from "mobx";
+import Attachment from "../store/models/Attachment";
 
 /*
 image:{
@@ -80,28 +81,84 @@ export default class ImageService {
     }
 
     //TODO separate image thumb and full
-    async getImage(attachmentId, attachment) {
-        let image = this.images.find(elem => elem.id === attachmentId);
+    async getImage(attachment) {
+        if(!attachment instanceof Attachment)
+        {
+            throw Error("It's not Attachment instance");
+        }
+        if (attachment.fullSrc) {
+            return
+        }
+        // let image = this.images.get(attachment.id);
+        // if (image)
+        //     return image;
+
+
+        let ajax = new XMLHttpRequest();
+
+        const innerProgressHandler = (event) => {
+            attachment.onLoadFullProgress((event.loaded / event.total) * 100);
+        };
+
+        const innerLoadEnd = (event) => {
+            const image = {
+                id: attachment.id,
+                isAvatar: false,
+                userId: null,
+                small: null,
+                big: URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime}))
+            };
+            this.images.push(image);
+            attachment.onFullLoaded(image);
+        };
+
+        ajax.onprogress = innerProgressHandler;
+        ajax.onload = innerLoadEnd;
+        ajax.onerror = attachment.onLoadError;
+        ajax.onabort = attachment.onLoadError;
+        ajax.responseType    = "blob";
+        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}`, true);
+        ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
+        ajax.send();
+    }
+
+    async getImagePreview(attachment) {
+        if (!attachment instanceof Attachment) {
+            throw Error("It's not Attachment instance");
+        }
+        if (attachment.previewSrc || !attachment.canShowPreview()) {
+            return
+        }
+        let image = this.images.find(elem => elem.id === attachment.id);
         if (image)
             return image;
 
-        const response = await fetch(`${BACKEND_URL}/attachment/download/${attachmentId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': this.rootStore.accountStore.token
-            }
-        });
-        if (!response.ok) {
-            console.log("There are no image:" + attachmentId);
-        } else {
-            image = {
+        let ajax = new XMLHttpRequest();
+
+        const innerProgressHandler = (event) => {
+            attachment.onLoadPreviewProgress((event.loaded / event.total) * 100);
+        };
+
+        const innerLoadEnd = (event) => {
+            const image = {
+                id: attachment.id,
                 isAvatar: false,
                 userId: null,
-                big: URL.createObjectURL(await response.blob())
+                big: null,
+                small: URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime}))
             };
             this.images.push(image);
-        }
-        return image;
+            attachment.onPreviewLoaded(image);
+        };
+
+        ajax.onprogress = innerProgressHandler;
+        ajax.onload = innerLoadEnd;
+        ajax.onerror = attachment.onLoadError;
+        ajax.onabort = attachment.onLoadError;
+        ajax.responseType    = "blob";
+        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}?width=200`, true);
+        ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
+        ajax.send();
     }
 
     uploadAvatar(file, progressHandler, completeHandler, errorHandler) {
@@ -111,7 +168,7 @@ export default class ImageService {
         var formdata = new FormData();
         formdata.append("file", file);
         let ajax = new XMLHttpRequest();
-        ajax.upload.addEventListener("progress", innerProgressHandler, false);
+        ajax.upload.addEventListener("progressFull", innerProgressHandler, false);
         ajax.addEventListener("load", completeHandler, false);
         ajax.addEventListener("error", errorHandler, false);
         ajax.open("POST", BACKEND_URL + "/attachment/upload_avatar");

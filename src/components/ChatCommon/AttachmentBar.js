@@ -98,8 +98,8 @@ class AttachmentBar extends React.Component {
     render() {
         const {classes, theme} = this.props;
         let at = new Attachment({filename: "lols.pptx", size: 1578824, progress: 33, status: 'loading'});
-        at.progress = 75;
-        at.status = 'ready';
+        at.progressFull = 75;
+        at.statusFull = 'ready';
         at.mime = "image";
         return (
             <div className={classes.position}>
