@@ -15,6 +15,7 @@ import DocumentWindow from "./DocumentWindow";
 import Avatar from "@material-ui/core/Avatar";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
+import Slide from "@material-ui/core/Slide";
 
 
 function getModalStyle() {
@@ -39,9 +40,9 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
-       /* borderTop: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,*/
+        /* borderTop: ` ${
+             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+             }`,*/
         /*borderLeft: ` ${
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
@@ -86,13 +87,13 @@ const styles = theme => ({
             }`,
     },
     active: {
-       /* '&:focus': {
-            transition: theme.transitions.create(['border-color', 'box-shadow']),
-            //   borderColor: '#819bff',
-            boxShadow: `${fade('#3750ef', 0.25)} 0 0 0 0.2rem`,
-            //   border: '1px solid #b9daff',
-            // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
-        },*/
+        /* '&:focus': {
+             transition: theme.transitions.create(['border-color', 'box-shadow']),
+             //   borderColor: '#819bff',
+             boxShadow: `${fade('#3750ef', 0.25)} 0 0 0 0.2rem`,
+             //   border: '1px solid #b9daff',
+             // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
+         },*/
         /*'&:selected': {
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
@@ -175,7 +176,7 @@ class SendMessageBar extends React.Component {
         });
         this.setState({
             messageText: "",
-            attachments:[]
+            attachments: []
         })
     };
 
@@ -212,7 +213,7 @@ class SendMessageBar extends React.Component {
         this.setState((prevState) => {
             return {
                 attachments: prevState.attachments.filter(file => file.id !== attachment.id)
-        }
+            }
         })
 
     };
@@ -236,7 +237,10 @@ class SendMessageBar extends React.Component {
                 {
                     this.state.attachments.length ?
                         (
-                            <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment} attachments={this.state.attachments}/>
+                            <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
+                                <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
+                                               attachments={this.state.attachments}/>
+                            </Slide>
                         ) : null
                 }
 

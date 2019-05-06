@@ -3,10 +3,11 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";
 import AttachmentSmall from "./AttachmentSmall";
 import Attachment from "../../store/models/Attachment";
+import Slide from "@material-ui/core/Slide";
 
 const styles = theme => ({
     position: {
-      //  margin: '5px 5px 5px 5px',
+        //  margin: '5px 5px 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
             }`,
@@ -106,7 +107,10 @@ class AttachmentBar extends React.Component {
                 {/*<AttachmentSmall attachment={at}/>*/}
                 {
                     this.props.attachments.map(attachment =>
-                        <AttachmentSmall handleDeleteAttachment={this.props.handleDeleteAttachment} attachment={attachment}/>
+                        <Slide direction="up" timeout={300} in={attachment} mountOnEnter unmountOnExit>
+                            <AttachmentSmall handleDeleteAttachment={this.props.handleDeleteAttachment}
+                                             attachment={attachment}/>
+                        </Slide>
                     )
                 }
             </div>
