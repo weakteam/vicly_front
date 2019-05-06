@@ -135,7 +135,7 @@ class Dialog extends React.Component {
         // TODO work ONLY FOR USERS CHATS
         const selected = userId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === true;
         let colorChange = AvatarColor.getColor(firstName[0]);
-        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === userId);
+        let avatar_image = rootStore.imageService.images.find(elem => elem.userId === userId);
 
         const online = this.accountStore.online.find(elem => elem === userId);
 
@@ -161,13 +161,13 @@ class Dialog extends React.Component {
                                                     <Avatar
                                                         className={classes.avatar}
                                                         // style={{backgroundColor: `${colorChange}`}}
-                                                        src={avatar_image.blob}/>
+                                                        src={avatar_image.small}/>
                                                 </Badge>
                                             ) : (
                                                 <Avatar
                                                     className={classes.avatar}
                                                     //style={{backgroundColor: `${colorChange}`}}
-                                                    src={avatar_image.blob}/>
+                                                    src={avatar_image.small}/>
                                             )
                                         ) : (
                                             online ? (
@@ -240,13 +240,13 @@ class Dialog extends React.Component {
                                                     <Avatar
                                                         className={classes.avatar}
                                                         // style={{backgroundColor: `${colorChange}`}}
-                                                        src={avatar_image.blob}/>
+                                                        src={avatar_image.small}/>
                                                 </Badge>
                                             ) : (
                                                 <Avatar
                                                     className={classes.avatar}
                                                     // style={{backgroundColor: `${colorChange}`}}
-                                                    src={avatar_image.blob}/>
+                                                    src={avatar_image.small}/>
                                             )
                                         ) : (
                                             online ? (

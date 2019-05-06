@@ -28,6 +28,7 @@ import HomeScreen from './HomeScreen'
 //import {Item, Menu, MenuProvider} from "react-contexify";
 import Delete from "@material-ui/icons/Delete"
 import {Scrollbars} from 'react-custom-scrollbars';
+import '../css/IOS.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -106,17 +107,17 @@ const styles = theme => ({
         },*/
       //  marginTop: 143,
       //  padding: 0,
-        height: '-webkit-fill-available',
-        width: '100%',
-        overflow: 'auto',
        // paddingTop: 15,
 
         marginBottom: 70
     },
     content: {
+       // pointerEvents: 'none',
+       // position: 'absolute',
         zIndex: 1201,
+      //  position:' -webkit-sticky',
         overflow: 'hidden',
-        minHeight: '-webkit-fill-available',
+       minHeight: '-webkit-fill-available',
         flexGrow: 1,
         flexShrink: 1,
         width: '100%',
@@ -213,7 +214,7 @@ const styles = theme => ({
         bottom: 0,
         position: 'fixed',
         /* backgroundColor: ` ${
-             theme.palette.type === 'light' ? '#f1f1f1' : '#171a20'
+             theme.palette.mime === 'light' ? '#f1f1f1' : '#171a20'
              }`,*/
     },
     logoText: {
@@ -221,6 +222,13 @@ const styles = theme => ({
     },
     rootIndex: {
         zIndex: 1299,
+    },
+    scrollDrawer: {
+        marginTop: 130,
+        [theme.breakpoints.down('xs')]: {
+            marginTop: 113,
+        },
+        overflow: 'hidden',
     },
 });
 
@@ -277,10 +285,7 @@ class Home extends React.Component {
         const {classes, theme, chats} = this.props;
 
         let drawer = (
-            <div style={{
-                height: '-webkit-fill-available',
-                marginTop: 115,
-                overflow: 'hidden',}}>
+            <div className={classes.scrollDrawer}>
                 <Hidden xsDown implementation="css">
                     <ProfileBar
                         changeThemeType={this.props.changeThemeType}
@@ -291,10 +296,8 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
-                <List className={classes.workG}>
-                    <div>
+                <List className={"scrollDrawer scrollDrawerFix"}>
                     {this.workgroups()}
-                    </div>
                 </List>
             </div>
         );
@@ -366,7 +369,7 @@ class Home extends React.Component {
                     </Hidden>
                 </nav>
 
-                <main className={classes.content}>
+                <main className={classes.content }>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?

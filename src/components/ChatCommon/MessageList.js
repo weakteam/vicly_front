@@ -2,6 +2,8 @@ import React from 'react';
 import Message from './Message';
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
+import {Scrollbars} from 'react-custom-scrollbars';
+import '../../css/IOS.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -76,9 +78,9 @@ class MessageList extends React.Component {
         console.log("myUserId:" + myUserId);
 
         const avatar_images = this.props.chatUsers.map(chatUser =>
-            rootStore.imageService.avatars.find(elem => elem.userId === chatUser.id) || null
+            rootStore.imageService.images.find(elem => elem.userId === chatUser.id) || null
         );
-        avatar_images.push(rootStore.imageService.avatars.find(elem => elem.userId === myUserId) || null)
+        avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null)
 
         const messages = this.props.messages.map((message, i) => {
             let fromMe = message.from === myUserId;//int == string !!!
@@ -96,17 +98,14 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div style={{
-                height: '-webkit-fill-available',
-                width: '100%',
-                overflow: 'auto',
-                paddingTop: 15,
-            }}
-                 id='messageList'
-                 ref={this.messageList}>
+
+            <div className={"scroll scrollMessageArea"} id='messageList' ref={this.messageList}>
+                    <div>
                 {messages}
                 <div ref={this.messagesEnd}/>
+                    </div>
             </div>
+
         );
     }
 }

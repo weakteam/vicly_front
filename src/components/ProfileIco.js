@@ -73,7 +73,7 @@ class ProfileIco extends React.Component {
         auth: true,
         anchorEl: null,
         open: false,
-        // type: this.props.theme.palette.type,
+        // mime: this.props.theme.palette.mime,
     };
     handleChange = event => {
         this.setState({auth: event.target.checked});
@@ -102,7 +102,7 @@ class ProfileIco extends React.Component {
         const {auth, anchorEl} = this.state;
         const open = Boolean(anchorEl);
         let colorChange = AvatarColor.getColor(accountStore.first_name[0]);
-        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === rootStore.accountStore.userId);
+        let avatar_image = rootStore.imageService.images.find(elem => elem.userId === rootStore.accountStore.userId);
 
         return (
             <div className={classes.root}>
@@ -118,7 +118,7 @@ class ProfileIco extends React.Component {
                                     {
                                         avatar_image ?
                                             (
-                                                <Avatar src={avatar_image.blob}/>
+                                                <Avatar src={avatar_image.small}/>
                                             )
                                             :
                                             (

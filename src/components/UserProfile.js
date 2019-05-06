@@ -150,13 +150,13 @@ class UserProfile extends React.Component {
         if (event.target.files && event.target.files[0]) {
             this.setState({
                 avatar_image: URL.createObjectURL(event.target.files[0]),
-                blob: event.target.files[0]
+                small: event.target.files[0]
             });
         }
-        // rootStore.imageService.loadFromInput(event, (result, blob) => {
+        // rootStore.imageService.loadFromInput(event, (result, small) => {
         //         this.setState({
         //             avatar_image: result,
-        //             blob:blob
+        //             small:small
         //         });
         //     }
         // );
@@ -166,7 +166,7 @@ class UserProfile extends React.Component {
         // rootStore.imageService.getAvatarThumbnail(rootStore.accountStore.userId)
         //     .then(avatar => {
         //         this.setState({
-        //             avatar_image: avatar.blob
+        //             avatar_image: avatar.small
         //         })
         //     });
     }
@@ -181,7 +181,7 @@ class UserProfile extends React.Component {
         const {classes} = this.props;
         const workgroup = this.messagesStore.groups.find(elem => elem.id === this.accountStore.groupId);
 
-        let avatar_image = rootStore.imageService.avatars.find(elem => elem.userId === this.accountStore.userId);
+        let avatar_image = rootStore.imageService.images.find(elem => elem.userId === this.accountStore.userId);
 
         return (
             <div>
@@ -205,7 +205,7 @@ class UserProfile extends React.Component {
                                             <div className={classes.kek}>
                                                 <Avatar
                                                     className={classes.avatar}
-                                                    src={this.state.avatar_image || avatar_image.blob}/>
+                                                    src={this.state.avatar_image || avatar_image.small}/>
                                             </div>
                                         )
                                         :

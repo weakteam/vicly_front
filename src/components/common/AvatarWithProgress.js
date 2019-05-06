@@ -36,9 +36,9 @@ class AvatarWithProgress extends React.Component {
         rootStore.imageService.getAvatarThumbnail()
             .then(avatar => {
                 if (avatar) {
-                    if (this.state.blob != avatar.blob) {
+                    if (this.state.blob != avatar.small) {
                         this.setState({
-                            blob: avatar.blob
+                            small: avatar.small
                         })
                     }
                 }
@@ -59,7 +59,7 @@ class AvatarWithProgress extends React.Component {
                     this.state.blob ?
                         (
                             <Avatar
-                                src={this.state.avatar_image || avatar_image.blob}>
+                                src={this.state.avatar_image || avatar_image.small}>
                             </Avatar>
                         )
                         :

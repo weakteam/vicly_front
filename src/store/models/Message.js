@@ -24,11 +24,14 @@ export default class Message {
         this.chat_id = null;
         this.message = messageObject.message;
         this.reply_for = messageObject.reply_for;
-        this.attachments = messageObject.attachments;
         this.timestamp_change = messageObject.timestamp_change;
         this.timestamp_post = messageObject.timestamp_post;
         this.timestamp_delivery = messageObject.timestamp_delivery;
         this.timestamp_read = messageObject.timestamp_read;
+        this.attachments = messageObject.attachments;
+        if(this.attachments.length){
+            this.attachments = this.attachments.map(id => rootStore.attachmentService.loadAttachmentInfo(id))
+        }
     }
 
 

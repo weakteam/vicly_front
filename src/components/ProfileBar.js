@@ -59,6 +59,7 @@ const styles = theme => ({
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
+        width: '100%',
     },
     online: {
         color: ` ${

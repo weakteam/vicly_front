@@ -6,7 +6,7 @@ import Attachment from "../../store/models/Attachment";
 
 const styles = theme => ({
     position: {
-        margin: '5px 5px 5px 5px',
+      //  margin: '5px 5px 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? '0px 0px 4px 0px #9f9f9f3b' : '0px 0px 4px 0px #22222291'
             }`,
@@ -17,9 +17,9 @@ const styles = theme => ({
             }`,
         overflowX: 'auto',
         /*borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
-        left: 400,
+        left: 0,
         [theme.breakpoints.down('md')]: {
             left: 280,
         },
@@ -29,9 +29,10 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             left: 0,
         },
-        bottom: 59,
+        bottom: 70,
+        borderRadius: 5,
         display: 'inline-flex',
-        position: 'fixed',
+        position: 'absolute',
         alignItems: 'center',
         right: 0,
         height: 120
@@ -97,9 +98,9 @@ class AttachmentBar extends React.Component {
     render() {
         const {classes, theme} = this.props;
         let at = new Attachment({filename: "lols.pptx", size: 1578824, progress: 33, status: 'loading'});
-        at.progress = 75;
-        at.status = 'ready';
-        at.type = "image";
+        at.progressFull = 75;
+        at.statusFull = 'ready';
+        at.mime = "image";
         return (
             <div className={classes.position}>
                 {/*<AttachmentSmall attachment={at}/>*/}

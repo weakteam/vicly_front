@@ -13,6 +13,10 @@ import img2 from '../../images/fon2.jpg';
 import img3 from '../../images/fon1.jpg';
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
+import Button from "@material-ui/core/Button";
+import {BACKEND_URL} from "../../common";
+import AttachmentSmall from "./AttachmentSmall";
+import AttachmentShow from "./AttachmentShow";
 
 const styles = theme => ({
     root: {
@@ -117,8 +121,8 @@ const styles = theme => ({
         color: '#2176a5'
     },
     gridList: {
-        margin: '10px!important',
-        maxWidth: 500,
+        margin: '6px 0px 6px 0px!important',
+        maxWidth: 300,
         [theme.breakpoints.down('md')]: {
             maxWidth: 300,
         },
@@ -169,47 +173,75 @@ class Message extends React.Component {
         }
     };
 
+
     render() {
         // Was the message sent by the current user. If so, add a css class
         const fromMe = this.props.fromMe ? 'from-me' : '';
         const {classes} = this.props;
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
+        let colsNumber;
+         if (this.props.messageInfo.attachments.length === 1) {
+            colsNumber = 2;
+        } else {
+            colsNumber = 1;
+        }
 
         let mobileMessage;
         if (fromMe) {
             mobileMessage =
                 <div className={classes.messageBlock}>
 
-                <div className={fromMe ? classes.fromMe : classes.toMe}>
-                    <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
-                        <Typography
-                            variant="body2"
-                            className={classes.senderName}>Я</Typography>
-                        <Typography variant="caption"
-                                    className={classes.caption}
-                                    style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                    <div className={fromMe ? classes.fromMe : classes.toMe}>
+                        <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
+                            <Typography
+                                variant="body2"
+                                className={classes.senderName}>Я</Typography>
+                            <Typography variant="caption"
+                                        className={classes.caption}
+                                        style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                        </div>
+                        <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+
+                        {
+                            this.props.messageInfo.attachments.length ?
+                                (
+                                    <>
+                                        <GridList  className={classes.gridList} cols={2}>
+                                            {
+                                                this.props.messageInfo.attachments.map(atta => {
+                                                    return (
+                                                        <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                            <AttachmentShow attachment={atta}/>
+                                                        </GridListTile>
+                                                    )
+                                                })
+                                            }
+                                        </GridList>
+
+                                    </>
+                                ) : null
+                        }
+
                     </div>
-                    <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                    <div className={classes.avatarMob}>
+                        {
+                            this.props.avatar ?
+                                (
+                                    <Avatar className={classes.avatarIco}
+                                            style={{backgroundColor: `${colorChange}`}}
+                                            src={this.props.avatar.small}/>
+                                )
+                                :
+                                (
+                                    <Avatar className={classes.avatarIco}
+                                            style={{backgroundColor: `${colorChange}`}}>
+                                        {this.props.userInfo.first_name[0].toUpperCase()}
+                                    </Avatar>
+                                )
+                        }
+                    </div>
                 </div>
-                <div className={classes.avatarMob}>
-                    {
-                        this.props.avatar ?
-                            (
-                                <Avatar className={classes.avatarIco}
-                                        style={{backgroundColor: `${colorChange}`}}
-                                        src={this.props.avatar.blob}/>
-                            )
-                            :
-                            (
-                                <Avatar className={classes.avatarIco}
-                                        style={{backgroundColor: `${colorChange}`}}>
-                                    {this.props.userInfo.first_name[0].toUpperCase()}
-                                </Avatar>
-                            )
-                    }
-                </div>
-            </div>
         } else {
             mobileMessage = <div className={classes.messageBlock}>
                 <div className={classes.avatar}>
@@ -218,7 +250,7 @@ class Message extends React.Component {
                             (
                                 <Avatar className={classes.avatarIco}
                                         style={{backgroundColor: `${colorChange}`}}
-                                        src={this.props.avatar.blob}/>
+                                        src={this.props.avatar.small}/>
                             )
                             :
                             (
@@ -238,6 +270,25 @@ class Message extends React.Component {
                                     className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
                     <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
+                    {
+                        this.props.messageInfo.attachments.length ?
+                            (
+                                <>
+                                    <GridList  className={classes.gridList} cols={2}>
+                                        {
+                                            this.props.messageInfo.attachments.map(atta => {
+                                                return (
+                                                    <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                        <AttachmentShow attachment={atta}/>
+                                                    </GridListTile>
+                                                )
+                                            })
+                                        }
+                                    </GridList>
+
+                                </>
+                            ) : null
+                    }
                     {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
                         <GridListTile key="1" cols={1}>
                             <img src={img1} alt="lol"/>
@@ -276,7 +327,7 @@ class Message extends React.Component {
                                         (
                                             <Avatar className={classes.avatarIco}
                                                     style={{backgroundColor: `${colorChange}`}}
-                                                    src={this.props.avatar.blob}/>
+                                                    src={this.props.avatar.small}/>
                                         )
                                         :
                                         (
@@ -310,29 +361,28 @@ class Message extends React.Component {
                                 <Typography variant="body1" className={classes.mess}>
                                     {this.props.message}
                                 </Typography>
-                                {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img1} alt="lol"/>
-                                    </GridListTile>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img2} alt="lol"/>
-                                    </GridListTile>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img3} alt="lol"/>
-                                    </GridListTile>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img1} alt="lol"/>
-                                    </GridListTile>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img1} alt="lol"/>
-                                    </GridListTile>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img1} alt="lol"/>
-                                    </GridListTile>
-                                    <GridListTile key="1" cols={1}>
-                                        <img src={img1} alt="lol"/>
-                                    </GridListTile>
-                                </GridList>*/}
+
+                                {
+                                    this.props.messageInfo.attachments.length ?
+                                        (
+                                            <>
+                                            <GridList  className={classes.gridList} cols={2}>
+                                                {
+                                                    this.props.messageInfo.attachments.map(atta => {
+                                                        return (
+                                                            <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                                <AttachmentShow attachment={atta}/>
+                                                            </GridListTile>
+                                                        )
+                                                    })
+                                                }
+                                            </GridList>
+
+                                            </>
+                                        ) : null
+                                }
+
+
                             </div>
                             <Typography variant="caption"
                                         className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>

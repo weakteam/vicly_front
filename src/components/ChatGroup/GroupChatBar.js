@@ -44,11 +44,11 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
-        borderBottom: ` ${
+      /*  borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+            }`,*/
       /*  borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {

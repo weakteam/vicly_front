@@ -73,7 +73,7 @@ display: 'flex',
         color: '#fff',
         padding: 30,
        /* color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.mime === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,*/
     },
 });

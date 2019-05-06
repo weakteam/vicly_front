@@ -124,7 +124,7 @@ const styles = theme => ({
         padding: 0,
         marginLeft: 5,
         /*color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.mime === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,*/
     },
     header: {

@@ -39,11 +39,11 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
-        borderTop: ` ${
+       /* borderTop: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+            }`,*/
         /*borderLeft: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         left: 400,
         [theme.breakpoints.down('md')]: {
@@ -86,13 +86,13 @@ const styles = theme => ({
             }`,
     },
     active: {
-        '&:focus': {
+       /* '&:focus': {
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             //   borderColor: '#819bff',
             boxShadow: `${fade('#3750ef', 0.25)} 0 0 0 0.2rem`,
             //   border: '1px solid #b9daff',
             // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
-        },
+        },*/
         /*'&:selected': {
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
@@ -163,8 +163,9 @@ class SendMessageBar extends React.Component {
     };
 
     handleSendButton = () => {
-        const attachReady = this.state.attachments.every(attach => attach.status === "ready");
+        const attachReady = this.state.attachments.every(attach => attach.statusFull === "ready");
         if (!this.state.messageText.trim() && attachReady) {
+            alert("There are broken attachments!!!!");
             return;
         }
         this.props.handleSendMessage({
@@ -173,7 +174,8 @@ class SendMessageBar extends React.Component {
             fromMe: true
         });
         this.setState({
-            messageText: ""
+            messageText: "",
+            attachments:[]
         })
     };
 

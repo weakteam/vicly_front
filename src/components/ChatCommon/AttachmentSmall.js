@@ -29,6 +29,9 @@ const styles = theme => ({
         margin: 16
     },
     attachDiv: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         margin: '5px 15px 5px 5px',
         width: 110,
         height: 110,
@@ -37,7 +40,7 @@ const styles = theme => ({
     filename: {
         maxWidth: 100,
         position: 'absolute',
-        marginTop: 90,
+        marginTop: 45,
         paddingLeft: 4,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -49,9 +52,9 @@ const styles = theme => ({
         position: 'absolute',
         width: '0.8em',
         height: '0.8em',
+        top: 6,
+        left: 93,
         cursor: 'pointer',
-        marginTop: 1,
-        marginLeft: 90,
         '&:hover': {
             backgroundColor: '#fff',
         }
@@ -66,15 +69,15 @@ class AttachmentSmall extends React.Component {
 
     preview() {
         const {classes, theme, attachment} = this.props;
-        if (attachment.status === "ready") {
-            if (attachment.type.startsWith("image")) {
+        if (attachment.statusFull === "ready") {
+            if (attachment.canShowPreview()) {
                 return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
             } else {
                 return <img src={someIcon} alt="ico" className={classes.attachedIcon}/>
             }
-        } else if (attachment.status === "loading") {
-            return <CircularProgress variant="static" value={attachment.progress}/>
-        } else if (attachment.status === "none" || attachment.status === "error") {
+        } else if (attachment.statusFull === "loading") {
+            return <CircularProgress variant="static" value={attachment.progressFull}/>
+        } else if (attachment.statusFull === "none" || attachment.statusFull === "error") {
             return "ERROR!"
         }
     }
@@ -89,12 +92,12 @@ class AttachmentSmall extends React.Component {
         return (
             <div className={classes.attachDiv}>
                 <Close onClick={this.handleCloseClick} className={classes.deleteIcon}/>
-                <Typography className={classes.filename} inline={true}>
-                    {attachment.filename}
-                </Typography>
                 {
                     this.preview()
                 }
+                <Typography className={classes.filename} inline={true}>
+                    {attachment.filename}
+                </Typography>
             </div>
         )
     }
