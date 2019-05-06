@@ -293,11 +293,12 @@ class Message extends React.Component {
                                 <>
                                     <GridList className={classes.gridList} cols={2}>
                                         {
-                                            this.props.messageInfo.attachments.map(atta => {
+                                            this.props.messageInfo.attachments.map(data => {
+                                                console.log('dfd]fgdgdfgd', data.metadata);
                                                 return (
-                                                    <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                    <GridListTile style={{height: 'auto'}} key={data.id}
                                                                   cols={colsNumber}>
-                                                        <AttachmentShow attachment={atta}/>
+                                                        <AttachmentShow attachment={data}/>
                                                     </GridListTile>
                                                 )
                                             })

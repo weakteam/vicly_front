@@ -222,7 +222,7 @@ class DocumentWindow extends React.Component {
                 </div>
                 <form className={classes.form}>
 
-                    <div className={classes.uploadButton}>
+                    <div onClick={this.props.handleAddAttachments("")} onClose={this.props.attachments.length > 0 && this.props.upload === true ? this.props.handleMenuClose() : ''} className={classes.uploadButton}>
                         <CloudDownload style={{marginRight: 15}}/>
                         <Typography variant="h6">Загрузить файл</Typography>
                     </div>

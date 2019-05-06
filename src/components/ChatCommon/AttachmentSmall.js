@@ -19,32 +19,34 @@ import getLinkFromMime from "../../utils/mimetypes";
 const styles = theme => ({
     attached: {
         width: 110,
-        height: 110,
+      //  height: 110,
         objectFit: 'cover',
         borderRadius: 4
     },
     attachedIcon: {
-        width: 64,
-        height: 64,
+        width: 44,
+        height: 44,
         objectFit: 'cover',
-        margin: 16
+       // margin: 16
     },
     attachDiv: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: '5px 15px 5px 5px',
-        width: 110,
-        height: 110,
-        backgroundColor: '#f5f5f5'
+        margin: '5px 5px 5px 5px',
+        maxWidth: 110,
+      //  height: 110,
+      //  backgroundColor: '#f5f5f5'
     },
     filename: {
-        maxWidth: 100,
-        position: 'absolute',
-        marginTop: 45,
+      //  maxWidth: 100,
+      //  position: 'absolute',
+       // marginTop: 45,
         paddingLeft: 4,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        maxWidth: 60,
 
     },
     deleteIcon: {
@@ -75,7 +77,15 @@ class AttachmentSmall extends React.Component {
                 return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
             } else {
                 const src = getLinkFromMime(attachment.mime);
-                return <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico" className={classes.attachedIcon}/>
+                return (
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico" className={classes.attachedIcon}/>
+                        <Typography className={classes.filename} inline={true}>
+                            {attachment.filename}
+                        </Typography>
+                    </div>
+                    )
+
             }
         } else if (attachment.statusPreview === "loading") {
             return <CircularProgress variant="static" value={attachment.progressPreview}/>
@@ -98,9 +108,7 @@ class AttachmentSmall extends React.Component {
                 {
                     this.preview()
                 }
-                <Typography className={classes.filename} inline={true}>
-                    {attachment.filename}
-                </Typography>
+
             </div>
         )
     }

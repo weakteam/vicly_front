@@ -141,12 +141,16 @@ class SendMessageBar extends React.Component {
         auth: true,
         anchorEl: null,
         open: false,
-        attachments: []
+        attachments: [],
+        upload: false,
     };
 
 
     handleMenu = event => {
         this.setState({anchorEl: event.currentTarget});
+        this.setState({
+            upload: false,
+        })
     };
 
     handleClose = () => {
@@ -207,6 +211,10 @@ class SendMessageBar extends React.Component {
         this.handleClose();
         this.fileInput.current.accept = accept;
         this.fileInput.current.click();
+
+        this.setState({
+            upload: true
+        })
     };
 
     handleDeleteAttachment = (attachment) => {
@@ -259,7 +267,7 @@ class SendMessageBar extends React.Component {
                         classes={{input: classes.active}}
                         endAdornment={
                             <InputAdornment position="end" color="secondary">
-                                <IconButton disabled={!this.state.messageText.trim()}
+                                <IconButton disabled={!this.state.messageText.trim() && !this.state.attachments.length > 0}
                                             onClick={this.handleSendButton.bind(this)}>
                                     <SendOutlined/>
                                 </IconButton>
@@ -291,7 +299,7 @@ class SendMessageBar extends React.Component {
                             Видео
                         </MenuItem>
                         <MenuItem className={classes.menuItem}
-                                  onClick={this.handleAddAttachments("")}>
+                                  onClick={this.handleMenuOpen}>
                             Документ
                         </MenuItem>
                     </Menu>
@@ -309,7 +317,7 @@ class SendMessageBar extends React.Component {
                     style={{zIndex: 1303}}>
 
                     <div style={getModalStyle()} className={classes.paper}>
-                        <DocumentWindow handleMenuClose={this.handleMenuClose}/>
+                        <DocumentWindow upload={this.state.upload} attachments={this.state.attachments} handleAddAttachments={this.handleAddAttachments} handleMenuClose={this.handleMenuClose}/>
                     </div>
 
                 </Modal>

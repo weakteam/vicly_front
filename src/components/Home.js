@@ -21,7 +21,7 @@ import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
-import BackgroundLight from '../images/fon3b.jpg';
+import BackgroundLight from '../images/messagesBackground.jpg';
 import {Item, Menu, MenuProvider} from "react-contexify";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
@@ -113,9 +113,9 @@ const styles = theme => ({
     },
     content: {
        // pointerEvents: 'none',
-       // position: 'absolute',
+       // position: 'fixed',
         zIndex: 1201,
-      //  position:' -webkit-sticky',
+      // position:' -webkit-sticky',
         overflow: 'hidden',
        minHeight: '-webkit-fill-available',
         flexGrow: 1,
@@ -131,7 +131,7 @@ const styles = theme => ({
                 theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
                 }`,
             backgroundSize: 'cover',
-            // backgroundImage: 'url(' + BackgroundLight + ')',
+             backgroundImage: 'url(' + BackgroundLight + ')',
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
