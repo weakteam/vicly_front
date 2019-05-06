@@ -17,6 +17,7 @@ import Button from "@material-ui/core/Button";
 import {BACKEND_URL} from "../../common";
 import AttachmentSmall from "./AttachmentSmall";
 import AttachmentShow from "./AttachmentShow";
+import List from "@material-ui/core/List";
 
 const styles = theme => ({
     root: {
@@ -181,13 +182,17 @@ class Message extends React.Component {
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
         let colsNumber;
-         if (this.props.messageInfo.attachments.length === 1) {
+        if (this.props.messageInfo.attachments.length === 1) {
             colsNumber = 2;
         } else {
             colsNumber = 1;
         }
 
         let mobileMessage;
+
+        const imagesAttachments = this.props.messageInfo.attachments.filter(elem => elem.canShowPreview() || elem.dataFetched !== "ready");
+        const otherAttachments = this.props.messageInfo.attachments.filter(elem => !elem.canShowPreview() && elem.dataFetched !== "ready");
+
         if (fromMe) {
             mobileMessage =
                 <div className={classes.messageBlock}>
@@ -207,17 +212,29 @@ class Message extends React.Component {
                             this.props.messageInfo.attachments.length ?
                                 (
                                     <>
-                                        <GridList  className={classes.gridList} cols={2}>
+                                        <GridList className={classes.gridList} cols={2}>
                                             {
-                                                this.props.messageInfo.attachments.map(atta => {
+                                                imagesAttachments.map(atta => {
                                                     return (
-                                                        <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                        <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                      cols={colsNumber}>
                                                             <AttachmentShow attachment={atta}/>
                                                         </GridListTile>
                                                     )
                                                 })
                                             }
                                         </GridList>
+                                        {
+                                            otherAttachments.map(atta => {
+                                                return (
+                                                    <List style={{height: 'auto'}} key={atta.id}
+                                                          cols={colsNumber}>
+                                                        <AttachmentShow attachment={atta}/>
+                                                    </List>
+                                                )
+                                            })
+                                        }
+
 
                                     </>
                                 ) : null
@@ -274,11 +291,12 @@ class Message extends React.Component {
                         this.props.messageInfo.attachments.length ?
                             (
                                 <>
-                                    <GridList  className={classes.gridList} cols={2}>
+                                    <GridList className={classes.gridList} cols={2}>
                                         {
                                             this.props.messageInfo.attachments.map(atta => {
                                                 return (
-                                                    <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                    <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                  cols={colsNumber}>
                                                         <AttachmentShow attachment={atta}/>
                                                     </GridListTile>
                                                 )
@@ -366,17 +384,18 @@ class Message extends React.Component {
                                     this.props.messageInfo.attachments.length ?
                                         (
                                             <>
-                                            <GridList  className={classes.gridList} cols={2}>
-                                                {
-                                                    this.props.messageInfo.attachments.map(atta => {
-                                                        return (
-                                                            <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
-                                                                <AttachmentShow attachment={atta}/>
-                                                            </GridListTile>
-                                                        )
-                                                    })
-                                                }
-                                            </GridList>
+                                                <GridList className={classes.gridList} cols={2}>
+                                                    {
+                                                        this.props.messageInfo.attachments.map(atta => {
+                                                            return (
+                                                                <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                              cols={colsNumber}>
+                                                                    <AttachmentShow attachment={atta}/>
+                                                                </GridListTile>
+                                                            )
+                                                        })
+                                                    }
+                                                </GridList>
 
                                             </>
                                         ) : null

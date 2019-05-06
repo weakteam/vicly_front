@@ -211,7 +211,7 @@ class SendMessageBar extends React.Component {
     handleDeleteAttachment = (attachment) => {
         this.setState((prevState) => {
             return {
-                attachments: prevState.attachments.filter(file => file !== attachment)
+                attachments: prevState.attachments.filter(file => file.id !== attachment.id)
         }
         })
 
@@ -237,11 +237,7 @@ class SendMessageBar extends React.Component {
                     this.state.attachments.length ?
                         (
                             <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment} attachments={this.state.attachments}/>
-                        )
-                        :
-                        (
-                            ""
-                        )
+                        ) : null
                 }
 
                 <IconButton className={classes.iconButton} onClick={this.handleMenu}>

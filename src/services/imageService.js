@@ -82,8 +82,7 @@ export default class ImageService {
 
     //TODO separate image thumb and full
     async getImage(attachment) {
-        if(!attachment instanceof Attachment)
-        {
+        if (!attachment instanceof Attachment) {
             throw Error("It's not Attachment instance");
         }
         if (attachment.fullSrc) {
@@ -116,7 +115,7 @@ export default class ImageService {
         ajax.onload = innerLoadEnd;
         ajax.onerror = attachment.onLoadError;
         ajax.onabort = attachment.onLoadError;
-        ajax.responseType    = "blob";
+        ajax.responseType = "arraybuffer";
         ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}`, true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send();
@@ -136,7 +135,14 @@ export default class ImageService {
         let ajax = new XMLHttpRequest();
 
         const innerProgressHandler = (event) => {
-            attachment.onLoadPreviewProgress((event.loaded / event.total) * 100);
+            let progress = (event.loaded / event.total) * 100;
+            if (progress === 0) {
+                progress = 2;
+            }
+            if (progress >= 100) {
+                progress = 100;
+            }
+            attachment.onLoadPreviewProgress(progress);
         };
 
         const innerLoadEnd = (event) => {
@@ -151,11 +157,20 @@ export default class ImageService {
             attachment.onPreviewLoaded(image);
         };
 
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState === 2) {
+                if (ajax.status === 200) {
+                    ajax.responseType = "blob";
+                } else {
+                    ajax.responseType = "text";
+                }
+            }
+        };
         ajax.onprogress = innerProgressHandler;
         ajax.onload = innerLoadEnd;
         ajax.onerror = attachment.onLoadError;
         ajax.onabort = attachment.onLoadError;
-        ajax.responseType    = "blob";
+        // ajax.responseType = "blob";
         ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}?width=200`, true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send();

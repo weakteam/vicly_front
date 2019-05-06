@@ -14,6 +14,7 @@ import someIcon from '../../images/icons/pdf-icon-64x64.png';
 import img2 from '../../images/fon2.jpg';
 import img3 from '../../images/fon1.jpg';
 import {observer} from "mobx-react";
+import getLinkFromMime from "../../utils/mimetypes";
 
 const styles = theme => ({
     attached: {
@@ -69,15 +70,16 @@ class AttachmentSmall extends React.Component {
 
     preview() {
         const {classes, theme, attachment} = this.props;
-        if (attachment.statusFull === "ready") {
+        if (attachment.statusPreview === "ready") {
             if (attachment.canShowPreview()) {
                 return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
             } else {
-                return <img src={someIcon} alt="ico" className={classes.attachedIcon}/>
+                const src = getLinkFromMime(attachment.mime);
+                return <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico" className={classes.attachedIcon}/>
             }
-        } else if (attachment.statusFull === "loading") {
-            return <CircularProgress variant="static" value={attachment.progressFull}/>
-        } else if (attachment.statusFull === "none" || attachment.statusFull === "error") {
+        } else if (attachment.statusPreview === "loading") {
+            return <CircularProgress variant="static" value={attachment.progressPreview}/>
+        } else if (attachment.statusPreview === "none" || attachment.statusPreview === "error") {
             return "ERROR!"
         }
     }
@@ -88,6 +90,7 @@ class AttachmentSmall extends React.Component {
 
     render() {
         const {classes, theme, attachment} = this.props;
+
 
         return (
             <div className={classes.attachDiv}>

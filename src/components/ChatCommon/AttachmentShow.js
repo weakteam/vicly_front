@@ -14,6 +14,7 @@ import Modal from "@material-ui/core/Modal";
 import {BACKEND_URL} from "../../common";
 import rootStore from "../../store/RootStore";
 import getLinkFromMime from "../../utils/mimetypes";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 
 const styles = theme => ({
@@ -148,7 +149,7 @@ class AttachmentShow extends React.Component {
             return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
                         className={classes.attached + " " + classes.imagePreview}/>
         } else if (attachment.statusPreview === "loading") {
-            return <CircularProgress variant="static" value={attachment.progressPreview}/>
+            return <CircularProgress  variant={attachment.progressPreview === 100 ? "indeterminate" : "static"} value={attachment.progressPreview}/>
         } else if (attachment.statusPreview === "none" || attachment.statusPreview === "error") {
             return "ERROR!"
         }
@@ -161,11 +162,19 @@ class AttachmentShow extends React.Component {
             return (
                 <div style={{display: "flex"}}>
                     <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
-                         className={classes.attachedIcon}/>
+                         className={classes.attachedIcon}
+                         onClick={attachment.loadFull}/>
                     <div>
                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
                         <Typography className={classes.caption}>{attachment.size + "kb"}</Typography>
                     </div>
+                    {
+                        attachment.statusFull === "loading" || attachment.statusFull === "ready" ?
+                            (
+                                <LinearProgress variant="determinate" value={attachment.progressFull}/>
+                            ) : null
+                    }
+
                 </div>
             )
         } else if (attachment.dataFetched === "loading") {

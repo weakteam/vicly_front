@@ -99,17 +99,16 @@ export default class Attachment {
         rootStore.attachmentService.addAttachment(this);
     };
 
-    loadFull() {
+    loadFull = () => {
+        this.statusFull = "loading";
         if (this.canShowPreview()) {
-            this.statusFull = "loading";
             rootStore.imageService.getImage(this)
                 .catch(err => console.log("Error while load full image:" + err));
         } else {
-            this.statusFull = "loading";
             rootStore.attachmentService.downloadFile(this)
                 .catch(err => console.log("Error while load full image:" + err));
         }
-    }
+    };
 
     downloadAttachmentFromUrl() {
         if (!this.fullSrc) {
@@ -145,5 +144,39 @@ export default class Attachment {
         }
         return false;
     }
+
+    // TODO MAYBE NEED RENAME TO onFetched!?
+    onUploadComplete = (event) => {
+        let request = event.currentTarget;
+        if (request.status !== 200) {
+            console.log(`Request code:${request.status} ||| text:${request.statusText}`);
+            this.dataFetched = "error";
+            return;
+        }
+        let jsonResponse = JSON.parse(request.responseText);
+        console.log("upload complete:" + request.responseText);
+        ////////////////////////////////////////////////////
+
+        this.id = jsonResponse.id;
+        this.user_id = jsonResponse.user_id;
+        this.is_avatar = jsonResponse.is_avatar;
+        this.timestamp = jsonResponse.timestamp;
+        this.metadata = jsonResponse.metadata;
+        this.filename = jsonResponse.filename;
+        this.size = jsonResponse.size;
+        this.mime = jsonResponse.mime;
+
+
+        this.dataFetched = "ready";
+
+        this.statusPreview = "ready";
+        if (this.canShowPreview()) {
+            // rootStore.imageService.getImagePreview(this)
+            //     .catch(err => console.log("Error while load image:" + err));
+        } else {
+
+        }
+        rootStore.attachmentService.addAttachment(this);
+    };
 
 }
