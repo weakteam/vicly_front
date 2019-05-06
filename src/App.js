@@ -100,7 +100,7 @@ class App extends Component {
     changeThemeType() {
         this.setState((prevState) => {
             rootStore.accountStore.setTheme(!(prevState.themeOpt.palette.type === "light"));
-            prevState.themeOpt.palette.mime = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
+            prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
             return prevState;
         });
     };

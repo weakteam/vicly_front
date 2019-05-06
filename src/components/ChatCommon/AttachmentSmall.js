@@ -3,7 +3,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import SendOutlined from '@material-ui/icons/SendOutlined';
 import AttachFile from '@material-ui/icons/AttachFile';
 import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import IconButton from "@material-ui/core/IconButton/IconButton";
 import FormControl from "@material-ui/core/FormControl/index";
 import InputBase from "@material-ui/core/InputBase/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";

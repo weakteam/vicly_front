@@ -10,12 +10,16 @@ import Message from "./models/Message";
 
 export default class MessagesStore {
     @observable groups = [];
+    @observable foundedGroups = [];
+    @observable foundedUserChats = [];
+    @observable foundedGroupChats = [];
+    @observable searchActive = false;
     users = [];
     @observable userChatsNew = [];
     @observable groupChatsNew = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
-    previousCurrentChatId= null;
+    previousCurrentChatId = null;
     isCurrentChatForUser = null;
     previousIsCurrentChatForUser = null;
     @observable chatsFetched = false;
@@ -77,6 +81,41 @@ export default class MessagesStore {
             {fireImmediately: true}
         );
     };
+
+    // START SEARCH PLACE
+    uniq(a) {
+        return Array.from(new Set(a));
+    }
+
+    searchChat = (pattern) => {
+        let foundedUserChats = this.userChatsNew.filter(chat => {
+            const name = chat.user.first_name + " " + chat.user.last_name;
+            return name.includes(pattern);
+        });
+        let foundedGroupChats = this.groupChatsNew.filter(chat => chat.title.includes(pattern));
+        let foundedGroups = this.groups.filter(group => group.name.includes(pattern));
+
+        let groupIds = foundedUserChats.map(chat => chat.groupId)
+            .concat(
+                this.foundedGroupChats.map(chat => chat.groupId)
+            );
+        foundedGroups = foundedGroups.concat(
+            this.groups.filter(group => groupIds.includes(group.id))
+        );
+        this.foundedGroups = this.uniq(foundedGroups);
+        this.foundedUserChats = this.uniq(foundedUserChats);
+        this.foundedGroupChats = this.uniq(foundedGroupChats);
+        this.searchActive = true;
+    };
+
+    invalidateSearch = () => {
+        this.foundedGroups = [];
+        this.foundedUserChats = [];
+        this.foundedGroupChats = [];
+        this.searchActive = false;
+    };
+
+    // END   SEARCH PLACE
 
     async fetchChats() {
         try {
@@ -206,19 +245,6 @@ export default class MessagesStore {
         return this.isCurrentChatForUser ? this.findUserChatNew(this.currentChatId) : this.findGroupChatNew(this.currentChatId);
     }
 
-    chatChanged(chatType, chatId) {
-        // let innerChat = null;
-        // if (chatType === "user") {
-        //     innerChat = this.findUserChatNew(chatId)
-        // } else {
-        //     innerChat = this.findGroupChatNew(chatId);
-        // }
-        // innerChat.messages.forEach(message => {
-        //     if (!message.timestamp_read) {
-        //         this.readMessage(message.id);
-        //     }
-        // })
-    }
 
     nextPage(chatType, chatId) {
         let chat = null;
@@ -237,18 +263,18 @@ export default class MessagesStore {
         }
     }
 
-    setCurrentChatId(newCurrentChatId,isNewCurrentChatForUser){
+    setCurrentChatId(newCurrentChatId, isNewCurrentChatForUser) {
         this.previousCurrentChatId = this.currentChatId;
         this.currentChatId = newCurrentChatId;
         this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
         this.isCurrentChatForUser = isNewCurrentChatForUser;
     }
 
-    isChatChanged(){
+    isChatChanged() {
         return this.currentChatId !== this.previousCurrentChatId || this.isCurrentChatForUser !== this.previousIsCurrentChatForUser;
     }
 
-    invalidateChatChanged(){
+    invalidateChatChanged() {
         this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
         this.previousCurrentChatId = this.currentChatId;
     }

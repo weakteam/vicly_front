@@ -6,7 +6,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 
 import rootStore from "../store/RootStore";
-const {accountStore,messagesStore} = rootStore;
+
+const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
@@ -98,12 +99,28 @@ const styles = theme => ({
     },
 });
 
-class OutlinedTextFields extends React.Component {
+class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
         this.chatsStore = messagesStore;
     }
+
+    state = {
+        searchInput: ""
+    };
+
+    handleChangeSearchInput = (event) => {
+        if (!event.target.value) {
+            messagesStore.invalidateSearch();
+        } else {
+            messagesStore.searchChat(event.target.value);
+        }
+        this.setState({
+            searchInput: event.target.value
+        });
+    };
+
 
     render() {
         const {classes} = this.props;
@@ -116,6 +133,8 @@ class OutlinedTextFields extends React.Component {
                     </div>
                     <InputBase
                         placeholder="Поиск диалогов…"
+                        value={this.state.searchInput}
+                        onChange={this.handleChangeSearchInput}
                         classes={{
                             root: classes.inputRoot,
                             input: classes.inputInput,
@@ -130,4 +149,4 @@ class OutlinedTextFields extends React.Component {
     }
 }
 
-export default withStyles(styles)(OutlinedTextFields);
+export default withStyles(styles)(SearchBar);
