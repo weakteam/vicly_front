@@ -15,7 +15,7 @@ const styles = theme => ({
     chatWindow: {
         padding: '60px 0 57px 20px',
         [theme.breakpoints.down('md')]: {
-            padding: '6px 20px 57px 20px',
+            padding: '60px 20px 57px 20px',
         },
         [theme.breakpoints.down('xs')]: {
             padding: '115px 5px 57px 20px',
