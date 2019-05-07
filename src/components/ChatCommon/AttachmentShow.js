@@ -8,16 +8,50 @@ import FormControl from "@material-ui/core/FormControl/index";
 import InputBase from "@material-ui/core/InputBase/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import Close from "@material-ui/icons/Close";
-import {Badge, CircularProgress, Typography} from "@material-ui/core";
+import {Badge, CircularProgress, Divider, Typography} from "@material-ui/core";
 import {observer} from "mobx-react";
 import Modal from "@material-ui/core/Modal";
 import {BACKEND_URL} from "../../common";
 import rootStore from "../../store/RootStore";
 import getLinkFromMime from "../../utils/mimetypes";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import NewChatModal from "../NewChatModal";
+import Avatar from "@material-ui/core/Avatar";
+import Checkbox from "@material-ui/core/Checkbox";
 
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
+}
 
 const styles = theme => ({
+    paper: {
+        position: 'absolute',
+        outline: 'none',
+        borderRadius: 5,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        height: '90%',
+        //  padding: 30,
+        /* [theme.breakpoints.down('xs')]: {
+             width: '80%',
+         },*/
+        //  width: 585,
+        /*  backgroundColor: ` ${
+              theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+              }`,*/
+        boxShadow: theme.shadows[5],
+        backgroundColor: "#191b22"
+        // padding: theme.spacing.unit * 4,
+    },
     attached: {
         width: '100%',
         height: '100%',
@@ -31,6 +65,8 @@ const styles = theme => ({
         paddingRight: 5,
     },
     attachDiv: {
+        alignSelf: 'center',
+        marginLeft: 'auto',
         //  margin: '5px 15px 5px 5px',
         //   width: 110,
         height: '100%',
@@ -47,11 +83,12 @@ const styles = theme => ({
     //image modal view
     close: {
         position: "absolute",
-        top: 15,
-        right: 35,
+        top: 2,
+        left: 3,
         color: "#f1f1f1",
-        fontSize: 40,
-        fontWeight: "bold",
+        fontSize: 32,
+        cursor: 'pointer',
+        // fontWeight: "bold",
         transition: 0.3
     },
     imagePreview: {
@@ -77,9 +114,10 @@ const styles = theme => ({
         },
     modal:
         {
-            position: "fixed",
+            outline: 'none',
+            position: "absolute",
             zIndex: 1,
-            paddingTop: 100,
+            // paddingTop: 100,
             left: 0,
             top: 0,
             width: "100%",
@@ -89,11 +127,41 @@ const styles = theme => ({
         },
     modalContent:
         {
+            maxHeight: '100%',
             margin: "auto",
             display: "block",
-            width: "80%",
-            maxWidth: 700
-        }
+            width: "auto",
+            maxWidth: '70%'
+        },
+    infBlockFirst: {
+        padding: 15,
+        display: 'flex',
+        alignItems: 'center'
+    },
+    userAvatar: {
+        width: 40,
+        height: 40,
+    },
+    nameUser: {
+        fontSize: '1rem',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    userRole: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    commentBlock: {
+        backgroundColor: '#fff',
+        borderRadius: '0px 5px 5px 0px',
+        height: '-webkit-fill-available',
+        width: '22%',
+        [theme.breakpoints.down('md')]: {
+            width: '30%',
+        },
+    },
 
 });
 
@@ -149,7 +217,8 @@ class AttachmentShow extends React.Component {
             return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
                         className={classes.attached + " " + classes.imagePreview}/>
         } else if (attachment.statusPreview === "loading") {
-            return <CircularProgress  variant={attachment.progressPreview === 100 ? "indeterminate" : "static"} value={attachment.progressPreview}/>
+            return <CircularProgress variant={attachment.progressPreview === 100 ? "indeterminate" : "static"}
+                                     value={attachment.progressPreview}/>
         } else if (attachment.statusPreview === "none" || attachment.statusPreview === "error") {
             return "ERROR!"
         }
@@ -166,7 +235,7 @@ class AttachmentShow extends React.Component {
                          onClick={attachment.loadFull}/>
                     <div>
                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
-                        <Typography className={classes.caption}>{attachment.size + "kb"}</Typography>
+                        <Typography className={classes.caption}>{+attachment.size + " kb"}</Typography>
                     </div>
                     {
                         attachment.statusFull === "loading" || attachment.statusFull === "ready" ?
@@ -221,14 +290,33 @@ class AttachmentShow extends React.Component {
                                     open={this.state.imageModal}
                                     onClose={this.imagePreviewModalClose}
                                 >
-                                    <div onClick={this.imagePreviewModalClose} className={classes.modal}>
-
-                                        <span className={classes.close}>&times;</span>
-
+                                    <div style={getModalStyle()}
+                                         className={classes.paper}>
+                                        <Close onClick={this.imagePreviewModalClose}  className={classes.close}/>
                                         {this.state.imageModal ? this.fullImage(false) : null}
 
-                                        <Typography className={classes.caption}>{attachment.filename}</Typography>
+                                        <div
+                                        className={classes.commentBlock}>
+                                            <div className={classes.infBlockFirst}>
+                                                <Avatar className={classes.userAvatar}>
+                                                    {/*{this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}*/}
+                                                    LL
+                                                </Avatar>
+                                                <div style={{marginLeft: 10}}>
+                                                    <Typography variant="h5"
+                                                                className={classes.nameUser}>Петя васечкин</Typography>
+                                                    <Typography variant="caption"
+                                                                noWrap
+                                                                className={classes.userRole}>Программист</Typography>
+                                                </div>
+
+                                            </div>
+                                            <Divider/>
+                                            {/*  <Typography variant="caption"
+                                                        className={classes.caption}>{attachment.filename}</Typography>*/}
+                                        </div>
                                     </div>
+
                                 </Modal>
                                 {
                                     this.viewableAttachment()

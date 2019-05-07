@@ -115,7 +115,7 @@ const styles = theme => ({
         fontSize: '0.8rem',
         color: '#181818',
         whiteSpace: 'pre-wrap',
-       // wordWrap: 'break-word',
+        // wordWrap: 'break-word',
         //overflowWrap: 'break-word',
         wordBreak: 'break-all',
         display: 'flex'
@@ -200,7 +200,6 @@ class Message extends React.Component {
         if (fromMe) {
             mobileMessage =
                 <div className={classes.messageBlock}>
-
                     <div className={fromMe ? classes.fromMe : classes.toMe}>
                         <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                             <Typography
@@ -218,7 +217,7 @@ class Message extends React.Component {
                                     <>
                                         <GridList className={classes.gridList} cols={2}>
                                             {
-                                                imagesAttachments.map(atta => {
+                                                this.props.messageInfo.attachments.map(atta => {
                                                     return (
                                                         <GridListTile style={{height: 'auto'}} key={atta.id}
                                                                       cols={colsNumber}>
@@ -228,17 +227,6 @@ class Message extends React.Component {
                                                 })
                                             }
                                         </GridList>
-                                        {
-                                            otherAttachments.map(atta => {
-                                                return (
-                                                    <List style={{height: 'auto'}} key={atta.id}
-                                                          cols={colsNumber}>
-                                                        <AttachmentShow attachment={atta}/>
-                                                    </List>
-                                                )
-                                            })
-                                        }
-
 
                                     </>
                                 ) : null
@@ -297,12 +285,11 @@ class Message extends React.Component {
                                 <>
                                     <GridList className={classes.gridList} cols={2}>
                                         {
-                                            this.props.messageInfo.attachments.map(data => {
-                                                console.log('dfd]fgdgdfgd', data.metadata);
+                                            this.props.messageInfo.attachments.map(atta => {
                                                 return (
-                                                    <GridListTile style={{height: 'auto'}} key={data.id}
+                                                    <GridListTile style={{height: 'auto'}} key={atta.id}
                                                                   cols={colsNumber}>
-                                                        <AttachmentShow attachment={data}/>
+                                                        <AttachmentShow attachment={atta}/>
                                                     </GridListTile>
                                                 )
                                             })

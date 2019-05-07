@@ -100,7 +100,7 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div className="scrollbar" id="style-3">
+            <div style={{ '-webkit-overflow-scrolling': 'touch'}} className="scrollbar" id="style-3">
             <div className={"scroll scrollMessageArea"} id='messageList' ref={this.messageList}>
                 {messages}
                 <div ref={this.messagesEnd}/>

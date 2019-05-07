@@ -30,13 +30,13 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             left: 0,
         },
-        bottom: 70,
-        borderRadius: 5,
+       // bottom: 57,
+      //  borderRadius: 5,
         display: 'inline-flex',
-        position: 'absolute',
+       // position: 'absolute',
         alignItems: 'center',
-        right: 0,
-        height: 120
+       // right: 0,
+       // height: 120
     },
     attached: {
         // width: 70,

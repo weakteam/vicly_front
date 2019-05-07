@@ -227,7 +227,7 @@ const styles = theme => ({
     },
     logoText: {
         color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'}`,
-        width: '100%'
+       // width: '100%'
 
     },
     rootIndex: {
@@ -235,7 +235,7 @@ const styles = theme => ({
     },
     scrollDrawer: {
         minWidth: '-webkit-fill-available',
-        marginTop: 130,
+        marginTop: 135,
         [theme.breakpoints.down('xs')]: {
             marginTop: 113,
         },

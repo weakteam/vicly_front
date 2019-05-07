@@ -16,6 +16,7 @@ import Avatar from "@material-ui/core/Avatar";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
 import Slide from "@material-ui/core/Slide";
+import {Typography} from "@material-ui/core";
 
 
 function getModalStyle() {
@@ -239,21 +240,22 @@ class SendMessageBar extends React.Component {
 
         return (
             <div className={classes.position}>
-                {
-                    this.state.attachments.length ?
-                        (
-                            <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
-                                <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
-                                               attachments={this.state.attachments}/>
-                            </Slide>
-                        ) : null
-                }
+
 
                 <IconButton className={classes.iconButton} onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
 
                 <FormControl fullWidth>
+                    {
+                        this.state.attachments.length ?
+                            (
+                                <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
+                                    <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
+                                                   attachments={this.state.attachments}/>
+                                </Slide>
+                            ) : null
+                    }
                     <InputBase
                         placeholder="Введите сообщение"
                         multiline

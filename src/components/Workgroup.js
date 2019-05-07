@@ -52,7 +52,7 @@ const styles = theme => ({
         alignItems: 'center'
     },
     WorkGroupBack: {
-        margin: 8,
+        margin: '8px 0px 0px 8px',
         borderRadius: 5,
         paddingBottom: 5,
         boxShadow: ` ${
