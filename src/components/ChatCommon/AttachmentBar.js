@@ -21,6 +21,7 @@ const styles = theme => ({
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         left: 0,
+        borderRadius: '0px 5px 0px 0px',
         [theme.breakpoints.down('md')]: {
             left: 280,
         },
