@@ -103,13 +103,10 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
         // width: '100%',
-        paddingTop: 13,
+        padding: '10px 5px 10px 5px',
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        paddingBottom: 13,
-        paddingLeft: 10,
-        paddingRight: 10,
         maxHeight: 150,
         height: 'auto',
     },

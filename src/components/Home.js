@@ -310,11 +310,10 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
-
                 <List className={"scrollDrawer scrollDrawerFix"}>
-                    <Scrollbars style={{height: '-webkit-fill-available'}}>
+
                         {this.workgroups()}
-                    </Scrollbars>
+
                 </List>
             </div>
         );

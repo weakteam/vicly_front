@@ -29,8 +29,8 @@ function getModalStyle() {
 
 const styles = theme => ({
     position: {
-        margin: '0px 5px 5px 5px',
-        borderRadius: '0 0 5px 5px',
+        margin: '5px 5px 5px 5px',
+        borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -1px 0px 1px rgba(49, 49, 49, 0.1)' : 'inset 0px -2px 0px 1px rgba(45, 53, 70, 0.86)'
             }`,
@@ -92,7 +92,7 @@ const styles = theme => ({
     },
     search: {
         position: 'relative',
-        marginLeft: 12,
+        margin: 10,
     },
     searchIcon: {
         height: '100%',

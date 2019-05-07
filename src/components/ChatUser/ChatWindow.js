@@ -33,15 +33,15 @@ const styles = theme => ({
             }`,
     },
     chatWindow: {
-        height: '100%',
-        overflow: 'hidden',
-        padding: '55px 0 58px 20px',
+        padding: '60px 0 57px 20px',
         [theme.breakpoints.down('md')]: {
-            padding: '55px 20px 60px 20px',
+            padding: '60px 20px 57px 20px',
         },
         [theme.breakpoints.down('xs')]: {
-            padding: '116px 5px 60px 20px',
+            padding: '115px 5px 57px 20px',
         },
+        height: '100%',
+        overflow: 'hidden',
     },
 });
 
@@ -111,21 +111,21 @@ class ChatWindow extends React.Component {
                 messages = chat.messages;
             }
             return (
-               <>
+                <div className={classes.chatWindow}>
                     <ChatBar match={this.props.match.params.userId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
                             (
                                 <Loader active inverted>Loading</Loader>
                             ) : chat && messages && messages.length > 0 ? (
-                                <div className={classes.chatWindow}>
+
                                     <MessageList
                                         myselfUser={myselfUser}
                                         chatUsers={[chat.user]}
                                         messages={messages}
                                         scrollHandler={this.scrollHandler}
                                         ref={this.messageList}/>
-                                </div>
+
                             ) : (
                                 <div className={classes.emptyChat}>
                                     <Typography className={classes.text} variant="h5">
@@ -135,7 +135,7 @@ class ChatWindow extends React.Component {
                             )
                     }
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
-         </>
+                </div>
             )
         } else {
             return (<ChatWindowEmpty/>);
