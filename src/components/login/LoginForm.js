@@ -24,7 +24,7 @@ const styles = theme => ({
         top: 0,
         bottom: 0,
         right: 0,
-        position: 'absolute',
+        position: 'fixed',
         left: 0,
         justifyContent: 'center',
         minHeight: '100vh',
@@ -39,7 +39,7 @@ const styles = theme => ({
     main: {
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.down('xs')]: {
-            width: '80%',
+            width: '95%',
         },
         width: 435,
         borderTopLeftRadius: 5,

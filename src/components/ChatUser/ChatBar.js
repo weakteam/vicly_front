@@ -26,7 +26,7 @@ const styles = theme => ({
         right: 0,
         display: 'inline-flex',
         justifyContent: 'space-between',
-        height: 55,
+       // height: 55,
         zIndex: 1,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary

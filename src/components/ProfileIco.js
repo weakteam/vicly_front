@@ -37,7 +37,7 @@ const styles = theme => ({
         position: 'absolute',
         outline: 'none',
         [theme.breakpoints.down('xs')]: {
-            width: '90%',
+            width: '95%',
         },
         width: 500,
         boxShadow: theme.shadows[5],

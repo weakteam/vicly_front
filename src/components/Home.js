@@ -45,6 +45,10 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
     },
     drawer: {
         width: 399,
@@ -118,6 +122,7 @@ const styles = theme => ({
         // position:' -webkit-sticky',
         overflow: 'hidden',
         minHeight: '-webkit-fill-available',
+      //  minHeight: '-moz-available',
         flexGrow: 1,
         flexShrink: 1,
         width: '100%',
@@ -154,7 +159,8 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     logoDiv: {
-        flexGrow: 1
+       flexGrow: 1,
+        overflow: 'hidden',
     },
     container: {
         display: 'flex',
@@ -189,7 +195,8 @@ const styles = theme => ({
         alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
-        height: '-webkit-fill-available',
+        height: 'inherit',
+
     },
     icon: {
         color: ` ${
@@ -219,11 +226,14 @@ const styles = theme => ({
     },
     logoText: {
         color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'}`,
+        width: '100%'
+
     },
     rootIndex: {
         zIndex: 1299,
     },
     scrollDrawer: {
+        minWidth: '-webkit-fill-available',
         marginTop: 130,
         [theme.breakpoints.down('xs')]: {
             marginTop: 113,

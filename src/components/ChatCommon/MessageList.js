@@ -101,8 +101,10 @@ class MessageList extends React.Component {
         return (
 
             <div className={"scroll scrollMessageArea"} id='messageList' ref={this.messageList}>
+                <div>
                 {messages}
                 <div ref={this.messagesEnd}/>
+                </div>
             </div>
 
         );

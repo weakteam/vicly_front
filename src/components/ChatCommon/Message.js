@@ -114,7 +114,11 @@ const styles = theme => ({
     mess: {
         fontSize: '0.8rem',
         color: '#181818',
-        whiteSpace: 'pre',
+        whiteSpace: 'pre-wrap',
+       // wordWrap: 'break-word',
+        //overflowWrap: 'break-word',
+        wordBreak: 'break-all',
+        display: 'flex'
     },
     senderName: {
         minWidth: 'max-content',

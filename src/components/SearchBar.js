@@ -6,6 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 
 import rootStore from "../store/RootStore";
+import NewChatIcon from "./NewChatIcon";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -140,9 +141,7 @@ class SearchBar extends React.Component {
                             input: classes.inputInput,
                         }}/>
                 </div>
-                <IconButton>
-                    <AddCommentOutlined className={classes.icon}/>
-                </IconButton>
+               <NewChatIcon/>
             </div>
 
         );

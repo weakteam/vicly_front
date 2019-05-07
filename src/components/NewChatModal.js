@@ -7,6 +7,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
 import {Button, IconButton} from "@material-ui/core";
 import rootStore from "../store/RootStore";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import purple from "@material-ui/core/es/colors/purple";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -37,15 +42,15 @@ const styles = theme => ({
     header: {
         textAlign: 'start',
         fontSize: '1em',
-        //marginLeft: 10,
+        marginLeft: 10,
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
             }`,
     },
     fixWidth: {
-      //  marginLeft: 10,
+        marginLeft: 10,
         display: 'flex',
-        alignItems: 'center',
+        // alignItems: 'center',
     },
     userName: {
         marginLeft: 10,
@@ -78,8 +83,9 @@ const styles = theme => ({
         marginTop: 30,
     },
     infBlockFirst: {
+        paddingTop: 10,
         display: 'flex',
-
+        alignItems: 'center'
     },
     text: {
         fontSize: '0.95rem',
@@ -92,12 +98,9 @@ const styles = theme => ({
         width: '100%'
     },
     blockForm: {
-        display: 'flex',
+        //display: 'flex',
         alignItems: 'flex-start',
-        padding: '30px 50px 30px 50px',
-        [theme.breakpoints.down('xs')]: {
-            padding: '5%',
-        },
+        padding: '14px 24px 25px 24px',
     },
     form: {
         borderRadius: '0px 0px 5px 5px',
@@ -107,7 +110,7 @@ const styles = theme => ({
             }`,
     },
     textInf: {
-        marginBottom: 30,
+        // marginBottom: 30,
         fontSize: '1em',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
@@ -134,9 +137,51 @@ const styles = theme => ({
             }`,
         cursor: 'pointer',
     },
+    cssLabel: {
+        color: '#fff',
+        '&$cssFocused': {
+            color: "#fff",
+        },
+    },
+    cssFocused: {},
+    cssUnderline: {
+        /*  '&:hover': {
+              borderBottom: '2px solid red',
+          },*/
+        '&:before': {
+            borderBottomColor: '#fff',
+            borderBottom: '1px solid #fff!important'
+        },
+        '&:after': {
+            borderBottomColor: '#88b7e5',
+        },
+    },
+    baseRoot: {
+        color: '#cef9fd',
+    },
+    userAvatar: {
+        width: 40,
+        height: 40,
+    },
+    nameUser: {
+        fontSize: '1rem',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    userRole: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
+    checkboxRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+    },
 });
 
-class UserProfile extends React.Component {
+class NewChatModal extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
@@ -146,7 +191,8 @@ class UserProfile extends React.Component {
 
     state = {
         avatar_image: null,
-        blob: null
+        blob: null,
+        values: [],
     };
 
     handleImageChange = (event) => {
@@ -174,6 +220,31 @@ class UserProfile extends React.Component {
         //     });
     }
 
+    handleChange = (event) => {
+        let count = 0;
+
+        for (let i = 0; i < this.state.values.length; i++) {
+            if (this.state.values[i] === event.target.value) {
+                count++
+            }
+            if (this.state.values[i] === event.target.value && event.target.checked === false) {
+                this.state.values.splice(i, 1)
+            }
+        }
+        if (count === 0 && event.target.checked === true) {
+            this.state.values.push(event.target.value)
+        }
+        console.log('Old inline massive',  event.target.checked);
+        console.log('Old inline massive',  this.state.values)
+};
+
+    handleReset = () => {
+      this.setState({
+          values: [],
+      });
+        console.log('Old inline massive',  this.state.values)
+    };
+
     handleAvatarUpload = () => {
         if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {
             rootStore.imageService.uploadAvatar(this.avatarInput.current.files[0]);
@@ -187,14 +258,14 @@ class UserProfile extends React.Component {
         let avatar_image = rootStore.imageService.images.find(elem => elem.userId === this.accountStore.userId);
 
         return (
-            <div>
+            <div onclose={this.handleReset}>
                 <div className={classes.headerBlock}>
                     <div style={{width: '100%'}}>
                         <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
                             <Typography variant="overline" className={classes.header}>
-                                Профиль
+                                Создание группового чата
                             </Typography>
-                            <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleMenuClose}>
+                            <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleClose}>
                                 <Close className={classes.closeIcon}/>
                             </IconButton>
                         </div>
@@ -224,51 +295,54 @@ class UserProfile extends React.Component {
                                    accept="image/x-png,image/jpeg"
                                    ref={this.avatarInput}/>
                             <div className={classes.userName}>
-                                <Typography variant="h5"
-                                            className={classes.userName1}>{this.accountStore.fullName}</Typography>
-                                <Typography variant="caption"
-                                            noWrap
-                                            className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
+                                <FormControl className={classes.margin}>
+                                    <InputLabel
+                                        htmlFor="custom-css-standard-input"
+                                        classes={{
+                                            root: classes.cssLabel,
+                                            focused: classes.cssFocused,
+                                        }}
+                                    >
+                                        Имя чата
+                                    </InputLabel>
+                                    <Input
+                                        id="custom-css-standard-input"
+                                        classes={{
+                                            underline: classes.cssUnderline,
+                                            root: classes.baseRoot
+                                        }}
+                                    />
+                                </FormControl>
                             </div>
-                            <Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
-                                avatar!</Button>
+                            {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
+                                avatar!</Button>*/}
                         </div>
                     </div>
                 </div>
+                {}
                 <form className={classes.form}>
                     <div className={classes.blockForm}>
-                        <div className={classes.block}>
-                            <Typography variant="overline" className={classes.textInf}>Информация</Typography>
                             <div className={classes.infBlockFirst}>
-                                <Typography variant="h6" className={classes.text}>Телефон</Typography>
-                                <Typography variant="h6" className={classes.text2}>8(988)996-29-14</Typography>
-                            </div>
-                            <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Логин</Typography>
-                                <Typography variant="h6"
-                                            className={classes.text2}>@{this.accountStore.login}</Typography>
-                            </div>
-                            <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Пароль</Typography>
-                                <InputBase classes={{input: classes.textPassword}}
-                                           className={classes.text2}
-                                           type="password"
-                                           defaultValue="Naked input"/>
-                            </div>
-                            <Divider/>
-                            <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Доступные рабочие
-                                    группы</Typography>
-                                <div className={classes.text2}>
-                                    <Typography variant="h6"
-                                                className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
+                                <Avatar className={classes.userAvatar}>
+                                    {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                </Avatar>
+                                <div style={{marginLeft: 10}}>
+                                    <Typography variant="h5"
+                                                className={classes.nameUser}>{this.accountStore.fullName}</Typography>
+                                    <Typography variant="caption"
+                                                noWrap
+                                                className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
                                 </div>
+                                <Checkbox
+                                    onChange={this.handleChange.bind(this)}
+                                    value={'b'}
+                                    color="primary"
+                                    style={{marginLeft: 'auto'}}
+                                    classes={{
+                                        root: classes.checkboxRoot,
+                                    }}
+                                />
                             </div>
-                            <Divider/>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -276,6 +350,6 @@ class UserProfile extends React.Component {
     }
 }
 
-const Profile = withStyles(styles)(UserProfile);
+const ChatModal = withStyles(styles)(NewChatModal);
 
-export default Profile;
+export default ChatModal;
