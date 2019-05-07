@@ -29,6 +29,7 @@ import HomeScreen from './HomeScreen'
 import Delete from "@material-ui/icons/Delete"
 import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
+import '../css/scrollbar.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -320,11 +321,11 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
+                <div className="scrollbar" id="style-3">
                 <List className={"scrollDrawer scrollDrawerFix"}>
-
                         {this.workgroups()}
-
                 </List>
+                </div>
             </div>
         );
 

@@ -180,6 +180,26 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
     },
+    signIn: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30
+    },
+    submit: {
+        width: '30%',
+        marginBottom: 12,
+        boxShadow: theme.shadows[0],
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#74ada6' : '#2e374c'
+            }`,
+        color: '#fff',
+        '&:hover': {
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#4c847d' : '#3e4b67'
+                }`,
+        },
+    },
 });
 
 class NewChatModal extends React.Component {
@@ -389,7 +409,9 @@ class NewChatModal extends React.Component {
                                 />
                             </div>
                     </div>
-                    <Button type="submit" variant="contained" color="secondary">lol</Button>
+                    <div className={classes.signIn}>
+                        <Button type="submit" variant="contained" className={classes.submit}>Создать</Button>
+                    </div>
                 </form>
 
             </div>
