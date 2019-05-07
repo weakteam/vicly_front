@@ -12,6 +12,7 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import purple from "@material-ui/core/es/colors/purple";
 import Checkbox from "@material-ui/core/Checkbox";
+import {BACKEND_URL} from "../common";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -193,6 +194,7 @@ class NewChatModal extends React.Component {
         avatar_image: null,
         blob: null,
         values: [],
+        chatName: '',
     };
 
     handleImageChange = (event) => {
@@ -237,10 +239,17 @@ class NewChatModal extends React.Component {
         console.log('Old inline massive',  event.target.checked);
         console.log('Old inline massive',  this.state.values)
 };
+    handleChangeChatName = (event) => {
+      this.setState({
+          chatName: event.target.value,
+      })  ;
+        console.log(this.state.chatName)
+    };
 
     handleReset = () => {
       this.setState({
           values: [],
+          chatName: '',
       });
         console.log('Old inline massive',  this.state.values)
     };
@@ -249,6 +258,40 @@ class NewChatModal extends React.Component {
         if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {
             rootStore.imageService.uploadAvatar(this.avatarInput.current.files[0]);
         }
+    };
+
+    createNewChat(userIds, name, purpose) {
+        fetch(BACKEND_URL + "/chat/create", {
+            method: 'POST',
+            headers: {
+                'Authorization': this.accountStore.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_ids: userIds,
+                name: name,
+                purpose: purpose
+            })
+        })
+            /*.then(response => response.json())
+            .then(json => {
+                this.setState({
+                    inviteId: json
+                });
+                console.log("Invite created");
+                this.handleChangeStep();
+            })*/
+            .catch((err) => {
+                /*this.setState({
+                    err: true,
+                });*/
+                console.log("Invite doesn't created")
+            });
+    }
+
+    handleCreateNewChat = (event) => {
+       event.preventDefault();
+        this.createNewChat([1,11,6,15], 'Флудилачка', 'fake')
     };
 
     render() {
@@ -306,6 +349,8 @@ class NewChatModal extends React.Component {
                                         Имя чата
                                     </InputLabel>
                                     <Input
+                                        value={this.state.chatName}
+                                        onChange={this.handleChangeChatName}
                                         id="custom-css-standard-input"
                                         classes={{
                                             underline: classes.cssUnderline,
@@ -320,7 +365,7 @@ class NewChatModal extends React.Component {
                     </div>
                 </div>
                 {}
-                <form className={classes.form}>
+                <form onSubmit={this.handleCreateNewChat} className={classes.form}>
                     <div className={classes.blockForm}>
                             <div className={classes.infBlockFirst}>
                                 <Avatar className={classes.userAvatar}>
@@ -344,7 +389,9 @@ class NewChatModal extends React.Component {
                                 />
                             </div>
                     </div>
+                    <Button type="submit" variant="contained" color="secondary">lol</Button>
                 </form>
+
             </div>
         );
     }
