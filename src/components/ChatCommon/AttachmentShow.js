@@ -128,10 +128,16 @@ const styles = theme => ({
     modalContent:
         {
             maxHeight: '100%',
-            margin: "auto",
-            display: "block",
-            width: "auto",
-            maxWidth: '70%'
+            //  margin: "auto",
+            //  display: "block",
+            position: 'absolute',
+            //  width: "auto",
+            maxWidth: 'calc(100% - 400px)',
+            /* left: 50%; */
+            transform: 'translate(-50%, -50%)',
+            objectFit: 'scale-down',
+            top: '50%',
+         //   maxWidth: '100%'
         },
     infBlockFirst: {
         padding: 15,
@@ -156,11 +162,12 @@ const styles = theme => ({
     commentBlock: {
         backgroundColor: '#fff',
         borderRadius: '0px 5px 5px 0px',
-        height: '-webkit-fill-available',
-        width: '22%',
-        [theme.breakpoints.down('md')]: {
+        height: '100%',
+       // width: '20%',
+        width: 400,
+        /*[theme.breakpoints.down('md')]: {
             width: '30%',
-        },
+        },*/
     },
 
 });
@@ -271,8 +278,34 @@ class AttachmentShow extends React.Component {
         } else {
             return "Everytthing is bad!";
         }
-
     }
+
+    handleAttachmentDownload = () => {
+        const {attachment} = this.props;
+        const mime = (attachment.mime && !attachment.mime.startsWith("image")) || false;
+        if (!mime)
+            return;
+        fetch(BACKEND_URL + '/attachment/download/' + attachment.id, {
+            method: "GET",
+            headers: {
+                'Authorization': rootStore.accountStore.token,
+                //'Content-Type': 'application/json'
+            }
+        })
+            .then(request => request.blob())
+            .then(blob => URL.createObjectURL(blob))
+            .then(url => {
+                var a = document.createElement('a');
+                a.style = "display: none";
+                a.href = url;
+                a.download = attachment.filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // URL.revokeObjectURL(url);
+            })
+            .catch(err => console.log(err));
+    };
 
 
     render() {
@@ -292,11 +325,12 @@ class AttachmentShow extends React.Component {
                                 >
                                     <div style={getModalStyle()}
                                          className={classes.paper}>
-                                        <Close onClick={this.imagePreviewModalClose}  className={classes.close}/>
-                                        {this.state.imageModal ? this.fullImage(false) : null}
+                                        <Close onClick={this.imagePreviewModalClose} className={classes.close}/>
+                                        <div style={{width: '100%', textAlign: 'center'}}>
+                                            {this.state.imageModal ? this.fullImage(false) : null}
+                                        </div>
 
-                                        <div
-                                        className={classes.commentBlock}>
+                                        <div className={classes.commentBlock}>
                                             <div className={classes.infBlockFirst}>
                                                 <Avatar className={classes.userAvatar}>
                                                     {/*{this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}*/}
@@ -322,8 +356,6 @@ class AttachmentShow extends React.Component {
                                     this.viewableAttachment()
                                 }
                             </>
-
-
                         )
                         :
                         (

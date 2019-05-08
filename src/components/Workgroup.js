@@ -53,6 +53,9 @@ const styles = theme => ({
     },
     WorkGroupBack: {
         margin: '8px 0px 0px 8px',
+        [theme.breakpoints.down('xs')]: {
+            margin: '8px 6px 10px 8px',
+        },
         borderRadius: 5,
         paddingBottom: 5,
         boxShadow: ` ${
