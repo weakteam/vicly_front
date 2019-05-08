@@ -238,7 +238,6 @@ class Message extends React.Component {
                             this.props.avatar ?
                                 (
                                     <Avatar className={classes.avatarIco}
-                                            style={{backgroundColor: `${colorChange}`}}
                                             src={this.props.avatar.small}/>
                                 )
                                 :
@@ -258,7 +257,6 @@ class Message extends React.Component {
                         this.props.avatar ?
                             (
                                 <Avatar className={classes.avatarIco}
-                                        style={{backgroundColor: `${colorChange}`}}
                                         src={this.props.avatar.small}/>
                             )
                             :
@@ -336,7 +334,6 @@ class Message extends React.Component {
                                     this.props.avatar ?
                                         (
                                             <Avatar className={classes.avatarIco}
-                                                    style={{backgroundColor: `${colorChange}`}}
                                                     src={this.props.avatar.small}/>
                                         )
                                         :

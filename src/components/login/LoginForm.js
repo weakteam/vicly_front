@@ -217,7 +217,6 @@ class LoginForm extends React.Component {
                         <div className={classes.headerDiv}>
                             <Typography variant="h5" className={classes.header}>
                                 Добро пожаловать в Vickly
-                                <Typography> хуй{this.state.loading}</Typography>
                             </Typography>
                         </div>
                         <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>

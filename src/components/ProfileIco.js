@@ -36,6 +36,7 @@ const styles = theme => ({
     paper: {
         position: 'absolute',
         outline: 'none',
+        borderRadius: 5,
         [theme.breakpoints.down('xs')]: {
             width: '95%',
         },

@@ -30,12 +30,12 @@ const styles = theme => ({
         backgroundColor: '',
     },
     headerBlock: {
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgba(102, 161, 166, 0.95  )' : 'rgb(90,114,151)'
-            }`,
+        /* backgroundColor: ` ${
+             theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
+             }`,*/
         //height: 85,
         // width: '100%',
-        padding: 18,
+        // padding: 18,
         display: 'flex',
         alignItems: 'start',
         borderRadius: '5px 5px 0px 0px',
@@ -49,7 +49,7 @@ const styles = theme => ({
             }`,
     },
     fixWidth: {
-        marginLeft: 10,
+        padding: 13,
         display: 'flex',
         // alignItems: 'center',
     },
@@ -84,7 +84,6 @@ const styles = theme => ({
         marginTop: 30,
     },
     infBlockFirst: {
-        paddingTop: 10,
         display: 'flex',
         alignItems: 'center'
     },
@@ -101,9 +100,10 @@ const styles = theme => ({
     blockForm: {
         //display: 'flex',
         alignItems: 'flex-start',
-        padding: '14px 24px 25px 24px',
+        padding: 13,
     },
     form: {
+        boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
         borderRadius: '0px 0px 5px 5px',
         width: '100%', // Fix IE 11 issue.
         backgroundColor: ` ${
@@ -139,9 +139,11 @@ const styles = theme => ({
         cursor: 'pointer',
     },
     cssLabel: {
-        color: '#fff',
+        color: ` ${
+            theme.palette.type === 'light' ? '#b5b5b5' : theme.palette.secondary.dark
+            }`,
         '&$cssFocused': {
-            color: "#fff",
+            color: "#4a4a4a",
         },
     },
     cssFocused: {},
@@ -150,29 +152,29 @@ const styles = theme => ({
               borderBottom: '2px solid red',
           },*/
         '&:before': {
-            borderBottomColor: '#fff',
-            borderBottom: '1px solid #fff!important'
+            borderBottomColor: '#4a4a4a',
+            borderBottom: '1px solid #cacaca!important'
         },
         '&:after': {
-            borderBottomColor: '#88b7e5',
+            borderBottomColor: '#639ba0',
         },
     },
     baseRoot: {
-        color: '#cef9fd',
+        color: '#16777f',
     },
     userAvatar: {
         width: 40,
         height: 40,
     },
     nameUser: {
-        fontSize: '1rem',
+        fontSize: '1.1rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
     },
     userRole: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#a5a3a3' : theme.palette.secondary.dark
             }`,
     },
     checkboxRoot: {
@@ -191,14 +193,17 @@ const styles = theme => ({
         marginBottom: 12,
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#74ada6' : '#2e374c'
+            theme.palette.type === 'light' ? '#9d5757' : '#9d5757'
             }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#4c847d' : '#3e4b67'
+                theme.palette.type === 'light' ? '#5A2C2C' : '#5A2C2C'
                 }`,
         },
+    },
+    checkedBox: {
+      color: '#9a5656!important',
     },
 });
 
@@ -256,22 +261,22 @@ class NewChatModal extends React.Component {
         if (count === 0 && event.target.checked === true) {
             this.state.values.push(event.target.value)
         }
-        console.log('Old inline massive',  event.target.checked);
-        console.log('Old inline massive',  this.state.values)
-};
+        console.log('Old inline massive', event.target.checked);
+        console.log('Old inline massive', this.state.values)
+    };
     handleChangeChatName = (event) => {
-      this.setState({
-          chatName: event.target.value,
-      })  ;
+        this.setState({
+            chatName: event.target.value,
+        });
         console.log(this.state.chatName)
     };
 
     handleReset = () => {
-      this.setState({
-          values: [],
-          chatName: '',
-      });
-        console.log('Old inline massive',  this.state.values)
+        this.setState({
+            values: [],
+            chatName: '',
+        });
+        console.log('Old inline massive', this.state.values)
     };
 
     handleAvatarUpload = () => {
@@ -293,14 +298,14 @@ class NewChatModal extends React.Component {
                 purpose: purpose
             })
         })
-            /*.then(response => response.json())
-            .then(json => {
-                this.setState({
-                    inviteId: json
-                });
-                console.log("Invite created");
-                this.handleChangeStep();
-            })*/
+        /*.then(response => response.json())
+        .then(json => {
+            this.setState({
+                inviteId: json
+            });
+            console.log("Invite created");
+            this.handleChangeStep();
+        })*/
             .catch((err) => {
                 /*this.setState({
                     err: true,
@@ -310,8 +315,8 @@ class NewChatModal extends React.Component {
     }
 
     handleCreateNewChat = (event) => {
-       event.preventDefault();
-        this.createNewChat([1,11,6,15], 'Флудилачка', 'fake')
+        event.preventDefault();
+        this.createNewChat([1, 11, 6, 15], 'Флудилачка', 'fake')
     };
 
     render() {
@@ -324,90 +329,96 @@ class NewChatModal extends React.Component {
             <div onclose={this.handleReset}>
                 <div className={classes.headerBlock}>
                     <div style={{width: '100%'}}>
-                        <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
+
+                        <div style={{display: 'flex', alignItems: 'center', padding: '3%'}}>
                             <Typography variant="overline" className={classes.header}>
-                                Создание группового чата
+                                Создание чата
                             </Typography>
                             <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleClose}>
                                 <Close className={classes.closeIcon}/>
                             </IconButton>
                         </div>
 
-                        <div className={classes.fixWidth}>
-                            {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
-                            <label htmlFor='avatar-input'>
-                                {
-                                    this.state.avatar_image || avatar_image ?
-                                        (
-                                            <div className={classes.kek}>
-                                                <Avatar
-                                                    className={classes.avatar}
-                                                    src={this.state.avatar_image || avatar_image.small}/>
-                                            </div>
-                                        )
-                                        :
-                                        (
-                                            <Avatar className={classes.avatar}>
-                                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                                            </Avatar>
-                                        )
-                                }
 
-                            </label>
-                            <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
-                                   accept="image/x-png,image/jpeg"
-                                   ref={this.avatarInput}/>
-                            <div className={classes.userName}>
-                                <FormControl className={classes.margin}>
-                                    <InputLabel
-                                        htmlFor="custom-css-standard-input"
-                                        classes={{
-                                            root: classes.cssLabel,
-                                            focused: classes.cssFocused,
-                                        }}
-                                    >
-                                        Имя чата
-                                    </InputLabel>
-                                    <Input
-                                        value={this.state.chatName}
-                                        onChange={this.handleChangeChatName}
-                                        id="custom-css-standard-input"
-                                        classes={{
-                                            underline: classes.cssUnderline,
-                                            root: classes.baseRoot
-                                        }}
-                                    />
-                                </FormControl>
-                            </div>
-                            {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
-                                avatar!</Button>*/}
-                        </div>
                     </div>
                 </div>
                 {}
                 <form onSubmit={this.handleCreateNewChat} className={classes.form}>
-                    <div className={classes.blockForm}>
-                            <div className={classes.infBlockFirst}>
-                                <Avatar className={classes.userAvatar}>
-                                    {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                                </Avatar>
-                                <div style={{marginLeft: 10}}>
-                                    <Typography variant="h5"
-                                                className={classes.nameUser}>{this.accountStore.fullName}</Typography>
-                                    <Typography variant="caption"
-                                                noWrap
-                                                className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
-                                </div>
-                                <Checkbox
-                                    onChange={this.handleChange.bind(this)}
-                                    value={'b'}
-                                    color="primary"
-                                    style={{marginLeft: 'auto'}}
+                    <div className={classes.fixWidth}>
+                        {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
+                        <label htmlFor='avatar-input'>
+                            {
+                                this.state.avatar_image || avatar_image ?
+                                    (
+                                        <div className={classes.kek}>
+                                            <Avatar
+                                                className={classes.avatar}
+                                                src={this.state.avatar_image || avatar_image.small}/>
+                                        </div>
+                                    )
+                                    :
+                                    (
+                                        <Avatar className={classes.avatar}>
+                                            {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                        </Avatar>
+                                    )
+                            }
+
+                        </label>
+                        <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
+                               accept="image/x-png,image/jpeg"
+                               ref={this.avatarInput}/>
+                        <div className={classes.userName}>
+                            <FormControl className={classes.margin}>
+                                <InputLabel
+                                    htmlFor="custom-css-standard-input"
                                     classes={{
-                                        root: classes.checkboxRoot,
+                                        root: classes.cssLabel,
+                                        focused: classes.cssFocused,
+                                    }}
+                                >
+                                    Имя чата
+                                </InputLabel>
+                                <Input
+                                    value={this.state.chatName}
+                                    onChange={this.handleChangeChatName}
+                                    id="custom-css-standard-input"
+                                    classes={{
+                                        underline: classes.cssUnderline,
+                                        root: classes.baseRoot
                                     }}
                                 />
+                            </FormControl>
+                        </div>
+                        {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
+                                avatar!</Button>*/}
+                    </div>
+                    <Divider/>
+
+                    <div className={classes.blockForm}>
+
+                        <div className={classes.infBlockFirst}>
+                            <Avatar className={classes.userAvatar}>
+                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                            </Avatar>
+                            <div style={{marginLeft: 10}}>
+                                <Typography variant="h5"
+                                            className={classes.nameUser}>{this.accountStore.fullName}</Typography>
+                                <Typography variant="caption"
+                                            noWrap
+                                            className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
                             </div>
+                            <Checkbox
+                                onChange={this.handleChange.bind(this)}
+                                value={'b'}
+                                color="primary"
+                                style={{marginLeft: 'auto'}}
+                                classes={{
+                                    root: classes.checkboxRoot,
+                                    checked: classes.checkedBox,
+                                }}
+                            />
+                        </div>
                     </div>
                     <div className={classes.signIn}>
                         <Button type="submit" variant="contained" className={classes.submit}>Создать</Button>

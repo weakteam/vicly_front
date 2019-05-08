@@ -32,12 +32,16 @@ const styles = theme => ({
         position: 'absolute',
         outline: 'none',
         borderRadius: 5,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
+            }`,
       //  padding: 30,
        /* [theme.breakpoints.down('xs')]: {
             width: '80%',
         },*/
       //  width: 585,
       /*  backgroundColor: ` ${
+
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
             }`,*/
         boxShadow: theme.shadows[5],
