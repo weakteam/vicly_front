@@ -74,5 +74,15 @@ export default class GroupChat extends Chat {
         }
     }
 
+    addMessageToEndPost(message) {
+        if (rootStore.messagesStore.currentChatId === this.id) {
+            message.readMessage();
+        } else {
+            this.unread++;
+            const title = this.title;
+            const url = "/home/chat/group/" + this.id;
+            rootStore.toastService.toastNewMessage(title, message, url);
+        }
+    }
 
 }

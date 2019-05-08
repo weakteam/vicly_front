@@ -10,7 +10,7 @@ export default class Chat {
     // user or group
     chatType = null;
     userIds = null;
-    last = null;
+    @observable last = null;
     unread = 0;
     // Array of Message objects
     @observable messages = [];
@@ -37,6 +37,7 @@ export default class Chat {
         this.last = lastMessage;
     }
 
+    // message is Message model instance
     addMessageToEnd(message) {
         const myselfUserId = rootStore.accountStore.userId;
         // WE MUST ALWAYS FIND CHAT!!!
@@ -46,16 +47,13 @@ export default class Chat {
         } else {
             this.messages.push(message);
             this.last = message;
-            // this.deliveryMessage(message.id, message.chat.id);
-            // if ((this.isCurrentChatForUser && this.currentChatId === message.from) || (!this.isCurrentChatForUser && this.currentChatId === message.chat.id)) {
-            //     this.readMessage(message.id);
-            // } else {
-            //     chat.unread++;
-            //     const title = message.chat.chatType === "user" ? chat.user.first_name + " " + chat.user.last_name : chat.chat.name;
-            //     const url = message.chat.chatType === "user" ? "/home/chat/user/" + chat.user.id : "/home/chat/group/" + chat.chat.id;
-            //     toastService.toastNewMessage(title, message, url);
-            // }
+            message.deliveryMessage();
+            this.addMessageToEndPost(message);
         }
+    }
+
+    addMessageToEndPost(message){
+        //ABSTRACT
     }
 
     updateChat(newMessages) {
@@ -88,12 +86,12 @@ export default class Chat {
         //ABSTRACT
     }
 
-    nextPage(){
+    nextPage() {
         rootStore.messagesStore.invalidateChatChanged();
         this.loadMessages(++this.page);
     }
 
-    postMessage(message){
+    postMessage(message) {
         // ABSTRACT
     }
 

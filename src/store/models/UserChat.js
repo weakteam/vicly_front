@@ -4,7 +4,6 @@ import Chat from "./Chat";
 import rootStore from "../RootStore";
 import {BACKEND_URL} from "../../common";
 
-
 export default class UserChat extends Chat {
     user = null;
 
@@ -58,6 +57,18 @@ export default class UserChat extends Chat {
         } catch (err) {
             console.log(err);
             // return dispatch(setChatList(err))
+        }
+    }
+
+    addMessageToEndPost(message) {
+        super.addMessageToEndPost(message);
+        if (rootStore.messagesStore.currentChatId === message.from) {
+            message.readMessage();
+        } else {
+            this.unread++;
+            const title = this.user.first_name + " " + this.user.last_name;
+            const url = "/home/chat/user/" + this.user.id;
+            rootStore.toastService.toastNewMessage(title, message, url);
         }
     }
 
