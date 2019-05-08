@@ -28,9 +28,9 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     root: {
-        backgroundColor: ` ${
+        /*backgroundColor: ` ${
             theme.palette.type === 'light' ? '#5662a0' : '#2e374c'
-            }`,
+            }`,*/
         //  zIndex: 10000,
     },
     radio: {
@@ -50,11 +50,13 @@ const styles = theme => ({
     },
     paper: {
         display: 'flex',
-        flexDirection: 'column',
         borderRadius: 0,
+        padding: '5%',
+        flexDirection: 'column',
+        // borderRadius: 0,
         justifyContent: 'center',
         // padding: 30,
-        boxShadow: theme.shadows[0],
+        boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
         // paddingBottom: 10,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
@@ -62,13 +64,13 @@ const styles = theme => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: 15,
+        //marginTop: 15,
     },
     submit: {
         width: '100%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#74ada6' : '#2e374c'
+            theme.palette.type === 'light' ? '#679dbd' : '#2e374c'
             }`,
         color: '#fff',
         '&:hover': {
@@ -126,9 +128,10 @@ const styles = theme => ({
     },
     header: {
         textAlign: 'start',
-        marginBottom: 10,
+        fontSize: '1.2rem',
+        // marginBottom: 10,
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
             }`,
     },
     signIn: {
@@ -186,8 +189,10 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
-        padding: 0,
-        paddingTop: 20
+
+        padding: 30,
+        borderRadius: '0 0 5px 5px',
+        // paddingTop: 20
     },
     labelRoot: {
         color: ` ${
@@ -205,14 +210,14 @@ const styles = theme => ({
         },
     },
     controlForm: {
-        marginTop: 10,
+        //  marginTop: 10,
     },
     labelPlace: {
         marginLeft: 0,
     },
     closeIcon: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
             }`,
         cursor: 'pointer',
     },
@@ -220,7 +225,10 @@ const styles = theme => ({
         zIndex: 1304,
     },
     inputRoot: {
-        width: '100%',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '95%',
         color: "#fff",
         paddingLeft: 8,
         cursor: 'pointer',
@@ -381,7 +389,7 @@ class InviteForm extends React.Component {
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <Divider/>
+                    {/*  <Divider/>*/}
                     <form onSubmit={this.handleClick} className={classes.form}>
                         <div className={classes.blockForm}>
                             <div className={classes.block}>
@@ -531,7 +539,8 @@ class InviteForm extends React.Component {
                     {
                         this.state.err ?
                             (
-                                <Typography variant="overline" color={"error"}>Не удалось создать
+                                <Typography style={{textAlign: 'center'}} variant="overline" color={"error"}>Не удалось
+                                    создать
                                     приглашение</Typography>
                             ) : ""
                     }
@@ -544,7 +553,10 @@ class InviteForm extends React.Component {
     secondStepForm = () => {
         const {classes, theme,} = this.props;
         return (
-            <div>
+            <div style={{
+                backgroundColor: '#fff',
+                padding: 20
+            }}>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <Typography variant="body1" className={classes.link}>Ссылка для
                         приглашения:</Typography>
@@ -555,6 +567,7 @@ class InviteForm extends React.Component {
                                  backgroundColor: 'rgb(83, 130, 199)',
                                  borderRadius: 5,
                                  marginLeft: 10,
+                                 overflow: 'hidden',
                                  width: '100%',
                              }}>
                             <InputBase
@@ -584,7 +597,7 @@ class InviteForm extends React.Component {
         const steps = ["Создание", "Приглашение"];
         return (
             <div>
-                <div style={{display: 'flex', alignItems: 'center', marginBottom: 20}}>
+                <div style={{display: 'flex', alignItems: 'center', padding: '3%'}}>
                     <Typography variant="h5" className={classes.header}>
                         Приглашение пользователя
                     </Typography>

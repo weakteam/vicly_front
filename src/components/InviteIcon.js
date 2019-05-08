@@ -30,13 +30,13 @@ const styles = theme => ({
         position: 'absolute',
         outline: 'none',
         borderRadius: 5,
-        padding: 30,
+      //  padding: 30,
         [theme.breakpoints.down('xs')]: {
-            width: '80%',
+            width: '95%',
         },
         width: 585,
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? "#679dbd" : "#679dbd"
             }`,
         boxShadow: theme.shadows[5],
         // padding: theme.spacing.unit * 4,
