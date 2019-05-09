@@ -132,6 +132,11 @@ export default class ImageService {
         if (image)
             return image;
 
+        let isGif = false;
+        if(attachment.mime === "image/gif"){
+            isGif = true;
+        }
+
         let ajax = new XMLHttpRequest();
 
         const innerProgressHandler = (event) => {
@@ -171,7 +176,7 @@ export default class ImageService {
         ajax.onerror = attachment.onLoadError;
         ajax.onabort = attachment.onLoadError;
         // ajax.responseType = "blob";
-        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}?width=200`, true);
+        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}${!isGif ? "?width=200" : ""}`, true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send();
     }
