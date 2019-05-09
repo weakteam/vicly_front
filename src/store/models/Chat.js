@@ -11,7 +11,7 @@ export default class Chat {
     chatType = null;
     userIds = null;
     @observable last = null;
-    unread = 0;
+    @observable unread = 0;
     // Array of Message objects
     @observable messages = [];
     page = 0;
@@ -52,21 +52,38 @@ export default class Chat {
         }
     }
 
-    addMessageToEndPost(message){
-        //ABSTRACT
+    genereteChatUrl() {
+        //REALLY ABTRACT
+    }
+
+    getChatEventName() {
+        //REALLY ABTRACT
+    }
+
+    addMessageToEndPost(message) {
+        //MUST BE CALLED IN CHILD!
+        if (rootStore.messagesStore.currentChatId === this.id) {
+            message.readMessage();
+        } else {
+            this.unread++;
+            const title = this.getChatEventName();
+            const url = this.genereteChatUrl();
+            rootStore.toastService.toastNewMessage(title, message.message, url);
+        }
     }
 
     updateChat(newMessages) {
         newMessages = newMessages.map(message => new Message(message));
         this.messages = this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.last = this.messages[this.messages.length - 1];
-        let unread = 0;
-        for (let message of this.messages) {
-            if (message.from !== rootStore.accountStore.userId && !message.timestamp_read) {
-                this.unread++;
-            }
-        }
-        this.unread = unread;
+        // FIXME we can't trust this shit! need to retrieve this info from backend
+        // let unread = 0;
+        // for (let message of newMessages) {
+        //     if (message.from !== rootStore.accountStore.userId && !message.timestamp_read) {
+        //         unread++;
+        //     }
+        // }
+        // this.unread += unread;
     }
 
     prependChat(newMessages) {
@@ -95,15 +112,19 @@ export default class Chat {
         // ABSTRACT
     }
 
-    messageDelivered(mesageId, messageObject) {
-        let innerMessage = this.messages.find(mess => mess.id === mesageId);
-        innerMessage.timestamp_delivery = messageObject.timestamp_delivery;
+    messageDelivered(messageObject) {
+        let innerMessage = this.messages.find(mess => mess.id === messageObject.id);
+        if (innerMessage) {
+            innerMessage.timestamp_delivery = messageObject.timestamp_delivery;
+        }
     }
 
-    messageReaded(messageId, messageObject) {
-        let innerMessage = this.messages.find(mess => mess.id === messageId);
-        innerMessage.timestamp_delivery = messageObject.timestamp_delivery;
-        innerMessage.timestamp_read = messageObject.timestamp_read;
+    messageReaded(messageObject) {
+        let innerMessage = this.messages.find(mess => mess.id === messageObject.id);
+        if (innerMessage) {
+            innerMessage.timestamp_delivery = messageObject.timestamp_delivery;
+            innerMessage.timestamp_read = messageObject.timestamp_read;
+        }
         this.unread--;
     }
 

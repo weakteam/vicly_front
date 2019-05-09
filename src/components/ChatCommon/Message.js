@@ -11,6 +11,8 @@ import GridListTile from "@material-ui/core/GridListTile";
 import AttachmentShow from "./AttachmentShow";
 import List from "@material-ui/core/List";
 import handleViewport from 'react-in-viewport';
+import VisibilitySensor from "react-visibility-sensor";
+
 
 const styles = theme => ({
     root: {
@@ -321,6 +323,7 @@ class Message extends React.Component {
         }
 
         return (
+
             <div ref={this.props.forwardedRef}>
                 <Hidden smDown implementation="css">
                     <div className={classes.root}>
@@ -394,13 +397,14 @@ class Message extends React.Component {
                     </div>
                 </Hidden>
 
+
                 <Hidden mdUp implementation="css">
                     <div className={fromMe ? classes.rootMob : classes.root}>
                         {mobileMessage}
                     </div>
                 </Hidden>
-
             </div>
+
         );
     }
 }

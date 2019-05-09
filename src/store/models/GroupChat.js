@@ -23,13 +23,6 @@ export default class GroupChat extends Chat {
         this.title = chatObject.chat.name;
         this.ownerId = chatObject.chat.owner;
         this.purpose = chatObject.chat.purpose;
-
-        // Messages objects init
-        this.last = chatObject.last ? new Message(chatObject.last) : null;
-        if (chatObject.messages && chatObject.messages.length) {
-            this.messages = chatObject.messages.map(message => new Message(message))
-        }
-        this.unread = chatObject.unread;
     }
 
     async postMessage(message, attachments = []) {
@@ -74,15 +67,12 @@ export default class GroupChat extends Chat {
         }
     }
 
-    addMessageToEndPost(message) {
-        if (rootStore.messagesStore.currentChatId === this.id) {
-            message.readMessage();
-        } else {
-            this.unread++;
-            const title = this.title;
-            const url = "/home/chat/group/" + this.id;
-            rootStore.toastService.toastNewMessage(title, message, url);
-        }
+    genereteChatUrl() {
+        return "/home/chat/group/" + this.id;
+    }
+
+    getChatEventName() {
+        return this.title;
     }
 
 }

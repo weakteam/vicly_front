@@ -44,7 +44,7 @@ class AvatarWithProgress extends React.Component {
                 }
             })
             .catch(err => {
-                console.log("AvatarWithProgress:" + err);
+                // console.log("AvatarWithProgress:" + err);
             })
     }
 

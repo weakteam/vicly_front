@@ -261,14 +261,14 @@ class NewChatModal extends React.Component {
         if (count === 0 && event.target.checked === true) {
             this.state.values.push(event.target.value)
         }
-        console.log('Old inline massive', event.target.checked);
-        console.log('Old inline massive', this.state.values)
+        // console.log('Old inline massive', event.target.checked);
+        // console.log('Old inline massive', this.state.values)
     };
     handleChangeChatName = (event) => {
         this.setState({
             chatName: event.target.value,
         });
-        console.log(this.state.chatName)
+        // console.log(this.state.chatName)
     };
 
     handleReset = () => {
@@ -276,7 +276,7 @@ class NewChatModal extends React.Component {
             values: [],
             chatName: '',
         });
-        console.log('Old inline massive', this.state.values)
+        // console.log('Old inline massive', this.state.values)
     };
 
     handleAvatarUpload = () => {

@@ -55,8 +55,6 @@ class GroupChatWindow extends React.Component {
     scrollHandler = (target) => {
         let scrolledOnTop = false;
         return () => {
-            console.log(target.scrollTop);
-
             if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
                 scrolledOnTop = true;
                 this.props.chat.nextPage();
@@ -68,7 +66,6 @@ class GroupChatWindow extends React.Component {
     };
 
     handleSendMessage = (message) => {
-        console.log("send message!!!");
         this.props.chat.postMessage(message.message);
         this.scrollToBottom();
     };

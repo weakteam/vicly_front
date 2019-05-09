@@ -187,7 +187,6 @@ class LoginForm extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(e.target.login.value + "  " + e.target.password.value);
         //const { login, password } = this.state;
         accountStore.loginUser(e.target.login.value, e.target.password.value);
         if (accountStore.status !== 'authed') {

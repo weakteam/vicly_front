@@ -42,7 +42,7 @@ export default class Attachment {
             this.statusFull = "loading";
         }
         this.progressFull = progress;
-        console.log("upload:" + progress + "%");
+        // console.log("upload:" + progress + "%");
     }
 
     onLoadFullProgress(progress) {
@@ -50,7 +50,7 @@ export default class Attachment {
             this.statusFull = "loading";
         }
         this.progressFull = progress;
-        console.log("upload:" + progress + "%");
+        // console.log("upload:" + progress + "%");
     }
 
     onLoadPreviewProgress(progress) {
@@ -58,19 +58,19 @@ export default class Attachment {
             this.statusPreview = "loading";
         }
         this.progressPreview = progress;
-        console.log("download preview:" + progress + "%");
+        // console.log("download preview:" + progress + "%");
     }
 
     // TODO MAYBE NEED RENAME TO onFetched!?
     onLoadComplete = (event) => {
         let request = event.currentTarget;
         if (request.status !== 200) {
-            console.log(`Request code:${request.status} ||| text:${request.statusText}`);
+            // console.log(`Request code:${request.status} ||| text:${request.statusText}`);
             this.dataFetched = "error";
             return;
         }
         let jsonResponse = JSON.parse(request.responseText);
-        console.log("upload complete:" + request.responseText);
+        // console.log("upload complete:" + request.responseText);
         ////////////////////////////////////////////////////
 
         this.id = jsonResponse.id;
@@ -86,7 +86,7 @@ export default class Attachment {
         //     this.previewSrc = URL.createObjectURL(file)
         // }
         if (this.metadata && this.metadata["Content-Type"] && this.metadata["Content-Type"] !== this.mime) {
-            console.log("Apache Tika mime != Browser mime!!!");
+            // console.log("Apache Tika mime != Browser mime!!!");
         }
 
         this.dataFetched = "ready";
@@ -149,12 +149,12 @@ export default class Attachment {
     onUploadComplete = (event) => {
         let request = event.currentTarget;
         if (request.status !== 200) {
-            console.log(`Request code:${request.status} ||| text:${request.statusText}`);
+            // console.log(`Request code:${request.status} ||| text:${request.statusText}`);
             this.dataFetched = "error";
             return;
         }
         let jsonResponse = JSON.parse(request.responseText);
-        console.log("upload complete:" + request.responseText);
+        // console.log("upload complete:" + request.responseText);
         ////////////////////////////////////////////////////
 
         this.id = jsonResponse.id;

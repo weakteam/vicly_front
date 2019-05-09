@@ -60,16 +60,12 @@ export default class UserChat extends Chat {
         }
     }
 
-    addMessageToEndPost(message) {
-        super.addMessageToEndPost(message);
-        if (rootStore.messagesStore.currentChatId === message.from) {
-            message.readMessage();
-        } else {
-            this.unread++;
-            const title = this.user.first_name + " " + this.user.last_name;
-            const url = "/home/chat/user/" + this.user.id;
-            rootStore.toastService.toastNewMessage(title, message, url);
-        }
+    genereteChatUrl() {
+        return "/home/chat/user/" + this.user.id;
+    }
+
+    getChatEventName() {
+        return this.user.first_name + " " + this.user.last_name;
     }
 
 }

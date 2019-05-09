@@ -157,7 +157,6 @@ export default class MessagesStore {
                 this.rootStore.imageService.getAvatarThumbnail(userChat.user.id);
             });
         } catch (err) {
-            console.log(err);
             runInAction("Failed fetch users info", () => {
                 this.fetchFail = true;
                 this.err_message = err;
@@ -188,36 +187,55 @@ export default class MessagesStore {
         }
     }
 
-    onDeliveryMessage(message_id, chat, message) {
-        // let innerChat = null;
-        // if (chat.chatType === "user") {
-        //     let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
-        //     innerChat = this.findUserChat(userId)
-        // } else {
-        //     innerChat = this.findGroupChat(chat.id);
-        // }
-        // if (innerChat) {
-        //     let innerMessage = innerChat.messages.find(mess => mess.id === message_id);
-        //     innerMessage.timestamp_delivery = message.timestamp_delivery;
-        // }
-        // TODO Proxy work in Chat
+    onDeliveryMessage(ws_event) {
+        let innerChat = null;
+        if (ws_event.chat.chat_type === "user") {
+            let userId = ws_event.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            innerChat = this.findUserChatNew(userId)
+        } else {
+            innerChat = this.findGroupChatNew(ws_event.chat.id);
+        }
+        if (innerChat) {
+            innerChat.messageDelivered(ws_event.message);
+        } else {
+            console.log("MessageStore onDeliveryMessage:cant find chat!!!");
+        }
     }
 
-    onReadMessage(message_id, chat, message) {
-        // let innerChat = null;
-        // if (chat.chatType === "user") {
-        //     let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
-        //     innerChat = this.findUserChat(userId)
-        // } else {
-        //     innerChat = this.findGroupChat(chat.id);
-        // }
-        // if (innerChat) {
-        //     let innerMessage = innerChat.messages.find(mess => mess.id === message_id);
-        //     innerMessage.timestamp_delivery = message.timestamp_delivery;
-        //     innerMessage.timestamp_read = message.timestamp_read;
-        //     innerChat.unread--;
-        // }
-        // TODO proxy work in Chat
+    // WS event  object
+    // message = {
+    //     "event": 5,
+    //     "message": {
+    //         "message_id": "5cd37faca7b11b0001870d13",
+    //         "chat": {"id": 5, "user_ids": [1, 11], "chat_type": "user"},
+    //         "message": {
+    //             "id": "5cd37faca7b11b0001870d13",
+    //             "from": 1,
+    //             "key": "",
+    //             "message": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0ZXh0IjoiaSB3YW50IFdTISJ9.qaj4DPJADWyo9VJsoMp5RGcaTmZ8ujXXOjWpRH0WJ4Q",
+    //             "reply_for": null,
+    //             "timestamp_post": {"timestamp": 1557364652496, "zone": "UTC+0"},
+    //             "timestamp_change": null,
+    //             "timestamp_delivery": {"timestamp": 1557364653484, "zone": "UTC+0"},
+    //             "timestamp_read": {"timestamp": 1557364653484, "zone": "UTC+0"},
+    //             "attachments": []
+    //         }
+    //     }
+    // };
+
+    onReadMessage(ws_event) {
+        let innerChat = null;
+        if (ws_event.chat.chat_type === "user") {
+            let userId = ws_event.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            innerChat = this.findUserChatNew(userId)
+        } else {
+            innerChat = this.findGroupChatNew(ws_event.chat.id);
+        }
+        if (innerChat) {
+            innerChat.messageReaded(ws_event.message);
+        } else {
+            console.log("MessageStore onReadMessage:cant find chat!!!");
+        }
     }
 
     findGroupChatNew(chatId) {

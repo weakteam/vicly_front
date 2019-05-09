@@ -106,10 +106,7 @@ class App extends Component {
     };
 
     render() {
-
         const theme = createMuiTheme(this.state.themeOpt);
-
-        console.log(this.props);
         const authStatus = rootStore.accountStore.status === "authed";
         return (
             <MuiThemeProvider theme={theme}>

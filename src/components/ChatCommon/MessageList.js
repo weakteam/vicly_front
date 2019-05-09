@@ -6,6 +6,7 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
 import {Hidden} from "@material-ui/core";
+import VisibilitySensor from "react-visibility-sensor";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -77,8 +78,6 @@ class MessageList extends React.Component {
         const {classes} = this.props;
         // Loop through all the messages in the state and create a Message component
         const myUserId = this.accountStore.userId;
-        console.log("myUserId:" + myUserId);
-
         const avatar_images = this.props.chatUsers.map(chatUser =>
             rootStore.imageService.images.find(elem => elem.userId === chatUser.id) || null
         );
@@ -89,27 +88,27 @@ class MessageList extends React.Component {
             const user = this.props.chatUsers.find(user => message.from === user.id);
             const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
             return (
-                <Message
-                    key={i}
-                    userInfo={fromMe ? this.props.myselfUser : user}
-                    message={message.message}
-                    messageInfo={message}
-                    fromMe={fromMe}
-                    avatar={avatar}
-                    onLeaveViewport={()=>console.log("viewport off")}
-                    onEnterViewport={() => {
-                        console.log("viewport on");
-                        message.onViewport()
-                    }}/>
+                <VisibilitySensor active={!fromMe && !message.timestamp_read}
+                                  onEnterViewport={message.onViewport}
+                                  onChange={message.onViewport}>
+                    <Message
+                        key={i}
+                        userInfo={fromMe ? this.props.myselfUser : user}
+                        message={message.message}
+                        messageInfo={message}
+                        fromMe={fromMe}
+                        avatar={avatar}/>
+                </VisibilitySensor>
             );
         });
 
         return (
-            <div style={{ '-webkit-overflow-scrolling': 'touch'}} className="scrollbar" id="style-3" ref={this.messageList}>
-            <div className={"scroll scrollMessageArea"} id='messageList' >
-                {messages}
-                <div ref={this.messagesEnd}/>
-            </div>
+            <div style={{'-webkit-overflow-scrolling': 'touch'}} className="scrollbar" id="style-3"
+                 ref={this.messageList}>
+                <div className={"scroll scrollMessageArea"} id='messageList'>
+                    {messages}
+                    <div ref={this.messagesEnd}/>
+                </div>
             </div>
 
         );
