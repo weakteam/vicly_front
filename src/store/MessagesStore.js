@@ -20,7 +20,7 @@ export default class MessagesStore {
     @observable fetchFail = false;
     @observable currentChatId = null;
     previousCurrentChatId = null;
-    isCurrentChatForUser = null;
+    @observable isCurrentChatForUser = null;
     previousIsCurrentChatForUser = null;
     @observable chatsFetched = false;
     err_message = "";
@@ -59,15 +59,16 @@ export default class MessagesStore {
         reaction(
             () => {
                 if (this.chatsFetched) {
-                    return this.currentChatId
+                    return [this.currentChatId, this.isCurrentChatForUser]
                 } else return null;
 
             },
-            (currentChatId) => {
+            (args) => {
+                const [currentChatId, isCurrentChatForUser] = args;
                 if (currentChatId) {
                     // If opened user chat
                     let currentChat = this.getCurrentChatNew(currentChatId);
-                    if (!currentChat.messages.length) {
+                    if (currentChat.messages.length <= 20) {
                         currentChat.loadMessages(currentChat.page);
                     } else {
                         const lastMessage = currentChat.messages[currentChat.messages.length - 1];
@@ -282,10 +283,10 @@ export default class MessagesStore {
     }
 
     setCurrentChatId(newCurrentChatId, isNewCurrentChatForUser) {
-        this.previousCurrentChatId = this.currentChatId;
-        this.currentChatId = newCurrentChatId;
         this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
         this.isCurrentChatForUser = isNewCurrentChatForUser;
+        this.previousCurrentChatId = this.currentChatId;
+        this.currentChatId = newCurrentChatId;
     }
 
     isChatChanged() {

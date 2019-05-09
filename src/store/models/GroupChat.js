@@ -54,7 +54,7 @@ export default class GroupChat extends Chat {
 
     async loadMessagesAfter(messageId) {
         try {
-            const response = await rootStore.api.getGroupChatMessages(this.chatId, messageId);
+            const response = await rootStore.api.getGroupChatMessagesAfter(this.chatId, messageId);
             if (!response.ok) {
                 alert("fetch messages failed")
             }
@@ -68,7 +68,7 @@ export default class GroupChat extends Chat {
     }
 
     genereteChatUrl() {
-        return "/home/chat/group/" + this.id;
+        return "/home/chat/group/" + this.chatId;
     }
 
     getChatEventName() {
