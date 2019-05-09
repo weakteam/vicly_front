@@ -18,7 +18,7 @@ import getLinkFromMime from "../../utils/mimetypes";
 const styles = theme => ({
     attached: {
         width: 110,
-      //  height: 110,
+        //  height: 110,
         objectFit: 'cover',
         borderRadius: 4
     },
@@ -26,7 +26,7 @@ const styles = theme => ({
         width: 44,
         height: 44,
         objectFit: 'cover',
-       // margin: 16
+        // margin: 16
     },
     attachDiv: {
         display: 'flex',
@@ -34,13 +34,13 @@ const styles = theme => ({
         alignItems: 'center',
         margin: '5px 5px 5px 5px',
         maxWidth: 110,
-      //  height: 110,
-      //  backgroundColor: '#f5f5f5'
+        //  height: 110,
+        //  backgroundColor: '#f5f5f5'
     },
     filename: {
-      //  maxWidth: 100,
-      //  position: 'absolute',
-       // marginTop: 45,
+        //  maxWidth: 100,
+        //  position: 'absolute',
+        // marginTop: 45,
         paddingLeft: 4,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -52,10 +52,9 @@ const styles = theme => ({
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         borderRadius: '50%',
         position: 'absolute',
-        width: '0.8em',
-        height: '0.8em',
-        top: 6,
-        left: 93,
+        width: 15,
+        padding: 5,
+        height: 15,
         cursor: 'pointer',
         '&:hover': {
             backgroundColor: '#fff',
@@ -78,12 +77,13 @@ class AttachmentSmall extends React.Component {
                 const src = getLinkFromMime(attachment.mime);
                 return (
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico" className={classes.attachedIcon}/>
+                        <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
+                             className={classes.attachedIcon}/>
                         <Typography className={classes.filename} inline={true}>
                             {attachment.filename}
                         </Typography>
                     </div>
-                    )
+                )
 
             }
         } else if (attachment.statusPreview === "loading") {

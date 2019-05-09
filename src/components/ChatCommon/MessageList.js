@@ -4,6 +4,7 @@ import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
 import {Scrollbars} from 'react-custom-scrollbars';
 import '../../css/IOS.css'
+import '../../css/scrollbar.css'
 import {Hidden} from "@material-ui/core";
 
 const {accountStore, messagesStore} = rootStore;
@@ -104,12 +105,11 @@ class MessageList extends React.Component {
         });
 
         return (
-
-            <div className={"scroll scrollMessageArea"} id='messageList' ref={this.messageList}>
-                <Scrollbars style={{height: '-webkit-fill-available'}}>
-                    {messages}
-                    <div ref={this.messagesEnd}/>
-                </Scrollbars>
+            <div style={{ '-webkit-overflow-scrolling': 'touch'}} className="scrollbar" id="style-3" ref={this.messageList}>
+            <div className={"scroll scrollMessageArea"} id='messageList' >
+                {messages}
+                <div ref={this.messagesEnd}/>
+            </div>
             </div>
 
         );

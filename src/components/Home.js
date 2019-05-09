@@ -21,7 +21,7 @@ import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
-import BackgroundLight from '../images/messagesBackground.jpg';
+import BackgroundLight from '../images/fon5b.jpg';
 import {Item, Menu, MenuProvider} from "react-contexify";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
@@ -29,6 +29,7 @@ import HomeScreen from './HomeScreen'
 import Delete from "@material-ui/icons/Delete"
 import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
+import '../css/scrollbar.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -45,6 +46,10 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
     },
     drawer: {
         width: 399,
@@ -77,7 +82,7 @@ const styles = theme => ({
     },
 
     appBar: {
-        borderRadius: '0px 0px 5px 5px',
+        borderRadius: '0px 0px 0px 0px',
         zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
@@ -118,6 +123,7 @@ const styles = theme => ({
         // position:' -webkit-sticky',
         overflow: 'hidden',
         minHeight: '-webkit-fill-available',
+      //  minHeight: '-moz-available',
         flexGrow: 1,
         flexShrink: 1,
         width: '100%',
@@ -154,7 +160,8 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     logoDiv: {
-        flexGrow: 1
+       flexGrow: 1,
+        overflow: 'hidden',
     },
     container: {
         display: 'flex',
@@ -189,7 +196,8 @@ const styles = theme => ({
         alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
-        height: '-webkit-fill-available',
+        height: 'inherit',
+
     },
     icon: {
         color: ` ${
@@ -219,12 +227,15 @@ const styles = theme => ({
     },
     logoText: {
         color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'}`,
+       // width: '100%'
+
     },
     rootIndex: {
         zIndex: 1299,
     },
     scrollDrawer: {
-        marginTop: 130,
+        minWidth: '-webkit-fill-available',
+        marginTop: 135,
         [theme.breakpoints.down('xs')]: {
             marginTop: 113,
         },
@@ -310,12 +321,11 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
-
+                <div className="scrollbar" id="style-3">
                 <List className={"scrollDrawer scrollDrawerFix"}>
-                    <Scrollbars style={{height: '-webkit-fill-available'}}>
                         {this.workgroups()}
-                    </Scrollbars>
                 </List>
+                </div>
             </div>
         );
 

@@ -16,6 +16,7 @@ import Avatar from "@material-ui/core/Avatar";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
 import Slide from "@material-ui/core/Slide";
+import {Typography} from "@material-ui/core";
 
 
 function getModalStyle() {
@@ -103,13 +104,10 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
         // width: '100%',
-        paddingTop: 13,
+        padding: '10px 5px 10px 5px',
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        paddingBottom: 13,
-        paddingLeft: 10,
-        paddingRight: 10,
         maxHeight: 150,
         height: 'auto',
     },
@@ -242,21 +240,22 @@ class SendMessageBar extends React.Component {
 
         return (
             <div className={classes.position}>
-                {
-                    this.state.attachments.length ?
-                        (
-                            <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
-                                <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
-                                               attachments={this.state.attachments}/>
-                            </Slide>
-                        ) : null
-                }
+
 
                 <IconButton className={classes.iconButton} onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
 
                 <FormControl fullWidth>
+                    {
+                        this.state.attachments.length ?
+                            (
+                                <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
+                                    <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
+                                                   attachments={this.state.attachments}/>
+                                </Slide>
+                            ) : null
+                    }
                     <InputBase
                         placeholder="Введите сообщение"
                         multiline

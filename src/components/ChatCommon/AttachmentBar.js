@@ -21,6 +21,7 @@ const styles = theme => ({
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         left: 0,
+        borderRadius: '0px 5px 0px 0px',
         [theme.breakpoints.down('md')]: {
             left: 280,
         },
@@ -30,13 +31,13 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             left: 0,
         },
-        bottom: 70,
-        borderRadius: 5,
+       // bottom: 57,
+      //  borderRadius: 5,
         display: 'inline-flex',
-        position: 'absolute',
+       // position: 'absolute',
         alignItems: 'center',
-        right: 0,
-        height: 120
+       // right: 0,
+       // height: 120
     },
     attached: {
         // width: 70,

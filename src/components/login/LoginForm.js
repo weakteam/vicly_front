@@ -15,6 +15,7 @@ import Dark from "../../images/rer.jpg"
 // import Background from "../../images/loginBack.jpg"
 import rootStore from "../../store/RootStore";
 import history from "../../store/history"
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -24,7 +25,7 @@ const styles = theme => ({
         top: 0,
         bottom: 0,
         right: 0,
-        position: 'absolute',
+        position: 'fixed',
         left: 0,
         justifyContent: 'center',
         minHeight: '100vh',
@@ -39,7 +40,7 @@ const styles = theme => ({
     main: {
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.down('xs')]: {
-            width: '80%',
+            width: '95%',
         },
         width: 435,
         borderTopLeftRadius: 5,
@@ -56,7 +57,7 @@ const styles = theme => ({
         borderTopRightRadius: 5,
     },
     form: {
-      //  width: '100%', // Fix IE 11 issue.
+        //  width: '100%', // Fix IE 11 issue.
         padding: 30,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
@@ -167,6 +168,9 @@ const styles = theme => ({
             color: '#43a296',
         },
     },
+    failedLogin: {
+        textAlign: 'center', fontSize: '1rem', color: 'red', paddingTop: 26
+    },
 });
 
 @observer
@@ -177,12 +181,22 @@ class LoginForm extends React.Component {
         this.history = history;
     }
 
+    state = {
+        loading: 0,
+    };
+
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(e.target.login.value + "  " + e.target.password.value);
         //const { login, password } = this.state;
         accountStore.loginUser(e.target.login.value, e.target.password.value);
-        //this.props.setLoading();
+        if (accountStore.status !== 'authed') {
+           return null;
+        } else {
+            this.setState({
+                loading: 1,
+            })
+        }
     };
 
     goToInviteLogin = () => {
@@ -193,6 +207,11 @@ class LoginForm extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
+             {/*   <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div>*/}
+                {
+                    this.state.loading === 1 ?  <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div> : ''
+                }
+
                 <main className={classes.main}>
                     <Paper className={classes.paper}>
                         <div className={classes.headerDiv}>
@@ -243,6 +262,11 @@ class LoginForm extends React.Component {
                                     Войти
                                 </Button>
                             </div>
+                            {
+                                accountStore.status === "failed" ?
+                                    <Typography variant='caption' className={classes.failedLogin}>Неверный логин или
+                                        пароль</Typography> : ''
+                            }
                         </form>
                     </Paper>
                 </main>
