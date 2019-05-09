@@ -13,12 +13,12 @@ import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     chatWindow: {
-        padding: '60px 0 58px 20px',
+        padding: '60px 0 57px 20px',
         [theme.breakpoints.down('md')]: {
-            padding: '65px 20px 60px 20px',
+            padding: '60px 20px 57px 20px',
         },
         [theme.breakpoints.down('xs')]: {
-            padding: '116px 5px 60px 20px',
+            padding: '115px 5px 57px 20px',
         },
         height: '100%',
         overflow: 'hidden',
@@ -55,8 +55,6 @@ class GroupChatWindow extends React.Component {
     scrollHandler = (target) => {
         let scrolledOnTop = false;
         return () => {
-            console.log(target.scrollTop);
-
             if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
                 scrolledOnTop = true;
                 this.props.chat.nextPage();
@@ -68,7 +66,6 @@ class GroupChatWindow extends React.Component {
     };
 
     handleSendMessage = (message) => {
-        console.log("send message!!!");
         this.props.chat.postMessage(message.message);
         this.scrollToBottom();
     };

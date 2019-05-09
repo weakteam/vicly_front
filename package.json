@@ -6,31 +6,28 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "faker": "^4.1.0",
+    "intersection-observer": "^0.6.0",
     "jquery": "^3.3.1",
     "jss": "latest",
-    "mobx": "^5.9.0",
+    "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
     "mobx-react-devtools": "^6.1.1",
     "path-to-regexp": "^3.0.0",
-    "prop-types": "latest",
-    "react": "latest",
-    "react-contexify": "^4.0.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-contexify": "^4.1.0",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "latest",
-    "react-jss": "latest",
-    "react-redux": "^5.1.1",
-    "react-router-dom": "5.0.0",
-    "react-router-with-props": "^0.1.3",
+    "react-dom": "^16.8.6",
+    "react-in-viewport": "^1.0.0-alpha.5",
+    "react-jss": "^8.6.1",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.5",
-    "react-scroll-to-bottom": "^1.3.1",
     "react-scrollbar": "^0.5.6",
-    "react-toastify": "^4.5.2",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "request": "^2.88.0",
+    "react-toastify": "^5.1.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.83.0",
-    "typeface-roboto": "0.0.54"
+    "typeface-roboto": "0.0.54",
+    "react-visibility-sensor": "5.0.2"
   },
   "scripts": {
     "start": "rescripts start",
@@ -44,8 +41,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@rescripts/cli": "0.0.10",
-    "@rescripts/rescript-env": "0.0.10"
+    "@rescripts/cli": "^0.0.10",
+    "@rescripts/rescript-env": "^0.0.10",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4"
   },
   "rescripts": [
     "env"

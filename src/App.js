@@ -40,7 +40,7 @@ const themeOptions = {
     palette: {
         primary: {
             light: "#ffffff",
-            main: "#43a296", //аппбар и серчбар
+            main: "#679dbd", //аппбар и серчбар
             mainElem: "#075454",
             dark: "#1c212d",
             darkSecondary: '#323a4d',
@@ -61,7 +61,7 @@ const themeOptions = {
         text: {
             primary: "#1d1c28",
             secondary: "rgba(0, 0, 0, 0.54)",
-            disabled: "rgba(110,190,134,0.38)",
+            disabled: "rgba(103, 157, 189, 0.44)",
             hint: "rgba(0, 0, 0, 0.38)",
         },
         background: {
@@ -100,16 +100,13 @@ class App extends Component {
     changeThemeType() {
         this.setState((prevState) => {
             rootStore.accountStore.setTheme(!(prevState.themeOpt.palette.type === "light"));
-            prevState.themeOpt.palette.mime = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
+            prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
             return prevState;
         });
     };
 
     render() {
-
         const theme = createMuiTheme(this.state.themeOpt);
-
-        console.log(this.props);
         const authStatus = rootStore.accountStore.status === "authed";
         return (
             <MuiThemeProvider theme={theme}>
@@ -131,7 +128,7 @@ class App extends Component {
                                         <Route exact path="/login" component={Login}/>
                                         <Route path="/login/invite/:uuid"
                                                render={(routeProps) =>
-                                                   <InviteLogin
+                                                   <InviteLogin setLoading={this.setLoading}
                                                        {...routeProps}
                                                    />}/>
                                         <Route render={() => <Redirect to="/login"/>}/>

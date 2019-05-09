@@ -7,6 +7,7 @@ export default class Message {
     // Array of Attachment objects
     attachments = [];
     from = null;
+    fromMe = false;
     id = null;
     key = null;
     message = null;
@@ -20,6 +21,7 @@ export default class Message {
     constructor(messageObject) {
         this.id = messageObject.id;
         this.from = messageObject.from;
+        this.fromMe = this.from === rootStore.accountStore.userId;
         this.key = messageObject.key;
         this.chat_id = null;
         this.message = messageObject.message;
@@ -29,7 +31,7 @@ export default class Message {
         this.timestamp_delivery = messageObject.timestamp_delivery;
         this.timestamp_read = messageObject.timestamp_read;
         this.attachments = messageObject.attachments;
-        if(this.attachments.length){
+        if (this.attachments.length) {
             this.attachments = this.attachments.map(id => rootStore.attachmentService.loadAttachmentInfo(id))
         }
     }
@@ -50,11 +52,21 @@ export default class Message {
         try {
             const response = await rootStore.api.readMessage(this.id);
             if (!response.ok) {
-                console.log("mark delivered message failed")
+                console.log("mark message readed failed")
             }
 
         } catch (err) {
             console.log(err);
         }
+    }
+
+
+    onViewport = () => {
+        if (!this.fromMe) {
+            if (!this.timestamp_read) {
+                this.readMessage();
+            }
+        }
+
     }
 }

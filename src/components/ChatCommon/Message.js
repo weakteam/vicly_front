@@ -6,17 +6,13 @@ import div from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import AvatarColor from "../../services/AvatarColor"
-import {observer} from "mobx-react";
-import rootStore from "../../store/RootStore";
-import img1 from '../../images/fon3b.jpg';
-import img2 from '../../images/fon2.jpg';
-import img3 from '../../images/fon1.jpg';
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import Button from "@material-ui/core/Button";
-import {BACKEND_URL} from "../../common";
-import AttachmentSmall from "./AttachmentSmall";
 import AttachmentShow from "./AttachmentShow";
+import List from "@material-ui/core/List";
+import handleViewport from 'react-in-viewport';
+import VisibilitySensor from "react-visibility-sensor";
+
 
 const styles = theme => ({
     root: {
@@ -113,7 +109,11 @@ const styles = theme => ({
     mess: {
         fontSize: '0.8rem',
         color: '#181818',
-        whiteSpace: 'pre',
+        whiteSpace: 'pre-wrap',
+        // wordWrap: 'break-word',
+        //overflowWrap: 'break-word',
+        wordBreak: 'break-all',
+        display: 'flex'
     },
     senderName: {
         minWidth: 'max-content',
@@ -160,6 +160,7 @@ class Message extends React.Component {
 
     };
 
+
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
         let date = new Date(timestamp);
@@ -173,7 +174,6 @@ class Message extends React.Component {
         }
     };
 
-
     render() {
         // Was the message sent by the current user. If so, add a css class
         const fromMe = this.props.fromMe ? 'from-me' : '';
@@ -181,17 +181,23 @@ class Message extends React.Component {
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
         let colsNumber;
-         if (this.props.messageInfo.attachments.length === 1) {
+        if (this.props.messageInfo.attachments.length === 1) {
             colsNumber = 2;
         } else {
             colsNumber = 1;
         }
 
         let mobileMessage;
+
+        const imagesAttachments = this.props.messageInfo.attachments.filter(elem => elem.canShowPreview() || elem.dataFetched !== "ready");
+        const otherAttachments = this.props.messageInfo.attachments.filter(elem => !elem.canShowPreview() && elem.dataFetched !== "ready");
+
+        const visibleSensor = !this.props.messageInfo.timestamp_read && !this.props.fromMe;
+
         if (fromMe) {
             mobileMessage =
-                <div className={classes.messageBlock}>
 
+                <div className={classes.messageBlock}>
                     <div className={fromMe ? classes.fromMe : classes.toMe}>
                         <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                             <Typography
@@ -207,11 +213,12 @@ class Message extends React.Component {
                             this.props.messageInfo.attachments.length ?
                                 (
                                     <>
-                                        <GridList  className={classes.gridList} cols={2}>
+                                        <GridList className={classes.gridList} cols={2}>
                                             {
                                                 this.props.messageInfo.attachments.map(atta => {
                                                     return (
-                                                        <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                        <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                      cols={colsNumber}>
                                                             <AttachmentShow attachment={atta}/>
                                                         </GridListTile>
                                                     )
@@ -229,7 +236,6 @@ class Message extends React.Component {
                             this.props.avatar ?
                                 (
                                     <Avatar className={classes.avatarIco}
-                                            style={{backgroundColor: `${colorChange}`}}
                                             src={this.props.avatar.small}/>
                                 )
                                 :
@@ -249,7 +255,6 @@ class Message extends React.Component {
                         this.props.avatar ?
                             (
                                 <Avatar className={classes.avatarIco}
-                                        style={{backgroundColor: `${colorChange}`}}
                                         src={this.props.avatar.small}/>
                             )
                             :
@@ -274,11 +279,12 @@ class Message extends React.Component {
                         this.props.messageInfo.attachments.length ?
                             (
                                 <>
-                                    <GridList  className={classes.gridList} cols={2}>
+                                    <GridList className={classes.gridList} cols={2}>
                                         {
                                             this.props.messageInfo.attachments.map(atta => {
                                                 return (
-                                                    <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
+                                                    <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                  cols={colsNumber}>
                                                         <AttachmentShow attachment={atta}/>
                                                     </GridListTile>
                                                 )
@@ -317,7 +323,8 @@ class Message extends React.Component {
         }
 
         return (
-            <div>
+
+            <div ref={this.props.forwardedRef}>
                 <Hidden smDown implementation="css">
                     <div className={classes.root}>
                         <div className={classes.messageBlock}>
@@ -326,7 +333,6 @@ class Message extends React.Component {
                                     this.props.avatar ?
                                         (
                                             <Avatar className={classes.avatarIco}
-                                                    style={{backgroundColor: `${colorChange}`}}
                                                     src={this.props.avatar.small}/>
                                         )
                                         :
@@ -366,17 +372,18 @@ class Message extends React.Component {
                                     this.props.messageInfo.attachments.length ?
                                         (
                                             <>
-                                            <GridList  className={classes.gridList} cols={2}>
-                                                {
-                                                    this.props.messageInfo.attachments.map(atta => {
-                                                        return (
-                                                            <GridListTile style={{height: 'auto'}} key={atta.id} cols={colsNumber}>
-                                                                <AttachmentShow attachment={atta}/>
-                                                            </GridListTile>
-                                                        )
-                                                    })
-                                                }
-                                            </GridList>
+                                                <GridList className={classes.gridList} cols={2}>
+                                                    {
+                                                        this.props.messageInfo.attachments.map(atta => {
+                                                            return (
+                                                                <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                              cols={colsNumber}>
+                                                                    <AttachmentShow attachment={atta}/>
+                                                                </GridListTile>
+                                                            )
+                                                        })
+                                                    }
+                                                </GridList>
 
                                             </>
                                         ) : null
@@ -390,13 +397,14 @@ class Message extends React.Component {
                     </div>
                 </Hidden>
 
+
                 <Hidden mdUp implementation="css">
                     <div className={fromMe ? classes.rootMob : classes.root}>
                         {mobileMessage}
                     </div>
                 </Hidden>
-
             </div>
+
         );
     }
 }
@@ -407,4 +415,6 @@ Message.defaultProps = {
     fromMe: false
 };
 
-export default withStyles(styles)(Message);
+const MessageViewport = handleViewport(Message, {}, {disconnectOnLeave: true});
+
+export default withStyles(styles)(MessageViewport);

@@ -121,7 +121,6 @@ export default class AccountStore {
         if (count === 0) {
             this.online.push(onlineId)
         }
-        console.log('Old inline massive',  this.online)
         };
 
     showOffline(onlineId) {
@@ -130,6 +129,5 @@ export default class AccountStore {
                 this.online.splice(i, 1)
             }
         }
-        console.log('New online massive',  this.online)
     };
 }

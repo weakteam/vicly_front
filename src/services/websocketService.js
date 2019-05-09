@@ -97,10 +97,10 @@ export default class WebsocketService {
                 this.rootStore.accountStore.showOffline(payload.message.id);
                 break;
             case MARK_DELIVERY:
-                this.rootStore.messagesStore.onDeliveryMessage(payload.message.message_id,payload.message.chat, payload.message.message);
+                this.rootStore.messagesStore.onDeliveryMessage(payload.message);
                 break;
             case MARK_READ:
-                this.rootStore.messagesStore.onReadMessage(payload.message.message_id,payload.message.chat, payload.message.message);
+                this.rootStore.messagesStore.onReadMessage(payload.message);
                 break;
             default:
                 break;

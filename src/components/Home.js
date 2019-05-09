@@ -21,7 +21,7 @@ import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Select from "@material-ui/core/Select";
-import BackgroundLight from '../images/fon3b.jpg';
+import BackgroundLight from '../images/fon5b.jpg';
 import {Item, Menu, MenuProvider} from "react-contexify";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
@@ -29,6 +29,7 @@ import HomeScreen from './HomeScreen'
 import Delete from "@material-ui/icons/Delete"
 import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
+import '../css/scrollbar.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -45,6 +46,10 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
     },
     drawer: {
         width: 399,
@@ -77,7 +82,7 @@ const styles = theme => ({
     },
 
     appBar: {
-        borderRadius: '0px 0px 5px 5px',
+        borderRadius: '0px 0px 0px 0px',
         zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
@@ -102,22 +107,23 @@ const styles = theme => ({
         height: 55,
     },
     workG: {
-      /*  [theme.breakpoints.down('xs')]: {
-            marginTop: 120,
-        },*/
-      //  marginTop: 143,
-      //  padding: 0,
-       // paddingTop: 15,
+        /*  [theme.breakpoints.down('xs')]: {
+              marginTop: 120,
+          },*/
+        //  marginTop: 143,
+        //  padding: 0,
+        // paddingTop: 15,
 
         marginBottom: 70
     },
     content: {
-       // pointerEvents: 'none',
-       // position: 'absolute',
+        // pointerEvents: 'none',
+        // position: 'fixed',
         zIndex: 1201,
-      //  position:' -webkit-sticky',
+        // position:' -webkit-sticky',
         overflow: 'hidden',
-       minHeight: '-webkit-fill-available',
+        minHeight: '-webkit-fill-available',
+      //  minHeight: '-moz-available',
         flexGrow: 1,
         flexShrink: 1,
         width: '100%',
@@ -131,7 +137,7 @@ const styles = theme => ({
                 theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
                 }`,
             backgroundSize: 'cover',
-            // backgroundImage: 'url(' + BackgroundLight + ')',
+            backgroundImage: 'url(' + BackgroundLight + ')',
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
@@ -154,7 +160,8 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     logoDiv: {
-        flexGrow: 1
+       flexGrow: 1,
+        overflow: 'hidden',
     },
     container: {
         display: 'flex',
@@ -189,7 +196,8 @@ const styles = theme => ({
         alignItems: 'center',
         width: '100%',
         justifyContent: 'center',
-        height: '-webkit-fill-available',
+        height: 'inherit',
+
     },
     icon: {
         color: ` ${
@@ -219,12 +227,15 @@ const styles = theme => ({
     },
     logoText: {
         color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'}`,
+       // width: '100%'
+
     },
     rootIndex: {
         zIndex: 1299,
     },
     scrollDrawer: {
-        marginTop: 130,
+        minWidth: '-webkit-fill-available',
+        marginTop: 135,
         [theme.breakpoints.down('xs')]: {
             marginTop: 113,
         },
@@ -251,24 +262,38 @@ class Home extends React.Component {
 
     workgroups() {
         const {classes} = this.props;
-        if (this.messagesStore.groups.length) {
-            return this.messagesStore.groups.map(
-                workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
-                                        workgroup={workgroup}
-                                        userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
-                                        groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
-            )
-
+        if (this.messagesStore.searchActive) {
+            if (this.messagesStore.foundedGroups.length) {
+                return this.messagesStore.foundedGroups.map(
+                    workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
+                                            workgroup={workgroup}
+                                            userChatsNew={this.messagesStore.foundedUserChats.filter(userChat => userChat.groupId === workgroup.id)}
+                                            groupChatsNew={this.messagesStore.foundedGroupChats.filter(groupChat => groupChat.groupId === workgroup.id)}/>
+                )
+            } else {
+                return <Typography>Nothing found!</Typography>
+            }
         } else {
-            return (
-                <div className={classes.load}>
-                    <div style={{textAlign: "center"}}>
-                        <CircularProgress/>
-                        <Typography variant="overline" className={classes.text}>Загрузка</Typography>
+            if (this.messagesStore.groups.length) {
+                return this.messagesStore.groups.map(
+                    workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
+                                            workgroup={workgroup}
+                                            userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                                            groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
+                )
+
+            } else {
+                return (
+                    <div className={classes.load}>
+                        <div style={{textAlign: "center"}}>
+                            <CircularProgress/>
+                            <Typography variant="overline" className={classes.text}>Загрузка</Typography>
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
         }
+
     }
 
     handleClickContext = () => {
@@ -296,9 +321,11 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
+                <div className="scrollbar" id="style-3">
                 <List className={"scrollDrawer scrollDrawerFix"}>
-                    {this.workgroups()}
+                        {this.workgroups()}
                 </List>
+                </div>
             </div>
         );
 
@@ -369,7 +396,7 @@ class Home extends React.Component {
                     </Hidden>
                 </nav>
 
-                <main className={classes.content }>
+                <main className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?
@@ -399,4 +426,9 @@ class Home extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(Home);
+export default withStyles(styles, {withTheme: true})
+
+(
+    Home
+)
+;

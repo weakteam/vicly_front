@@ -52,7 +52,10 @@ const styles = theme => ({
         alignItems: 'center'
     },
     WorkGroupBack: {
-        margin: 8,
+        margin: '8px 0px 0px 8px',
+        [theme.breakpoints.down('xs')]: {
+            margin: '8px 6px 10px 8px',
+        },
         borderRadius: 5,
         paddingBottom: 5,
         boxShadow: ` ${
@@ -77,7 +80,6 @@ class Workgroup extends React.Component {
 
     componentDidCatch(error, info) {
         // You can also log the error to an error reporting service
-        console.log(error, info);
     }
 
     workGroupColor = (letter) => {

@@ -15,6 +15,8 @@ import DocumentWindow from "./DocumentWindow";
 import Avatar from "@material-ui/core/Avatar";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
+import Slide from "@material-ui/core/Slide";
+import {Typography} from "@material-ui/core";
 
 
 function getModalStyle() {
@@ -39,9 +41,9 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
-       /* borderTop: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,*/
+        /* borderTop: ` ${
+             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+             }`,*/
         /*borderLeft: ` ${
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
@@ -86,13 +88,13 @@ const styles = theme => ({
             }`,
     },
     active: {
-       /* '&:focus': {
-            transition: theme.transitions.create(['border-color', 'box-shadow']),
-            //   borderColor: '#819bff',
-            boxShadow: `${fade('#3750ef', 0.25)} 0 0 0 0.2rem`,
-            //   border: '1px solid #b9daff',
-            // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
-        },*/
+        /* '&:focus': {
+             transition: theme.transitions.create(['border-color', 'box-shadow']),
+             //   borderColor: '#819bff',
+             boxShadow: `${fade('#3750ef', 0.25)} 0 0 0 0.2rem`,
+             //   border: '1px solid #b9daff',
+             // boxShadow: `${fade('#9cabef', 0.25)} 0 0 0 0.2rem`,
+         },*/
         /*'&:selected': {
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
@@ -102,13 +104,10 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
         // width: '100%',
-        paddingTop: 13,
+        padding: '10px 5px 10px 5px',
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
             }`,
-        paddingBottom: 13,
-        paddingLeft: 10,
-        paddingRight: 10,
         maxHeight: 150,
         height: 'auto',
     },
@@ -140,12 +139,16 @@ class SendMessageBar extends React.Component {
         auth: true,
         anchorEl: null,
         open: false,
-        attachments: []
+        attachments: [],
+        upload: false,
     };
 
 
     handleMenu = event => {
         this.setState({anchorEl: event.currentTarget});
+        this.setState({
+            upload: false,
+        })
     };
 
     handleClose = () => {
@@ -175,7 +178,7 @@ class SendMessageBar extends React.Component {
         });
         this.setState({
             messageText: "",
-            attachments:[]
+            attachments: []
         })
     };
 
@@ -206,13 +209,17 @@ class SendMessageBar extends React.Component {
         this.handleClose();
         this.fileInput.current.accept = accept;
         this.fileInput.current.click();
+
+        this.setState({
+            upload: true
+        })
     };
 
     handleDeleteAttachment = (attachment) => {
         this.setState((prevState) => {
             return {
-                attachments: prevState.attachments.filter(file => file !== attachment)
-        }
+                attachments: prevState.attachments.filter(file => file.id !== attachment.id)
+            }
         })
 
     };
@@ -233,22 +240,22 @@ class SendMessageBar extends React.Component {
 
         return (
             <div className={classes.position}>
-                {
-                    this.state.attachments.length ?
-                        (
-                            <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment} attachments={this.state.attachments}/>
-                        )
-                        :
-                        (
-                            ""
-                        )
-                }
+
 
                 <IconButton className={classes.iconButton} onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
 
                 <FormControl fullWidth>
+                    {
+                        this.state.attachments.length ?
+                            (
+                                <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
+                                    <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
+                                                   attachments={this.state.attachments}/>
+                                </Slide>
+                            ) : null
+                    }
                     <InputBase
                         placeholder="Введите сообщение"
                         multiline
@@ -259,7 +266,7 @@ class SendMessageBar extends React.Component {
                         classes={{input: classes.active}}
                         endAdornment={
                             <InputAdornment position="end" color="secondary">
-                                <IconButton disabled={!this.state.messageText.trim()}
+                                <IconButton disabled={!this.state.messageText.trim() && !this.state.attachments.length > 0}
                                             onClick={this.handleSendButton.bind(this)}>
                                     <SendOutlined/>
                                 </IconButton>
@@ -291,7 +298,7 @@ class SendMessageBar extends React.Component {
                             Видео
                         </MenuItem>
                         <MenuItem className={classes.menuItem}
-                                  onClick={this.handleAddAttachments("")}>
+                                  onClick={this.handleMenuOpen}>
                             Документ
                         </MenuItem>
                     </Menu>
@@ -309,7 +316,7 @@ class SendMessageBar extends React.Component {
                     style={{zIndex: 1303}}>
 
                     <div style={getModalStyle()} className={classes.paper}>
-                        <DocumentWindow handleMenuClose={this.handleMenuClose}/>
+                        <DocumentWindow upload={this.state.upload} attachments={this.state.attachments} handleAddAttachments={this.handleAddAttachments} handleMenuClose={this.handleMenuClose}/>
                     </div>
 
                 </Modal>

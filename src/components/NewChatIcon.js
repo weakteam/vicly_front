@@ -6,6 +6,8 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import InviteForm from "./InviteForm";
 import history from "../store/history"
 import rootStore from "../store/RootStore";
+import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
+import NewChatModal from "./NewChatModal";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -30,19 +32,20 @@ const styles = theme => ({
         position: 'absolute',
         outline: 'none',
         borderRadius: 5,
-      //  padding: 30,
-        [theme.breakpoints.down('xs')]: {
-            width: '95%',
-        },
-        width: 585,
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? "#679dbd" : "#679dbd"
+            theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
             }`,
+      //  padding: 30,
+       /* [theme.breakpoints.down('xs')]: {
+            width: '80%',
+        },*/
+      //  width: 585,
+      /*  backgroundColor: ` ${
+
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            }`,*/
         boxShadow: theme.shadows[5],
         // padding: theme.spacing.unit * 4,
-    },
-    textField: {
-        width: '-webkit-fill-available',
     },
     container: {
         display: 'flex',
@@ -58,7 +61,7 @@ const styles = theme => ({
     },
 });
 
-class InviteIcon extends React.Component {
+class NewChatIcon extends React.Component {
     state = {
         open: false,
     };
@@ -82,13 +85,11 @@ class InviteIcon extends React.Component {
         return (
             <div className={classes.root}>
                 <IconButton onClick={this.handleOpen}>
-                    <PersonAdd className={classes.icon}/>
+                    <AddCommentOutlined className={classes.icon}/>
                 </IconButton>
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
-                    borderColor={'red.500'}
-                    border={5}
                     open={this.state.open}
                     onClose={this.handleClose}
                     classes={{
@@ -97,7 +98,7 @@ class InviteIcon extends React.Component {
 
                 >
                     <div  style={getModalStyle()} className={classes.paper}>
-                        <InviteForm handleClose={this.handleClose}/>
+                        <NewChatModal handleClose={this.handleClose}/>
                     </div>
                 </Modal>
             </div>
@@ -106,5 +107,5 @@ class InviteIcon extends React.Component {
 }
 
 // We need an intermediary variable for handling the recursive nesting.
-const SimpleModalWrapped = withStyles(styles)(InviteIcon);
-export default SimpleModalWrapped;
+const NewChat = withStyles(styles)(NewChatIcon);
+export default NewChat;

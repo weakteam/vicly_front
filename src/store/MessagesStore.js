@@ -10,13 +10,17 @@ import Message from "./models/Message";
 
 export default class MessagesStore {
     @observable groups = [];
+    @observable foundedGroups = [];
+    @observable foundedUserChats = [];
+    @observable foundedGroupChats = [];
+    @observable searchActive = false;
     users = [];
     @observable userChatsNew = [];
     @observable groupChatsNew = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
-    previousCurrentChatId= null;
-    isCurrentChatForUser = null;
+    previousCurrentChatId = null;
+    @observable isCurrentChatForUser = null;
     previousIsCurrentChatForUser = null;
     @observable chatsFetched = false;
     err_message = "";
@@ -55,15 +59,16 @@ export default class MessagesStore {
         reaction(
             () => {
                 if (this.chatsFetched) {
-                    return this.currentChatId
+                    return [this.currentChatId, this.isCurrentChatForUser]
                 } else return null;
 
             },
-            (currentChatId) => {
+            (args) => {
+                const [currentChatId, isCurrentChatForUser] = args;
                 if (currentChatId) {
                     // If opened user chat
                     let currentChat = this.getCurrentChatNew(currentChatId);
-                    if (!currentChat.messages.length) {
+                    if (currentChat.messages.length <= 20) {
                         currentChat.loadMessages(currentChat.page);
                     } else {
                         const lastMessage = currentChat.messages[currentChat.messages.length - 1];
@@ -77,6 +82,41 @@ export default class MessagesStore {
             {fireImmediately: true}
         );
     };
+
+    // START SEARCH PLACE
+    uniq(a) {
+        return Array.from(new Set(a));
+    }
+
+    searchChat = (pattern) => {
+        let foundedUserChats = this.userChatsNew.filter(chat => {
+            const name = chat.user.first_name + " " + chat.user.last_name;
+            return name.includes(pattern);
+        });
+        let foundedGroupChats = this.groupChatsNew.filter(chat => chat.title.includes(pattern));
+        let foundedGroups = this.groups.filter(group => group.name.includes(pattern));
+
+        let groupIds = foundedUserChats.map(chat => chat.groupId)
+            .concat(
+                this.foundedGroupChats.map(chat => chat.groupId)
+            );
+        foundedGroups = foundedGroups.concat(
+            this.groups.filter(group => groupIds.includes(group.id))
+        );
+        this.foundedGroups = this.uniq(foundedGroups);
+        this.foundedUserChats = this.uniq(foundedUserChats);
+        this.foundedGroupChats = this.uniq(foundedGroupChats);
+        this.searchActive = true;
+    };
+
+    invalidateSearch = () => {
+        this.foundedGroups = [];
+        this.foundedUserChats = [];
+        this.foundedGroupChats = [];
+        this.searchActive = false;
+    };
+
+    // END   SEARCH PLACE
 
     async fetchChats() {
         try {
@@ -118,7 +158,6 @@ export default class MessagesStore {
                 this.rootStore.imageService.getAvatarThumbnail(userChat.user.id);
             });
         } catch (err) {
-            console.log(err);
             runInAction("Failed fetch users info", () => {
                 this.fetchFail = true;
                 this.err_message = err;
@@ -149,36 +188,55 @@ export default class MessagesStore {
         }
     }
 
-    onDeliveryMessage(message_id, chat, message) {
-        // let innerChat = null;
-        // if (chat.chatType === "user") {
-        //     let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
-        //     innerChat = this.findUserChat(userId)
-        // } else {
-        //     innerChat = this.findGroupChat(chat.id);
-        // }
-        // if (innerChat) {
-        //     let innerMessage = innerChat.messages.find(mess => mess.id === message_id);
-        //     innerMessage.timestamp_delivery = message.timestamp_delivery;
-        // }
-        // TODO Proxy work in Chat
+    onDeliveryMessage(ws_event) {
+        let innerChat = null;
+        if (ws_event.chat.chat_type === "user") {
+            let userId = ws_event.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            innerChat = this.findUserChatNew(userId)
+        } else {
+            innerChat = this.findGroupChatNew(ws_event.chat.id);
+        }
+        if (innerChat) {
+            innerChat.messageDelivered(ws_event.message);
+        } else {
+            console.log("MessageStore onDeliveryMessage:cant find chat!!!");
+        }
     }
 
-    onReadMessage(message_id, chat, message) {
-        // let innerChat = null;
-        // if (chat.chatType === "user") {
-        //     let userId = chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
-        //     innerChat = this.findUserChat(userId)
-        // } else {
-        //     innerChat = this.findGroupChat(chat.id);
-        // }
-        // if (innerChat) {
-        //     let innerMessage = innerChat.messages.find(mess => mess.id === message_id);
-        //     innerMessage.timestamp_delivery = message.timestamp_delivery;
-        //     innerMessage.timestamp_read = message.timestamp_read;
-        //     innerChat.unread--;
-        // }
-        // TODO proxy work in Chat
+    // WS event  object
+    // message = {
+    //     "event": 5,
+    //     "message": {
+    //         "message_id": "5cd37faca7b11b0001870d13",
+    //         "chat": {"id": 5, "user_ids": [1, 11], "chat_type": "user"},
+    //         "message": {
+    //             "id": "5cd37faca7b11b0001870d13",
+    //             "from": 1,
+    //             "key": "",
+    //             "message": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0ZXh0IjoiaSB3YW50IFdTISJ9.qaj4DPJADWyo9VJsoMp5RGcaTmZ8ujXXOjWpRH0WJ4Q",
+    //             "reply_for": null,
+    //             "timestamp_post": {"timestamp": 1557364652496, "zone": "UTC+0"},
+    //             "timestamp_change": null,
+    //             "timestamp_delivery": {"timestamp": 1557364653484, "zone": "UTC+0"},
+    //             "timestamp_read": {"timestamp": 1557364653484, "zone": "UTC+0"},
+    //             "attachments": []
+    //         }
+    //     }
+    // };
+
+    onReadMessage(ws_event) {
+        let innerChat = null;
+        if (ws_event.chat.chat_type === "user") {
+            let userId = ws_event.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+            innerChat = this.findUserChatNew(userId)
+        } else {
+            innerChat = this.findGroupChatNew(ws_event.chat.id);
+        }
+        if (innerChat) {
+            innerChat.messageReaded(ws_event.message);
+        } else {
+            console.log("MessageStore onReadMessage:cant find chat!!!");
+        }
     }
 
     findGroupChatNew(chatId) {
@@ -206,19 +264,6 @@ export default class MessagesStore {
         return this.isCurrentChatForUser ? this.findUserChatNew(this.currentChatId) : this.findGroupChatNew(this.currentChatId);
     }
 
-    chatChanged(chatType, chatId) {
-        // let innerChat = null;
-        // if (chatType === "user") {
-        //     innerChat = this.findUserChatNew(chatId)
-        // } else {
-        //     innerChat = this.findGroupChatNew(chatId);
-        // }
-        // innerChat.messages.forEach(message => {
-        //     if (!message.timestamp_read) {
-        //         this.readMessage(message.id);
-        //     }
-        // })
-    }
 
     nextPage(chatType, chatId) {
         let chat = null;
@@ -237,18 +282,18 @@ export default class MessagesStore {
         }
     }
 
-    setCurrentChatId(newCurrentChatId,isNewCurrentChatForUser){
-        this.previousCurrentChatId = this.currentChatId;
-        this.currentChatId = newCurrentChatId;
+    setCurrentChatId(newCurrentChatId, isNewCurrentChatForUser) {
         this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
         this.isCurrentChatForUser = isNewCurrentChatForUser;
+        this.previousCurrentChatId = this.currentChatId;
+        this.currentChatId = newCurrentChatId;
     }
 
-    isChatChanged(){
+    isChatChanged() {
         return this.currentChatId !== this.previousCurrentChatId || this.isCurrentChatForUser !== this.previousIsCurrentChatForUser;
     }
 
-    invalidateChatChanged(){
+    invalidateChatChanged() {
         this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
         this.previousCurrentChatId = this.currentChatId;
     }

@@ -4,6 +4,7 @@ import WebSocketService from "../services/websocketService";
 import ImageService from "../services/imageService";
 import ViclyApi from "./api/ViclyApi";
 import AttachmentService from "../services/attachmentService";
+import toastService from "../services/toastService";
 
 class RootStore {
     constructor() {
@@ -14,6 +15,7 @@ class RootStore {
         this.messagesStore = new MessagesStore(this);
         this.webSocketService = new WebSocketService(this);
         this.accountStore.start();
+        this.toastService = toastService;
     }
 }
 

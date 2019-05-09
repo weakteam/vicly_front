@@ -20,20 +20,20 @@ export default class AttachmentService {
     }
 
     uploadFile(file) {
-        let attachment = new Attachment({size: file.size, filename: file.name, type: file.type,});
+        let attachment = new Attachment({size: file.size, filename: file.name, type: file.type,uploaded:true});
 
         if (file.type.startsWith("image/")) {
             attachment.previewSrc = URL.createObjectURL(file);
         }
 
         const innerProgressHandler = (event) => {
-            attachment.onLoadFullProgress((event.loaded / event.total) * 100);
+            attachment.onLoadPreviewProgress((event.loaded / event.total) * 100);
         };
         var formdata = new FormData();
         formdata.append("file", file);
         let ajax = new XMLHttpRequest();
         ajax.upload.onprogress = innerProgressHandler;
-        ajax.onload = attachment.onLoadComplete;
+        ajax.onload = attachment.onUploadComplete;
         ajax.onerror = attachment.onLoadError;
         ajax.onabort = attachment.onLoadError;
 
@@ -70,11 +70,11 @@ export default class AttachmentService {
         };
 
         ajax.onprogress = innerProgressHandler;
-        ajax.onload = attachment.innerLoadEnd;
+        ajax.onload = innerLoadEnd;
         ajax.onerror = attachment.onLoadError;
         ajax.onabort = attachment.onLoadError;
-
-        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}?width=200`, true);
+        ajax.responseType = "blob";
+        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}`, true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send();
     }

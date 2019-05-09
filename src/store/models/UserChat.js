@@ -4,7 +4,6 @@ import Chat from "./Chat";
 import rootStore from "../RootStore";
 import {BACKEND_URL} from "../../common";
 
-
 export default class UserChat extends Chat {
     user = null;
 
@@ -59,6 +58,14 @@ export default class UserChat extends Chat {
             console.log(err);
             // return dispatch(setChatList(err))
         }
+    }
+
+    genereteChatUrl() {
+        return "/home/chat/user/" + this.user.id;
+    }
+
+    getChatEventName() {
+        return this.user.first_name + " " + this.user.last_name;
     }
 
 }

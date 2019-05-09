@@ -100,7 +100,7 @@ class Dialog extends React.Component {
 
     handleDialogClick = () => {
         messagesStore.isCurrentChatForUser = true;
-        messagesStore.chatChanged("user", this.props.userChat.user.id);
+        // messagesStore.chatChanged("user", this.props.userChat.user.id);
         this.props.history.push(`/home/chat/user/${this.props.userChat.user.id}`);
     };
 

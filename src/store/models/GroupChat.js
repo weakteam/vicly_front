@@ -23,13 +23,6 @@ export default class GroupChat extends Chat {
         this.title = chatObject.chat.name;
         this.ownerId = chatObject.chat.owner;
         this.purpose = chatObject.chat.purpose;
-
-        // Messages objects init
-        this.last = chatObject.last ? new Message(chatObject.last) : null;
-        if (chatObject.messages && chatObject.messages.length) {
-            this.messages = chatObject.messages.map(message => new Message(message))
-        }
-        this.unread = chatObject.unread;
     }
 
     async postMessage(message, attachments = []) {
@@ -61,7 +54,7 @@ export default class GroupChat extends Chat {
 
     async loadMessagesAfter(messageId) {
         try {
-            const response = await rootStore.api.getGroupChatMessages(this.chatId, messageId);
+            const response = await rootStore.api.getGroupChatMessagesAfter(this.chatId, messageId);
             if (!response.ok) {
                 alert("fetch messages failed")
             }
@@ -74,5 +67,12 @@ export default class GroupChat extends Chat {
         }
     }
 
+    genereteChatUrl() {
+        return "/home/chat/group/" + this.chatId;
+    }
+
+    getChatEventName() {
+        return this.title;
+    }
 
 }
