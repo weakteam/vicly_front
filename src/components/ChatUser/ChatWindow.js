@@ -69,7 +69,7 @@ class ChatWindow extends React.Component {
 
     handleSendMessage = (message) => {
         this.props.chat.postMessage(message.message,message.attachments);
-        this.scrollToBottom();
+        // this.scrollToBottom();
     };
 
     scrollToBottom = () => {
@@ -83,7 +83,8 @@ class ChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        if (messagesStore.isChatChanged()) {
+        const isMessegesChanged = chat.messages.length !== prevProps.chat.messages.length;
+        if (messagesStore.isChatChanged() || isMessegesChanged) {
             this.scrollToBottom();
         }
     };
