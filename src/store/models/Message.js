@@ -14,9 +14,9 @@ export default class Message {
     reply_for = null;
     // timestamp_delivery: {timestamp: 1556227517250, zone: "UTC+0"}
     timestamp_change = null;
-    timestamp_delivery = null;
+    @observable timestamp_delivery = null;
     timestamp_post = null;
-    timestamp_read = null;
+    @observable timestamp_read = null;
 
     constructor(messageObject) {
         this.id = messageObject.id;
@@ -43,6 +43,7 @@ export default class Message {
             if (!response.ok) {
                 console.log("mark delivered message failed")
             }
+            return 200;
         } catch (err) {
             console.log(err);
         }
@@ -54,7 +55,7 @@ export default class Message {
             if (!response.ok) {
                 console.log("mark message readed failed")
             }
-
+            return 200;
         } catch (err) {
             console.log(err);
         }

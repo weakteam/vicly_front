@@ -2,7 +2,6 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Divider from "@material-ui/core/es/Divider";
-import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
 import {Button, IconButton} from "@material-ui/core";
@@ -10,7 +9,6 @@ import rootStore from "../store/RootStore";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import purple from "@material-ui/core/es/colors/purple";
 import Checkbox from "@material-ui/core/Checkbox";
 import {BACKEND_URL} from "../common";
 

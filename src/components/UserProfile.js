@@ -160,7 +160,7 @@ class UserProfile extends React.Component {
 
     state = {
         avatar_image: null,
-        blob: null
+        small: null
     };
 
     handleImageChange = (event) => {
@@ -170,23 +170,7 @@ class UserProfile extends React.Component {
                 small: event.target.files[0]
             });
         }
-        // rootStore.imageService.loadFromInput(event, (result, small) => {
-        //         this.setState({
-        //             avatar_image: result,
-        //             small:small
-        //         });
-        //     }
-        // );
     };
-
-    componentDidMount() {
-        // rootStore.imageService.getAvatarThumbnail(rootStore.accountStore.userId)
-        //     .then(avatar => {
-        //         this.setState({
-        //             avatar_image: avatar.small
-        //         })
-        //     });
-    }
 
     handleAvatarUpload = () => {
         if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {

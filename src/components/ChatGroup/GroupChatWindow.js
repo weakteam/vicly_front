@@ -75,6 +75,7 @@ class GroupChatWindow extends React.Component {
         //TODO scroll child
         if (this.messageList.current) {
             this.messageList.current.scrollToEnd();
+            // this.messageList.current.scrollToLastMessage();
         }
     };
 
