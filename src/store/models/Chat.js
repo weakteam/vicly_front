@@ -124,8 +124,10 @@ export default class Chat {
         if (innerMessage) {
             innerMessage.timestamp_delivery = messageObject.timestamp_delivery;
             innerMessage.timestamp_read = messageObject.timestamp_read;
+            if (messageObject.from !== rootStore.accountStore.userId){
+                this.unread--;
+            }
         }
-        this.unread--;
     }
 
     messageChanged(messageObject) {

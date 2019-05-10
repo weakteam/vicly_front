@@ -12,125 +12,132 @@ import AttachmentShow from "./AttachmentShow";
 import List from "@material-ui/core/List";
 import handleViewport from 'react-in-viewport';
 import VisibilitySensor from "react-visibility-sensor";
+import {observer} from "mobx-react";
 
 
 const styles = theme => ({
-    root: {
-        paddingBottom: 20,
-    },
-    rootMob: {
-        paddingBottom: 20,
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    avatar: {
-        marginRight: 9,
-        display: 'flex',
-        alignItems: 'flex-end',
-        borderRadius: 0,
-    },
-    avatarMob: {
-        marginLeft: 9,
-        display: 'flex',
-        alignItems: 'flex-end',
-    },
-    avatarIco: {
-        width: 35,
-        height: 35,
-        boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
-    },
-    fromMe: {
-        boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-        maxWidth: 500,
-        [theme.breakpoints.down('md')]: {
-            maxWidth: 300,
-        },
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: 250,
-        },
-        padding: '3px 14px 3px 14px',
-        backgroundColor: '#d5f0ff',
-        borderRadius: 10,
-    },
+            root: {
+                paddingBottom: 20,
+            },
+            rootMob: {
+                paddingBottom: 20,
+                display: 'flex',
+                justifyContent: 'flex-end',
+            },
+            avatar: {
+                marginRight: 9,
+                display: 'flex',
+                alignItems: 'flex-end',
+                borderRadius: 0,
+            },
+            avatarMob: {
+                marginLeft: 9,
+                display: 'flex',
+                alignItems: 'flex-end',
+            },
+            avatarIco: {
+                width: 35,
+                height: 35,
+                boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
+            },
+            fromMe: {
+                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+                maxWidth: 500,
+                [theme.breakpoints.down('md')]: {
+                    maxWidth: 300,
+                },
+                [theme.breakpoints.down('xs')]: {
+                    maxWidth: 250,
+                },
+                padding: '3px 14px 3px 14px',
+                backgroundColor: '#d5f0ff',
+                borderRadius: 10,
+            },
 
-    fromMeMob: {
-        maxWidth: 500,
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: 300,
-        },
-        [theme.breakpoints.down('md')]: {
-            maxWidth: 300,
-        },
-        padding: '3px 14px 3px 14px',
-        backgroundColor: '#e2f0f1',
-        borderRadius: 10,
-        boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-    },
-    toMe: {
-        maxWidth: 500,
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: 300,
-        },
-        [theme.breakpoints.down('md')]: {
-            maxWidth: 300,
-        },
-        padding: '3px 14px 3px 14px',
-        backgroundColor: '#f9f9f9',
-        borderRadius: 10,
-        boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-    },
-    messageBlock: {
-        wordWrap: 'break-word',
-        overflowWrap: 'break-word',
-        display: 'flex',
+            fromMeMob: {
+                maxWidth: 500,
+                [theme.breakpoints.down('xs')]: {
+                    maxWidth: 300,
+                },
+                [theme.breakpoints.down('md')]: {
+                    maxWidth: 300,
+                },
+                padding: '3px 14px 3px 14px',
+                backgroundColor: '#e2f0f1',
+                borderRadius: 10,
+                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+            },
+            toMe: {
+                maxWidth: 500,
+                [theme.breakpoints.down('xs')]: {
+                    maxWidth: 300,
+                },
+                [theme.breakpoints.down('md')]: {
+                    maxWidth: 300,
+                },
+                padding: '3px 14px 3px 14px',
+                backgroundColor: '#f9f9f9',
+                borderRadius: 10,
+                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+            },
+            messageBlock: {
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word',
+                display: 'flex',
 
-    },
-    caption: {
-        marginLeft: 14,
-        color: '#bbb',
-    },
-    wrap: {
-        maxWidth: 500,
-        [theme.breakpoints.down('md')]: {
-            maxWidth: 300,
-        },
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: 300,
-        },
-        padding: 8,
-        backgroundColor: '#efefef',
-        borderRadius: 10,
-    },
-    nonread: {
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        boxShadow: `${fade('#ef0511', 0.25)} 0 0 0 0.2rem`,
-        border: '1px solid #000',
-    },
-    mess: {
-        fontSize: '0.8rem',
-        color: '#181818',
-        whiteSpace: 'pre-wrap',
-        // wordWrap: 'break-word',
-        //overflowWrap: 'break-word',
-        wordBreak: 'break-all',
-        display: 'flex'
-    },
-    senderName: {
-        minWidth: 'max-content',
-        fontWeight: 500,
-        color: '#2176a5'
-    },
-    gridList: {
-        margin: '6px 0px 6px 0px!important',
-        maxWidth: 300,
-        [theme.breakpoints.down('md')]: {
-            maxWidth: 300,
-        },
-        [theme.breakpoints.down('xs')]: {
-            maxWidth: 250,
-        },
-    },
-});
+            },
+            caption: {
+                marginLeft: 14,
+                color: '#bbb',
+            },
+            wrap: {
+                maxWidth: 500,
+                [theme.breakpoints.down('md')]: {
+                    maxWidth: 300,
+                },
+                [theme.breakpoints.down('xs')]: {
+                    maxWidth: 300,
+                },
+                padding: 8,
+                backgroundColor: '#efefef',
+                borderRadius: 10,
+            },
+            // If my message not readed yet!
+            nonread: {
+                transition: theme.transitions.create(['border-color', 'box-shadow']),
+                boxShadow: `${fade('#fb8c00', 0.25)} 0 0 0 0.2rem`,
+            },
+            nondelivered: {
+                transition: theme.transitions.create(['border-color', 'box-shadow']),
+                boxShadow: `${fade('#ef0511', 0.25)} 0 0 0 0.2rem`,
+            },
+            mess: {
+                fontSize: '0.8rem',
+                color: '#181818',
+                whiteSpace: 'pre-wrap',
+                // wordWrap: 'break-word',
+                //overflowWrap: 'break-word',
+                wordBreak: 'break-all',
+                display: 'flex'
+            },
+            senderName: {
+                minWidth: 'max-content',
+                fontWeight: 500,
+                color: '#2176a5'
+            },
+            gridList: {
+                margin: '6px 0px 6px 0px!important',
+                maxWidth: 300,
+                [theme.breakpoints.down('md')]: {
+                    maxWidth: 300,
+                },
+                [theme.breakpoints.down('xs')]: {
+                    maxWidth: 250,
+                },
+            },
+        }
+    )
+;
 
 function handleDelete() {
     alert('You clicked the delete icon.'); // eslint-disable-line no-alert
@@ -140,6 +147,7 @@ function handleClick() {
     alert('You clicked the Chip.'); // eslint-disable-line no-alert
 }
 
+@observer
 class Message extends React.Component {
 
     getRandomColor = (letter) => {
@@ -194,11 +202,13 @@ class Message extends React.Component {
 
         const visibleSensor = !this.props.messageInfo.timestamp_read && !this.props.fromMe;
 
+        const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
+
         if (fromMe) {
             mobileMessage =
 
                 <div className={classes.messageBlock}>
-                    <div className={fromMe ? classes.fromMe : classes.toMe}>
+                    <div className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                         <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                             <Typography
                                 variant="body2"
@@ -266,7 +276,7 @@ class Message extends React.Component {
                             )
                     }
                 </div>
-                <div className={fromMe ? classes.fromMe : classes.toMe}>
+                <div className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
@@ -345,7 +355,7 @@ class Message extends React.Component {
                                 }
 
                             </div>
-                            <div className={fromMe ? classes.fromMe : classes.toMe}>
+                            <div className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe }>
                                 <div style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',

@@ -2,10 +2,8 @@ import React from 'react';
 import Message from './Message';
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
-import {Scrollbars} from 'react-custom-scrollbars';
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
-import {Hidden} from "@material-ui/core";
 import VisibilitySensor from "react-visibility-sensor";
 
 const {accountStore, messagesStore} = rootStore;
@@ -103,7 +101,7 @@ class MessageList extends React.Component {
         });
 
         return (
-            <div style={{'-webkit-overflow-scrolling': 'touch'}} className="scrollbar" id="style-3"
+            <div style={{WebkitOverflowScrolling: 'touch'}} className="scrollbar" id="style-3"
                  ref={this.messageList}>
                 <div className={"scroll scrollMessageArea"} id='messageList'>
                     {messages}
