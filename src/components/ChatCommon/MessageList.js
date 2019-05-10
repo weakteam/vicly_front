@@ -32,6 +32,7 @@ class MessageList extends React.Component {
         //console.log("messages:"+props.messages)
         this.messagesEnd = React.createRef();
         this.messageList = React.createRef();
+        this.lastMessage = React.createRef();
         this.accountStore = accountStore;
     }
 
@@ -68,9 +69,18 @@ class MessageList extends React.Component {
     }
 
     scrollToEnd(smooth = false) {
-        this.messagesEnd.current.scrollIntoView({behavior: smooth ? "smooth" : "instant"});
+        // this.messagesEnd.current.scrollIntoView({behavior: smooth ? "smooth" : "instant"});
+        this.messageList.current.scrollTop = this.messageList.current.scrollHeight;
         // this.messagesEnd.current.scrollTop = this.messagesEnd.current.scrollHeight;
     };
+
+    scrollToLastMessage(smooth = false) {
+        if (this.lastMessage.current) {
+            this.lastMessage.current.scrollIntoView({behavior: smooth ? "smooth" : "instant"});
+        } else {
+            console.log("scroll failed !)?");
+        }
+    }
 
     render() {
         const {classes} = this.props;
@@ -81,7 +91,7 @@ class MessageList extends React.Component {
         );
         avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null)
 
-        const messages = this.props.messages.map((message, i) => {
+        const messages = this.props.messages.map((message, i, arr) => {
             let fromMe = message.from === myUserId;
             const user = this.props.chatUsers.find(user => message.from === user.id);
             const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
@@ -90,15 +100,17 @@ class MessageList extends React.Component {
                                   onEnterViewport={message.onViewport}
                                   onChange={message.onViewport}>
                     <Message
-                        key={i}
+                        key={message.id}
                         userInfo={fromMe ? this.props.myselfUser : user}
                         message={message.message}
                         messageInfo={message}
                         fromMe={fromMe}
-                        avatar={avatar}/>
+                        avatar={avatar}
+                        ref={i === arr.length - 1 ? this.lastMessage : null}/>
                 </VisibilitySensor>
             );
         });
+
 
         return (
             <div style={{WebkitOverflowScrolling: 'touch'}} className="scrollbar" id="style-3"
