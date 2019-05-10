@@ -174,8 +174,13 @@ export default class MessagesStore {
         // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
         let chat;
         if (message.chat.chat_type === "user") {
-            let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
-            chat = this.findUserChatNew(userId)
+            const userIds = this.uniq(message.chat.user_ids);
+            if (userIds.length === 1 && userIds.includes(this.accountStore.userId)) {
+                chat = this.findUserChatNew(userIds[0])
+            } else {
+                let userId = message.chat.user_ids.filter(id => id !== this.accountStore.userId)[0];
+                chat = this.findUserChatNew(userId)
+            }
         } else {
             let chatId = message.chat.id;
             chat = this.findGroupChatNew(chatId);
