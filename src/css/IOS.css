@@ -10,11 +10,12 @@
     -webkit-overflow-scrolling: touch;
     height: 100%;
     width: 100%;
+    padding-bottom: 60px!important;
    /* overflow: auto;
 */
 }
 .scrollDrawerFix {
-    height: -webkit-fill-available!important;
+/*   // height: -webkit-fill-available!important;*/
     height: -moz-available!important;
 }
 
@@ -22,8 +23,9 @@ html {
     -webkit-text-size-adjust: none;
 }
 .scrollMessageArea {
-    height: -webkit-fill-available !important;
-    height: -moz-available!important;
+    height: 100%;
+}
+.content {
 
 }
 

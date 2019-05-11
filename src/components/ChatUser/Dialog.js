@@ -30,7 +30,6 @@ const styles = theme => ({
         borderRadius: 5,
     },
     margin: {
-        zIndex: 0,
         top: 41,
         right: 17,
         backgroundColor: ` ${
@@ -39,6 +38,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.light
             }`,
+        zIndex: 0,
     },
     fixPadding: {
         padding: 0,

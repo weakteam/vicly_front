@@ -31,6 +31,7 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
 import '../css/scrollbar.css'
 import withSplashScreen from "./withSplashScreen";
+import vhCheck from 'vh-check'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -77,7 +78,7 @@ const styles = theme => ({
             width: '100%',
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#e4e4e4' : theme.palette.primary.dark
+            theme.palette.type === 'light' ? '#e2e2e2' : theme.palette.primary.dark
             }`,
         borderRight: 0,
     },
@@ -123,7 +124,7 @@ const styles = theme => ({
         zIndex: 1201,
         // position:' -webkit-sticky',
         overflow: 'hidden',
-        minHeight: '-webkit-fill-available',
+        minHeight: 'calc(100vh - var(--vh-offset, 0px))',
         //  minHeight: '-moz-available',
         flexGrow: 1,
         flexShrink: 1,
@@ -138,7 +139,7 @@ const styles = theme => ({
                 theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
                 }`,
             backgroundSize: 'cover',
-            backgroundImage: 'url(' + BackgroundLight + ')',
+          /*  backgroundImage: 'url(' + BackgroundLight + ')',*/
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
@@ -235,10 +236,10 @@ const styles = theme => ({
         zIndex: 1299,
     },
     scrollDrawer: {
-        minWidth: '-webkit-fill-available',
-        marginTop: 135,
+        width: '100%',
+        marginTop: 130,
         [theme.breakpoints.down('xs')]: {
-            marginTop: 113,
+            marginTop: 108,
         },
         overflow: 'hidden',
     },
@@ -309,7 +310,7 @@ class Home extends React.Component {
 
     render() {
         const {classes, theme, chats} = this.props;
-
+        const vh = vhCheck();
         let drawer = (
             <div className={classes.scrollDrawer}>
                 <Hidden xsDown implementation="css">
@@ -322,7 +323,7 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
-                <div className="scrollbar" id="style-3">
+                <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-2': 'style-3'}>
                     <List className={"scrollDrawer scrollDrawerFix"}>
                         {this.workgroups()}
                     </List>
@@ -401,7 +402,7 @@ class Home extends React.Component {
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?
-                            (<div>
+                            (<>
                                 <Route path="/home/chat/user/:userId"
                                        render={(routeProps) =>
                                            <ChatWindow
@@ -416,7 +417,7 @@ class Home extends React.Component {
                                                handleDrawerToggle={this.handleDrawerToggle}
                                                chat={this.messagesStore.getCurrentChatNew()}
                                            />}/>
-                            </div>) : (
+                            </>) : (
                                 <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}
                                        render={(routeProps) => <ChatWindowEmpty/>}/>
                             )

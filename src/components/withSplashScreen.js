@@ -4,12 +4,15 @@ import {withStyles} from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import Slide from "@material-ui/core/Slide";
 import Zoom from "@material-ui/core/Zoom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 
 class LoadingMessage extends React.Component {
     render() {
         return (
-            <div>
-                <img className={this.props.classes.center} src={logo}/>
+            <div style={{textAlign: 'center'}}>
+            <CircularProgress/>
+                <Typography variant="overline">Идет загрузка</Typography>
             </div>
         );
     }
@@ -17,13 +20,17 @@ class LoadingMessage extends React.Component {
 
 const style = {
     center: {
-        display: "block",
-        marginBottom: "auto",
-        marginTop: "auto",
-        marginLeft: "auto",
-        marginRight: "auto",
-        textAlign: "center",
-        verticalAlign: "middle"
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      // width: '100%',
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+      //  height: '100%',
+        right: 0,
+
     }
 };
 
@@ -59,7 +66,16 @@ function withSplashScreen(WrappedComponent) {
 
             // otherwise, show the desired route
             return (
-                <>
+                <div style={{display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // width: '100%',
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    //  height: '100%',
+                    right: 0,}}>
                     <Slide direction="up" mountOnEnter unmountOnExit in={this.state.loading} timeout={{
                         appear: 500,
                         enter: 300,
@@ -75,7 +91,7 @@ function withSplashScreen(WrappedComponent) {
                         <WrappedComponent {...this.props} />
                     </Slide>
 
-                </>
+                </div>
             )
         }
     };
