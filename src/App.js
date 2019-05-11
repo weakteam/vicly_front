@@ -11,6 +11,7 @@ import rootStore from "./store/RootStore";
 import history from "./store/history"
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import InviteLogin from "./components/login/InviteLogin";
+import withSplashScreen from "./components/withSplashScreen";
 
 if (history.location.pathname.startsWith("/home/chat/user")) {
     const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
@@ -27,7 +28,7 @@ history.listen((location, action) => {
     if (history.location.pathname.startsWith("/home/chat/user")) {
         const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
         rootStore.messagesStore.setCurrentChatId(chatId, true);
-    }else if (history.location.pathname.startsWith("/home/chat/group")) {
+    } else if (history.location.pathname.startsWith("/home/chat/group")) {
         const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
         rootStore.messagesStore.setCurrentChatId(chatId, false);
     }
@@ -119,7 +120,6 @@ class App extends Component {
                                         <Route path="/home" render={() => <Home
                                             changeThemeType={this.changeThemeType.bind(this)}/>}/>
                                         <Route render={() => <Redirect to="/home"/>}/>
-
                                     </Switch>
                                 )
                                 :
@@ -129,14 +129,14 @@ class App extends Component {
                                         <Route path="/login/invite/:uuid"
                                                render={(routeProps) =>
                                                    <InviteLogin setLoading={this.setLoading}
-                                                       {...routeProps}
+                                                                {...routeProps}
                                                    />}/>
                                         <Route render={() => <Redirect to="/login"/>}/>
                                     </Switch>
                                 )
                         }
                     </Router>
-                    <div onClick={console.log('q')}>   <ToastContainer position="bottom-right"/> </div>
+                    <div onClick={console.log('q')}><ToastContainer position="bottom-right"/></div>
                 </div>
                 <DevTools/>
             </MuiThemeProvider>

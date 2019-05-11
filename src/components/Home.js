@@ -30,6 +30,7 @@ import Delete from "@material-ui/icons/Delete"
 import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
 import '../css/scrollbar.css'
+import withSplashScreen from "./withSplashScreen";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -123,7 +124,7 @@ const styles = theme => ({
         // position:' -webkit-sticky',
         overflow: 'hidden',
         minHeight: '-webkit-fill-available',
-      //  minHeight: '-moz-available',
+        //  minHeight: '-moz-available',
         flexGrow: 1,
         flexShrink: 1,
         width: '100%',
@@ -160,7 +161,7 @@ const styles = theme => ({
         marginRight: 'auto',
     },
     logoDiv: {
-       flexGrow: 1,
+        flexGrow: 1,
         overflow: 'hidden',
     },
     container: {
@@ -227,7 +228,7 @@ const styles = theme => ({
     },
     logoText: {
         color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#3e4555'}`,
-       // width: '100%'
+        // width: '100%'
 
     },
     rootIndex: {
@@ -322,9 +323,9 @@ class Home extends React.Component {
                 </Hidden>
                 <SearchBar/>
                 <div className="scrollbar" id="style-3">
-                <List className={"scrollDrawer scrollDrawerFix"}>
+                    <List className={"scrollDrawer scrollDrawerFix"}>
                         {this.workgroups()}
-                </List>
+                    </List>
                 </div>
             </div>
         );
@@ -426,9 +427,4 @@ class Home extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})
-
-(
-    Home
-)
-;
+export default withSplashScreen(withStyles(styles, {withTheme: true})(Home));
