@@ -5,6 +5,7 @@ import {observer} from "mobx-react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
 import VisibilitySensor from "react-visibility-sensor";
+import {contextMenu, Item, Menu} from "react-contexify";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -24,6 +25,28 @@ const styles = theme => ({
         margin: theme.spacing.unit,
     },
 });
+
+const menuId = 'awesome';
+
+const MyMenu = ({menuId, message}) => {
+    console.log(JSON.stringify(message, null, 2));
+
+    return (<Menu id={menuId}>
+        <Item onClick={() => alert("lol")}>
+            <span>🔷</span>
+            Ответить
+        </Item>
+        <Item onClick={() => alert('red')}>
+            <span>🛑</span>
+            Изменить
+        </Item>
+        <Item onClick={() => alert('red')}>
+            <span>🛑</span>
+            Удалить
+        </Item>
+    </Menu>)
+};
+
 
 @observer
 class MessageList extends React.Component {
@@ -82,6 +105,19 @@ class MessageList extends React.Component {
         }
     }
 
+    // Here come the magic
+    handleContextMenu = (message) => (e) => {
+        // always prevent default behavior
+        e.preventDefault();
+
+        // Don't forget to pass the id and the event and voila!
+        contextMenu.show({
+            id: menuId,
+            event: e,
+            message: message
+        });
+    };
+
     render() {
         const {classes} = this.props;
         // Loop through all the messages in the state and create a Message component
@@ -89,7 +125,7 @@ class MessageList extends React.Component {
         const avatar_images = this.props.chatUsers.map(chatUser =>
             rootStore.imageService.images.find(elem => elem.userId === chatUser.id) || null
         );
-        avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null)
+        avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null);
 
         const messages = this.props.messages.map((message, i, arr) => {
             let fromMe = message.from === myUserId;
@@ -106,6 +142,7 @@ class MessageList extends React.Component {
                         messageInfo={message}
                         fromMe={fromMe}
                         avatar={avatar}
+                        onContextMenu={this.handleContextMenu(message)}
                         ref={i === arr.length - 1 ? this.lastMessage : null}/>
                 </VisibilitySensor>
             );
@@ -119,6 +156,7 @@ class MessageList extends React.Component {
                     {messages}
                     <div ref={this.messagesEnd}/>
                 </div>
+                <MyMenu menuId={menuId}/>
             </div>
 
         );
