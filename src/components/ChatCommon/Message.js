@@ -208,7 +208,7 @@ class Message extends React.Component {
             mobileMessage =
 
                 <div className={classes.messageBlock}>
-                    <div className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
+                    <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                         <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                             <Typography
                                 variant="body2"
@@ -276,7 +276,7 @@ class Message extends React.Component {
                             )
                     }
                 </div>
-                <div className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
+                <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
@@ -333,7 +333,6 @@ class Message extends React.Component {
         }
 
         return (
-
             <div ref={this.props.forwardedRef}>
                 <Hidden smDown implementation="css">
                     <div className={classes.root}>
@@ -355,7 +354,7 @@ class Message extends React.Component {
                                 }
 
                             </div>
-                            <div className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe }>
+                            <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe }>
                                 <div style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',

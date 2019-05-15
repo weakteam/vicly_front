@@ -39,6 +39,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.light
             }`,
+        zIndex: 0,
     },
     fixPadding: {
         padding: 0,
