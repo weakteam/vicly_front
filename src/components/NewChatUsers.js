@@ -11,6 +11,7 @@ import {observer} from "mobx-react";
 import Loyalty from "@material-ui/icons/Loyalty"
 import Avatar from "@material-ui/core/Avatar";
 import Checkbox from "@material-ui/core/Checkbox";
+import Divider from "@material-ui/core/Divider";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -210,7 +211,7 @@ const stylesUser = theme => ({
 function UserCheckboxNonStyled(props) {
     const {classes, user, checked} = props;
     return (
-        <>
+        <div style={{display: 'flex'}}>
             <Avatar className={classes.userAvatar}>
                 {user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase()}
             </Avatar>
@@ -230,7 +231,7 @@ function UserCheckboxNonStyled(props) {
                     checked: classes.checkedBox,
                 }}
             />
-        </>
+        </div>
     )
 }
 
@@ -261,6 +262,7 @@ const styles = theme => ({
     gutters: {
         paddingTop: 6,
         paddingBottom: 6,
+        padding: 0,
     },
 
     badge: {
@@ -275,15 +277,6 @@ const styles = theme => ({
         alignItems: 'center'
     },
     WorkGroupBack: {
-        margin: '8px 0px 0px 8px',
-        [theme.breakpoints.down('xs')]: {
-            margin: '8px 8px 10px 8px',
-        },
-        borderRadius: 5,
-        paddingBottom: 5,
-        boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(213, 213, 213)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
-            }`,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#2b3346'
             }`,
@@ -325,7 +318,7 @@ class NewChatUsers extends React.Component {
 
         return (
             <div className={classes.WorkGroupBack}>
-                <ListItem button onClick={this.handleClick} className={classes.groupName}>
+                <ListItem disableGutters button onClick={this.handleClick} className={classes.groupName}>
                     <ListItem disableGutters classes={{
                         root: classes.gutters,
                     }}>
@@ -340,7 +333,6 @@ class NewChatUsers extends React.Component {
                 </ListItem>
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className={classes.active}>
-                        <div className={classes.infBlockFirst}>
                         {
                             userChatsNew.map(
                                 userChat =>
@@ -349,10 +341,9 @@ class NewChatUsers extends React.Component {
                                     />
                             )
                         }
-                        </div>
                     </List>
                 </Collapse>
-                {/* <Divider classes={{root: classes.root}}/>*/}
+               <Divider classes={{root: classes.root}}/>
             </div>
         )
     }

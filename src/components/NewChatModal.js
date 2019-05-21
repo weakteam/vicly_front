@@ -419,30 +419,10 @@ class NewChatModal extends React.Component {
                     </div>
                     <Divider/>
 
-                    <div className={classes.blockForm}>
-
-
-                        <Avatar className={classes.userAvatar}>
-                            {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                        </Avatar>
-                        <div style={{marginLeft: 10}}>
-                            <Typography variant="h5"
-                                        className={classes.nameUser}>{this.accountStore.fullName}</Typography>
-                            <Typography variant="caption"
-                                        noWrap
-                                        className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
-                        </div>
-                        <Checkbox
-                            onChange={this.handleChange.bind(this)}
-                            value={'b'}
-                            color="primary"
-                            style={{marginLeft: 'auto'}}
-                            classes={{
-                                root: classes.checkboxRoot,
-                                checked: classes.checkedBox,
-                            }}
-                        />
+                    <div className={classes.blockForm} style={{marginBottom: 0, overflow: "auto", maxHeight: 260, webkitOverflowScrolling: 'touch',  height: '100%',}}>
+                        <div style={{overflow: "hidden"}}>
                         {workgroup}
+                        </div>
                     </div>
                     <div className={classes.signIn}>
                         <Button type="submit" variant="contained" className={classes.submit}>Создать</Button>
