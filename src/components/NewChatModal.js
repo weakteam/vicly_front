@@ -11,6 +11,9 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import {BACKEND_URL} from "../common";
+import "../css/avatarHover.css"
+import CloudUpload from "@material-ui/icons/CloudUpload"
+import NewChatUsers from "./NewChatUsers";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -201,7 +204,7 @@ const styles = theme => ({
         },
     },
     checkedBox: {
-      color: '#9a5656!important',
+        color: '#9a5656!important',
     },
 });
 
@@ -317,11 +320,23 @@ class NewChatModal extends React.Component {
         this.createNewChat([1, 11, 6, 15], 'Флудилачка', 'fake')
     };
 
+    getUsers = () => {
+            return (
+                this.messagesStore.groups.map(workgroup => <NewChatUsers handleDrawerToggle={this.handleDrawerToggle}
+                                        workgroup={workgroup}
+                                        userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                                        groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/> )
+            )
+
+    };
+
     render() {
         const {classes} = this.props;
-        const workgroup = this.messagesStore.groups.find(elem => elem.id === this.accountStore.groupId);
+        const workgroup = this.getUsers();
+        const users = this.messagesStore.users.flatMap(elem => elem.id);
 
         let avatar_image = rootStore.imageService.images.find(elem => elem.userId === this.accountStore.userId);
+        console.log('dfdfdf', users);
 
         return (
             <div onclose={this.handleReset}>
@@ -340,7 +355,7 @@ class NewChatModal extends React.Component {
 
                     </div>
                 </div>
-                {}
+            {workgroup}
                 <form onSubmit={this.handleCreateNewChat} className={classes.form}>
                     <div className={classes.fixWidth}>
                         {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
@@ -348,17 +363,24 @@ class NewChatModal extends React.Component {
                             {
                                 this.state.avatar_image || avatar_image ?
                                     (
-                                        <div className={classes.kek}>
+                                        <div className="avatarArea">
+                                            <div className="downloadHover">
+                                                <CloudUpload className="downloadIcon"/>
+                                            </div>
                                             <Avatar
                                                 className={classes.avatar}
                                                 src={this.state.avatar_image || avatar_image.small}/>
                                         </div>
                                     )
                                     :
-                                    (
-                                        <Avatar className={classes.avatar}>
-                                            {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                                        </Avatar>
+                                    (<div className="avatarArea">
+                                            <div className="downloadHover">
+                                                <CloudUpload className="downloadIcon"/>
+                                            </div>
+                                            <Avatar className={classes.avatar}>
+                                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                            </Avatar>
+                                        </div>
                                     )
                             }
 
@@ -394,6 +416,8 @@ class NewChatModal extends React.Component {
                     <Divider/>
 
                     <div className={classes.blockForm}>
+
+
 
                         <div className={classes.infBlockFirst}>
                             <Avatar className={classes.userAvatar}>

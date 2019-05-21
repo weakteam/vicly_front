@@ -69,7 +69,7 @@ const styles = theme => ({
 });
 
 @observer
-class Workgroup extends React.Component {
+class NewChatUsers extends React.Component {
     state = {
         open: true,
     };
@@ -145,4 +145,4 @@ class Workgroup extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(Workgroup);
+export default withStyles(styles, {withTheme: true})(NewChatUsers);

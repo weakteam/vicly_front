@@ -10,7 +10,9 @@ import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import rootStore from "../store/RootStore";
-import Save from "@material-ui/icons/Save"
+import Save from "@material-ui/icons/SaveOutlined"
+import CloudUpload from "@material-ui/icons/CloudUpload"
+import "../css/avatarHover.css"
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -29,7 +31,7 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgb(74, 167, 115)' : 'rgb(74, 167, 115)'
+            theme.palette.type === 'light' ? 'rgb(127, 172, 147)' : 'rgb(127, 172, 147)'
             }`,
         //height: 85,
         // width: '100%',
@@ -47,7 +49,7 @@ const styles = theme => ({
             }`,
     },
     fixWidth: {
-      padding: 16,
+        padding: 16,
         display: 'flex',
         alignItems: 'center',
     },
@@ -123,10 +125,24 @@ const styles = theme => ({
         textAlign: 'end',
     },
     kek: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    uploadIcon: {
+        position: 'absolute',
+        visibility: 'hidden',
+        zIndex: 9000,
+        padding: 20,
+      //  display: 'none',
+
         '&:hover': {
             backgroundColor: '#000',
             borderRadius: '50%',
-            zIndex: 2
+            zIndex: 9000,
+            display: 'block',
+            visibility: 'visible',
+            cursor: 'pointer',
         },
     },
     avatar: {
@@ -146,8 +162,9 @@ const styles = theme => ({
             }`,
     },
     button: {
-      marginLeft: 'auto'
+        marginLeft: 'auto'
     },
+
 });
 
 class UserProfile extends React.Component {
@@ -207,17 +224,26 @@ class UserProfile extends React.Component {
                             {
                                 this.state.avatar_image || avatar_image ?
                                     (
-                                        <div className={classes.kek}>
+                                        <div className="avatarArea">
+                                            <div className="downloadHover">
+                                                <CloudUpload className="downloadIcon"/>
+                                            </div>
                                             <Avatar
                                                 className={classes.avatar}
                                                 src={this.state.avatar_image || avatar_image.small}/>
+
                                         </div>
                                     )
                                     :
                                     (
+                                        <div className="avatarArea">
+                                            <div className="downloadHover">
+                                                <CloudUpload className="downloadIcon"/>
+                                            </div>
                                         <Avatar className={classes.avatar}>
                                             {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
                                         </Avatar>
+                                        </div>
                                     )
                             }
 
@@ -232,10 +258,11 @@ class UserProfile extends React.Component {
                                         noWrap
                                         className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
                         </div>
-                        <IconButton className={classes.button} color="primary"  onClick={this.handleAvatarUpload} aria-label="Delete">
-                            <Save style={{color: 'rgb(74, 167, 115)'}} className={classes.saveIcon}/>
+                        <IconButton className={classes.button} color="primary" onClick={this.handleAvatarUpload}
+                                    aria-label="Delete">
+                            <Save style={{color: 'rgb(127, 172, 147)'}} className={classes.saveIcon}/>
                         </IconButton>
-                       {/* disabled={!this.state.blob} не Работает!!!!*/}
+                        {/* disabled={!this.state.blob} не Работает!!!!*/}
                     </div>
                     <Divider/>
                     <div className={classes.blockForm}>

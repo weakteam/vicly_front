@@ -240,7 +240,7 @@ class AttachmentShow extends React.Component {
                     <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
                          className={classes.attachedIcon}
                          onClick={attachment.loadFull}/>
-                    <div>
+                    <div style={{overflow: 'hidden'}}>
                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
                         <Typography className={classes.caption}>{+attachment.size + " kb"}</Typography>
                     </div>

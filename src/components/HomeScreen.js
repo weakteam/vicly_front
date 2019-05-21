@@ -52,8 +52,11 @@ const styles = theme => ({
     startCard: {
         cursor: 'pointer',
         '&:hover': {
-            boxShadow: '0px 0px 7px 5px rgba(0, 0, 0, 0.12)',
-            backgroundColor: "rgba(255,255,255,0.8)",
+            boxShadow: '0px 0px 10px 2px rgba(0, 0, 0, 0.12)',
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? 'rgba(134, 134, 134, 0.8)' : 'rgba(96, 110, 142, 0.54)'
+                }`,
+            //
         },
 display: 'flex',
         justifyContent: 'center',
@@ -62,7 +65,9 @@ display: 'flex',
         borderRadius: '50%',
         width: 100,
         height: 100,
-        backgroundColor: 'rgba(255, 255, 255, 0.48)',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? 'rgba(193, 193, 193, 0.8)' : 'rgba(32, 33, 43, 0.58)'
+            }`,
     },
     cardText: {
         '&:hover': {
