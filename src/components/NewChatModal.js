@@ -289,8 +289,8 @@ class NewChatModal extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user_ids: userIds,
-                name: name,
+                user_ids: this.state.values,
+                name: this.state.chatName,
                 purpose: purpose
             })
         })
@@ -317,7 +317,16 @@ class NewChatModal extends React.Component {
 
     handleUserToggle = (userArr) => {
         this.setState((prevState) => {
-            const arr = Array.from(new Set([...prevState.values, ...userArr]));
+            userArr.forEach((elem) => {
+                let index = prevState.values.indexOf(elem);
+                if (index !== -1) {
+                    prevState.values.splice(index, 1);
+                } else {
+                    prevState.values.push(elem);
+                }
+
+            });
+            const arr = Array.from(new Set([...prevState.values]));
             return {
                 ...prevState,
                 values: arr
@@ -329,8 +338,9 @@ class NewChatModal extends React.Component {
         return (
             this.messagesStore.groups.map(workgroup => <NewChatUsers
                 workgroup={workgroup}
+                checked={this.state.values}
                 userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
-                onUserToogle={this.handleUserToggle}/>)
+                handleUserToggle={this.handleUserToggle}/>)
         )
 
     };

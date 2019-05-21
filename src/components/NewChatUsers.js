@@ -209,7 +209,10 @@ const stylesUser = theme => ({
 });
 
 function UserCheckboxNonStyled(props) {
-    const {classes, user, checked} = props;
+    const {classes, user, checked, handleUserToggle} = props;
+    function onCheck(event) {
+        handleUserToggle([user.id]);
+    }
     return (
         <div style={{display: 'flex'}}>
             <Avatar className={classes.userAvatar}>
@@ -223,6 +226,7 @@ function UserCheckboxNonStyled(props) {
                             className={classes.userRole}>({user.position ? user.position : 'Должность не указана'})</Typography>
             </div>
             <Checkbox
+                onChange={onCheck}
                 value={'b'}
                 color="primary"
                 style={{marginLeft: 'auto'}}
@@ -337,6 +341,8 @@ class NewChatUsers extends React.Component {
                             userChatsNew.map(
                                 userChat =>
                                     <UserCheckbox
+                                        handleUserToggle={this.props.handleUserToggle}
+                                        checked={this.props.checked.includes(userChat.user.id)}
                                         user={userChat.user}
                                     />
                             )
