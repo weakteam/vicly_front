@@ -208,6 +208,7 @@ const styles = theme => ({
     },
 });
 
+
 class NewChatModal extends React.Component {
     constructor(props) {
         super(props);
@@ -280,12 +281,6 @@ class NewChatModal extends React.Component {
         // console.log('Old inline massive', this.state.values)
     };
 
-    handleAvatarUpload = () => {
-        if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {
-            rootStore.imageService.uploadAvatar(this.avatarInput.current.files[0]);
-        }
-    };
-
     createNewChat(userIds, name, purpose) {
         fetch(BACKEND_URL + "/chat/create", {
             method: 'POST',
@@ -320,13 +315,23 @@ class NewChatModal extends React.Component {
         this.createNewChat([1, 11, 6, 15], 'Флудилачка', 'fake')
     };
 
+    handleUserToggle = (userArr) => {
+        this.setState((prevState) => {
+            const arr = Array.from(new Set([...prevState.values, ...userArr]));
+            return {
+                ...prevState,
+                values: arr
+            }
+        })
+    };
+
     getUsers = () => {
-            return (
-                this.messagesStore.groups.map(workgroup => <NewChatUsers handleDrawerToggle={this.handleDrawerToggle}
-                                        workgroup={workgroup}
-                                        userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
-                                        groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/> )
-            )
+        return (
+            this.messagesStore.groups.map(workgroup => <NewChatUsers
+                workgroup={workgroup}
+                userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                onUserToogle={this.handleUserToggle}/>)
+        )
 
     };
 
@@ -355,7 +360,6 @@ class NewChatModal extends React.Component {
 
                     </div>
                 </div>
-            {workgroup}
                 <form onSubmit={this.handleCreateNewChat} className={classes.form}>
                     <div className={classes.fixWidth}>
                         {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
@@ -418,29 +422,27 @@ class NewChatModal extends React.Component {
                     <div className={classes.blockForm}>
 
 
-
-                        <div className={classes.infBlockFirst}>
-                            <Avatar className={classes.userAvatar}>
-                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                            </Avatar>
-                            <div style={{marginLeft: 10}}>
-                                <Typography variant="h5"
-                                            className={classes.nameUser}>{this.accountStore.fullName}</Typography>
-                                <Typography variant="caption"
-                                            noWrap
-                                            className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
-                            </div>
-                            <Checkbox
-                                onChange={this.handleChange.bind(this)}
-                                value={'b'}
-                                color="primary"
-                                style={{marginLeft: 'auto'}}
-                                classes={{
-                                    root: classes.checkboxRoot,
-                                    checked: classes.checkedBox,
-                                }}
-                            />
+                        <Avatar className={classes.userAvatar}>
+                            {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                        </Avatar>
+                        <div style={{marginLeft: 10}}>
+                            <Typography variant="h5"
+                                        className={classes.nameUser}>{this.accountStore.fullName}</Typography>
+                            <Typography variant="caption"
+                                        noWrap
+                                        className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
                         </div>
+                        <Checkbox
+                            onChange={this.handleChange.bind(this)}
+                            value={'b'}
+                            color="primary"
+                            style={{marginLeft: 'auto'}}
+                            classes={{
+                                root: classes.checkboxRoot,
+                                checked: classes.checkedBox,
+                            }}
+                        />
+                        {workgroup}
                     </div>
                     <div className={classes.signIn}>
                         <Button type="submit" variant="contained" className={classes.submit}>Создать</Button>
