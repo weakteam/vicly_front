@@ -227,7 +227,7 @@ class DocumentWindow extends React.Component {
                         <Typography variant="h6">Загрузить файл</Typography>
                     </div>
                     <div className={classes.blockForm}>
-                        <div className={classes.block}>
+                      {/*  <div className={classes.block}>
                             <InsertDriveFile className={classes.fileIcon}/>
                             <div style={{marginLeft: 23}}>
                                 <Typography variant="h6">Name of file</Typography>
@@ -261,7 +261,7 @@ class DocumentWindow extends React.Component {
                                 <Typography variant="h6">Name of file</Typography>
                                 <Typography variant="caption">meta data</Typography>
                             </div>
-                        </div>
+                        </div>*/}
                     </div>
                 </form>
             </div>

@@ -44,10 +44,10 @@ const styles = theme => ({
                 boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
                 maxWidth: 500,
                 [theme.breakpoints.down('md')]: {
-                    maxWidth: 300,
+                    maxWidth: 226,
                 },
                 [theme.breakpoints.down('xs')]: {
-                    maxWidth: 250,
+                    maxWidth: 300,
                 },
                 padding: '3px 14px 3px 14px',
                 backgroundColor: '#d5f0ff',
@@ -56,10 +56,10 @@ const styles = theme => ({
 
             fromMeMob: {
                 maxWidth: 500,
-                [theme.breakpoints.down('xs')]: {
+                [theme.breakpoints.down('md')]: {
                     maxWidth: 300,
                 },
-                [theme.breakpoints.down('md')]: {
+                [theme.breakpoints.down('xs')]: {
                     maxWidth: 300,
                 },
                 padding: '3px 14px 3px 14px',
@@ -69,10 +69,10 @@ const styles = theme => ({
             },
             toMe: {
                 maxWidth: 500,
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 300,
-                },
                 [theme.breakpoints.down('md')]: {
+                    maxWidth: 226,
+                },
+                [theme.breakpoints.down('xs')]: {
                     maxWidth: 300,
                 },
                 padding: '3px 14px 3px 14px',
@@ -92,10 +92,10 @@ const styles = theme => ({
             },
             wrap: {
                 maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
+                [theme.breakpoints.down('xs')]: {
                     maxWidth: 300,
                 },
-                [theme.breakpoints.down('xs')]: {
+                [theme.breakpoints.down('md')]: {
                     maxWidth: 300,
                 },
                 padding: 8,
@@ -109,7 +109,7 @@ const styles = theme => ({
             },
             nondelivered: {
                 transition: theme.transitions.create(['border-color', 'box-shadow']),
-                boxShadow: `${fade('#ef0511', 0.25)} 0 0 0 0.2rem`,
+                boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
             },
             mess: {
                 fontSize: '0.8rem',

@@ -32,7 +32,7 @@ const styles = theme => ({
         margin: '5px 5px 5px 5px',
         borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -1px 0px 1px rgba(49, 49, 49, 0.1)' : 'inset 0px -2px 0px 1px rgba(45, 53, 70, 0.86)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(49, 49, 49, 0.1)' : 'inset 0px -3px 0px 0px rgba(45, 53, 70, 0.86)'
             }`,
         position: 'fixed',
         top: 0,
@@ -60,6 +60,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             left: 0,
             top: 55,
+            borderRadius: '0 0 5px 5px',
         },
     },
     namePosition: {

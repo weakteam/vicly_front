@@ -14,18 +14,22 @@ const styles = theme => ({
     position: {
         margin: '0 8px 0 8px',
         borderRadius: '0 0 5px 5px',
-        width: 'calc(400px - 16px)',
+        /*width: 'calc(400px - 16px)',*/
         top: 81,
-        [theme.breakpoints.down('md')]: {
+        left: 0,
+        right: 0,
+      /*  [theme.breakpoints.down('md')]: {
             width: 'calc(280px - 16px)',
         },
         [theme.breakpoints.down('sm')]: {
             width: 'calc(250px - 16px)',
-        },
+        },*/
         [theme.breakpoints.down('xs')]: {
-            width: '96%',
+            //width: '96%',
             top: 58,
-            borderRadius: '5px 5px 5px 5px',
+            left: 0,
+            right: 0,
+            borderRadius: '0 0 5px 5px',
             position: "absolute",
             borderBottom: 0,
         },
@@ -33,7 +37,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
         display: 'inline-flex',
-        position: "fixed",
+        position: "absolute",
         alignItems: 'center',
         height: 55,
         /*borderBottom: ` ${

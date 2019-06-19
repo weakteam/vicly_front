@@ -137,7 +137,7 @@ const styles = theme => ({
             transform: 'translate(-50%, -50%)',
             objectFit: 'scale-down',
             top: '50%',
-         //   maxWidth: '100%'
+            //   maxWidth: '100%'
         },
     infBlockFirst: {
         padding: 15,
@@ -163,7 +163,7 @@ const styles = theme => ({
         backgroundColor: '#fff',
         borderRadius: '0px 5px 5px 0px',
         height: '100%',
-       // width: '20%',
+        // width: '20%',
         width: 400,
         /*[theme.breakpoints.down('md')]: {
             width: '30%',
@@ -240,7 +240,7 @@ class AttachmentShow extends React.Component {
                     <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
                          className={classes.attachedIcon}
                          onClick={attachment.loadFull}/>
-                    <div>
+                    <div style={{overflow: 'hidden'}}>
                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
                         <Typography className={classes.caption}>{+attachment.size + " kb"}</Typography>
                     </div>

@@ -11,6 +11,7 @@ import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 import AttachmentBar from "../ChatCommon/AttachmentBar";
 import {Scrollbars} from "react-custom-scrollbars";
+import ThreadWindow from "../ChatCommon/ThreadWindow";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -111,6 +112,7 @@ class ChatWindow extends React.Component {
             }
             return (
                 <div className={classes.chatWindow}>
+                    <ThreadWindow/>
                     <ChatBar match={this.props.match.params.userId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?

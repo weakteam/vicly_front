@@ -302,4 +302,8 @@ export default class MessagesStore {
         this.previousIsCurrentChatForUser = this.isCurrentChatForUser;
         this.previousCurrentChatId = this.currentChatId;
     }
+
+    addGroupChat(message) {
+        this.groupChatsNew.push(message)
+    };
 }

@@ -11,6 +11,9 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import {BACKEND_URL} from "../common";
+import "../css/avatarHover.css"
+import CloudUpload from "@material-ui/icons/CloudUpload"
+import NewChatUsers from "./NewChatUsers";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -98,7 +101,7 @@ const styles = theme => ({
     blockForm: {
         //display: 'flex',
         alignItems: 'flex-start',
-        padding: 13,
+        padding: '15px 35px 0px 35px',
     },
     form: {
         boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
@@ -201,9 +204,10 @@ const styles = theme => ({
         },
     },
     checkedBox: {
-      color: '#9a5656!important',
+        color: '#9a5656!important',
     },
 });
+
 
 class NewChatModal extends React.Component {
     constructor(props) {
@@ -277,12 +281,6 @@ class NewChatModal extends React.Component {
         // console.log('Old inline massive', this.state.values)
     };
 
-    handleAvatarUpload = () => {
-        if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {
-            rootStore.imageService.uploadAvatar(this.avatarInput.current.files[0]);
-        }
-    };
-
     createNewChat(userIds, name, purpose) {
         fetch(BACKEND_URL + "/chat/create", {
             method: 'POST',
@@ -291,8 +289,8 @@ class NewChatModal extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user_ids: userIds,
-                name: name,
+                user_ids: this.state.values,
+                name: this.state.chatName,
                 purpose: purpose
             })
         })
@@ -317,11 +315,43 @@ class NewChatModal extends React.Component {
         this.createNewChat([1, 11, 6, 15], 'Флудилачка', 'fake')
     };
 
+    handleUserToggle = (userArr) => {
+        this.setState((prevState) => {
+            userArr.forEach((elem) => {
+                let index = prevState.values.indexOf(elem);
+                if (index !== -1) {
+                    prevState.values.splice(index, 1);
+                } else {
+                    prevState.values.push(elem);
+                }
+
+            });
+            const arr = Array.from(new Set([...prevState.values]));
+            return {
+                ...prevState,
+                values: arr
+            }
+        })
+    };
+
+    getUsers = () => {
+        return (
+            this.messagesStore.groups.map(workgroup => <NewChatUsers
+                workgroup={workgroup}
+                checked={this.state.values}
+                userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                handleUserToggle={this.handleUserToggle}/>)
+        )
+
+    };
+
     render() {
         const {classes} = this.props;
-        const workgroup = this.messagesStore.groups.find(elem => elem.id === this.accountStore.groupId);
+        const workgroup = this.getUsers();
+        const users = this.messagesStore.users.flatMap(elem => elem.id);
 
         let avatar_image = rootStore.imageService.images.find(elem => elem.userId === this.accountStore.userId);
+        console.log('dfdfdf', users);
 
         return (
             <div onclose={this.handleReset}>
@@ -340,7 +370,6 @@ class NewChatModal extends React.Component {
 
                     </div>
                 </div>
-                {}
                 <form onSubmit={this.handleCreateNewChat} className={classes.form}>
                     <div className={classes.fixWidth}>
                         {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
@@ -348,17 +377,24 @@ class NewChatModal extends React.Component {
                             {
                                 this.state.avatar_image || avatar_image ?
                                     (
-                                        <div className={classes.kek}>
+                                        <div className="avatarArea">
+                                            <div className="downloadHover">
+                                                <CloudUpload className="downloadIcon"/>
+                                            </div>
                                             <Avatar
                                                 className={classes.avatar}
                                                 src={this.state.avatar_image || avatar_image.small}/>
                                         </div>
                                     )
                                     :
-                                    (
-                                        <Avatar className={classes.avatar}>
-                                            {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                                        </Avatar>
+                                    (<div className="avatarArea">
+                                            <div className="downloadHover">
+                                                <CloudUpload className="downloadIcon"/>
+                                            </div>
+                                            <Avatar className={classes.avatar}>
+                                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                            </Avatar>
+                                        </div>
                                     )
                             }
 
@@ -393,29 +429,9 @@ class NewChatModal extends React.Component {
                     </div>
                     <Divider/>
 
-                    <div className={classes.blockForm}>
-
-                        <div className={classes.infBlockFirst}>
-                            <Avatar className={classes.userAvatar}>
-                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                            </Avatar>
-                            <div style={{marginLeft: 10}}>
-                                <Typography variant="h5"
-                                            className={classes.nameUser}>{this.accountStore.fullName}</Typography>
-                                <Typography variant="caption"
-                                            noWrap
-                                            className={classes.userRole}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
-                            </div>
-                            <Checkbox
-                                onChange={this.handleChange.bind(this)}
-                                value={'b'}
-                                color="primary"
-                                style={{marginLeft: 'auto'}}
-                                classes={{
-                                    root: classes.checkboxRoot,
-                                    checked: classes.checkedBox,
-                                }}
-                            />
+                    <div className={classes.blockForm} style={{marginBottom: 0, overflow: "auto", maxHeight: 260, webkitOverflowScrolling: 'touch',  height: '100%',}}>
+                        <div style={{overflow: "hidden"}}>
+                        {workgroup}
                         </div>
                     </div>
                     <div className={classes.signIn}>
