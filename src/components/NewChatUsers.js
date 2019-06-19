@@ -214,7 +214,7 @@ function UserCheckboxNonStyled(props) {
         handleUserToggle([user.id]);
     }
     return (
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', paddingBottom: 10,}}>
             <Avatar className={classes.userAvatar}>
                 {user.first_name[0].toUpperCase() + user.last_name[0].toUpperCase()}
             </Avatar>
@@ -256,6 +256,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        marginRight: 12,
     },
     root: {
 
@@ -335,8 +336,8 @@ class NewChatUsers extends React.Component {
                     </ListItem>
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
-                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding className={classes.active}>
+                <Collapse style={{paddingTop: 10}} in={this.state.open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className={classes.active} >
                         {
                             userChatsNew.map(
                                 userChat =>

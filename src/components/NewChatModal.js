@@ -101,7 +101,7 @@ const styles = theme => ({
     blockForm: {
         //display: 'flex',
         alignItems: 'flex-start',
-        padding: 13,
+        padding: '15px 35px 0px 35px',
     },
     form: {
         boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',

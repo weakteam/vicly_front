@@ -8,6 +8,7 @@ const MARK_READ = 5;
 const USER_ACTIVITY = 10;
 const USER_ONLINE = 11;
 const USER_OFFLINE = 12;
+const NEW_GROUP_CHAT = 21;
 
 
 export default class WebsocketService {
@@ -101,6 +102,10 @@ export default class WebsocketService {
                 break;
             case MARK_READ:
                 this.rootStore.messagesStore.onReadMessage(payload.message);
+                break;
+            case NEW_GROUP_CHAT:
+                console.log(payload.message);
+                this.rootStore.messagesStore.addGroupChat(payload.message);
                 break;
             default:
                 break;

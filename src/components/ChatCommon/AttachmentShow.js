@@ -137,7 +137,7 @@ const styles = theme => ({
             transform: 'translate(-50%, -50%)',
             objectFit: 'scale-down',
             top: '50%',
-         //   maxWidth: '100%'
+            //   maxWidth: '100%'
         },
     infBlockFirst: {
         padding: 15,
@@ -163,7 +163,7 @@ const styles = theme => ({
         backgroundColor: '#fff',
         borderRadius: '0px 5px 5px 0px',
         height: '100%',
-       // width: '20%',
+        // width: '20%',
         width: 400,
         /*[theme.breakpoints.down('md')]: {
             width: '30%',

@@ -383,7 +383,7 @@ class InviteLogin extends React.Component {
                                         <Typography className={classes.text}>Рабочие
                                             группы:</Typography>
                                         <div className={classes.text2}>
-                                            <Typography className={classes.text2}>{this.state.inviteInfo ? this.state.inviteInfo.group_name + ' ' + this.state.inviteInfo.groupId : ('')}</Typography>
+                                            <Typography className={classes.text2}>{this.state.inviteInfo ? this.state.inviteInfo.group_name : ('')}</Typography>
                                         </div>
                                     </div>
                                     <Divider/>

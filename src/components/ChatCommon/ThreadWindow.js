@@ -68,7 +68,7 @@ class ThreadWindow extends React.Component {
     render() {
         const {classes, theme} = this.props;
         return (
-            <div className={classes.position}>
+            <div className={classes.position} style={{display: 'none'}}>
                 <div className={classes.headerBlock}>
                     <Typography variant="h6" style={{padding: 10}}>Ответы</Typography>
                     <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleMenuClose}>
