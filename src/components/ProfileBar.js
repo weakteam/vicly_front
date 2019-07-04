@@ -16,19 +16,7 @@ const {accountStore} = rootStore;
 const styles = theme => ({
     position: {
         borderRadius: '5px 5px 0 0',
-        width: 'calc(400px - 16px)',
-        [theme.breakpoints.down('md')]: {
-            width: 'calc(280px - 16px)',
-        },
-        [theme.breakpoints.down('sm')]: {
-            width: 'calc(250px - 16px)',
-        },
-        [theme.breakpoints.down('xs')]: {
-            width: '100%',
-        },
         margin: '5px 8px 0px 8px',
-        padding: '6px 0px 6px 0px',
-       zIndex: 1,
         position: 'absolute',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
@@ -36,6 +24,9 @@ const styles = theme => ({
         display: 'inline-flex',
         alignItems: 'center',
         top: 0,
+        left: 0,
+        right: 0,
+
     },
     userDisplay: {},
     bage: {

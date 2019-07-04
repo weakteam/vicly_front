@@ -24,6 +24,7 @@ const styles = theme => ({
         position: 'absolute',
         top: 0,
         right: 0,
+        left: 0,
         display: 'inline-flex',
         justifyContent: 'space-between',
        // height: 55,
@@ -31,6 +32,10 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
+        [theme.breakpoints.down('xs')]: {
+            top: 55,
+            borderRadius: '0 0 5px 5px',
+        },
         /*borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             //  theme.palette.mime === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
@@ -38,7 +43,7 @@ const styles = theme => ({
         /*  borderLeft: ` ${
               theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
               }`,*/
-        left: 0,
+
      /*   left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,

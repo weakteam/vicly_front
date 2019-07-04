@@ -55,6 +55,9 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#f6f6f6' : '#171b26'
             }`,
         padding: '15px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '3%',
+        },
         display: 'flex',
         // alignItems: 'center',
     },
@@ -99,6 +102,17 @@ const styles = theme => ({
             }`,
         marginBottom: 5,
     },
+    textInfo: {
+        padding: '12px 30px 0px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '0 3%',
+        },
+        fontSize: '1em',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
+        marginBottom: 5,
+    },
     block: {
         width: '100%'
     },
@@ -106,6 +120,9 @@ const styles = theme => ({
         //display: 'flex',
         alignItems: 'flex-start',
         padding: '15px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '3%',
+        },
     },
     form: {
         boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
@@ -171,6 +188,11 @@ const styles = theme => ({
     userAvatar: {
         width: 40,
         height: 40,
+        [theme.breakpoints.down('xs')]: {
+            width: 20,
+            height: 20,
+        },
+
     },
     nameUser: {
         fontSize: '1.1rem',
@@ -192,7 +214,11 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 30,
+        [theme.breakpoints.down('xs')]: {
+            marginTop: '3%',
+        },
+
     },
     submit: {
         width: '30%',
@@ -213,6 +239,9 @@ const styles = theme => ({
     },
     headerBar: {
         padding: '15px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '3%',
+        },
         display: 'flex',
         alignItems: 'center',
     },
@@ -437,12 +466,18 @@ class NewChatModal extends React.Component {
                         {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
                                 avatar!</Button>*/}
                     </div>
-                   {/* <Divider/>*/}
+                    {/* <Divider/>*/}
 
-                    <Typography variant="overline" style={{padding: '12px 30px 0px', fontSize: '1em'}} className={classes.text}>Добавьте пользователей</Typography>
-                    <div className={classes.blockForm} style={{marginBottom: 0, overflow: "auto", maxHeight: 260, webkitOverflowScrolling: 'touch',  height: '100%',}}>
+                    <Typography variant="overline" className={classes.textInfo}>Добавьте пользователей</Typography>
+                    <div className={classes.blockForm} style={{
+                        marginBottom: 0,
+                        overflow: "auto",
+                        maxHeight: 260,
+                        webkitOverflowScrolling: 'touch',
+                        height: '100%',
+                    }}>
                         <div style={{overflow: "hidden"}}>
-                        {workgroup}
+                            {workgroup}
                         </div>
                     </div>
                     <div className={classes.signIn}>

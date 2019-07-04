@@ -20,7 +20,7 @@ class LoadingMessage extends React.Component {
 
 const style = {
     center: {
-        display: 'flex',
+     /*   display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       // width: '100%',
@@ -29,7 +29,7 @@ const style = {
         bottom: 0,
         left: 0,
       //  height: '100%',
-        right: 0,
+        right: 0,*/
 
     }
 };
@@ -66,16 +66,7 @@ function withSplashScreen(WrappedComponent) {
 
             // otherwise, show the desired route
             return (
-                <div style={{display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    // width: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    //  height: '100%',
-                    right: 0,}}>
+                <div >
                     <Slide direction="up" mountOnEnter unmountOnExit in={this.state.loading} timeout={{
                         appear: 500,
                         enter: 300,

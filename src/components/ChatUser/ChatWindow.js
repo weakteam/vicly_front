@@ -34,23 +34,23 @@ const styles = theme => ({
             }`,
     },
     chatWindow: {
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         right: 0,
         bottom: 0,
-        left: 400,
+        left: 0,
         padding: '59px 0 57px 20px',
         [theme.breakpoints.down('md')]: {
-            left: 280,
+           // left: 280,
             padding: '60px 20px 57px 20px',
         },
         [theme.breakpoints.down('sm')]: {
-            left: 250
+           // left: 250
         },
         [theme.breakpoints.down('xs')]: {
-            left: 0,
-            top: 55,
-            padding: '56 0px 57px 0px',
+           //left: 0,
+          //  top: 55,
+            padding: '112px 0px 57px 0px',
         },
        // height: '100%',
         overflow: 'hidden',
