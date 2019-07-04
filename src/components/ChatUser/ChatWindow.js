@@ -41,18 +41,18 @@ const styles = theme => ({
         left: 0,
         padding: '59px 0 57px 20px',
         [theme.breakpoints.down('md')]: {
-           // left: 280,
+            // left: 280,
             padding: '60px 20px 57px 20px',
         },
         [theme.breakpoints.down('sm')]: {
-           // left: 250
+            // left: 250
         },
         [theme.breakpoints.down('xs')]: {
-           //left: 0,
-          //  top: 55,
+            //left: 0,
+            //  top: 55,
             padding: '112px 0px 57px 0px',
         },
-       // height: '100%',
+        // height: '100%',
         overflow: 'hidden',
     },
 });
@@ -80,7 +80,7 @@ class ChatWindow extends React.Component {
     };
 
     handleSendMessage = (message) => {
-        this.props.chat.postMessage(message.message,message.attachments);
+        this.props.chat.postMessage(message.message, message.attachments);
         // this.scrollToBottom();
     };
 
@@ -131,12 +131,12 @@ class ChatWindow extends React.Component {
                                 <Loader active inverted>Loading</Loader>
                             ) : chat && messages && messages.length > 0 ? (
 
-                                    <MessageList
-                                        myselfUser={myselfUser}
-                                        chatUsers={[chat.user]}
-                                        messages={messages}
-                                        scrollHandler={this.scrollHandler}
-                                        ref={this.messageList}/>
+                                <MessageList
+                                    myselfUser={myselfUser}
+                                    chatUsers={[chat.user]}
+                                    messages={messages}
+                                    scrollHandler={this.scrollHandler}
+                                    ref={this.messageList}/>
 
                             ) : (
                                 <div className={classes.emptyChat}>
