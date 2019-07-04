@@ -284,7 +284,7 @@ const styles = theme => ({
     },
     listFix: {
         width: 'initial',
-        padding: '10px 3px 10px 8px',
+        padding: '20px 3px 10px 8px',
         [theme.breakpoints.down('xs')]: {
            padding: '16px 5px 20px 5px ',
         },
