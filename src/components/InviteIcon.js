@@ -34,10 +34,13 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '95%',
         },
-        width: 585,
-        backgroundColor: ` ${
+        [theme.breakpoints.down('sm')]: {
+            width: '95%',
+        },
+        width: 890,
+        /*backgroundColor: ` ${
             theme.palette.type === 'light' ? "#679dbd" : "#679dbd"
-            }`,
+            }`,*/
         boxShadow: theme.shadows[5],
         // padding: theme.spacing.unit * 4,
     },

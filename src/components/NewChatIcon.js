@@ -30,15 +30,19 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
-        width: 600,
+
         [theme.breakpoints.down('xs')]: {
             width: '95%',
         },
+        [theme.breakpoints.down('sm')]: {
+            width: '95%',
+        },
+        width: 890,
         outline: 'none',
         borderRadius: 5,
-        backgroundColor: ` ${
+       /* backgroundColor: ` ${
             theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
-            }`,
+            }`,*/
       //  padding: 30,
        /* [theme.breakpoints.down('xs')]: {
             width: '80%',

@@ -204,7 +204,7 @@ const stylesUser = theme => ({
         },
     },
     checkedBox: {
-        color: '#9a5656!important',
+        color: '#48a1a4!important',
     },
 });
 
@@ -282,9 +282,9 @@ const styles = theme => ({
         alignItems: 'center'
     },
     WorkGroupBack: {
-        backgroundColor: ` ${
+        /*backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#2b3346'
-            }`,
+            }`,*/
 
     },
 });

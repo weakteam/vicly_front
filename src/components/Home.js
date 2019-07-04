@@ -100,7 +100,7 @@ const styles = theme => ({
         boxShadow: theme.shadows[0],
         position: 'absolute',
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
     },
     menuButton: {
@@ -135,7 +135,7 @@ const styles = theme => ({
         flexGrow: 1,
         flexShrink: 1,
         width: '100%',
-        boxShadow: '10px 0px 20px 20px rgba(0, 0, 0, 0.06)',
+        boxShadow: '9px 0px 20px 20px rgba(0, 0, 0, 0.14)',
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
             }`,
@@ -448,7 +448,7 @@ class Home extends React.Component {
                     </Hidden>
                 </nav>
 
-                <main style={{pointerEvents : this.state.mobileOpen ? 'none' : '', position : this.state.mobileOpen ? 'fixed' : ''}} className={classes.content}>
+                <main style={{display : this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?

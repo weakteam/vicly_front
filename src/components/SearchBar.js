@@ -45,7 +45,7 @@ const styles = theme => ({
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 6px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
             }`,
         zIndex: 1,
     },
@@ -80,13 +80,12 @@ const styles = theme => ({
     },
     searchIcon: {
         height: '100%',
-        width: '100%',
+        width: '97%',
         position: 'absolute',
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingRight: 7,
     },
     inputRoot: {
         color: ` ${
@@ -99,7 +98,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#efefef' : "#49536d"
             }`,
         width: '100%',
-        borderRadius: 4,
+        borderRadius: 5,
         padding: 8,
     },
 });

@@ -18,6 +18,7 @@ import {observer} from "mobx-react";
 const styles = theme => ({
             root: {
                 paddingBottom: 20,
+
             },
             rootMob: {
                 paddingBottom: 20,
@@ -36,8 +37,9 @@ const styles = theme => ({
                 alignItems: 'flex-end',
             },
             avatarIco: {
-                width: 35,
-                height: 35,
+                width: 40,
+                height: 40,
+                borderRadius: 5,
                 boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
             },
             fromMe: {
@@ -51,7 +53,7 @@ const styles = theme => ({
                 },
                 padding: '3px 14px 3px 14px',
                 backgroundColor: '#d5f0ff',
-                borderRadius: 10,
+                borderRadius: '10px 10px 10px 0',
             },
 
             fromMeMob: {
@@ -60,11 +62,11 @@ const styles = theme => ({
                     maxWidth: 300,
                 },
                 [theme.breakpoints.down('xs')]: {
-                    maxWidth: 300,
+                    maxWidth: 225,
                 },
                 padding: '3px 14px 3px 14px',
                 backgroundColor: '#e2f0f1',
-                borderRadius: 10,
+                borderRadius: '10px 10px 0px 10px',
                 boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
             },
             toMe: {
@@ -73,11 +75,11 @@ const styles = theme => ({
                     maxWidth: 226,
                 },
                 [theme.breakpoints.down('xs')]: {
-                    maxWidth: 300,
+                    maxWidth: 225,
                 },
                 padding: '3px 14px 3px 14px',
                 backgroundColor: '#f9f9f9',
-                borderRadius: 10,
+                borderRadius: '10px 10px 10px 0',
                 boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
             },
             messageBlock: {
@@ -208,7 +210,7 @@ class Message extends React.Component {
             mobileMessage =
 
                 <div className={classes.messageBlock}>
-                    <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
+                    <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMeMob + " " + msgColor : classes.toMe}>
                         <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                             <Typography
                                 variant="body2"

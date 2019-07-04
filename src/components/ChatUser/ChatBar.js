@@ -19,7 +19,7 @@ const styles = theme => ({
         margin: '5px 5px 5px 5px',
         borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(49, 49, 49, 0.1)' : 'inset 0px -3px 0px 0px rgba(45, 53, 70, 0.86)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(218, 218, 218), 0px 4px 7px 0px rgba(0, 0, 0, 0.07)' : 'inset 0px -3px 0px 0px rgba(45, 53, 70, 0.86)'
             }`,
         position: 'absolute',
         top: 0,
@@ -38,7 +38,8 @@ const styles = theme => ({
         /*  borderLeft: ` ${
               theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
               }`,*/
-        left: 400,
+        left: 0,
+     /*   left: 400,
         [theme.breakpoints.down('md')]: {
             left: 280,
         },
@@ -49,7 +50,7 @@ const styles = theme => ({
             left: 0,
             top: 55,
             borderRadius: '0 0 5px 5px',
-        },
+        },*/
     },
     namePosition: {
         display: 'inline-flex',

@@ -40,7 +40,10 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             width: '95%',
         },
-        width: 500,
+        [theme.breakpoints.down('sm')]: {
+            width: '95%',
+        },
+        width: 890,
         boxShadow: theme.shadows[5],
     },
     menu: {
@@ -59,6 +62,11 @@ const styles = theme => ({
     },
     toolbar: {
         padding: 0
+    },
+    avatar: {
+      borderRadius: 5,
+        width: 45,
+        height: 45,
     },
 });
 
@@ -119,12 +127,12 @@ class ProfileIco extends React.Component {
                                     {
                                         avatar_image ?
                                             (
-                                                <Avatar src={avatar_image.small}/>
+                                                <Avatar className={classes.avatar} src={avatar_image.small}/>
                                             )
                                             :
                                             (
-                                                <Avatar
-                                                    style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
+                                                <Avatar className={classes.avatar}
+                                                        style={{backgroundColor: `${colorChange}`}}> {accountStore.first_name[0].toUpperCase() + accountStore.last_name[0].toUpperCase()} </Avatar>
                                             )
                                     }
                                 </IconButton>

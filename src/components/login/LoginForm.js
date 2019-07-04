@@ -10,9 +10,10 @@ import {observer} from "mobx-react";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import {fade} from '@material-ui/core/styles/colorManipulator';
-import Background from "../../images/login.jpg"
+import Background from "../../images/fon1.jpg"
 import Dark from "../../images/rer.jpg"
-// import Background from "../../images/loginBack.jpg"
+import Logo from "../../images/LoginLogo.svg"
+import FormBack from "../../images/LoginForm.jpg"
 import rootStore from "../../store/RootStore";
 import history from "../../store/history"
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -32,41 +33,49 @@ const styles = theme => ({
         alignItems: 'center',
         [theme.breakpoints.down('xs')]: {
             minHeight: '100%',
+            backgroundColor: '#fff',
         },
         backgroundSize: 'cover',
-        backgroundImage: 'url(' + Background + ')',
-        backgroundColor: theme.palette.primary.main,
+        // backgroundImage: 'url(' + Background + ')',
+        backgroundColor: '#222c33',
     },
     main: {
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.down('xs')]: {
-            width: '95%',
+            width: '100%',
+            height: '100%',
         },
-        width: 435,
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        width: 900,
+        borderRadius: 5,
         boxShadow: theme.shadows[12],
     },
     paper: {
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'flex-start',
+        },
+        height: 500,
         display: 'flex',
-        flexDirection: 'column',
+        borderRadius: 5,
         justifyContent: 'center',
         boxShadow: theme.shadows[0],
         backgroundColor: '#ffffff00',
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
     },
     form: {
         //  width: '100%', // Fix IE 11 issue.
-        padding: 30,
+        alignItems: 'center',
+        display: 'flex',
+        padding: ' 50px 22px',
+        [theme.breakpoints.down('xs')]: {
+            padding: ' 10px 22px',
+        },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
             }`,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
     },
     submit: {
-        width: '50%',
+        width: '100%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#66a1a6' : '#2e374c'
@@ -94,7 +103,7 @@ const styles = theme => ({
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
         },
         marginTop: 19,
-        borderRadius: 10,
+        borderRadius: 5,
         height: 30,
         paddingLeft: 10,
         backgroundColor: ` ${
@@ -129,20 +138,29 @@ const styles = theme => ({
             }`,*/
     },
     header: {
-        textAlign: 'center',
-        fontSize: '1.6em',
-        padding: 26,
+        // textAlign: 'center',
+        fontSize: '2.2rem',
+        // padding: 26,
+        // marginLeft: 30,
         color: ` ${
             theme.palette.type === 'light' ? '#ffffff' : theme.palette.secondary.dark
             }`,
     },
     headerDiv: {
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgba(86, 160, 159, 0.31)' : 'rgba(46, 55, 76, 0.8)'
-            }`,
-        width: '100%',
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        /*   backgroundColor: ` ${
+               theme.palette.type === 'light' ? 'rgba(86, 160, 159, 0.31)' : 'rgba(46, 55, 76, 0.8)'
+               }`,*/
+        backgroundImage: 'url(' + FormBack + ')',
+        backgroundSize: 'cover',
+        borderRadius: '5px 0 0 5px',
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            borderRadius: 0,
+        },
+        width: '75%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     signIn: {
         display: 'flex',
@@ -162,7 +180,9 @@ const styles = theme => ({
     },
     checked: {
         '&:not($checked)': {
-            color: '#000000',
+            color: ` ${
+                theme.palette.type === 'light' ? '#000' : '#fff'
+                }`,
         },
         '&$checked': {
             color: '#43a296',
@@ -170,6 +190,33 @@ const styles = theme => ({
     },
     failedLogin: {
         textAlign: 'center', fontSize: '1rem', color: 'red', paddingTop: 26
+    },
+    imageLogo: {
+        width: 200,
+        [theme.breakpoints.down('xs')]: {
+            width: 100,
+        },
+    },
+    headerLogo: {
+        padding: 22,
+        textAlign: 'center',
+        [theme.breakpoints.down('xs')]: {
+            padding: 22,
+        },
+    },
+    mainForm: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            }`,
+        borderRadius: '0 5px 5px 0',
+        [theme.breakpoints.down('xs')]: {
+            borderRadius: 0,
+        },
+    },
+    checkBoxRoot: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#000' : 'rgba(255,255,255,0.62)'
+            }`,
     },
 });
 
@@ -190,7 +237,7 @@ class LoginForm extends React.Component {
         //const { login, password } = this.state;
         accountStore.loginUser(e.target.login.value, e.target.password.value);
         if (accountStore.status !== 'authed') {
-           return null;
+            return null;
         } else {
             this.setState({
                 loading: 1,
@@ -206,67 +253,85 @@ class LoginForm extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
-             {/*   <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div>*/}
+                {/*   <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div>*/}
                 {
-                    this.state.loading === 1 ?  <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div> : ''
+                    this.state.loading === 1 ?
+                        <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div> : ''
                 }
 
                 <main className={classes.main}>
                     <Paper className={classes.paper}>
                         <div className={classes.headerDiv}>
-                            <Typography variant="h5" className={classes.header}>
-                                Добро пожаловать в Vickly
-                            </Typography>
+                            <div className={classes.headerLogo}>
+                                <img src={Logo} alt="Logo" className={classes.imageLogo}/>
+                                <Typography variant="h5" className={classes.header}>
+                                    Vicly Messenger
+                                </Typography>
+                            </div>
                         </div>
-                        <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
-                            <FormControl required fullWidth>
-                                {/*<InputLabel shrink className={classes.label}>
+
+                        <div className={classes.mainForm}>
+                            <div style={{padding: 22}}>
+                                <Typography className={classes.text} variant="h5"
+                                            style={{fontSize: '1.8rem',}}>Войти</Typography>
+                            </div>
+                            <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
+
+                                <div >
+                                    <FormControl required fullWidth>
+                                        {/*<InputLabel shrink className={classes.label}>
                                     <Typography variant="subtitle1" className={classes.text}>Логин</Typography>
                                 </InputLabel>*/}
-                                <InputBase
-                                    id="login"
-                                    name="login"
-                                    placeholder="Логин"
-                                    type="login"
-                                    classes={{input: classes.active}}
-                                />
-                            </FormControl>
+                                        <InputBase
+                                            id="login"
+                                            name="login"
+                                            placeholder="Логин"
+                                            type="login"
+                                            classes={{input: classes.active}}
+                                        />
+                                    </FormControl>
 
-                            <FormControl required fullWidth className={classes.password}>
-                                {/*<InputLabel shrink className={classes.label}>
+                                    <FormControl required fullWidth className={classes.password}>
+                                        {/*<InputLabel shrink className={classes.label}>
                                     <Typography variant="subtitle1 ">Пароль</Typography>
                                 </InputLabel>*/}
-                                <InputBase
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    placeholder="Пароль"
-                                    classes={{
-                                        input: classes.active
-                                    }}/>
-                            </FormControl>
+                                        <InputBase
+                                            id="password"
+                                            name="password"
+                                            type="password"
+                                            placeholder="Пароль"
+                                            classes={{
+                                                input: classes.active
+                                            }}/>
+                                    </FormControl>
 
-                            <div className={classes.remember}>
-                                <Typography variant="caption" className={classes.label}>Запомнить меня?</Typography>
-                                <Checkbox value="remember" classes={{
-                                    checked: classes.checked
-                                }} className={classes.checkbox}/>
-                            </div>
+                                    <div className={classes.remember}>
+                                        <Typography variant="caption" className={classes.label}>Запомнить
+                                            меня?</Typography>
+                                        <Checkbox value="remember" classes={{
+                                            root: classes.checkBoxRoot,
+                                            checked: classes.checked
+                                        }} className={classes.checkbox}/>
+                                    </div>
 
-                            <div className={classes.signIn}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    className={classes.submit}>
-                                    Войти
-                                </Button>
-                            </div>
-                            {
-                                accountStore.status === "failed" ?
-                                    <Typography variant='caption' className={classes.failedLogin}>Неверный логин или
-                                        пароль</Typography> : ''
-                            }
-                        </form>
+                                    <div className={classes.signIn}>
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            className={classes.submit}>
+                                            Войти
+                                        </Button>
+                                    </div>
+                                    {
+                                        accountStore.status === "failed" ?
+                                            <Typography variant='caption' className={classes.failedLogin}>Неверный логин
+                                                или
+                                                пароль</Typography> : ''
+                                    }
+                                </div>
+
+                            </form>
+                        </div>
                     </Paper>
                 </main>
             </div>

@@ -37,20 +37,24 @@ const styles = theme => ({
         //height: 85,
         // width: '100%',
         // padding: 18,
+        backgroundColor: '#48a1a4',
         display: 'flex',
         alignItems: 'start',
         borderRadius: '5px 5px 0px 0px',
     },
     header: {
-        textAlign: 'start',
-        fontSize: '1em',
-        marginLeft: 10,
+        //textAlign: 'start',
+        fontSize: '1.2rem',
+        //marginLeft: 10,
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
             }`,
     },
     fixWidth: {
-        padding: 13,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#f6f6f6' : '#171b26'
+            }`,
+        padding: '15px 30px',
         display: 'flex',
         // alignItems: 'center',
     },
@@ -101,7 +105,7 @@ const styles = theme => ({
     blockForm: {
         //display: 'flex',
         alignItems: 'flex-start',
-        padding: '15px 35px 0px 35px',
+        padding: '15px 30px',
     },
     form: {
         boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
@@ -132,6 +136,7 @@ const styles = theme => ({
     avatar: {
         width: 75,
         height: 75,
+        borderRadius: 5,
     },
     closeIcon: {
         color: ` ${
@@ -141,7 +146,7 @@ const styles = theme => ({
     },
     cssLabel: {
         color: ` ${
-            theme.palette.type === 'light' ? '#b5b5b5' : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#4f4f4f' : theme.palette.secondary.dark
             }`,
         '&$cssFocused': {
             color: "#4a4a4a",
@@ -194,17 +199,22 @@ const styles = theme => ({
         marginBottom: 12,
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#9d5757' : '#9d5757'
+            theme.palette.type === 'light' ? '#48a1a4' : '#48a1a4'
             }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#5A2C2C' : '#5A2C2C'
+                theme.palette.type === 'light' ? '#41888b' : '#41888b'
                 }`,
         },
     },
     checkedBox: {
         color: '#9a5656!important',
+    },
+    headerBar: {
+        padding: '15px 30px',
+        display: 'flex',
+        alignItems: 'center',
     },
 });
 
@@ -358,8 +368,8 @@ class NewChatModal extends React.Component {
                 <div className={classes.headerBlock}>
                     <div style={{width: '100%'}}>
 
-                        <div style={{display: 'flex', alignItems: 'center', padding: '3%'}}>
-                            <Typography variant="overline" className={classes.header}>
+                        <div className={classes.headerBar}>
+                            <Typography variant="h5" className={classes.header}>
                                 Создание чата
                             </Typography>
                             <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleClose}>
@@ -411,7 +421,7 @@ class NewChatModal extends React.Component {
                                         focused: classes.cssFocused,
                                     }}
                                 >
-                                    Имя чата
+                                    Название чата
                                 </InputLabel>
                                 <Input
                                     value={this.state.chatName}
@@ -427,8 +437,9 @@ class NewChatModal extends React.Component {
                         {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
                                 avatar!</Button>*/}
                     </div>
-                    <Divider/>
+                   {/* <Divider/>*/}
 
+                    <Typography variant="overline" style={{padding: '12px 30px 0px', fontSize: '1em'}} className={classes.text}>Добавьте пользователей</Typography>
                     <div className={classes.blockForm} style={{marginBottom: 0, overflow: "auto", maxHeight: 260, webkitOverflowScrolling: 'touch',  height: '100%',}}>
                         <div style={{overflow: "hidden"}}>
                         {workgroup}

@@ -31,11 +31,11 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgb(127, 172, 147)' : 'rgb(127, 172, 147)'
+            theme.palette.type === 'light' ? 'rgb(105, 79, 79)' : 'rgb(105, 79, 79)'
             }`,
         //height: 85,
         // width: '100%',
-        padding: '3%',
+        padding: '15px 30px',
         display: 'flex',
         alignItems: 'start',
         borderRadius: '5px 5px 0px 0px',
@@ -49,14 +49,26 @@ const styles = theme => ({
             }`,
     },
     fixWidth: {
-        padding: 16,
+        padding: '15px 30px',
+        //background-color: #f6f6f6;
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#f6f6f6' : 'rgb(22, 26, 35)'
+            }`,
+        [theme.breakpoints.down('xs')]: {
+            padding: '5%',
+        },
         display: 'flex',
         alignItems: 'center',
     },
     userName: {
         marginLeft: 10,
+        overflow: 'hidden',
     },
     userName1: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+       // width: '100%',
         fontSize: '1.4rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
@@ -88,10 +100,14 @@ const styles = theme => ({
 
     },
     text: {
-        fontSize: '0.95rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+      //  width: '100%',
+        fontSize: '0.95rem',
         marginBottom: 5,
     },
     block: {
@@ -100,7 +116,7 @@ const styles = theme => ({
     blockForm: {
         display: 'flex',
         alignItems: 'flex-start',
-        padding: '4% 8%',
+        padding: '15px 30px',
         [theme.breakpoints.down('xs')]: {
             padding: '5%',
         },
@@ -146,8 +162,13 @@ const styles = theme => ({
         },
     },
     avatar: {
-        width: 75,
-        height: 75,
+        width: 175,
+        height: 175,
+        [theme.breakpoints.down('xs')]: {
+            width: 75,
+            height: 75,
+        },
+        borderRadius: 5,
     },
     closeIcon: {
         color: ` ${
@@ -260,11 +281,10 @@ class UserProfile extends React.Component {
                         </div>
                         <IconButton className={classes.button} color="primary" onClick={this.handleAvatarUpload}
                                     aria-label="Delete">
-                            <Save style={{color: 'rgb(127, 172, 147)'}} className={classes.saveIcon}/>
+                            <Save style={{color: 'rgb(105, 79, 79)'}} className={classes.saveIcon}/>
                         </IconButton>
                         {/* disabled={!this.state.blob} не Работает!!!!*/}
                     </div>
-                    <Divider/>
                     <div className={classes.blockForm}>
                         <div className={classes.block}>
                             <Typography variant="overline" className={classes.textInf}>Информация</Typography>
@@ -287,10 +307,8 @@ class UserProfile extends React.Component {
                                            defaultValue="Naked input"/>
                             </div>
                             <Divider/>
-                            <Divider/>
                             <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Доступные рабочие
-                                    группы</Typography>
+                                <Typography variant="h6" className={classes.text}>Рабочая группа</Typography>
                                 <div className={classes.text2}>
                                     <Typography variant="h6"
                                                 className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
