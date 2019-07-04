@@ -13,9 +13,22 @@ const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     position: {
         margin: '0 8px 0 8px',
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 8px 0 5px',
+        },
+        [theme.breakpoints.down('xs')]: {
+            //width: '96%',
+            top: 58,
+            left: 0,
+            right: 0,
+            margin: '0 5px 0 5px',
+            borderRadius: '0 0 5px 5px',
+            position: "absolute",
+            borderBottom: 0,
+        },
         borderRadius: '0 0 5px 5px',
         /*width: 'calc(400px - 16px)',*/
-        top: 81,
+        top: 74,
         left: 0,
         right: 0,
       /*  [theme.breakpoints.down('md')]: {
@@ -24,15 +37,7 @@ const styles = theme => ({
         [theme.breakpoints.down('sm')]: {
             width: 'calc(250px - 16px)',
         },*/
-        [theme.breakpoints.down('xs')]: {
-            //width: '96%',
-            top: 58,
-            left: 0,
-            right: 0,
-            borderRadius: '0 0 5px 5px',
-            position: "absolute",
-            borderBottom: 0,
-        },
+
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
@@ -45,7 +50,7 @@ const styles = theme => ({
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 6px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
             }`,
         zIndex: 1,
     },
@@ -80,13 +85,12 @@ const styles = theme => ({
     },
     searchIcon: {
         height: '100%',
-        width: '100%',
+        width: '97%',
         position: 'absolute',
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingRight: 7,
     },
     inputRoot: {
         color: ` ${
@@ -99,7 +103,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#efefef' : "#49536d"
             }`,
         width: '100%',
-        borderRadius: 4,
+        borderRadius: 5,
         padding: 8,
     },
 });

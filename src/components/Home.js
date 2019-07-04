@@ -30,7 +30,7 @@ import Delete from "@material-ui/icons/Delete"
 import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
 import '../css/scrollbar.css'
-import withSplashScreen from "./withSplashScreen";
+//import withSplashScreen from "./withSplashScreen";
 import vhCheck from 'vh-check'
 import Logo from "../images/logoVicly.svg"
 import LogoDark from "../images/logoViclyDark.svg"
@@ -98,9 +98,9 @@ const styles = theme => ({
             }`,
         height: 55,
         boxShadow: theme.shadows[0],
-        position: 'absolute',
+        position: 'fixed',
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+            theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
             }`,
     },
     menuButton: {
@@ -126,7 +126,7 @@ const styles = theme => ({
     },
     content: {
         // pointerEvents: 'none',
-        // position: 'fixed',
+        position: 'fixed',
         zIndex: 1201,
         // position:' -webkit-sticky',
         overflow: 'hidden',
@@ -134,18 +134,31 @@ const styles = theme => ({
         //  minHeight: '-moz-available',
         flexGrow: 1,
         flexShrink: 1,
-        width: '100%',
-        boxShadow: '10px 0px 20px 20px rgba(0, 0, 0, 0.06)',
-        borderLeft: ` ${
+        left: 400,
+        [theme.breakpoints.down('md')]: {
+            left: 280,
+        },
+        [theme.breakpoints.down('sm')]: {
+            left: 250
+        },
+        [theme.breakpoints.down('xs')]: {
+            left: 0,
+        },
+        right: 0,
+        top: 0,
+        bottom: 0,
+       // width: '100%',
+        boxShadow: '9px 0px 20px 20px rgba(0, 0, 0, 0.14)',
+        /*borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+            }`,*/
         '&:before': {
             content: " '' ",
             backgroundColor: ` ${
                 theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
                 }`,
             backgroundSize: 'cover',
-            /*  backgroundImage: 'url(' + BackgroundLight + ')',*/
+             /* backgroundImage: 'url(' + BackgroundLight + ')',*/
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
@@ -213,17 +226,6 @@ const styles = theme => ({
             }`,
     },
     logoDrawer: {
-        width: 384,
-        [theme.breakpoints.down('md')]: {
-            width: 264,
-        },
-        [theme.breakpoints.down('sm')]: {
-            width: 234,
-        },
-        [theme.breakpoints.down('xs')]: {
-            margin: '7px 8px 10px 8px',
-            width: 'inherit',
-        },
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
             }`,
@@ -236,7 +238,16 @@ const styles = theme => ({
         right: 0,
         position: 'absolute',
         zIndex: 1,
-        margin: '0 5px 5px 8px',
+        margin: '0 8px 5px 8px',
+        [theme.breakpoints.down('md')]: {
+            margin: '0 9px 5px 5px',
+        },
+        [theme.breakpoints.down('sm')]: {
+            margin: '0 8px 5px 5px',
+        },
+        [theme.breakpoints.down('xs')]: {
+            margin: '0 5px 5px 5px',
+        },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#ffffff' : '#2b3346'
             }`,
@@ -254,13 +265,29 @@ const styles = theme => ({
         zIndex: 1299,
     },
     scrollDrawer: {
-        width: '100%',
-        marginTop: 130,
-        marginBottom: 46,
+        width: 400,
+        [theme.breakpoints.down('md')]: {
+            width: 279,
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: 250,
+        },
         [theme.breakpoints.down('xs')]: {
             marginTop: 108,
+            width: '100%',
         },
+        height: '100%',
+        marginTop: 124,
+        marginBottom: 46,
+
         overflow: 'hidden',
+    },
+    listFix: {
+        width: 'initial',
+        padding: '20px 3px 10px 8px',
+        [theme.breakpoints.down('xs')]: {
+           padding: '16px 5px 20px 5px ',
+        },
     },
 });
 
@@ -344,7 +371,7 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <Hidden smUp implementation="css">
-                    <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
+                   {/* <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
                         <Toolbar>
                             <IconButton
                                 color="inherit"
@@ -364,8 +391,8 @@ class Home extends React.Component {
                                     name={this.accountStore.fullName}/>
                             </div>
                         </Toolbar>
-                        {/*<ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>*/}
-                    </AppBar>
+                        <ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                    </AppBar>*/}
                     <div className={classes.logoDrawer}>
                         <img style={{width: 30, marginRight: 10}} alt="Logo"
                              src={theme.palette.type === 'light' ? Logo : LogoDark}/>
@@ -374,7 +401,7 @@ class Home extends React.Component {
                 </Hidden>
                 <SearchBar/>
                 <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-2' : 'style-3'}>
-                    <List className={"scrollDrawer scrollDrawerFix"}>
+                    <List className={"scrollDrawer " + classes.listFix}>
                         {this.workgroups()}
                     </List>
                 </div>
@@ -448,7 +475,7 @@ class Home extends React.Component {
                     </Hidden>
                 </nav>
 
-                <main style={{pointerEvents : this.state.mobileOpen ? 'none' : '', position : this.state.mobileOpen ? 'fixed' : ''}} className={classes.content}>
+                <div style={{display : this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?
@@ -472,10 +499,12 @@ class Home extends React.Component {
                                        render={(routeProps) => <ChatWindowEmpty/>}/>
                             )
                     }
-                </main>
+                </div>
             </div>
         );
     }
 }
 
-export default withSplashScreen(withStyles(styles, {withTheme: true})(Home));
+/*
+export default withSplashScreen(withStyles(styles, {withTheme: true})(Home));*/
+export default withStyles(styles, {withTheme: true})(Home);

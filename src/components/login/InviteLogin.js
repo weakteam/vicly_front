@@ -14,7 +14,9 @@ import Dark from "../../images/rer.jpg"
 import history from "../../store/history"
 // import Background from "../../images/loginBack.jpg"
 import rootStore from "../../store/RootStore";
+import FormBack from "../../images/LoginForm.jpg"
 import {BACKEND_URL} from "../../common";
+import Logo from "../../images/LoginLogo.svg";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -32,32 +34,34 @@ const styles = theme => ({
         alignItems: 'center',
         [theme.breakpoints.down('xs')]: {
             minHeight: '100%',
+            backgroundColor: '#fff',
         },
         backgroundSize: 'cover',
-        /*    backgroundImage: ` ${
-                theme.palette.mime === 'light' ? 'url(' + Background + ')' : 'url(' + Dark + ')'
-                }`,*/
-        backgroundImage: 'url(' + Background + ')',
-        backgroundColor: theme.palette.primary.main,
+        // backgroundImage: 'url(' + Background + ')',
+        backgroundColor: '#222c33',
     },
     main: {
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.down('xs')]: {
-            width: '90%',
+            width: '100%',
+            height: '100%',
         },
-        width: 450,
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        borderRadius: 5,
+        width: 900,
         boxShadow: theme.shadows[12],
     },
     paper: {
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'flex-start',
+        },
+       // height: 500,
         display: 'flex',
-        flexDirection: 'column',
+        borderRadius: 5,
         justifyContent: 'center',
         boxShadow: theme.shadows[0],
         backgroundColor: '#ffffff00',
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
     },
     submit: {
         width: '100%',
@@ -124,11 +128,11 @@ const styles = theme => ({
         //borderRadius: '5px 5px 0px 0px',
     },
     header: {
-        textAlign: 'center',
+        //textAlign: 'center',
         //marginBottom: 20,
-        fontSize: '1.6em',
+        fontSize: '2.2em',
         // marginLeft: 10,
-        padding: '6%',
+       // padding: '6%',
         color: ` ${
             theme.palette.type === 'light' ? '#ffffff' : theme.palette.secondary.dark
             }`,
@@ -181,12 +185,15 @@ const styles = theme => ({
     },
     form: {
        // width: '100%', // Fix IE 11 issue.
-        padding: '6%',
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#fff' : '#1c212d'
-            }`,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
+        alignItems: 'center',
+        display: 'flex',
+        padding: '0px 22px 20px 22px',
+        [theme.breakpoints.down('xs')]: {
+            padding: ' 10px 22px',
+        },
+       /* backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#fff'
+            }`,*/
     },
     textInf: {
         marginBottom: 30,
@@ -215,7 +222,7 @@ const styles = theme => ({
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
         },
         marginTop: 19,
-        borderRadius: 10,
+        borderRadius: 5,
         height: 30,
         paddingLeft: 10,
         backgroundColor: ` ${
@@ -229,18 +236,45 @@ const styles = theme => ({
         marginTop: 10,
     },
     headerDiv: {
-        backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgba(86, 160, 159, 0.71)' : 'rgba(46, 55, 76, 0.8)'
-            }`,
-        width: '100%',
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        backgroundImage: 'url(' + FormBack + ')',
+        backgroundSize: 'cover',
+        borderRadius: '5px 0 0 5px',
+        [theme.breakpoints.down('xs')]: {
+            width: '100%',
+            borderRadius: 0,
+        },
+        width: '60%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     width: {
         width: '100%',
     },
     display: {
         display: 'inline-block',
+    },
+    imageLogo: {
+        width: 200,
+        [theme.breakpoints.down('xs')]: {
+            width: 100,
+        },
+    },
+    headerLogo: {
+        padding: 22,
+        textAlign: 'center',
+        [theme.breakpoints.down('xs')]: {
+            padding: 22,
+        },
+    },
+    mainForm: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            }`,
+        borderRadius: '0 5px 5px 0',
+        [theme.breakpoints.down('xs')]: {
+            borderRadius: 0,
+        },
     },
 
 });
@@ -356,18 +390,21 @@ class InviteLogin extends React.Component {
                 <main className={classes.main}>
                     <Paper className={classes.paper}>
                         <div className={classes.headerDiv}>
-                            <Typography variant="caption" className={classes.header}>
-                                Добро пожаловать в Vicly
-                            </Typography>
+                            <div className={classes.headerLogo}>
+                                <img src={Logo} alt="Logo" className={classes.imageLogo}/>
+                                <Typography variant="h5" className={classes.header}>
+                                   Добро пожаловать!
+                                </Typography>
+                            </div>
                         </div>
 
+                        <div className={classes.mainForm}>
+                        <div style={{padding: 22}}>
+                            <Typography className={classes.text} variant="h5"
+                                        style={{fontSize: '1.8rem'}}>Зарегистрироваться</Typography>
+                        </div>
                         <form onSubmit={this.handleSingUp} className={classes.form}>
-                            <Typography variant="overline" className={classes.textInf}>Данные
-                                профиля</Typography>
-                            <div>
-
                                 <div className={classes.block}>
-
                                     <div className={classes.infBlock}>
                                         <Typography className={classes.text}>ФИО:</Typography>
                                         <Typography
@@ -380,8 +417,8 @@ class InviteLogin extends React.Component {
                                     </div>
                                     <Divider/>
                                     <div className={classes.infBlock}>
-                                        <Typography className={classes.text}>Рабочие
-                                            группы:</Typography>
+                                        <Typography className={classes.text}>Рабочая
+                                            группа:</Typography>
                                         <div className={classes.text2}>
                                             <Typography className={classes.text2}>{this.state.inviteInfo ? this.state.inviteInfo.group_name : ('')}</Typography>
                                         </div>
@@ -444,9 +481,9 @@ class InviteLogin extends React.Component {
                                             Зарегистрироваться
                                         </Button>
                                     </div>
-                                </div>
                             </div>
                         </form>
+                        </div>
                     </Paper>
                 </main>
             </div>

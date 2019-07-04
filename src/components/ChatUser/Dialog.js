@@ -24,6 +24,7 @@ const styles = theme => ({
     avatar: {
         width: 45,
         height: 45,
+        borderRadius: 5,
     },
     listItemPadding: {
         padding: 'unset',

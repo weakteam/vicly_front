@@ -51,7 +51,10 @@ const styles = theme => ({
     paper: {
         display: 'flex',
         borderRadius: 0,
-        padding: '5%',
+        padding: 30,
+        [theme.breakpoints.down('xs')]: {
+            padding: 9,
+        },
         flexDirection: 'column',
         // borderRadius: 0,
         justifyContent: 'center',
@@ -170,7 +173,10 @@ const styles = theme => ({
         zIndex: 1303,
     },
     link: {
-        fontSize: '1.1rem'
+        fontSize: '1.1rem',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            }`,
     },
     link2: {
 
@@ -184,13 +190,16 @@ const styles = theme => ({
     },
     paperRoot: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            theme.palette.type === 'light' ? '#f6f6f6' : '#171b26'
             }`,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
             }`,
 
         padding: 30,
+        [theme.breakpoints.down('xs')]: {
+            padding: 9,
+        },
         borderRadius: '0 0 5px 5px',
         // paddingTop: 20
     },
@@ -211,6 +220,10 @@ const styles = theme => ({
     },
     controlForm: {
         //  marginTop: 10,
+        [theme.breakpoints.down('xs')]: {
+            padding: 0,
+        },
+        padding: '0 0 15px 0',
     },
     labelPlace: {
         marginLeft: 0,
@@ -249,6 +262,29 @@ const styles = theme => ({
             }`,
         boxShadow: theme.shadows[1],
         fontSize: 11,
+    },
+    formColor: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#fff' : '#1c212d'
+            }`,
+        padding: 20,
+    },
+    selectedCustom: {
+        backgroundColor: '#679dbd!important',
+
+    },
+    newInvite: {
+        cursor: 'pointer',
+    },
+    headerBar: {
+        borderRadius: '5px 5px 0 0',
+        backgroundColor: '#679dbd',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '15px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '15px 9px',
+        },
     },
 });
 
@@ -385,15 +421,20 @@ class InviteForm extends React.Component {
     firstStepForm = () => {
         const {classes} = this.props;
         const workGroup = this.messagesStore.groups.map(workgroup => <MenuItem
-            value={workgroup.id}>{workgroup.name}</MenuItem>);
+            classes={{selected: classes.selectedCustom,}}
+            value={workgroup.id}>
+            <Typography>{workgroup.name}</Typography>
+        </MenuItem>);
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     {/*  <Divider/>*/}
+                    <Typography variant="overline" style={{marginBottom: 20, fontSize: '1em'}} className={classes.text}>Введите
+                        личные данные</Typography>
                     <form onSubmit={this.handleClick} className={classes.form}>
                         <div className={classes.blockForm}>
                             <div className={classes.block}>
-                                <Typography variant="h6" className={classes.text}>Данные</Typography>
+
                                 <FormControl classes={{
                                     fullWidth: classes.controlForm,
                                 }}
@@ -444,7 +485,7 @@ class InviteForm extends React.Component {
                                 </FormControl>
                             </div>
 
-                            <div style={{marginTop: 27}} className={classes.block}>
+                            <div style={{marginRight: 0}} className={classes.block}>
                                 <FormControl classes={{
                                     fullWidth: classes.controlForm,
                                 }}
@@ -513,12 +554,14 @@ class InviteForm extends React.Component {
                                     classes={{
                                         root: classes.rootIndex,
                                     }}
-                                    style={{marginTop: 25}} fullWidth>
+                                    style={{marginTop: 4}} fullWidth>
                                     {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
                                         </InputLabel>*/}
-                                    <InputLabel className={classes.text}>Рабочая
-                                        группа</InputLabel>
+                                    <InputLabel shrink className={classes.label}>
+                                        <Typography variant="subtitle1" className={classes.text}> Рабочая
+                                            группа </Typography>
+                                    </InputLabel>
                                     <Select
                                         classes={{
                                             root: classes.rootIndex,
@@ -553,10 +596,7 @@ class InviteForm extends React.Component {
     secondStepForm = () => {
         const {classes, theme,} = this.props;
         return (
-            <div style={{
-                backgroundColor: '#fff',
-                padding: 20
-            }}>
+            <div className={classes.formColor}>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <Typography variant="body1" className={classes.link}>Ссылка для
                         приглашения:</Typography>
@@ -564,7 +604,7 @@ class InviteForm extends React.Component {
                              classes={{tooltip: classes.lightTooltip}}>
                         <div onClick={this.copyToClipboard}
                              style={{
-                                 backgroundColor: 'rgb(83, 130, 199)',
+                                 backgroundColor: 'rgb(103, 157, 189)',
                                  borderRadius: 5,
                                  marginLeft: 10,
                                  overflow: 'hidden',
@@ -585,9 +625,12 @@ class InviteForm extends React.Component {
 
                 </div>
                 <div className={classes.signIn}>
-                    <Button variant="contained" className={classes.submit}
-                            onClick={this.handleReset}>Новый инвайт</Button>
+                    <div className={classes.newInvite}
+                         onClick={this.handleReset}><Typography variant="button" style={{color: 'rgb(131, 131, 131)'}}>Новое
+                        приглашение</Typography>
+                    </div>
                 </div>
+
             </div>
         )
     };
@@ -597,7 +640,7 @@ class InviteForm extends React.Component {
         const steps = ["Создание", "Приглашение"];
         return (
             <div>
-                <div style={{display: 'flex', alignItems: 'center', padding: '3%'}}>
+                <div className={classes.headerBar}>
                     <Typography variant="h5" className={classes.header}>
                         Приглашение пользователя
                     </Typography>
@@ -608,6 +651,7 @@ class InviteForm extends React.Component {
                 <div>
                     {this.getStepContent(this.state.activeStep)}
                 </div>
+               {/* <Divider style={{height: 0.9}}/>*/}
                 <Stepper
                     classes={{
                         root: classes.paperRoot,

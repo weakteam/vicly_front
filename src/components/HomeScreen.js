@@ -52,7 +52,7 @@ const styles = theme => ({
     startCard: {
         cursor: 'pointer',
         '&:hover': {
-            boxShadow: '0px 0px 10px 2px rgba(0, 0, 0, 0.12)',
+            boxShadow: '0px 0px 6px 0px rgba(0, 0, 0, 0.12)',
             backgroundColor: ` ${
                 theme.palette.type === 'light' ? 'rgba(134, 134, 134, 0.8)' : 'rgba(96, 110, 142, 0.54)'
                 }`,
@@ -62,7 +62,7 @@ display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
-        borderRadius: '50%',
+        borderRadius: 5,
         width: 100,
         height: 100,
         backgroundColor: ` ${
@@ -71,7 +71,7 @@ display: 'flex',
     },
     cardText: {
         '&:hover': {
-           color: '#000',
+           //color: '#43a296',
         },
         borderRadius: '50%',
         fontSize: 40,

@@ -32,36 +32,43 @@ const styles = theme => ({
         margin: '5px 5px 5px 5px',
         borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(49, 49, 49, 0.1)' : 'inset 0px -3px 0px 0px rgba(45, 53, 70, 0.86)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(218, 218, 218), 0px 4px 7px 0px rgba(0, 0, 0, 0.07)' : 'inset 0px -3px 0px 0px rgba(45, 53, 70, 0.86)'
             }`,
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         right: 0,
+        left: 0,
         display: 'inline-flex',
         justifyContent: 'space-between',
-      //  height: 55,
+        // height: 55,
         zIndex: 1,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
             }`,
-      /*  borderBottom: ` ${
-            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,*/
-      /*  borderLeft: ` ${
-            theme.palette.mime === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            }`,*/
-        left: 400,
-        [theme.breakpoints.down('md')]: {
-            left: 280,
-        },
-        [theme.breakpoints.down('sm')]: {
-            left: 250
-        },
         [theme.breakpoints.down('xs')]: {
-            left: 0,
             top: 55,
             borderRadius: '0 0 5px 5px',
         },
+        /*borderBottom: ` ${
+            theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
+            //  theme.palette.mime === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
+            }`,*/
+        /*  borderLeft: ` ${
+              theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
+              }`,*/
+
+        /*   left: 400,
+           [theme.breakpoints.down('md')]: {
+               left: 280,
+           },
+           [theme.breakpoints.down('sm')]: {
+               left: 250
+           },
+           [theme.breakpoints.down('xs')]: {
+               left: 0,
+               top: 55,
+               borderRadius: '0 0 5px 5px',
+           },*/
     },
     namePosition: {
         display: 'inline-flex',
