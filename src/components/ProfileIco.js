@@ -24,8 +24,10 @@ function getModalStyle() {
         transform: `translate(-${top}%, -${left}%)`,
     };
 }
-
+const top = 50;
+const left = 50;
 const styles = theme => ({
+
     root: {
         [theme.breakpoints.down('xs')]: {
             display: 'inline-flex',
@@ -34,15 +36,27 @@ const styles = theme => ({
         },
     },
     paper: {
-        position: 'absolute',
-        outline: 'none',
-        borderRadius: 5,
-        [theme.breakpoints.down('xs')]: {
-            width: '95%',
-        },
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
         [theme.breakpoints.down('sm')]: {
             width: '95%',
         },
+        [theme.breakpoints.down('xs')]: {
+            position: 'fixed',
+            top: 5,
+            left: 5,
+            right: 5,
+            bottom: 5,
+            transform: 'none',
+            width: 'auto',
+        },
+        position: 'absolute',
+        backgroundColor: '#fff',
+        outline: 'none',
+        borderRadius: 5,
+
+
         width: 890,
         boxShadow: theme.shadows[5],
     },
@@ -170,7 +184,7 @@ class ProfileIco extends React.Component {
                                     onClose={this.handleMenuClose}
                                     style={{zIndex: 1303}}>
 
-                                    <div style={getModalStyle()} className={classes.paper}>
+                                    <div className={classes.paper}>
                                         <UserProfile handleMenuClose={this.handleMenuClose}/>
                                     </div>
 

@@ -227,7 +227,7 @@ const styles = theme => ({
     },
     logoDrawer: {
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(205, 205, 205), 0px 0px 20px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37), 0px 0px 20px 0px rgba(0, 0, 0, 0.29)'
             }`,
         display: 'flex',
         justifyContent: 'center',
@@ -257,7 +257,7 @@ const styles = theme => ({
              }`,*/
     },
     logoText: {
-        color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#60687b'}`,
+        color: `${theme.palette.type === 'light' ? '#105a72' : 'rgb(185, 187, 191)'}`,
         // width: '100%'
 
     },
@@ -366,7 +366,7 @@ class Home extends React.Component {
                         handleLogout={this.accountStore.unauth.bind(accountStore)}/>
                     <div className={classes.logoDrawer}>
                         <img style={{width: 30, marginRight: 10}} alt="Logo"
-                             src={theme.palette.type === 'light' ? Logo : LogoDark}/>
+                             src={theme.palette.type === 'light' ? Logo : Logo}/>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
                 </Hidden>
@@ -395,7 +395,7 @@ class Home extends React.Component {
                     </AppBar>*/}
                     <div className={classes.logoDrawer}>
                         <img style={{width: 30, marginRight: 10}} alt="Logo"
-                             src={theme.palette.type === 'light' ? Logo : LogoDark}/>
+                             src={theme.palette.type === 'light' ? Logo : Logo}/>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
                 </Hidden>

@@ -36,6 +36,9 @@ const styles = theme => ({
         //height: 85,
         // width: '100%',
         padding: '15px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '3%',
+        },
         display: 'flex',
         alignItems: 'start',
         borderRadius: '5px 5px 0px 0px',
@@ -55,7 +58,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#f6f6f6' : 'rgb(22, 26, 35)'
             }`,
         [theme.breakpoints.down('xs')]: {
-            padding: '5%',
+            padding: '3%',
         },
         display: 'flex',
         alignItems: 'center',
@@ -118,11 +121,11 @@ const styles = theme => ({
         alignItems: 'flex-start',
         padding: '15px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '5%',
+            padding: '3%',
         },
     },
     form: {
-        boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
+      //  boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
         borderRadius: '0px 0px 5px 5px',
         width: '100%', // Fix IE 11 issue.
         backgroundColor: ` ${

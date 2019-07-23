@@ -14,6 +14,7 @@ import {BACKEND_URL} from "../common";
 import "../css/avatarHover.css"
 import CloudUpload from "@material-ui/icons/CloudUpload"
 import NewChatUsers from "./NewChatUsers";
+import '../css/scrollbar.css'
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -469,7 +470,7 @@ class NewChatModal extends React.Component {
                     {/* <Divider/>*/}
 
                     <Typography variant="overline" className={classes.textInfo}>Добавьте пользователей</Typography>
-                    <div className={classes.blockForm} style={{
+                    <div  id="style-3" className={classes.blockForm + ' scrollbarMessages'} style={{
                         marginBottom: 0,
                         overflow: "auto",
                         maxHeight: 260,

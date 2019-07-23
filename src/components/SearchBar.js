@@ -50,7 +50,7 @@ const styles = theme => ({
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 6px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 6px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(24, 30, 43), 0 7px 8px 0px rgba(0, 0, 0, 0.3)'
             }`,
         zIndex: 1,
     },
