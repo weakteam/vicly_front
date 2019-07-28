@@ -30,28 +30,26 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
-
+        borderRadius: '5px 5px 10px 10px',
+        height: '98%',
         [theme.breakpoints.down('xs')]: {
             width: '95%',
         },
-        [theme.breakpoints.down('sm')]: {
-            width: '95%',
-        },
-        width: 890,
+        backgroundColor: '#0a8d8d',
+        width: 530,
         outline: 'none',
-        borderRadius: 5,
-       /* backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
-            }`,*/
-      //  padding: 30,
-       /* [theme.breakpoints.down('xs')]: {
-            width: '80%',
-        },*/
-      //  width: 585,
-      /*  backgroundColor: ` ${
+        /* backgroundColor: ` ${
+             theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
+             }`,*/
+        //  padding: 30,
+        /* [theme.breakpoints.down('xs')]: {
+             width: '80%',
+         },*/
+        //  width: 585,
+        /*  backgroundColor: ` ${
 
-            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,*/
+              theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+              }`,*/
         boxShadow: theme.shadows[5],
         // padding: theme.spacing.unit * 4,
     },
@@ -62,7 +60,7 @@ const styles = theme => ({
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     rootIndex: {
         zIndex: 1300,
@@ -105,7 +103,7 @@ class NewChatIcon extends React.Component {
                     }}
 
                 >
-                    <div  style={getModalStyle()} className={classes.paper}>
+                    <div style={getModalStyle()} className={classes.paper}>
                         <NewChatModal handleClose={this.handleClose}/>
                     </div>
                 </Modal>

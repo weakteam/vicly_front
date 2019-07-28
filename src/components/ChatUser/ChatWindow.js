@@ -40,6 +40,7 @@ const styles = theme => ({
         bottom: 0,
         left: 0,
         padding: '59px 0 57px 20px',
+        overflow: 'hidden',
         [theme.breakpoints.down('md')]: {
             // left: 280,
             padding: '60px 20px 57px 20px',
@@ -53,7 +54,7 @@ const styles = theme => ({
             padding: '112px 0px 57px 0px',
         },
         // height: '100%',
-        overflow: 'hidden',
+
     },
 });
 

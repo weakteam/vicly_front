@@ -25,6 +25,9 @@ const styles = theme => ({
             borderRadius: '0 0 5px 5px',
             position: "absolute",
             borderBottom: 0,
+            boxShadow: ` ${
+                theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 11px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(24, 30, 43), 0 7px 8px 0px rgba(0, 0, 0, 0.3)'
+            }`,
         },
         borderRadius: '0 0 5px 5px',
         /*width: 'calc(400px - 16px)',*/

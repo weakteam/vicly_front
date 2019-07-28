@@ -49,7 +49,7 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
@@ -81,7 +81,7 @@ const styles = theme => ({
         },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e2e2e2' : theme.palette.primary.dark
-            }`,
+        }`,
         borderRight: 0,
     },
 
@@ -95,13 +95,13 @@ const styles = theme => ({
         zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+        }`,
         height: 55,
         boxShadow: theme.shadows[0],
         position: 'fixed',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
-            }`,
+        }`,
     },
     menuButton: {
         marginRight: 20,
@@ -147,7 +147,7 @@ const styles = theme => ({
         right: 0,
         top: 0,
         bottom: 0,
-       // width: '100%',
+        // width: '100%',
         boxShadow: '9px 0px 20px 20px rgba(0, 0, 0, 0.14)',
         /*borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
@@ -156,9 +156,9 @@ const styles = theme => ({
             content: " '' ",
             backgroundColor: ` ${
                 theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
-                }`,
+            }`,
             backgroundSize: 'cover',
-             /* backgroundImage: 'url(' + BackgroundLight + ')',*/
+            /* backgroundImage: 'url(' + BackgroundLight + ')',*/
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
@@ -223,12 +223,12 @@ const styles = theme => ({
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     logoDrawer: {
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(205, 205, 205), 0px 0px 20px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37), 0px 0px 20px 0px rgba(0, 0, 0, 0.29)'
-            }`,
+        }`,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -250,7 +250,7 @@ const styles = theme => ({
         },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#ffffff' : '#2b3346'
-            }`,
+        }`,
         borderRadius: 5,
         /* backgroundColor: ` ${
              theme.palette.mime === 'light' ? '#f1f1f1' : '#171a20'
@@ -258,6 +258,10 @@ const styles = theme => ({
     },
     logoText: {
         color: `${theme.palette.type === 'light' ? '#105a72' : 'rgb(185, 187, 191)'}`,
+        fontSize: '1.2em',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '1.2em',
+        },
         // width: '100%'
 
     },
@@ -286,7 +290,7 @@ const styles = theme => ({
         width: 'initial',
         padding: '20px 3px 10px 8px',
         [theme.breakpoints.down('xs')]: {
-           padding: '16px 5px 20px 5px ',
+            padding: '16px 5px 20px 5px ',
         },
     },
 });
@@ -371,7 +375,7 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <Hidden smUp implementation="css">
-                   {/* <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
+                    {/* <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
                         <Toolbar>
                             <IconButton
                                 color="inherit"
@@ -475,7 +479,7 @@ class Home extends React.Component {
                     </Hidden>
                 </nav>
 
-                <div style={{display : this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
+                <div style={{display: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?
