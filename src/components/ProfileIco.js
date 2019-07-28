@@ -97,8 +97,8 @@ const styles = theme => ({
     },
     avatar: {
         borderRadius: 5,
-        width: 45,
-        height: 45,
+        width: 35,
+        height: 35,
     },
     headerBlock: {
         outline: 'none',

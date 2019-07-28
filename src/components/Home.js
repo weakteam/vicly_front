@@ -417,7 +417,7 @@ class Home extends React.Component {
                 <nav className={classes.drawer}>
                     <Hidden smUp implementation="css">
                         <AppBar position="fixed" className={classes.appBar}>
-                            <Toolbar>
+                            <Toolbar disableGutters>
                                 <IconButton
                                     color="inherit"
                                     aria-label="Open drawer"
