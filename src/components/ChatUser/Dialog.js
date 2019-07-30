@@ -70,8 +70,8 @@ const styles = theme => ({
     onlineNotSelected: {
         backgroundColor: '#66ff80',
         zIndex: 0,
-        top: 35,
-        right: 6,
+        top: 37,
+        right: 4,
         border: ` ${
             theme.palette.type === 'light' ? '3px solid #fff' : '3px solid #2b3346'
         }`,

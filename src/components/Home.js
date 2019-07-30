@@ -392,7 +392,7 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <SearchBar/>
-                <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-2' : 'style-3'}>
+                <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-3' : 'style-3'}>
                     <List className={"scrollDrawer " + classes.listFix}>
                         {this.workgroups()}
                     </List>
