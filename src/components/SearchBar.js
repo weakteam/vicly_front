@@ -10,10 +10,10 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        margin: '0 8px 0 8px',
-        [theme.breakpoints.down('sm')]: {
-            margin: '0 8px 0 8px',
-        },
+        margin: '0 10px 0 8px',
+       /* [theme.breakpoints.down('sm')]: {
+            margin: '0 10px 0 8px',
+        },*/
         [theme.breakpoints.down('xs')]: {
             //width: '96%',
             top: 58,

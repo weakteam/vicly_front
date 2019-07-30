@@ -51,7 +51,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             //left: 0,
             //  top: 55,
-            padding: '112px 0px 57px 0px',
+            padding: '109px 5px 57px 5px',
         },
         // height: '100%',
 

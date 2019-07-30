@@ -153,7 +153,7 @@ const styles = theme => ({
                }`,*/
         backgroundImage: 'url(' + FormBack + ')',
         backgroundSize: 'cover',
-        borderRadius: '5px 0 0 5px',
+        borderRadius: '10px 0 0 10px',
         [theme.breakpoints.down('xs')]: {
             width: '100%',
             borderRadius: 0,
@@ -209,7 +209,7 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
         }`,
-        borderRadius: '0 5px 5px 0',
+        borderRadius: '0 10px 10px 0',
         [theme.breakpoints.down('xs')]: {
             borderRadius: 0,
             position: 'absolute',

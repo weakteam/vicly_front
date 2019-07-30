@@ -10,8 +10,9 @@ const {accountStore} = rootStore;
 
 const styles = theme => ({
     position: {
+        zIndex: 1,
         borderRadius: '5px 5px 0 0',
-        margin: '5px 8px 0px 8px',
+        margin: '5px 10px 0px 8px',
         position: 'absolute',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'

@@ -231,13 +231,7 @@ const styles = theme => ({
         right: 0,
         position: 'absolute',
         zIndex: 1,
-        margin: '0 8px 5px 8px',
-        [theme.breakpoints.down('md')]: {
-            margin: '0 9px 5px 8px',
-        },
-        [theme.breakpoints.down('sm')]: {
-            margin: '0 8px 5px 5px',
-        },
+        margin: '0 10px 5px 8px',
         [theme.breakpoints.down('xs')]: {
             margin: '0 5px 5px 5px',
         },
@@ -262,28 +256,29 @@ const styles = theme => ({
         zIndex: 1299,
     },
     scrollDrawer: {
-        width: 400,
+        width: 390,
         [theme.breakpoints.down('md')]: {
-            width: 279,
+            width: 270,
         },
         [theme.breakpoints.down('sm')]: {
-            width: 250,
+            width: 240,
         },
         [theme.breakpoints.down('xs')]: {
             marginTop: 108,
             width: '100%',
         },
         height: '100%',
-        marginTop: 118,
-        marginBottom: 46,
+        marginTop: 10,
+        marginBottom: 10,
 
         overflow: 'hidden',
     },
     listFix: {
         width: 'initial',
-        padding: '20px 3px 10px 8px',
+        padding: '127px 0px 39px 8px',
+
         [theme.breakpoints.down('xs')]: {
-            padding: '16px 5px 20px 5px ',
+            padding: '16px 5px 45px 5px ',
         },
     },
 });
