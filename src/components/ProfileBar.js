@@ -1,15 +1,10 @@
 import React from 'react';
-import {Badge, Hidden, IconButton, withStyles} from "@material-ui/core";
-import InviteIco from "./SearchBar";
+import {Badge, IconButton, withStyles} from "@material-ui/core";
 import ProfileIco from "./ProfileIco";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import InviteIcon from "./InviteIcon";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import rootStore from "../store/RootStore";
-import {Route} from "react-router-dom";
-import InviteForm from "./InviteForm";
-import {Link} from "react-router-dom";
-import ChatWindow from "./ChatUser/ChatWindow";
 
 const {accountStore} = rootStore;
 

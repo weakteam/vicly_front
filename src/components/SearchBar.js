@@ -1,7 +1,5 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 
@@ -14,7 +12,7 @@ const styles = theme => ({
     position: {
         margin: '0 8px 0 8px',
         [theme.breakpoints.down('sm')]: {
-            margin: '0 8px 0 5px',
+            margin: '0 8px 0 8px',
         },
         [theme.breakpoints.down('xs')]: {
             //width: '96%',
@@ -31,7 +29,7 @@ const styles = theme => ({
         },
         borderRadius: '0 0 5px 5px',
         /*width: 'calc(400px - 16px)',*/
-        top: 74,
+        top: 69,
         left: 0,
         right: 0,
       /*  [theme.breakpoints.down('md')]: {

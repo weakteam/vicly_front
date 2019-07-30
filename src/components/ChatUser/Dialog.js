@@ -35,10 +35,10 @@ const styles = theme => ({
         right: 17,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightBadge : theme.palette.secondary.dark
-            }`,
+        }`,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.light
-            }`,
+        }`,
         zIndex: 0,
     },
     fixPadding: {
@@ -54,18 +54,18 @@ const styles = theme => ({
         fontSize: '1rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     message: {
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
-            }`,
+        }`,
         fontSize: '0.9rem'
     },
     time: {
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     onlineNotSelected: {
         backgroundColor: '#66ff80',
@@ -74,7 +74,7 @@ const styles = theme => ({
         right: 6,
         border: ` ${
             theme.palette.type === 'light' ? '3px solid #fff' : '3px solid #2b3346'
-            }`,
+        }`,
     },
     onlineSelected: {
         backgroundColor: '#66ff80',
@@ -152,7 +152,7 @@ class Dialog extends React.Component {
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
                               spacing={16}>
-                            <Grid item >
+                            <Grid item>
                                 {
                                     avatar_image ?
                                         (

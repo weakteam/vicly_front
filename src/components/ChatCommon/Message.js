@@ -9,9 +9,7 @@ import AvatarColor from "../../services/AvatarColor"
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import AttachmentShow from "./AttachmentShow";
-import List from "@material-ui/core/List";
 import handleViewport from 'react-in-viewport';
-import VisibilitySensor from "react-visibility-sensor";
 import {observer} from "mobx-react";
 
 
@@ -52,7 +50,7 @@ const styles = theme => ({
                     maxWidth: 300,
                 },
                 padding: '3px 14px 3px 14px',
-                backgroundColor: '#d5f0ff',
+                backgroundColor: '#E2F0F1',
                 borderRadius: '10px 10px 10px 0',
             },
 
@@ -65,7 +63,7 @@ const styles = theme => ({
                     maxWidth: 225,
                 },
                 padding: '3px 14px 3px 14px',
-                backgroundColor: '#e2f0f1',
+                backgroundColor: '#E2F0F1',
                 borderRadius: '10px 10px 0px 10px',
                 boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
             },

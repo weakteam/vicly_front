@@ -1,8 +1,8 @@
 import {observable} from "mobx";
 import Message from "./Message";
-import toastService from "../../services/toastService";
+//import toastService from "../../services/toastService";
 import rootStore from "../RootStore";
-import {BACKEND_URL} from "../../common";
+//import {BACKEND_URL} from "../../common";
 
 export default class Chat {
     chatId = null;

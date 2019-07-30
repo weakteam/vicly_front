@@ -1,14 +1,10 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Divider from "@material-ui/core/es/Divider";
-import InputBase from "@material-ui/core/InputBase";
-import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
-import {Button, IconButton} from "@material-ui/core";
+import {IconButton} from "@material-ui/core";
 import rootStore from "../../store/RootStore";
 import CloudDownload from '@material-ui/icons/CloudDownload'
-import InsertDriveFile from "@material-ui/icons/InsertDriveFile"
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({

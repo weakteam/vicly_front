@@ -1,9 +1,6 @@
 import React from 'react';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";
-import AttachmentSmall from "./AttachmentSmall";
-import Attachment from "../../store/models/Attachment";
-import Slide from "@material-ui/core/Slide";
 import {Avatar, Typography} from "@material-ui/core";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import IconButton from "@material-ui/core/IconButton";
@@ -75,7 +72,7 @@ class ThreadWindow extends React.Component {
                         <Close className={classes.closeIcon}/>
                     </IconButton>
                 </div>
-                <div className="scrollbar" id="style-3" style={{marginBottom: 0, overflow: "auto",   webkitOverflowScrolling: 'touch',  height: '100%', position: 'absolute', bottom: 0, zIndex: -1}}>
+                <div className="scrollbar" id="style-3" style={{marginBottom: 0, overflow: "auto",   WebkitOverflowScrolling: 'touch',  height: '100%', position: 'absolute', bottom: 0, zIndex: -1}}>
                 <div style={{overflow: "hidden", paddingBottom: 54, paddingTop: 52}}>
                     <div style={{display: 'flex', alignItems: 'start', padding: 10}}>
                         <Avatar style={{marginTop: 6}}>qq</Avatar>

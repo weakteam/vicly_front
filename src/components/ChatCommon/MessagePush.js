@@ -6,8 +6,6 @@ import 'typeface-roboto';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import {observer} from "mobx-react";
 import history from "../../store/history";
-import Button from "@material-ui/core/es/Button/Button";
-
 
 const styles = theme => ({
     avatar: {
@@ -42,7 +40,7 @@ class MessagePush extends React.Component {
                       wrap="nowrap"
                       spacing={16}>
 
-                    <Grid item md={16}>
+                    <Grid item md>
                         <Avatar
                             src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg"
                             className={classes.avatar}>

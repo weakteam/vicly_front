@@ -91,8 +91,6 @@ class InviteIcon extends React.Component {
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
-                    borderColor={'red.500'}
-                    border={5}
                     open={this.state.open}
                     onClose={this.handleClose}
                     classes={{

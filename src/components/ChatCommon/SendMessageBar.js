@@ -6,18 +6,13 @@ import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import FormControl from "@material-ui/core/FormControl/index";
 import InputBase from "@material-ui/core/InputBase/index";
-import {fade} from "@material-ui/core/styles/colorManipulator";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import UserProfile from "../UserProfile";
 import Modal from "@material-ui/core/Modal";
 import DocumentWindow from "./DocumentWindow";
-import Avatar from "@material-ui/core/Avatar";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
 import Slide from "@material-ui/core/Slide";
-import {Typography} from "@material-ui/core";
-
 
 function getModalStyle() {
     const top = 50;
@@ -227,7 +222,7 @@ class SendMessageBar extends React.Component {
 
     onEnterDown = (event) => {
         // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
-        if (event.keyCode == 13 && event.shiftKey) {
+        if (event.keyCode === 13 && event.shiftKey) {
             event.preventDefault();
             event.stopPropagation();
             this.handleSendButton();

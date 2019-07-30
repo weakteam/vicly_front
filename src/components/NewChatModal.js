@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Divider from "@material-ui/core/es/Divider";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
 import {Button, IconButton} from "@material-ui/core";
@@ -9,12 +8,12 @@ import rootStore from "../store/RootStore";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import {BACKEND_URL} from "../common";
 import "../css/avatarHover.css"
 import CloudUpload from "@material-ui/icons/CloudUpload"
 import NewChatUsers from "./NewChatUsers";
 import '../css/scrollbar.css'
+import 'array-flat-polyfill';
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -433,7 +432,7 @@ class NewChatModal extends React.Component {
         console.log('dfdfdf', users);
 
         return (
-            <div onclose={this.handleReset}>
+            <div onClose={this.handleReset}>
                 <div className={classes.headerBlock}>
                     <div style={{width: '100%'}}>
                         <div className={classes.headerBar}>
@@ -507,7 +506,7 @@ class NewChatModal extends React.Component {
                 </div>
                 <form onSubmit={this.handleCreateNewChat} className={classes.form}>
                     <div className={classes.blockForm}>
-                        <div style={{overflow: "auto", height: '100%', webkitOverflowScrolling: 'touch',}}>
+                        <div style={{overflow: "auto", height: '100%', WebkitOverflowScrolling: 'touch',}}>
                             {workgroup}
                         </div>
                     </div>

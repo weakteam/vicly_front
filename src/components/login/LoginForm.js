@@ -158,7 +158,7 @@ const styles = theme => ({
             width: '100%',
             borderRadius: 0,
         },
-        width: '75%',
+        minWidth: '54%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -206,17 +206,20 @@ const styles = theme => ({
         },
     },
     mainForm: {
-        position: 'absolute',
-        top: 194,
-        bottom: 0,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
         }`,
         borderRadius: '0 5px 5px 0',
         [theme.breakpoints.down('xs')]: {
             borderRadius: 0,
+            position: 'absolute',
+            top: 194,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: 'none',
         },
-        /* boxShadow: '-11px 0px 20px 0px #0000007d',*/
+        boxShadow: '-17px 0px 13px 0px rgba(0, 0, 0, 0.25)',
     },
     checkBoxRoot: {
         color: ` ${
@@ -282,7 +285,7 @@ class LoginForm extends React.Component {
                             </div>
                             <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
 
-                                <div>
+                                <div style={{width: '100%'}}>
                                     <FormControl required fullWidth>
                                         {/*<InputLabel shrink className={classes.label}>
                                     <Typography variant="subtitle1" className={classes.text}>Логин</Typography>

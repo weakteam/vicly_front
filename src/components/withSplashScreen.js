@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import logo from "../images/icon192.png";
 import {withStyles} from "@material-ui/core";
-import Fade from "@material-ui/core/Fade";
 import Slide from "@material-ui/core/Slide";
-import Zoom from "@material-ui/core/Zoom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 

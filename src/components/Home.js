@@ -20,20 +20,13 @@ import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Select from "@material-ui/core/Select";
-import BackgroundLight from '../images/fon5b.jpg';
-import {Item, Menu, MenuProvider} from "react-contexify";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
-//import {Item, Menu, MenuProvider} from "react-contexify";
-import Delete from "@material-ui/icons/Delete"
-import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
 import '../css/scrollbar.css'
 //import withSplashScreen from "./withSplashScreen";
 import vhCheck from 'vh-check'
 import Logo from "../images/logoVicly.svg"
-import LogoDark from "../images/logoViclyDark.svg"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -80,7 +73,7 @@ const styles = theme => ({
             width: '100%',
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#e2e2e2' : theme.palette.primary.dark
+            theme.palette.type === 'light' ? '#EAEAEA' : theme.palette.primary.dark
         }`,
         borderRight: 0,
     },
@@ -155,7 +148,7 @@ const styles = theme => ({
         '&:before': {
             content: " '' ",
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
+                theme.palette.type === 'light' ? '#F6F6F6' : "#3b455c"
             }`,
             backgroundSize: 'cover',
             /* backgroundImage: 'url(' + BackgroundLight + ')',*/
@@ -240,7 +233,7 @@ const styles = theme => ({
         zIndex: 1,
         margin: '0 8px 5px 8px',
         [theme.breakpoints.down('md')]: {
-            margin: '0 9px 5px 5px',
+            margin: '0 9px 5px 8px',
         },
         [theme.breakpoints.down('sm')]: {
             margin: '0 8px 5px 5px',
@@ -281,7 +274,7 @@ const styles = theme => ({
             width: '100%',
         },
         height: '100%',
-        marginTop: 124,
+        marginTop: 118,
         marginBottom: 46,
 
         overflow: 'hidden',

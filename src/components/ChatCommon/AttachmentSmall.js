@@ -1,17 +1,7 @@
 import React from 'react';
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import SendOutlined from '@material-ui/icons/SendOutlined';
-import AttachFile from '@material-ui/icons/AttachFile';
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import FormControl from "@material-ui/core/FormControl/index";
-import InputBase from "@material-ui/core/InputBase/index";
-import {fade} from "@material-ui/core/styles/colorManipulator";
 import Close from "@material-ui/icons/Close";
-import {Badge, CircularProgress, Typography} from "@material-ui/core";
-import img1 from '../../images/fon3b.jpg';
-import someIcon from '../../images/icons/pdf-icon-64x64.png';
-import img2 from '../../images/fon2.jpg';
-import img3 from '../../images/fon1.jpg';
+import {CircularProgress, Typography} from "@material-ui/core";
 import {observer} from "mobx-react";
 import getLinkFromMime from "../../utils/mimetypes";
 

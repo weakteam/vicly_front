@@ -1,15 +1,13 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import PersonAdd from '@material-ui/icons/PersonAddOutlined'
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import InviteForm from "./InviteForm";
 import history from "../store/history"
-import rootStore from "../store/RootStore";
+//import rootStore from "../store/RootStore";
 import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
 import NewChatModal from "./NewChatModal";
 
-const {accountStore, messagesStore} = rootStore;
+//const {accountStore, messagesStore} = rootStore;
 
 function getModalStyle() {
     const top = 50;
@@ -94,7 +92,7 @@ class NewChatIcon extends React.Component {
                     <AddCommentOutlined className={classes.icon}/>
                 </IconButton>
                 <Modal
-                    aria-labelledby="simple-modal-title"
+                    aria-label     ledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.state.open}
                     onClose={this.handleClose}

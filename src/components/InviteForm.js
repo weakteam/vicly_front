@@ -2,12 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button/index';
 import FormControl from '@material-ui/core/FormControl/index';
 import InputLabel from '@material-ui/core/InputLabel/index';
-import Paper from '@material-ui/core/Paper/index';
 import Typography from '@material-ui/core/Typography/index';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {observer} from "mobx-react/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
-import Divider from "@material-ui/core/es/Divider/index";
 import InputBase from "@material-ui/core/InputBase/index";
 import Select from "@material-ui/core/Select/index";
 import MenuItem from "@material-ui/core/MenuItem/index";
@@ -18,11 +16,7 @@ import {BACKEND_URL} from "../common";
 import rootStore from "../store/RootStore";
 import {IconButton} from "@material-ui/core";
 import Close from "@material-ui/icons/Close"
-import Modal from "@material-ui/core/Modal";
 import Tooltip from "@material-ui/core/Tooltip";
-import Message from "./ChatCommon/Message";
-import Workgroup from "./Workgroup";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -178,7 +172,12 @@ const styles = theme => ({
     },
 
     link: {
-        fontSize: '1.1rem',
+        padding: '20px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '4% 3%',
+        },
+        fontSize: '1.5em',
+        fontWeight: 'bold',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
         }`,
@@ -275,7 +274,7 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
         }`,
-        padding: 20,
+        //padding: 20,
     },
     selectedCustom: {
         backgroundColor: '#0a8d8d!important',
@@ -317,6 +316,8 @@ const styles = theme => ({
         overflow: "hidden",
         position: 'absolute',
         top: 78,
+        left: 0,
+        right: 0,
         bottom: 83,
         [theme.breakpoints.down('xs')]: {
             bottom: 63,
@@ -469,7 +470,7 @@ class InviteForm extends React.Component {
             <>
 
 
-                <form style={{overflow: "auto", height: '100%', webkitOverflowScrolling: 'touch',}}
+                <form style={{overflow: "auto", height: '100%', WebkitOverflowScrolling: 'touch',}}
                       onSubmit={this.handleClick} className={classes.form}>
                     <div style={{padding: '0px 30px 20px 30px'}}>
                         <div className={classes.headerBarInf}>
@@ -632,7 +633,7 @@ class InviteForm extends React.Component {
         const {classes, theme,} = this.props;
         return (
             <div className={classes.formColor}>
-                <div style={{display: 'flex', alignItems: 'center'}}>
+
                     <Typography variant="body1" className={classes.link}>Ссылка для
                         приглашения:</Typography>
                     <Tooltip title={this.state.copied ? 'Ссылка скопирована' : 'Нажмите чтобы скопировать'}
@@ -643,7 +644,7 @@ class InviteForm extends React.Component {
                                  borderRadius: 5,
                                  marginLeft: 10,
                                  overflow: 'hidden',
-                                 width: '100%',
+                                 margin: '0 30px'
                              }}>
                             <InputBase
                                 classes={{
@@ -658,7 +659,6 @@ class InviteForm extends React.Component {
                         </div>
                     </Tooltip>
 
-                </div>
                 <div className={classes.signIn}>
                     <div className={classes.newInvite}
                          onClick={this.handleReset}><Typography variant="button" style={{color: 'rgb(131, 131, 131)'}}>Новое
@@ -698,12 +698,12 @@ class InviteForm extends React.Component {
                         steps.map((label) => {
                             return (
                                 <Step key={label} classes={{
-                                    active: classes.labelRoot,
+                                    //active: classes.labelRoot,
                                 }}>
                                     <StepLabel classes={{
                                         label: classes.labelRoot,
                                         completed: classes.completed,
-                                        active: classes.labelRoot,
+                                        //active: classes.labelRoot,
                                     }}>
                                         {label}
                                     </StepLabel>

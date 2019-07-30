@@ -5,9 +5,6 @@ import Divider from "@material-ui/core/es/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
-import {Button} from "@material-ui/core";
-import Icon from '@material-ui/core/Icon';
-import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import rootStore from "../store/RootStore";
 import Save from "@material-ui/icons/SaveOutlined"
@@ -19,7 +16,6 @@ import Group from '@material-ui/icons/GroupOutlined'
 import Info from '@material-ui/icons/InfoOutlined'
 import Create from '@material-ui/icons/CreateOutlined'
 import "../css/avatarHover.css"
-import Hidden from "@material-ui/core/Hidden";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -159,7 +155,7 @@ const styles = theme => ({
         //display: 'flex',
         // overflow: 'hidden',
         // alignItems: 'flex-start',
-        padding: '15px 30px',
+        padding: '0px 30px',
         [theme.breakpoints.down('xs')]: {
             padding: '0 3%',
         },

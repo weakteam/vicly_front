@@ -6,14 +6,14 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Typography from "@material-ui/core/Typography";
-import rootStore from "../store/RootStore";
+//import rootStore from "../store/RootStore";
 import {observer} from "mobx-react";
 import Loyalty from "@material-ui/icons/Loyalty"
 import Avatar from "@material-ui/core/Avatar";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 
-const {accountStore, messagesStore} = rootStore;
+//const {accountStore, messagesStore} = rootStore;
 
 
 const stylesUser = theme => ({
