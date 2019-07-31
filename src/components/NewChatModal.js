@@ -139,12 +139,13 @@ const styles = theme => ({
     form: {
         position: 'absolute',
         top: 228,
-        bottom: 46,
+        bottom: 0,
+        borderRadius: '0 0 10px 10px',
         left: 0,
         right: 0,
-        padding: '0px 30px',
+        padding: '0px 30px 59px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '0% 3%',
+            padding: '0 3% 12% 3%',
             top: 212,
         },
         backgroundColor: ` ${
@@ -367,8 +368,8 @@ class NewChatModal extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user_ids: this.state.values,
-                name: this.state.chatName,
+                user_ids: userIds,
+                name: name,
                 purpose: purpose
             })
         })
@@ -390,7 +391,7 @@ class NewChatModal extends React.Component {
 
     handleCreateNewChat = (event) => {
         event.preventDefault();
-        this.createNewChat([1, 11, 6, 15], 'Флудилачка', 'fake')
+        this.createNewChat(this.state.values, this.state.chatName, 'fake')
     };
 
     handleUserToggle = (userArr) => {
@@ -494,8 +495,7 @@ class NewChatModal extends React.Component {
                                 classes={{
                                     underline: classes.cssUnderline,
                                     root: classes.baseRoot
-                                }}
-                            />
+                                }}/>
                         </FormControl>
                     </div>
                     {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
@@ -510,11 +510,11 @@ class NewChatModal extends React.Component {
                             {workgroup}
                         </div>
                     </div>
-
+                    <div className={classes.signIn}>
+                        <Button type="submit" variant="contained" className={classes.submit}>Создать</Button>
+                    </div>
                 </form>
-                <div className={classes.signIn}>
-                    <Button type="submit" variant="contained" className={classes.submit}>Создать</Button>
-                </div>
+
             </div>
         );
     }
