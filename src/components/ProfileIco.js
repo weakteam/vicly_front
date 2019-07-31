@@ -11,13 +11,15 @@ import Modal from "@material-ui/core/Modal";
 import UserProfile from "./UserProfile";
 import rootStore from "../store/RootStore";
 import {observer} from "mobx-react";
+import SettingsModal from "./SettingsModal";
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import Typography from "@material-ui/core/Typography";
-import Close from "@material-ui/icons/Close"
-import Save from "@material-ui/icons/SaveOutlined"
-import CloudUpload from "@material-ui/icons/CloudUpload"
-import "../css/avatarHover.css"
-import Hidden from "@material-ui/core/Hidden";
-import '../css/scrollbar.css'
+import Person from '@material-ui/icons/PersonOutlineOutlined';
+import Settings from '@material-ui/icons/SettingsOutlined'
+import BrightnessMedium from '@material-ui/icons/BrightnessMediumOutlined'
+import ExitToApp from '@material-ui/icons/ExitToAppOutlined'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -87,6 +89,7 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
         }`,
+        paddingRight: 0,
     },
     menuButton: {
         marginLeft: -12,
@@ -117,7 +120,7 @@ const styles = theme => ({
         position: 'absolute',
         right: 5,
         top: 5,
-       left: 5,
+        left: 5,
         borderRadius: '5px 5px 0px 0px',
     },
     header: {
@@ -195,6 +198,23 @@ const styles = theme => ({
         }`,
         cursor: 'pointer',
     },
+    text: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#555555' : theme.palette.secondary.dark
+        }`,
+        fontWeight: 'normal',
+        zIndex: 1303,
+        fontSize: '1em'
+    },
+    switchRoot: {
+      margin: 0,
+    },
+    infIcons: {
+        marginRight: 10,
+        color: ` ${
+            theme.palette.type === 'light' ? '#5f5f5f' : theme.palette.secondary.dark
+        }`,
+    },
 });
 
 @observer
@@ -212,10 +232,39 @@ class ProfileIco extends React.Component {
         small: null,
         anchorEl: null,
         open: false,
+        settingsOpen: false,
+        checkedB: false,
         // mime: this.props.theme.palette.mime,
     };
+
+
+    componentDidMount() {
+        if (sessionStorage.getItem("theme") === 'dark') {
+            this.setState({
+                checkedB: true
+            });
+        } else {
+            this.setState({
+                checkedB: false
+            });
+        }
+    };
+
     handleChange = event => {
         this.setState({auth: event.target.checked});
+    };
+
+  handleSwitchChange = event => {
+      this.props.changeThemeType();
+      if (sessionStorage.getItem("theme") === 'dark') {
+          this.setState({
+              checkedB: false
+          });
+      } else {
+          this.setState({
+              checkedB: true
+          });
+      }
     };
 
     handleMenu = event => {
@@ -227,13 +276,26 @@ class ProfileIco extends React.Component {
     };
 
     handleMenuOpen = () => {
-        this.setState({open: true});
-
         this.handleClose();
+        this.setState({open: true});
+    };
+    handleSettingsOpen = () => {
+        this.handleClose();
+        this.setState({
+            open: true,
+            settingsOpen: true,
+        });
     };
 
     handleMenuClose = () => {
         this.setState({open: false});
+    };
+
+    handleSettingsClose = () => {
+        this.setState({
+            open: false,
+            settingsOpen: false,
+        });
     };
 
     handleImageChange = (event) => {
@@ -248,6 +310,19 @@ class ProfileIco extends React.Component {
     handleAvatarUpload = () => {
         if (this.avatarInput.current.files && this.avatarInput.current.files[0]) {
             rootStore.imageService.uploadAvatar(this.avatarInput.current.files[0]);
+        }
+    };
+
+    switchHandler = () => {
+
+        if (sessionStorage.getItem("theme") === 'dark') {
+            this.setState({
+                checkedB: false
+            });
+        } else {
+            this.setState({
+                checkedB: true
+            });
         }
     };
 
@@ -301,13 +376,35 @@ class ProfileIco extends React.Component {
                                     open={open}
                                     onClose={this.handleClose}>
                                     <MenuItem onClick={this.handleMenuOpen}
-                                              className={classes.menuItem}>Профиль</MenuItem>
-                                    <MenuItem onClick={this.handleClose}
-                                              className={classes.menuItem}>Настройки</MenuItem>
+                                              className={classes.menuItem}>
+                                        <Person className={classes.infIcons}/>
+                                        <Typography variant="h6" className={classes.text}>Профиль</Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={this.handleSettingsOpen}
+                                              className={classes.menuItem}>
+                                        <Settings className={classes.infIcons}/>
+                                        <Typography variant="h6" className={classes.text}>Настройки</Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={this.handleSwitchChange} className={classes.menuItem}>
+                                        <BrightnessMedium className={classes.infIcons}/>
+                                        <Typography variant="h6" className={classes.text}>Ночная тема</Typography>
+                                        <FormControlLabel
+                                            classes={{
+                                                root: classes.switchRoot
+                                            }}
+                                            control={
+                                                <Switch
+                                                    checked={this.state.checkedB}
+                                                    value="checkedB"
+                                                    color="primary"/>
+                                            }
+                                            label=""/>
+                                    </MenuItem>
                                     <MenuItem onClick={this.props.handleLogout}
-                                              className={classes.menuItem}>Выйти</MenuItem>
-                                    <MenuItem onClick={this.props.changeThemeType}
-                                              className={classes.menuItem}>Сменить тему</MenuItem>
+                                              className={classes.menuItem}>
+                                        <ExitToApp className={classes.infIcons}/>
+                                        <Typography variant="h6" className={classes.text}>Выйти</Typography>
+                                    </MenuItem>
                                 </Menu>
                                 <Modal
                                     aria-labelledby="simple-modal-title"
@@ -315,10 +412,17 @@ class ProfileIco extends React.Component {
                                     open={this.state.open}
                                     onClose={this.handleMenuClose}
                                     style={{zIndex: 1303}}>
-
-                                        <div className={classes.paper}>
-                                            <UserProfile handleMenuClose={this.handleMenuClose}/>
-                                        </div>
+                                    {
+                                        this.state.settingsOpen ? (
+                                            <div className={classes.paper}>
+                                                <SettingsModal handleMenuClose={this.handleSettingsClose}/>
+                                            </div>
+                                        ) : (
+                                            <div className={classes.paper}>
+                                                <UserProfile handleMenuClose={this.handleMenuClose}/>
+                                            </div>
+                                        )
+                                    }
                                 </Modal>
                             </div>
                         )}
