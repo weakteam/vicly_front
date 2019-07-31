@@ -41,7 +41,7 @@ const themeOptions = {
     palette: {
         primary: {
             light: "#ffffff",
-            main: "#679dbd", //аппбар и серчбар
+            main: "#0a8d8d", //аппбар и серчбар
             mainElem: "#075454",
             dark: "#1c212d",
             darkSecondary: '#323a4d',

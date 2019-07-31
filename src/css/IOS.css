@@ -10,10 +10,6 @@
     width: 100%;
 }
 
-html {
-    -webkit-text-size-adjust: none;
-}
-
 .scrollMessageArea {
     height: auto;
     padding-top: 10px;

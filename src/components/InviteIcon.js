@@ -27,17 +27,18 @@ const styles = theme => ({
         //    zIndex: 1000,
     },
     paper: {
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
         position: 'absolute',
         outline: 'none',
         borderRadius: 5,
-      //  padding: 30,
+        height: '98%',
+        //  padding: 30,
         [theme.breakpoints.down('xs')]: {
             width: '95%',
         },
-        [theme.breakpoints.down('sm')]: {
-            width: '95%',
-        },
-        width: 890,
+        width: 530,
         /*backgroundColor: ` ${
             theme.palette.type === 'light' ? "#679dbd" : "#679dbd"
             }`,*/
@@ -54,7 +55,7 @@ const styles = theme => ({
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     rootIndex: {
         zIndex: 1300,
@@ -90,8 +91,6 @@ class InviteIcon extends React.Component {
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
-                    borderColor={'red.500'}
-                    border={5}
                     open={this.state.open}
                     onClose={this.handleClose}
                     classes={{
@@ -99,7 +98,7 @@ class InviteIcon extends React.Component {
                     }}
 
                 >
-                    <div  style={getModalStyle()} className={classes.paper}>
+                    <div style={getModalStyle()} className={classes.paper}>
                         <InviteForm handleClose={this.handleClose}/>
                     </div>
                 </Modal>

@@ -1,7 +1,5 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 
@@ -12,10 +10,10 @@ const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     position: {
-        margin: '0 8px 0 8px',
-        [theme.breakpoints.down('sm')]: {
-            margin: '0 8px 0 5px',
-        },
+        margin: '0 10px 0 8px',
+       /* [theme.breakpoints.down('sm')]: {
+            margin: '0 10px 0 8px',
+        },*/
         [theme.breakpoints.down('xs')]: {
             //width: '96%',
             top: 58,
@@ -25,10 +23,13 @@ const styles = theme => ({
             borderRadius: '0 0 5px 5px',
             position: "absolute",
             borderBottom: 0,
+            boxShadow: ` ${
+                theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 11px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(24, 30, 43), 0 7px 8px 0px rgba(0, 0, 0, 0.3)'
+            }`,
         },
         borderRadius: '0 0 5px 5px',
         /*width: 'calc(400px - 16px)',*/
-        top: 74,
+        top: 69,
         left: 0,
         right: 0,
       /*  [theme.breakpoints.down('md')]: {
@@ -50,7 +51,7 @@ const styles = theme => ({
             theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
             }`,*/
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 6px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgba(204, 204, 204, 0.8), 0px 4px 6px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(24, 30, 43), 0 7px 8px 0px rgba(0, 0, 0, 0.3)'
             }`,
         zIndex: 1,
     },

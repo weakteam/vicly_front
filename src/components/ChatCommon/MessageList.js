@@ -150,7 +150,7 @@ class MessageList extends React.Component {
 
 
         return (
-            <div style={{WebkitOverflowScrolling: 'touch'}} className="scrollbarMessages" id="style-3"
+            <div style={{WebkitOverflowScrolling: 'touch'}} className="scrollbarMessages" id="style-2"
                  ref={this.messageList}>
                 <div className={"scroll scrollMessageArea"} id='messageList'>
                     {messages}

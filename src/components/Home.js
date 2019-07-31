@@ -20,20 +20,13 @@ import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Select from "@material-ui/core/Select";
-import BackgroundLight from '../images/fon5b.jpg';
-import {Item, Menu, MenuProvider} from "react-contexify";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
-//import {Item, Menu, MenuProvider} from "react-contexify";
-import Delete from "@material-ui/icons/Delete"
-import {Scrollbars} from 'react-custom-scrollbars';
 import '../css/IOS.css'
 import '../css/scrollbar.css'
 //import withSplashScreen from "./withSplashScreen";
 import vhCheck from 'vh-check'
 import Logo from "../images/logoVicly.svg"
-import LogoDark from "../images/logoViclyDark.svg"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -49,7 +42,7 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
@@ -80,8 +73,8 @@ const styles = theme => ({
             width: '100%',
         },
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#e2e2e2' : theme.palette.primary.dark
-            }`,
+            theme.palette.type === 'light' ? '#EAEAEA' : theme.palette.primary.dark
+        }`,
         borderRight: 0,
     },
 
@@ -95,13 +88,13 @@ const styles = theme => ({
         zIndex: 1300,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
-            }`,
+        }`,
         height: 55,
         boxShadow: theme.shadows[0],
         position: 'fixed',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
-            }`,
+        }`,
     },
     menuButton: {
         marginRight: 20,
@@ -147,7 +140,7 @@ const styles = theme => ({
         right: 0,
         top: 0,
         bottom: 0,
-       // width: '100%',
+        // width: '100%',
         boxShadow: '9px 0px 20px 20px rgba(0, 0, 0, 0.14)',
         /*borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
@@ -155,10 +148,10 @@ const styles = theme => ({
         '&:before': {
             content: " '' ",
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#f2f2f2' : "#3b455c"
-                }`,
+                theme.palette.type === 'light' ? '#F6F6F6' : "#3b455c"
+            }`,
             backgroundSize: 'cover',
-             /* backgroundImage: 'url(' + BackgroundLight + ')',*/
+            /* backgroundImage: 'url(' + BackgroundLight + ')',*/
             position: 'fixed',
             left: 400,
             [theme.breakpoints.down('md')]: {
@@ -223,12 +216,12 @@ const styles = theme => ({
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     logoDrawer: {
         boxShadow: ` ${
-            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(204, 204, 204)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37)'
-            }`,
+            theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(205, 205, 205), 0px 0px 20px 0px rgba(0, 0, 0, 0.12)' : 'inset 0px -4px 0px 0px rgb(19, 24, 37), 0px 0px 20px 0px rgba(0, 0, 0, 0.29)'
+        }`,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -238,26 +231,24 @@ const styles = theme => ({
         right: 0,
         position: 'absolute',
         zIndex: 1,
-        margin: '0 8px 5px 8px',
-        [theme.breakpoints.down('md')]: {
-            margin: '0 9px 5px 5px',
-        },
-        [theme.breakpoints.down('sm')]: {
-            margin: '0 8px 5px 5px',
-        },
+        margin: '0 10px 5px 8px',
         [theme.breakpoints.down('xs')]: {
             margin: '0 5px 5px 5px',
         },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#ffffff' : '#2b3346'
-            }`,
+        }`,
         borderRadius: 5,
         /* backgroundColor: ` ${
              theme.palette.mime === 'light' ? '#f1f1f1' : '#171a20'
              }`,*/
     },
     logoText: {
-        color: `${theme.palette.type === 'light' ? '#d5d5d5' : '#60687b'}`,
+        color: `${theme.palette.type === 'light' ? '#105a72' : 'rgb(185, 187, 191)'}`,
+        fontSize: '1.2em',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '1.2em',
+        },
         // width: '100%'
 
     },
@@ -265,28 +256,29 @@ const styles = theme => ({
         zIndex: 1299,
     },
     scrollDrawer: {
-        width: 400,
+        width: 390,
         [theme.breakpoints.down('md')]: {
-            width: 279,
+            width: 270,
         },
         [theme.breakpoints.down('sm')]: {
-            width: 250,
+            width: 240,
         },
         [theme.breakpoints.down('xs')]: {
             marginTop: 108,
             width: '100%',
         },
         height: '100%',
-        marginTop: 124,
-        marginBottom: 46,
+        marginTop: 10,
+        marginBottom: 10,
 
         overflow: 'hidden',
     },
     listFix: {
         width: 'initial',
-        padding: '20px 3px 10px 8px',
+        padding: '127px 0px 39px 8px',
+
         [theme.breakpoints.down('xs')]: {
-           padding: '16px 5px 20px 5px ',
+            padding: '16px 5px 45px 5px ',
         },
     },
 });
@@ -366,12 +358,12 @@ class Home extends React.Component {
                         handleLogout={this.accountStore.unauth.bind(accountStore)}/>
                     <div className={classes.logoDrawer}>
                         <img style={{width: 30, marginRight: 10}} alt="Logo"
-                             src={theme.palette.type === 'light' ? Logo : LogoDark}/>
+                             src={theme.palette.type === 'light' ? Logo : Logo}/>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
                 </Hidden>
                 <Hidden smUp implementation="css">
-                   {/* <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
+                    {/* <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
                         <Toolbar>
                             <IconButton
                                 color="inherit"
@@ -395,12 +387,12 @@ class Home extends React.Component {
                     </AppBar>*/}
                     <div className={classes.logoDrawer}>
                         <img style={{width: 30, marginRight: 10}} alt="Logo"
-                             src={theme.palette.type === 'light' ? Logo : LogoDark}/>
+                             src={theme.palette.type === 'light' ? Logo : Logo}/>
                         <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
                     </div>
                 </Hidden>
                 <SearchBar/>
-                <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-2' : 'style-3'}>
+                <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-3' : 'style-3'}>
                     <List className={"scrollDrawer " + classes.listFix}>
                         {this.workgroups()}
                     </List>
@@ -413,7 +405,7 @@ class Home extends React.Component {
                 <nav className={classes.drawer}>
                     <Hidden smUp implementation="css">
                         <AppBar position="fixed" className={classes.appBar}>
-                            <Toolbar>
+                            <Toolbar disableGutters>
                                 <IconButton
                                     color="inherit"
                                     aria-label="Open drawer"
@@ -475,7 +467,7 @@ class Home extends React.Component {
                     </Hidden>
                 </nav>
 
-                <div style={{display : this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
+                <div style={{display: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?

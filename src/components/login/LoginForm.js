@@ -17,6 +17,7 @@ import FormBack from "../../images/LoginForm.jpg"
 import rootStore from "../../store/RootStore";
 import history from "../../store/history"
 import LinearProgress from "@material-ui/core/LinearProgress";
+import '../../css/BackGradient.css'
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -35,9 +36,9 @@ const styles = theme => ({
             minHeight: '100%',
             backgroundColor: '#fff',
         },
-        backgroundSize: 'cover',
+        /*backgroundSize: 'cover',*/
         // backgroundImage: 'url(' + Background + ')',
-        backgroundColor: '#222c33',
+        /*backgroundColor: '#222c33',*/
     },
     main: {
         display: 'block', // Fix IE 11 issue.
@@ -72,19 +73,19 @@ const styles = theme => ({
         },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
-            }`,
+        }`,
     },
     submit: {
         width: '100%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#66a1a6' : '#2e374c'
-            }`,
+        }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
                 theme.palette.type === 'light' ? '#3a6d71' : '#3e4b67'
-                }`,
+            }`,
         },
     },
     invite: {
@@ -108,17 +109,17 @@ const styles = theme => ({
         paddingLeft: 10,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
-            }`,
+        }`,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     label: {
         display: 'flex',
         alignItems: 'center',
         color: ` ${
             theme.palette.type === 'light' ? '#a9a9a9' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     password: {
         marginTop: 10,
@@ -144,7 +145,7 @@ const styles = theme => ({
         // marginLeft: 30,
         color: ` ${
             theme.palette.type === 'light' ? '#ffffff' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     headerDiv: {
         /*   backgroundColor: ` ${
@@ -152,12 +153,12 @@ const styles = theme => ({
                }`,*/
         backgroundImage: 'url(' + FormBack + ')',
         backgroundSize: 'cover',
-        borderRadius: '5px 0 0 5px',
+        borderRadius: '10px 0 0 10px',
         [theme.breakpoints.down('xs')]: {
             width: '100%',
             borderRadius: 0,
         },
-        width: '75%',
+        minWidth: '54%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -176,13 +177,13 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     checked: {
         '&:not($checked)': {
             color: ` ${
                 theme.palette.type === 'light' ? '#000' : '#fff'
-                }`,
+            }`,
         },
         '&$checked': {
             color: '#43a296',
@@ -207,16 +208,23 @@ const styles = theme => ({
     mainForm: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
-            }`,
-        borderRadius: '0 5px 5px 0',
+        }`,
+        borderRadius: '0 10px 10px 0',
         [theme.breakpoints.down('xs')]: {
             borderRadius: 0,
+            position: 'absolute',
+            top: 194,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: 'none',
         },
+        boxShadow: '-17px 0px 13px 0px rgba(0, 0, 0, 0.25)',
     },
     checkBoxRoot: {
         color: ` ${
-            theme.palette.type === 'light' ? '#000' : 'rgba(255,255,255,0.62)'
-            }`,
+            theme.palette.type === 'light' ? '#b7b4b4' : 'rgba(255,255,255,0.62)'
+        }`,
     },
 });
 
@@ -252,7 +260,7 @@ class LoginForm extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-            <div className={classes.root}>
+            <div className={classes.root + ' back'}>
                 {/*   <div style={{top: 0, left: 0, right: 0, position: 'absolute'}}><LinearProgress/></div>*/}
                 {
                     this.state.loading === 1 ?
@@ -277,7 +285,7 @@ class LoginForm extends React.Component {
                             </div>
                             <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
 
-                                <div >
+                                <div style={{width: '100%'}}>
                                     <FormControl required fullWidth>
                                         {/*<InputLabel shrink className={classes.label}>
                                     <Typography variant="subtitle1" className={classes.text}>Логин</Typography>

@@ -1,23 +1,14 @@
 import React from 'react';
 import withStyles from "@material-ui/core/es/styles/withStyles";
-import SendOutlined from '@material-ui/icons/SendOutlined';
-import AttachFile from '@material-ui/icons/AttachFile';
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import FormControl from "@material-ui/core/FormControl/index";
-import InputBase from "@material-ui/core/InputBase/index";
-import {fade} from "@material-ui/core/styles/colorManipulator";
 import Close from "@material-ui/icons/Close";
-import {Badge, CircularProgress, Divider, Typography} from "@material-ui/core";
+import {CircularProgress, Divider, Typography} from "@material-ui/core";
 import {observer} from "mobx-react";
 import Modal from "@material-ui/core/Modal";
 import {BACKEND_URL} from "../../common";
 import rootStore from "../../store/RootStore";
 import getLinkFromMime from "../../utils/mimetypes";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import NewChatModal from "../NewChatModal";
 import Avatar from "@material-ui/core/Avatar";
-import Checkbox from "@material-ui/core/Checkbox";
 
 function getModalStyle() {
     const top = 50;
@@ -272,11 +263,11 @@ class AttachmentShow extends React.Component {
                 <CircularProgress variant="static" value={attachment.progressFull}/>
             )
         } else if (attachment.statusFull === "ready") {
-            return <img className={classes.modalContent} src={attachment.fullSrc}/>
+            return <img alt="attachment" className={classes.modalContent} src={attachment.fullSrc}/>
         } else if (attachment.statusFull === "error" && !wasError) {
             return this.fullImage(true)
         } else {
-            return "Everytthing is bad!";
+            return "Everything is bad!";
         }
     }
 
