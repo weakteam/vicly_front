@@ -159,7 +159,7 @@ function handleClick() {
     alert('You clicked the Chip.'); // eslint-disable-line no-alert
 }
 
-@observer 
+@observer
 class Message extends React.PureComponent {
 
     getRandomColor = (letter) => {
@@ -177,7 +177,6 @@ class Message extends React.PureComponent {
         "Р": "#2ab49b",
         "А": "#d15c17",
         "И": "#9e72cf"
-
     };
 
 
@@ -209,10 +208,10 @@ class Message extends React.PureComponent {
 
         let mobileMessage;
 
-        const imagesAttachments = this.props.messageInfo.attachments.filter(elem => elem.canShowPreview() || elem.dataFetched !== "ready");
-        const otherAttachments = this.props.messageInfo.attachments.filter(elem => !elem.canShowPreview() && elem.dataFetched !== "ready");
-
-        const visibleSensor = !this.props.messageInfo.timestamp_read && !this.props.fromMe;
+        // const imagesAttachments = this.props.messageInfo.attachments.filter(elem => elem.canShowPreview() || elem.dataFetched !== "ready");
+        // const otherAttachments = this.props.messageInfo.attachments.filter(elem => !elem.canShowPreview() && elem.dataFetched !== "ready");
+        //
+        // const visibleSensor = !this.props.messageInfo.timestamp_read && !this.props.fromMe;
 
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
 

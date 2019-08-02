@@ -157,10 +157,24 @@ class MessageList extends React.Component {
             let fromMe = message.from === myUserId;
             const user = this.props.chatUsers.find(user => message.from === user.id);
             const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
-            return (
-                <VisibilitySensor active={!fromMe && !message.timestamp_read}
-                                  onEnterViewport={message.onViewport}
-                                  onChange={message.onViewport}>
+            if (!fromMe && !message.timestamp_read) {
+                return (
+                    <VisibilitySensor active={!fromMe && !message.timestamp_read}
+                                      onEnterViewport={message.onViewport}
+                                      onChange={message.onViewport}>
+                        <Message
+                            key={message.id}
+                            userInfo={fromMe ? this.props.myselfUser : user}
+                            message={message.message}
+                            messageInfo={message}
+                            fromMe={fromMe}
+                            avatar={avatar}
+                            onContextMenu={this.handleContextMenu(message)}
+                            ref={i === arr.length - 1 ? this.lastMessage : null}/>
+                    </VisibilitySensor>
+                );
+            } else {
+                return (
                     <Message
                         key={message.id}
                         userInfo={fromMe ? this.props.myselfUser : user}
@@ -170,8 +184,9 @@ class MessageList extends React.Component {
                         avatar={avatar}
                         onContextMenu={this.handleContextMenu(message)}
                         ref={i === arr.length - 1 ? this.lastMessage : null}/>
-                </VisibilitySensor>
-            );
+                )
+            }
+
         });
 
 

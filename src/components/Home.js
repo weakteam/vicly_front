@@ -27,6 +27,7 @@ import '../css/scrollbar.css'
 //import withSplashScreen from "./withSplashScreen";
 import vhCheck from 'vh-check'
 import Logo from "../images/logoVicly.svg"
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -301,7 +302,7 @@ class Home extends React.Component {
     };
 
     handleDrawerToggleForMob = () => {
-        this.setState(state => ({mobileOpen: false}));
+        this.setState({mobileOpen: false});
     };
 
     workgroups() {
@@ -409,7 +410,7 @@ class Home extends React.Component {
                             </Toolbar>
                             {/*<ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>*/}
                         </AppBar>
-                        <Drawer
+                        <SwipeableDrawer
                             container={this.props.container}
                             variant="temporary"
                             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -421,12 +422,12 @@ class Home extends React.Component {
                                 paper: classes.drawerPaper,
                                 root: classes.rootIndex,
                             }}
-                            /* ModalProps={{
-                                 keepMounted: true, // Better open performance on mobile.
-                             }}*/
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }}
                         >
                             {drawer}
-                        </Drawer>
+                        </SwipeableDrawer>
                     </Hidden>
                     <Hidden xsDown implementation="css">
                         <Drawer
@@ -435,6 +436,9 @@ class Home extends React.Component {
                             }}
                             variant="permanent"
                             open
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }}
                         >
                             {drawer}
                             {/* <MenuProvider id={"menu_id"}>
