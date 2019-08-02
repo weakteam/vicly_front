@@ -96,8 +96,8 @@ class ChatWindow extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
-        const isMessegesChanged = chat.messages.length !== prevProps.chat.messages.length;
-        if (messagesStore.isChatChanged() || isMessegesChanged) {
+        //const isMessegesChanged = chat.messages.length !== prevProps.chat.messages.length;
+        if (messagesStore.isChatChanged() ) {
             this.scrollToBottom();
         }
     };
