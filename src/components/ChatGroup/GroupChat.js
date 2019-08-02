@@ -92,6 +92,7 @@ class GroupChat extends React.Component {
 
     handleDialogClick = () => {
         this.props.history.push(`/home/chat/group/${this.props.groupChat.chatId}`);
+        this.props.handleDrawerToggleForMob();
     };
 
     handleDialogClickMob = () => {
@@ -130,11 +131,10 @@ class GroupChat extends React.Component {
 
         let colorChange = AvatarColor.getColor(chatTitle[0]);
         return (
-            <div>
-                <Hidden implementation="css" smUp>
+
                     <ListItem
                         selected={selected}
-                        onClick={this.handleDialogClickMob.bind(this)}
+                        onClick={this.handleDialogClick.bind(this)}
                         disableGutters={true}
                         button
                         className={classes.listItemPadding}>
@@ -179,60 +179,10 @@ class GroupChat extends React.Component {
                             }
                         </Grid>
                     </ListItem>
-                </Hidden>
-
-                <Hidden implementation="css" xsDown>
-                    <ListItem
-                        selected={selected}
-                        onClick={this.handleDialogClick.bind(this)}
-                        disableGutters={true}
-                        button
-                        className={classes.listItemPadding}>
-                        <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
-                              wrap="nowrap"
-                              spacing={16}>
-                            <Grid item>
-                                <Avatar
-                                    className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
-                                    {chatTitle[0].toUpperCase()}
-                                </Avatar>
-                            </Grid>
-
-                            <Grid item xs zeroMinWidth>
-                                <div className={classes.chatTitleWithIcon}>
-                                    <Typography variant="body2"
-                                                color="secondary"
-                                                noWrap
-                                                className={classes.userName}
-                                                style={{color: selected ? '#fff' : ''}}>
-                                        {chatTitle}
-                                    </Typography>
-                                    <Group className={classes.dialogIco}
-                                           style={{color: selected ? '#b5dcdc' : ''}}/>
-                                </div>
-                                <Typography variant="caption"
-                                            noWrap
-                                            className={classes.message}
-                                            style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
-                            </Grid>
-
-                            <Grid item>
-                                <Typography
-                                    className={classes.time}
-                                    style={{color: selected ? '#b5dcdc' : ''}}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
-                            </Grid>
-                            {
-                                countUnread ? (<Badge color="secondary" badgeContent={countUnread}
-                                                      classes={{badge: classes.margin}}/>) : ("")
-                            }
-                        </Grid>
-                    </ListItem>
-                </Hidden>
-            </div>
         );
     }
 }
 
-const styledComponent = withStyles(styles, {withTheme: true})(withRouter(GroupChat));
+const styledComponent = withStyles(styles)(withRouter(GroupChat));
 
 export default styledComponent;

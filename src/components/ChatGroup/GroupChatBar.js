@@ -13,21 +13,59 @@ import InputBase from "@material-ui/core/InputBase";
 import UserProfile from "../UserProfile";
 import Modal from "@material-ui/core/Modal";
 import GroupChatInfo from "./GroupChatInfo";
+import AttachmentsModal from "../AttachmentsModal";
 
 const {accountStore, messagesStore} = rootStore;
+const top = 50;
+const left = 50;
 
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
+const styles = theme => ({
+    paper: {
         top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
-    };
-}
-
-const styles = theme => ({
+        width: 495,
+        height: '98%',
+        [theme.breakpoints.down('xs')]: {
+            position: 'fixed',
+            top: 5,
+            left: 5,
+            right: 5,
+            bottom: 5,
+            transform: 'none',
+            width: 'auto',
+        },
+        position: 'absolute',
+        outline: 'none',
+        borderRadius: 10,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
+        boxShadow: theme.shadows[5],
+    },
+    paperAttachment: {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+        width: 640,
+        height: '98%',
+        [theme.breakpoints.down('xs')]: {
+            position: 'fixed',
+            top: 5,
+            left: 5,
+            right: 5,
+            bottom: 5,
+            transform: 'none',
+            width: 'auto',
+        },
+        position: 'absolute',
+        outline: 'none',
+        borderRadius: 10,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
+        boxShadow: theme.shadows[5],
+    },
     position: {
         margin: '5px 5px 5px 5px',
         borderRadius: '5px 5px 5px 5px',
@@ -152,6 +190,8 @@ class ChatBar extends React.Component {
     state = {
         auth: true,
         open: false,
+        chatInfo: false,
+        attachments: false,
         anchorEl: null,
         type: this.props.theme.palette.type,
     };
@@ -174,14 +214,22 @@ class ChatBar extends React.Component {
         this.setState({anchorEl: null});
     };
 
-    handleMenuOpen = () => {
-        this.setState({open: true});
-
-        this.handleClose();
-    };
-
     handleMenuClose = () => {
         this.setState({open: false});
+        this.setState({attachments: false});
+        this.setState({chatInfo: false});
+    };
+
+    handleChatInfoOpen = event => {
+        this.handleClose();
+        this.setState({open: true});
+        this.setState({chatInfo: true});
+    };
+
+    handleAttachmentsOpen = event => {
+        this.handleClose();
+        this.setState({open: true});
+        this.setState({attachments: true});
     };
 
     render() {
@@ -240,8 +288,8 @@ class ChatBar extends React.Component {
                         classes={{
                             paper: classes.menu,
                         }}>
-                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Информация о чате</MenuItem>
-                        <MenuItem onClick={this.handleClose} className={classes.menuItem}>Вложения</MenuItem>
+                        <MenuItem onClick={this.handleChatInfoOpen} className={classes.menuItem}>Информация о чате</MenuItem>
+                        <MenuItem onClick={this.handleAttachmentsOpen} className={classes.menuItem}>Вложения</MenuItem>
                         <MenuItem onClick={this.handleClose} className={classes.menuItem}>Заглушить
                             уведомления</MenuItem>
                         <MenuItem onClick={this.handleClose} className={classes.menuItem}>Выйти</MenuItem>
@@ -254,13 +302,20 @@ class ChatBar extends React.Component {
                     open={this.state.open}
                     onClose={this.handleMenuClose}
                     style={{zIndex: 1303}}>
-
-                    <div style={getModalStyle()} className={classes.paper}>
-                        <GroupChatInfo handleMenuClose={this.handleMenuClose}/>
-                    </div>
-
+                    {
+                        this.state.chatInfo === true ? (
+                            <div className={classes.paper}>
+                                <GroupChatInfo handleMenuClose={this.handleMenuClose}/>
+                            </div>
+                            ) : (
+                                this.state.attachments === true ? (
+                                    <div className={classes.paperAttachment}>
+                                        <AttachmentsModal handleMenuClose={this.handleMenuClose}/>
+                                    </div>
+                                    ) : (console.log('Чет ошибка какая-то, как ты это сделал?'))
+                            )
+                    }
                 </Modal>
-
             </div>
         )
     }

@@ -22,20 +22,9 @@ import BrightnessMedium from '@material-ui/icons/BrightnessMediumOutlined'
 import ExitToApp from '@material-ui/icons/ExitToAppOutlined'
 
 const {accountStore, messagesStore} = rootStore;
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
-
 const top = 50;
 const left = 50;
+
 const styles = theme => ({
 
     root: {
@@ -288,7 +277,10 @@ class ProfileIco extends React.Component {
     };
 
     handleMenuClose = () => {
-        this.setState({open: false});
+        this.setState({
+            open: false,
+            settingsOpen: false,
+        });
     };
 
     handleSettingsClose = () => {
@@ -415,11 +407,11 @@ class ProfileIco extends React.Component {
                                     {
                                         this.state.settingsOpen ? (
                                             <div className={classes.paper}>
-                                                <SettingsModal handleMenuClose={this.handleSettingsClose}/>
+                                                <SettingsModal settingsOpen={this.state.settingsOpen} handleSettingsClose={this.handleSettingsClose}/>
                                             </div>
                                         ) : (
                                             <div className={classes.paper}>
-                                                <UserProfile handleMenuClose={this.handleMenuClose}/>
+                                                <UserProfile  handleMenuClose={this.handleMenuClose}/>
                                             </div>
                                         )
                                     }

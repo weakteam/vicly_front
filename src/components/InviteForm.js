@@ -203,7 +203,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             padding: '20px 30px',
         },
-        borderRadius: '0 0 5px 5px',
+        borderRadius: '0 0 10px 10px',
         // paddingTop: 20
         position: 'absolute',
         bottom: 0,
@@ -288,7 +288,7 @@ const styles = theme => ({
         top: 0,
         left: 0,
         right: 0,
-        borderRadius: '5px 5px 0 0',
+        borderRadius: '10px 10px 0 0',
         backgroundColor: '#0a8d8d',
         display: 'flex',
         alignItems: 'center',

@@ -25,19 +25,19 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         fontSize: '0.9rem'
     },
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     root: {
 
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
-            }`,
+        }`,
     },
     gutters: {
         paddingTop: 6,
@@ -55,17 +55,17 @@ const styles = theme => ({
 
         /*margin: '8px 3px 0px 8px',*/
         [theme.breakpoints.down('xs')]: {
-         /*   margin: '8px 8px 10px 8px',*/
+            /*   margin: '8px 8px 10px 8px',*/
         },
         borderRadius: 5,
-      // paddingBottom: 5,
+        // paddingBottom: 5,
         marginBottom: 10,
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(213, 213, 213)' : 'inset 0px -4px 0px 0px rgba(19, 24, 37, 0.8)'
-            }`,
+        }`,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#2b3346'
-            }`,
+        }`,
 
     },
 });
@@ -124,7 +124,7 @@ class Workgroup extends React.Component {
                                 userChat =>
                                     <Dialog
                                         userChat={userChat}
-                                        handleDrawerToggle={this.props.handleDrawerToggle}/>
+                                        handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
                         {
@@ -133,7 +133,7 @@ class Workgroup extends React.Component {
                                     return (
                                         <GroupChat
                                             groupChat={groupChat}
-                                            handleDrawerToggle={this.props.handleDrawerToggle}
+                                            handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}
                                         />
                                     )
                                 }
@@ -141,7 +141,6 @@ class Workgroup extends React.Component {
                         }
                     </List>
                 </Collapse>
-                {/* <Divider classes={{root: classes.root}}/>*/}
             </div>
         )
     }
