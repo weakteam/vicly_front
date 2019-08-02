@@ -62,7 +62,7 @@ class AttachmentSmall extends React.Component {
         const {classes, theme, attachment} = this.props;
         if (attachment.statusPreview === "ready") {
             if (attachment.canShowPreview()) {
-                return <img src={attachment.previewSrc} alt="kek" className={classes.attached}/>
+                return <img src={attachment.previewSrcSmall} alt="kek" className={classes.attached}/>
             } else {
                 const src = getLinkFromMime(attachment.mime);
                 return (

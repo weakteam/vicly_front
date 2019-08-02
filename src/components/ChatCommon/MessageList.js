@@ -62,17 +62,41 @@ class MessageList extends React.Component {
     getSnapshotBeforeUpdate(prevProps, prevState) {
         // Are we adding new items to the list?
         // Capture the scroll position so we can adjust scroll later.
-        if (prevProps.messages.length < this.props.messages.length) {
-            const list = this.messageList.current;
-            return list.scrollHeight - list.scrollTop;
+        // if (prevProps.messages.length < this.props.messages.length) {
+        const list = this.messageList.current;
+        if (list && list.scrollTop + list.offsetHeight === list.scrollHeight)
+            return null;
+        if (this.props.messages.length !== prevProps.messages.length) {
+            if (this.props.messages[0] !== prevProps.messages[0]) {
+                return {
+                    isUpper: true,
+                    scrollT: list.scrollTop,
+                    scrollH: list.scrollHeight,
+                }
+            } else {
+                return {
+                    isUpper: false,
+                    scrollT: list.scrollTop,
+                    scrollH: list.scrollHeight,
+                }
+            }
         }
-        return null;
+        return {
+            scrollT: list.scrollTop,
+            scrollH: list.scrollHeight,
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (snapshot !== null) {
-            const list = this.messageList.current;
-            list.scrollTop = list.scrollHeight - snapshot;
+        const list = this.messageList.current;
+        if (snapshot) {
+            if (snapshot.isUpper === true) {
+                list.scrollTop += list.scrollHeight - snapshot.scrollH;
+            } else if (snapshot.isUpper === false) {
+                list.scrollTop = snapshot.scrollT;
+            } else if (snapshot.scrollH === list.scrollHeight) {}
+        } else {
+            list.scrollTop = list.scrollHeight;
         }
     }
 

@@ -16,6 +16,7 @@ export default class Chat {
     @observable messages = [];
     page = 0;
 
+
     //common properties
     selected = false;
 
@@ -73,6 +74,9 @@ export default class Chat {
     }
 
     updateChat(newMessages) {
+        if (newMessages.length > 0 && this.messages.find(elem => elem.id === newMessages[0].id) && this.messages.find(elem => elem.id === newMessages[newMessages.length - 1].id)) {
+            return;
+        }
         newMessages = newMessages.map(message => new Message(message));
         this.messages = this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.last = this.messages[this.messages.length - 1];
@@ -124,7 +128,7 @@ export default class Chat {
         if (innerMessage) {
             innerMessage.timestamp_delivery = messageObject.timestamp_delivery;
             innerMessage.timestamp_read = messageObject.timestamp_read;
-            if (messageObject.from !== rootStore.accountStore.userId){
+            if (messageObject.from !== rootStore.accountStore.userId) {
                 this.unread--;
             }
         }

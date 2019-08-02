@@ -143,12 +143,12 @@ const styles = theme => ({
         fontSize: '1rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     userRole: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     commentBlock: {
         backgroundColor: '#fff',
@@ -211,12 +211,14 @@ class AttachmentShow extends React.Component {
 
     viewableAttachment() {
         const {classes, theme, attachment} = this.props;
-        if (attachment.statusPreview === "ready") {
-            return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
+        if (attachment.previewSmall && attachment.previewSrcSmall) {
+            return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrcSmall} alt="kek"
                         className={classes.attached + " " + classes.imagePreview}/>
-        } else if (attachment.statusPreview === "loading") {
+        } else if (attachment.previewSmall && attachment.statusPreview === "loading") {
             return <CircularProgress variant={attachment.progressPreview === 100 ? "indeterminate" : "static"}
                                      value={attachment.progressPreview}/>
+        } else if (attachment.previewSmall && !attachment.previewSrcSmall && !attachment.statusPreview === "loading") {
+            attachment.loadPreviewBig();
         } else if (attachment.statusPreview === "none" || attachment.statusPreview === "error") {
             return "ERROR!"
         }
@@ -271,6 +273,26 @@ class AttachmentShow extends React.Component {
         }
     }
 
+    bigPreview(wasError) {
+        const {classes, theme, attachment} = this.props;
+        if (attachment.previewBig && !attachment.previewSrcBig) {
+            attachment.loadPreviewBig();
+            return (
+                <CircularProgress variant="static" value={attachment.progressFull}/>
+            )
+        } else if (attachment.statusPreview === "loading") {
+            return (
+                <CircularProgress variant="static" value={attachment.progressFull}/>
+            )
+        } else if (attachment.previewSrcBig) {
+            return <img className={classes.modalContent} src={attachment.previewSrcBig}/>
+        } else if (!attachment.previewSrcBig && attachment.statusFull === "error" && !wasError) {
+            return this.bigPreview(true)
+        } else {
+            return "Everytthing is bad!";
+        }
+    }
+
     handleAttachmentDownload = () => {
         const {attachment} = this.props;
         const mime = (attachment.mime && !attachment.mime.startsWith("image")) || false;
@@ -318,7 +340,8 @@ class AttachmentShow extends React.Component {
                                          className={classes.paper}>
                                         <Close onClick={this.imagePreviewModalClose} className={classes.close}/>
                                         <div style={{width: '100%', textAlign: 'center'}}>
-                                            {this.state.imageModal ? this.fullImage(false) : null}
+                                            {this.state.imageModal ? this.bigPreview(false) : null}
+                                            {/*{this.state.imageModal ? this.fullImage(false) : null}*/}
                                         </div>
 
                                         <div className={classes.commentBlock}>

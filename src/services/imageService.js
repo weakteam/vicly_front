@@ -121,24 +121,22 @@ export default class ImageService {
         ajax.send();
     }
 
-    async getImagePreview(attachment) {
+    async getImagePreview(attachment, isPreviewBig = false) {
         if (!attachment instanceof Attachment) {
             throw Error("It's not Attachment instance");
         }
-        if (attachment.previewSrc || !attachment.canShowPreview()) {
-            return
-        }
-        let image = this.images.find(elem => elem.id === attachment.id);
-        if (image)
-            return image;
+        // if (attachment.previewSrc || !attachment.canShowPreview()) {
+        //     return
+        // }
+        // let image = this.images.find(elem => elem.id === attachment.id);
+        // if (image)
+        //     return image;
 
-        let isGif = false;
-        if(attachment.mime === "image/gif"){
-            isGif = true;
-        }
-
+        // let isGif = false;
+        // if (attachment.mime === "image/gif") {
+        //     isGif = true;
+        // }
         let ajax = new XMLHttpRequest();
-
         const innerProgressHandler = (event) => {
             let progress = (event.loaded / event.total) * 100;
             if (progress === 0) {
@@ -151,15 +149,13 @@ export default class ImageService {
         };
 
         const innerLoadEnd = (event) => {
-            const image = {
-                id: attachment.id,
-                isAvatar: false,
-                userId: null,
-                big: null,
-                small: URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime}))
-            };
-            this.images.push(image);
-            attachment.onPreviewLoaded(image);
+            //this.images.push(image);
+            if (isPreviewBig) {
+                attachment.onPreviewBigLoaded(URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime})));
+            } else {
+                attachment.onPreviewSmallLoaded(URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime})));
+            }
+
         };
 
         ajax.onreadystatechange = function () {
@@ -175,8 +171,7 @@ export default class ImageService {
         ajax.onload = innerLoadEnd;
         ajax.onerror = attachment.onLoadError;
         ajax.onabort = attachment.onLoadError;
-        // ajax.responseType = "blob";
-        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}${!isGif ? "?width=200" : ""}`, true);
+        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}/${isPreviewBig ? "preview_big" : "preview_small"}`, true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send();
     }

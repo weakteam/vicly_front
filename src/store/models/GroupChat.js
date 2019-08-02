@@ -8,6 +8,7 @@ export default class GroupChat extends Chat {
 
     title = "";
     ownerId = null;
+    archive = null;
     purpose = "";
     // Array of User objects
     users = [];
@@ -23,6 +24,7 @@ export default class GroupChat extends Chat {
         this.title = chatObject.chat.name;
         this.ownerId = chatObject.chat.owner;
         this.purpose = chatObject.chat.purpose;
+        this.archive = chatObject.chat.archive;
     }
 
     async postMessage(message, attachments = []) {
