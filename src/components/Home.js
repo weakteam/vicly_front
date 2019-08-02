@@ -278,6 +278,7 @@ const styles = theme => ({
         overflow: 'hidden',
     },
     listFix: {
+        padding: '127px 0px 39px 8px',
         [theme.breakpoints.down('xs')]: {
             padding: '16px 5px 0px 5px ',
         },
