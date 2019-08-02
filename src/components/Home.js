@@ -300,12 +300,16 @@ class Home extends React.Component {
         this.setState(state => ({mobileOpen: !state.mobileOpen}));
     };
 
+    handleDrawerToggleForMob = () => {
+        this.setState(state => ({mobileOpen: false}));
+    };
+
     workgroups() {
         const {classes} = this.props;
         if (this.messagesStore.searchActive) {
             if (this.messagesStore.foundedGroups.length) {
                 return this.messagesStore.foundedGroups.map(
-                    workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
+                    workgroup => <Workgroup handleDrawerToggleForMob={this.handleDrawerToggle}
                                             workgroup={workgroup}
                                             userChatsNew={this.messagesStore.foundedUserChats.filter(userChat => userChat.groupId === workgroup.id)}
                                             groupChatsNew={this.messagesStore.foundedGroupChats.filter(groupChat => groupChat.groupId === workgroup.id)}/>
@@ -316,7 +320,8 @@ class Home extends React.Component {
         } else {
             if (this.messagesStore.groups.length) {
                 return this.messagesStore.groups.map(
-                    workgroup => <Workgroup handleDrawerToggle={this.handleDrawerToggle}
+                    workgroup => <Workgroup handleDrawerToggleForMob={this.handleDrawerToggleForMob}
+                                            mobileOpen={this.state.mobileOpen}
                                             workgroup={workgroup}
                                             userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
                                             groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>

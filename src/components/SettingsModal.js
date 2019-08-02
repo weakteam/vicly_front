@@ -346,7 +346,7 @@ class SettingsModal extends React.Component {
                             <Typography variant="overline" className={classes.header}>
                                 Настройки
                             </Typography>
-                            <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleMenuClose}>
+                            <IconButton style={{marginLeft: 'auto'}} onClick={this.props.handleSettingsClose}>
                                 <Close className={classes.closeIcon}/>
                             </IconButton>
                         </div>

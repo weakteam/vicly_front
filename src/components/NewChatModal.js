@@ -40,7 +40,7 @@ const styles = theme => ({
         backgroundColor: '#0A8D8D',
         display: 'flex',
         alignItems: 'start',
-        borderRadius: '5px 5px 0px 0px',
+        borderRadius: '10px 10px 0px 0px',
         position: 'absolute',
         top: 0,
         left: 0,
@@ -506,7 +506,7 @@ class NewChatModal extends React.Component {
                 </div>
                 <form onSubmit={this.handleCreateNewChat} className={classes.form}>
                     <div className={classes.blockForm}>
-                        <div style={{overflow: "auto", height: '100%', WebkitOverflowScrolling: 'touch',}}>
+                        <div id="style-2" style={{overflow: "auto", height: '100%', WebkitOverflowScrolling: 'touch',}}>
                             {workgroup}
                         </div>
                     </div>

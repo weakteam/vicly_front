@@ -8,17 +8,8 @@ import AddCommentOutlined from "@material-ui/icons/AddCommentOutlined"
 import NewChatModal from "./NewChatModal";
 
 //const {accountStore, messagesStore} = rootStore;
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+const top = 50;
+const left = 50;
 
 const styles = theme => ({
     root: {
@@ -27,29 +18,27 @@ const styles = theme => ({
         //    zIndex: 1000,
     },
     paper: {
-        position: 'absolute',
-        borderRadius: '5px 5px 10px 10px',
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+        width: 495,
         height: '98%',
         [theme.breakpoints.down('xs')]: {
-            width: '95%',
+            position: 'fixed',
+            top: 5,
+            left: 5,
+            right: 5,
+            bottom: 5,
+            transform: 'none',
+            width: 'auto',
         },
-        backgroundColor: '#0a8d8d',
-        width: 530,
+        position: 'absolute',
         outline: 'none',
-        /* backgroundColor: ` ${
-             theme.palette.type === 'light' ? 'rgb(160, 89, 89)' : 'rgb(160, 89, 89)'
-             }`,*/
-        //  padding: 30,
-        /* [theme.breakpoints.down('xs')]: {
-             width: '80%',
-         },*/
-        //  width: 585,
-        /*  backgroundColor: ` ${
-
-              theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-              }`,*/
+        borderRadius: 10,
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
         boxShadow: theme.shadows[5],
-        // padding: theme.spacing.unit * 4,
     },
     container: {
         display: 'flex',
@@ -101,7 +90,7 @@ class NewChatIcon extends React.Component {
                     }}
 
                 >
-                    <div style={getModalStyle()} className={classes.paper}>
+                    <div className={classes.paper}>
                         <NewChatModal handleClose={this.handleClose}/>
                     </div>
                 </Modal>

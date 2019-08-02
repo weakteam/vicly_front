@@ -8,17 +8,8 @@ import history from "../store/history"
 import rootStore from "../store/RootStore";
 
 const {accountStore, messagesStore} = rootStore;
-
-function getModalStyle() {
-    const top = 50;
-    const left = 50;
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+const top = 50;
+const left = 50;
 
 const styles = theme => ({
     root: {
@@ -27,23 +18,27 @@ const styles = theme => ({
         //    zIndex: 1000,
     },
     paper: {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+        width: 495,
+        height: '98%',
+        [theme.breakpoints.down('xs')]: {
+            position: 'fixed',
+            top: 5,
+            left: 5,
+            right: 5,
+            bottom: 5,
+            transform: 'none',
+            width: 'auto',
+        },
+        position: 'absolute',
+        outline: 'none',
+        borderRadius: 10,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
         }`,
-        position: 'absolute',
-        outline: 'none',
-        borderRadius: 5,
-        height: '98%',
-        //  padding: 30,
-        [theme.breakpoints.down('xs')]: {
-            width: '95%',
-        },
-        width: 530,
-        /*backgroundColor: ` ${
-            theme.palette.type === 'light' ? "#679dbd" : "#679dbd"
-            }`,*/
         boxShadow: theme.shadows[5],
-        // padding: theme.spacing.unit * 4,
     },
     textField: {
         width: '-webkit-fill-available',
@@ -98,7 +93,7 @@ class InviteIcon extends React.Component {
                     }}
 
                 >
-                    <div style={getModalStyle()} className={classes.paper}>
+                    <div className={classes.paper}>
                         <InviteForm handleClose={this.handleClose}/>
                     </div>
                 </Modal>
