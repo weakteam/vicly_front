@@ -19,7 +19,10 @@ export default class Attachment {
     // One of ["none" | "loading" | ready | "error"]
     @observable statusPreview = "none";
     @observable fullSrc = null;
-    @observable previewSrc = null;
+    previewBig = null;
+    previewSmall = null;
+    @observable previewSrcSmall = null;
+    @observable previewSrcBig = null;
     // int (percent)
     @observable progressFull = null;
     // int (percent)
@@ -79,6 +82,8 @@ export default class Attachment {
         this.timestamp = jsonResponse.timestamp;
         this.metadata = jsonResponse.metadata;
         this.filename = jsonResponse.filename;
+        this.previewSmall = new Attachment(jsonResponse.previewSmall);
+        this.previewBig = new Attachment(jsonResponse.previewBig);
         this.size = jsonResponse.size;
         this.mime = jsonResponse.mime;
         // TODO download image !!!
@@ -93,8 +98,8 @@ export default class Attachment {
 
         if (this.canShowPreview()) {
             this.statusPreview = "loading";
-            rootStore.imageService.getImagePreview(this)
-                .catch(err => console.log("Error while load image:" + err));
+            rootStore.imageService.getImagePreview(this, false)
+                .catch(err => console.log("Error while load small preview image:" + err));
         }
         rootStore.attachmentService.addAttachment(this);
     };
@@ -123,9 +128,20 @@ export default class Attachment {
         document.body.removeChild(a);
     }
 
-    onPreviewLoaded(imageServiceObject) {
-        this.previewSrc = imageServiceObject.small;
+    onPreviewSmallLoaded(image) {
+        this.previewSrcSmall = image;
         this.statusPreview = "ready";
+    }
+
+    onPreviewBigLoaded(image) {
+        this.previewSrcBig = image;
+        this.statusPreview = "ready";
+    }
+
+    loadPreviewBig() {
+        this.statusPreview = "loading";
+        rootStore.imageService.getImagePreview(this, true)
+            .catch(err => console.log("Error while load small preview image:" + err));
     }
 
     onFullLoaded(imageServiceObject) {
@@ -139,10 +155,8 @@ export default class Attachment {
     }
 
     canShowPreview() {
-        if (this.mime && this.mime.startsWith("image/")) {
-            return true;
-        }
-        return false;
+        return this.previewSmall || this.previewBig;
+
     }
 
     // TODO MAYBE NEED RENAME TO onFetched!?
@@ -170,12 +184,12 @@ export default class Attachment {
         this.dataFetched = "ready";
 
         this.statusPreview = "ready";
-        if (this.canShowPreview()) {
-            // rootStore.imageService.getImagePreview(this)
-            //     .catch(err => console.log("Error while load image:" + err));
-        } else {
-
-        }
+        // if (this.canShowPreview()) {
+        //     // rootStore.imageService.getImagePreview(this)
+        //     //     .catch(err => console.log("Error while load image:" + err));
+        // } else {
+        //
+        // }
         rootStore.attachmentService.addAttachment(this);
     };
 

@@ -62,17 +62,26 @@ class MessageList extends React.Component {
     getSnapshotBeforeUpdate(prevProps, prevState) {
         // Are we adding new items to the list?
         // Capture the scroll position so we can adjust scroll later.
-        if (prevProps.messages.length < this.props.messages.length) {
-            const list = this.messageList.current;
-            return list.scrollHeight - list.scrollTop;
-        }
-        return null;
+        // if (prevProps.messages.length < this.props.messages.length) {
+        const list = this.messageList.current;
+        if (list && list.scrollTop + list.offsetHeight === list.scrollHeight)
+            return null;
+        else
+            return list.scrollTop;
+        // }
+        // return null;
+    }
+
+    componentWillReact(lol, lal, lul, la111) {
+
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (snapshot !== null) {
-            const list = this.messageList.current;
-            list.scrollTop = list.scrollHeight - snapshot;
+        const list = this.messageList.current;
+        if (snapshot) {
+            list.scrollTop = snapshot;
+        } else {
+            list.scrollTop = list.scrollHeight;
         }
     }
 

@@ -84,10 +84,10 @@ class GroupChatWindow extends React.Component {
     scrollToBottom = () => {
         //this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
         //TODO scroll child
-        if (this.messageList.current) {
-            this.messageList.current.scrollToEnd();
-            // this.messageList.current.scrollToLastMessage();
-        }
+        // if (this.scrollMessageList.current) {
+        //     this.scrollMessageList.current.scrollToEnd();
+        //     // this.scrollMessageList.current.scrollToLastMessage();
+        // }
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -133,8 +133,7 @@ class GroupChatWindow extends React.Component {
                                     myselfUser={myselfUser}
                                     chatUsers={users}
                                     messages={messages}
-                                    scrollHandler={this.scrollHandler}
-                                    ref={this.messageList}/>
+                                    scrollHandler={this.scrollHandler}/>
                             ) : (
                                 <div className={classes.emptyChat}>
                                     <Typography className={classes.text} variant="h5">История сообщения

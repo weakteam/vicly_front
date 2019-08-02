@@ -87,10 +87,10 @@ class ChatWindow extends React.Component {
     scrollToBottom = () => {
         //this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
         //TODO scroll child
-        if (this.messageList.current) {
-            this.messageList.current.scrollToEnd();
-            // this.messageList.current.scrollToLastMessage();
-        }
+        // if (this.scrollMessageList.current) {
+        //     this.scrollMessageList.current.scrollToEnd();
+        //     // this.scrollMessageList.current.scrollToLastMessage();
+        // }
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -132,6 +132,7 @@ class ChatWindow extends React.Component {
                             ) : chat && messages && messages.length > 0 ? (
 
                                 <MessageList
+
                                     myselfUser={myselfUser}
                                     chatUsers={[chat.user]}
                                     messages={messages}
