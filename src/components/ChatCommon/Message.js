@@ -159,8 +159,8 @@ function handleClick() {
     alert('You clicked the Chip.'); // eslint-disable-line no-alert
 }
 
-@observer
-class Message extends React.Component {
+@observer 
+class Message extends React.PureComponent {
 
     getRandomColor = (letter) => {
         let col = this.colorMap[letter];

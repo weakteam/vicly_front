@@ -94,7 +94,9 @@ class MessageList extends React.Component {
                 list.scrollTop += list.scrollHeight - snapshot.scrollH;
             } else if (snapshot.isUpper === false) {
                 list.scrollTop = snapshot.scrollT;
-            } else if (snapshot.scrollH === list.scrollHeight) {}
+            } else if (snapshot.scrollH === list.scrollHeight) {
+                return;
+            }
         } else {
             list.scrollTop = list.scrollHeight;
         }

@@ -183,6 +183,6 @@ class GroupChat extends React.Component {
     }
 }
 
-const styledComponent = withStyles(styles, {withTheme: true})(withRouter(GroupChat));
+const styledComponent = withStyles(styles)(withRouter(GroupChat));
 
 export default styledComponent;

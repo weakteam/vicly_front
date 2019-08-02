@@ -368,28 +368,6 @@ class Home extends React.Component {
                     </div>
                 </Hidden>
                 <Hidden smUp implementation="css">
-                    {/* <AppBar position="fixed" className={classes.appBar} style={{margin: '5px 8px 5px 8px',}}>
-                        <Toolbar>
-                            <IconButton
-                                color="inherit"
-                                aria-label="Open drawer"
-                                onClick={this.handleDrawerToggle}
-                                className={classes.menuButton}>
-                                <MenuIcon className={classes.icon}/>
-                            </IconButton>
-                            <div className={classes.logoDiv}>
-                                <Typography variant="h6" className={classes.text}> Vicly Messenger </Typography>
-                            </div>
-                            <div className={classes.userBar}>
-                                <InviteIcon chats={this.props.chats}/>
-                                <ProfileIco
-                                    changeThemeType={this.props.changeThemeType}
-                                    handleLogout={this.accountStore.unauth.bind(this.accountStore)}
-                                    name={this.accountStore.fullName}/>
-                            </div>
-                        </Toolbar>
-                        <ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>
-                    </AppBar>*/}
                     <div className={classes.logoDrawer}>
                         <img style={{width: 30, marginRight: 10}} alt="Logo"
                              src={theme.palette.type === 'light' ? Logo : Logo}/>

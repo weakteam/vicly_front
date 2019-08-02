@@ -125,17 +125,6 @@ export default class ImageService {
         if (!attachment instanceof Attachment) {
             throw Error("It's not Attachment instance");
         }
-        // if (attachment.previewSrc || !attachment.canShowPreview()) {
-        //     return
-        // }
-        // let image = this.images.find(elem => elem.id === attachment.id);
-        // if (image)
-        //     return image;
-
-        // let isGif = false;
-        // if (attachment.mime === "image/gif") {
-        //     isGif = true;
-        // }
         let ajax = new XMLHttpRequest();
         const innerProgressHandler = (event) => {
             let progress = (event.loaded / event.total) * 100;

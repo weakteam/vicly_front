@@ -8,9 +8,7 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
 import {withRouter} from "react-router-dom";
-import ToastService from '../../services/toastService'
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
-import MessagePush from "../ChatCommon/MessagePush";
 import rootStore from "../../store/RootStore";
 import AvatarColor from "../../services/AvatarColor"
 
@@ -86,7 +84,7 @@ const styles = theme => ({
 });
 
 @observer
-class Dialog extends React.Component {
+class Dialog extends React.PureComponent {
 
     constructor(props) {
         super(props);
@@ -207,7 +205,9 @@ class Dialog extends React.Component {
                             <Grid item>
                                 <Typography
                                     className={classes.time}
-                                    style={{color: selected ? '#b5dcdc' : ''}}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
+                                    style={{color: selected ? '#b5dcdc' : ''}}>
+                                    {lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}
+                                </Typography>
                             </Grid>
                             {
                                 countUnread ? (<Badge color="secondary" badgeContent={countUnread}
@@ -220,6 +220,6 @@ class Dialog extends React.Component {
     }
 }
 
-const styledComponent = withStyles(styles, {withTheme: true})(withRouter(Dialog));
+const styledComponent = withStyles(styles)(withRouter(Dialog));
 
 export default styledComponent;
