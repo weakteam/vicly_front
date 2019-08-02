@@ -16,6 +16,7 @@ export default class Chat {
     @observable messages = [];
     page = 0;
 
+
     //common properties
     selected = false;
 

@@ -16,13 +16,9 @@ import withSplashScreen from "./components/withSplashScreen";
 if (history.location.pathname.startsWith("/home/chat/user")) {
     const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
     rootStore.messagesStore.setCurrentChatId(chatId, true);
-    //rootStore.messagesStore.isCurrentChatForUser = true;
-    //rootStore.messagesStore.currentChatId = chatId;
 } else if (history.location.pathname.startsWith("/home/chat/group")) {
     const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
     rootStore.messagesStore.setCurrentChatId(chatId, false);
-    // rootStore.messagesStore.isCurrentChatForUser = false;
-    // rootStore.messagesStore.currentChatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
 }
 history.listen((location, action) => {
     if (history.location.pathname.startsWith("/home/chat/user")) {
@@ -138,7 +134,7 @@ class App extends Component {
                     </Router>
                     <div onClick={console.log('q')}><ToastContainer position="bottom-right"/></div>
                 </div>
-              <DevTools/>
+                <DevTools/>
             </MuiThemeProvider>
         )
 

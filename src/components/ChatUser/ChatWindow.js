@@ -31,7 +31,7 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     chatWindow: {
         position: 'absolute',
@@ -120,7 +120,7 @@ class ChatWindow extends React.Component {
         if (this.messagesStore.currentChatId) {
             let messages = null;
             if (chat) {
-                messages = chat.messages;
+                messages = Array.from(chat.messages);
             }
             return (
                 <div className={classes.chatWindow}>
@@ -128,25 +128,24 @@ class ChatWindow extends React.Component {
                     <ChatBar match={this.props.match.params.userId} handleDrawerToggle={this.props.handleDrawerToggle}/>
                     {
                         messagesStore.messagesLoading ?
-                            (
-                                <Loader active inverted>Loading</Loader>
-                            ) : chat && messages && messages.length > 0 ? (
-
-                                <MessageList
-
-                                    myselfUser={myselfUser}
-                                    chatUsers={[chat.user]}
-                                    messages={messages}
-                                    scrollHandler={this.scrollHandler}
-                                    ref={this.messageList}/>
-
-                            ) : (
-                                <div className={classes.emptyChat}>
-                                    <Typography className={classes.text} variant="h5">
-                                        История сообщения пуста...
-                                    </Typography>
-                                </div>
-                            )
+                            (<Loader active inverted>Loading</Loader>)
+                            :
+                            chat && messages && messages.length > 0 ? (
+                                    <MessageList
+                                        myselfUser={myselfUser}
+                                        chatUsers={[chat.user]}
+                                        messages={messages}
+                                        scrollHandler={this.scrollHandler}
+                                        ref={this.messageList}/>
+                                )
+                                :
+                                (
+                                    <div className={classes.emptyChat}>
+                                        <Typography className={classes.text} variant="h5">
+                                            История сообщения пуста...
+                                        </Typography>
+                                    </div>
+                                )
                     }
                     <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
                 </div>

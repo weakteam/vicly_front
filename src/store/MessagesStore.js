@@ -150,7 +150,8 @@ export default class MessagesStore {
                     .map(groupChatObject => {
                         const users = this.users_new.filter(user => groupChatObject.chat.user_ids.includes(user.id));
                         return new GroupChat(groupChatObject, users);
-                    });
+                    })
+                    .filter(chat => !chat.archive);
                 this.chatsFetched = true;
             });
 
