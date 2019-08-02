@@ -8,7 +8,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
 import {withRouter} from "react-router-dom";
-import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import rootStore from "../../store/RootStore";
 import AvatarColor from "../../services/AvatarColor"
 

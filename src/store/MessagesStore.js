@@ -172,7 +172,6 @@ export default class MessagesStore {
     addMessageToEnd(message) {
         //TODO for websocket push
         const myselfUserId = this.accountStore.userId;
-        // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
         let chat;
         if (message.chat.chat_type === "user") {
             const userIds = this.uniq(message.chat.user_ids);

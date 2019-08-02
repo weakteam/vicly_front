@@ -5,13 +5,14 @@ import MessagePush from "../components/ChatCommon/MessagePush";
 
 class ToastService {
     toasts = toast;
+    queue = [];
 
-    toastNewMessage(title, message, url){
-        this.toast(<MessagePush title={title} message={message} url={url}/>);
+    toastNewMessage(title, message, url, avatarSrc) {
+        this.toast(<MessagePush title={title} message={message} url={url} avatar={avatarSrc}/>);
     }
 
     toast(component) {
-        this.toasts(
+        this.queue.push(this.toasts(
             component,
             {
                 position: toast.POSITION.TOP_RIGHT,
@@ -21,7 +22,10 @@ class ToastService {
                 autoClose: 100000,
 
             }
-        );
+        ));
+        if (this.queue.length>5){
+            this.toasts.dismiss(this.queue.shift());
+        }
     }
 }
 
