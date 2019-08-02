@@ -27,17 +27,19 @@ import '../css/scrollbar.css'
 //import withSplashScreen from "./withSplashScreen";
 import vhCheck from 'vh-check'
 import Logo from "../images/logoVicly.svg"
+import LogoDark from "../images/LoginLogo.svg"
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 
 const {accountStore, messagesStore} = rootStore;
+const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const styles = theme => ({
     root: {
-        display: 'flex',
-        top: 0,
+       // display: 'flex',
+       /* top: 0,
         bottom: 0,
         left: 0,
-        right: 0,
+        right: 0,*/
         flexGrow: 1,
     },
     text: {
@@ -267,6 +269,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             marginTop: 108,
             width: '100%',
+            marginBottom: 0,
         },
         height: '100%',
         marginTop: 10,
@@ -275,12 +278,13 @@ const styles = theme => ({
         overflow: 'hidden',
     },
     listFix: {
-        width: 'initial',
-        padding: '127px 0px 39px 8px',
-
         [theme.breakpoints.down('xs')]: {
-            padding: '16px 5px 45px 5px ',
+            padding: '16px 5px 0px 5px ',
         },
+    },
+    logoImage: {
+        width: 30,
+        marginRight: 10
     },
 });
 
@@ -357,91 +361,87 @@ class Home extends React.Component {
         const vh = vhCheck();
         let drawer = (
             <div className={classes.scrollDrawer}>
-                <Hidden xsDown implementation="css">
-                    <ProfileBar
-                        changeThemeType={this.props.changeThemeType}
-                        handleChangeType={this.handleChangeType} chats={this.props.chats}
-                        handleLogout={this.accountStore.unauth.bind(accountStore)}/>
-                    <div className={classes.logoDrawer}>
-                        <img style={{width: 30, marginRight: 10}} alt="Logo"
-                             src={theme.palette.type === 'light' ? Logo : Logo}/>
-                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
-                    </div>
-                </Hidden>
-                <Hidden smUp implementation="css">
-                    <div className={classes.logoDrawer}>
-                        <img style={{width: 30, marginRight: 10}} alt="Logo"
-                             src={theme.palette.type === 'light' ? Logo : Logo}/>
-                        <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
-                    </div>
-                </Hidden>
+                <ProfileBar
+                    changeThemeType={this.props.changeThemeType}
+                    handleChangeType={this.handleChangeType} chats={this.props.chats}
+                    handleLogout={this.accountStore.unauth.bind(accountStore)}/>
                 <SearchBar/>
                 <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-3' : 'style-3'}>
                     <List className={"scrollDrawer " + classes.listFix}>
                         {this.workgroups()}
                     </List>
                 </div>
+                <div className={classes.logoDrawer}>
+                    <img className={classes.logoImage} alt="Logo"
+                         src={theme.palette.type === 'light' ? Logo : LogoDark}/>
+                    <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                </div>
+            </div>
+        );
+
+        let drawerMobile = (
+            <div className={classes.scrollDrawer}>
+                <SearchBar/>
+                <div className="scrollbar" id='style-3'>
+                    <List className={"scrollDrawer " + classes.listFix}>
+                        {this.workgroups()}
+                    </List>
+                </div>
+
             </div>
         );
 
         return (
             <div className={classes.root}>
-                <nav className={classes.drawer}>
-                    <Hidden smUp implementation="css">
-                        <AppBar position="fixed" className={classes.appBar}>
-                            <Toolbar disableGutters>
-                                <IconButton
-                                    color="inherit"
-                                    aria-label="Open drawer"
-                                    onClick={this.handleDrawerToggle}
-                                    className={classes.menuButton}>
-                                    <MenuIcon className={classes.icon}/>
-                                </IconButton>
-                                <div className={classes.logoDiv}>
-                                    <Typography variant="h6" className={classes.text}> Vicly Messenger </Typography>
-                                </div>
-                                <div className={classes.userBar}>
-                                    <InviteIcon chats={this.props.chats}/>
-                                    <ProfileIco
-                                        changeThemeType={this.props.changeThemeType}
-                                        handleLogout={this.accountStore.unauth.bind(this.accountStore)}
-                                        name={this.accountStore.fullName}/>
-                                </div>
-                            </Toolbar>
-                            {/*<ProfileBar chats={this.props.chats} andleLogout={this.accountStore.unauth.bind(accountStore)}/>*/}
-                        </AppBar>
-                        <SwipeableDrawer
-                            container={this.props.container}
-                            variant="temporary"
-                            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                            open={this.state.mobileOpen}
-                            onClose={this.handleDrawerToggle}
-                            onOpen={this.handleDrawerToggle}
-                            //    style={{zIndex: 1100}}
-                            classes={{
-                                paper: classes.drawerPaper,
-                                root: classes.rootIndex,
-                            }}
-                            ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
-                            }}
-                        >
-                            {drawer}
-                        </SwipeableDrawer>
-                    </Hidden>
-                    <Hidden xsDown implementation="css">
-                        <Drawer
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
-                            variant="permanent"
-                            open
-                            ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
-                            }}
-                        >
-                            {drawer}
-                            {/* <MenuProvider id={"menu_id"}>
+                <div className="drawerTest">
+                    <AppBar position="fixed" className={classes.appBar}>
+                        <Toolbar disableGutters>
+                            <IconButton
+                                aria-label="Open drawer"
+                                onClick={this.handleDrawerToggle}>
+                                <MenuIcon className={classes.icon}/>
+                            </IconButton>
+                            <div className={classes.logoDiv}>
+                                <Typography variant="h6" className={classes.text}> Vicly Messenger </Typography>
+                            </div>
+                            <div className={classes.userBar}>
+                                <InviteIcon chats={this.props.chats}/>
+                                <ProfileIco
+                                    changeThemeType={this.props.changeThemeType}
+                                    handleLogout={this.accountStore.unauth.bind(this.accountStore)}
+                                    name={this.accountStore.fullName}/>
+                            </div>
+                        </Toolbar>
+                    </AppBar>
+                    <SwipeableDrawer
+                        disableBackdropTransition={!iOS}
+                        disableDiscovery={iOS}
+                        container={this.props.container}
+                        variant="temporary"
+                        transitionDuration={300}
+                        anchor="left"
+                        open={this.state.mobileOpen}
+                        onClose={this.handleDrawerToggle}
+                        onOpen={this.handleDrawerToggle}
+                        className={classes.rootIndex}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}>
+                        {drawerMobile}
+                    </SwipeableDrawer>
+                </div>
+
+                <div className="drawerDesktop">
+                    <Drawer
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        variant="permanent">
+                        {drawer}
+                        {/* <MenuProvider id={"menu_id"}>
                             </MenuProvider>
                             <Menu style={{zIndex: 5000}} id='menu_id'>
                                 <Item onClick={() => alert("ТЫ ХУЙ")}>ХУЙ</Item>
@@ -450,11 +450,10 @@ class Home extends React.Component {
                                     variant="button"><Delete/> Удалить</Typography>
                                 </Item>
                             </Menu>*/}
-                        </Drawer>
-                    </Hidden>
-                </nav>
+                    </Drawer>
+                </div>
 
-                <div style={{display: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
+                <div style={{pointerEvents: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?

@@ -40,8 +40,7 @@ const styles = theme => ({
         }`,
     },
     gutters: {
-        paddingTop: 6,
-        paddingBottom: 6,
+       padding: '6px 0 6px 0'
     },
 
     badge: {
@@ -105,9 +104,7 @@ class Workgroup extends React.Component {
         return (
             <div className={classes.WorkGroupBack}>
                 <ListItem button onClick={this.handleClick} className={classes.groupName}>
-                    <ListItem disableGutters classes={{
-                        root: classes.gutters,
-                    }}>
+                    <ListItem className={classes.gutters}>
                         <div className={classes.workgroupName}>
                             <Typography variant='button' className={classes.text}>
                                 {workgroup.name}
@@ -117,7 +114,7 @@ class Workgroup extends React.Component {
                     </ListItem>
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
-                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                <Collapse in={this.state.open} timeout="auto">
                     <List component="div" disablePadding className={classes.active}>
                         {
                             userChatsNew.map(

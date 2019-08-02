@@ -66,7 +66,7 @@ const themeOptions = {
             default: "#fcfcfc",
         },
         action: {
-            active: "rgb(72, 170, 210)",
+            active: "#0A8D8D",
             hover: "rgba(198,190,200,0.21)",
             hoverOpacity: 0.08,
             selected: "#2d807f",
