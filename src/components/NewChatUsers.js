@@ -6,14 +6,14 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Typography from "@material-ui/core/Typography";
-import rootStore from "../store/RootStore";
+//import rootStore from "../store/RootStore";
 import {observer} from "mobx-react";
 import Loyalty from "@material-ui/icons/Loyalty"
 import Avatar from "@material-ui/core/Avatar";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 
-const {accountStore, messagesStore} = rootStore;
+//const {accountStore, messagesStore} = rootStore;
 
 
 const stylesUser = theme => ({
@@ -47,7 +47,7 @@ const stylesUser = theme => ({
         marginLeft: 10,
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     fixWidth: {
         padding: 13,
@@ -61,14 +61,14 @@ const stylesUser = theme => ({
         fontSize: '1.4rem',
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
-            }`,
+        }`,
         marginBottom: 5,
     },
     role: {
         fontSize: '1rem',
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : '#a7b6ce'
-            }`,
+        }`,
     },
     message2: {
         // fontSize: '0.9rem'
@@ -77,7 +77,7 @@ const stylesUser = theme => ({
         marginLeft: 'auto',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         fontSize: '0.95rem',
     },
     infBlock: {
@@ -92,7 +92,7 @@ const stylesUser = theme => ({
         fontSize: '0.95rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         marginBottom: 5,
     },
     block: {
@@ -109,14 +109,14 @@ const stylesUser = theme => ({
         width: '100%', // Fix IE 11 issue.
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+        }`,
     },
     textInf: {
         // marginBottom: 30,
         fontSize: '1em',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     textPassword: {
 
@@ -136,13 +136,13 @@ const stylesUser = theme => ({
     closeIcon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
-            }`,
+        }`,
         cursor: 'pointer',
     },
     cssLabel: {
         color: ` ${
             theme.palette.type === 'light' ? '#b5b5b5' : theme.palette.secondary.dark
-            }`,
+        }`,
         '&$cssFocused': {
             color: "#4a4a4a",
         },
@@ -171,17 +171,17 @@ const stylesUser = theme => ({
         fontSize: '1.1rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     userRole: {
         color: ` ${
             theme.palette.type === 'light' ? '#a5a3a3' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     checkboxRoot: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     signIn: {
         display: 'flex',
@@ -195,12 +195,12 @@ const stylesUser = theme => ({
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#9d5757' : '#9d5757'
-            }`,
+        }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
                 theme.palette.type === 'light' ? '#5A2C2C' : '#5A2C2C'
-                }`,
+            }`,
         },
     },
     checkedBox: {
@@ -210,9 +210,11 @@ const stylesUser = theme => ({
 
 function UserCheckboxNonStyled(props) {
     const {classes, user, checked, handleUserToggle} = props;
+
     function onCheck(event) {
         handleUserToggle([user.id]);
     }
+
     return (
         <div style={{display: 'flex', paddingBottom: 10,}}>
             <Avatar className={classes.userAvatar}>
@@ -249,20 +251,20 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         fontSize: '0.9rem'
     },
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         marginRight: 12,
     },
     root: {
 
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
-            }`,
+        }`,
     },
     gutters: {
         paddingTop: 6,
@@ -337,7 +339,7 @@ class NewChatUsers extends React.Component {
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
                 <Collapse style={{paddingTop: 10}} in={this.state.open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding className={classes.active} >
+                    <List component="div" disablePadding className={classes.active}>
                         {
                             userChatsNew.map(
                                 userChat =>
@@ -350,7 +352,7 @@ class NewChatUsers extends React.Component {
                         }
                     </List>
                 </Collapse>
-               <Divider classes={{root: classes.root}}/>
+                <Divider classes={{root: classes.root}}/>
             </div>
         )
     }

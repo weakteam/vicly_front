@@ -2,12 +2,10 @@ import React from 'react';
 import Button from '@material-ui/core/Button/index';
 import FormControl from '@material-ui/core/FormControl/index';
 import InputLabel from '@material-ui/core/InputLabel/index';
-import Paper from '@material-ui/core/Paper/index';
 import Typography from '@material-ui/core/Typography/index';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {observer} from "mobx-react/index";
 import {fade} from "@material-ui/core/styles/colorManipulator";
-import Divider from "@material-ui/core/es/Divider/index";
 import InputBase from "@material-ui/core/InputBase/index";
 import Select from "@material-ui/core/Select/index";
 import MenuItem from "@material-ui/core/MenuItem/index";
@@ -18,11 +16,10 @@ import {BACKEND_URL} from "../common";
 import rootStore from "../store/RootStore";
 import {IconButton} from "@material-ui/core";
 import Close from "@material-ui/icons/Close"
-import Modal from "@material-ui/core/Modal";
 import Tooltip from "@material-ui/core/Tooltip";
-import Message from "./ChatCommon/Message";
-import Workgroup from "./Workgroup";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -49,7 +46,7 @@ const styles = theme => ({
         // maxHeight: '40%',
     },
     paper: {
-        display: 'flex',
+        /*display: 'flex',
         borderRadius: 0,
         padding: 30,
         [theme.breakpoints.down('xs')]: {
@@ -60,10 +57,10 @@ const styles = theme => ({
         justifyContent: 'center',
         // padding: 30,
         boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
-        // paddingBottom: 10,
-        backgroundColor: ` ${
+        // paddingBottom: 10,*/
+        /*backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+            }`,*/
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -73,13 +70,13 @@ const styles = theme => ({
         width: '100%',
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#679dbd' : '#2e374c'
-            }`,
+            theme.palette.type === 'light' ? '#0a8d8d' : '#0a8d8d'
+        }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#4c847d' : '#3e4b67'
-                }`,
+                theme.palette.type === 'light' ? '#0a6b6b' : '#0a6565'
+            }`,
         },
     },
     invite: {
@@ -97,15 +94,15 @@ const styles = theme => ({
             transition: theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('#ff2f00', 0.25)} 0 0 0 0.2rem`,
         },
-        marginTop: 23,
+        marginTop: 35,
         borderRadius: 6,
         height: 27,
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#f5f5f5' : 'rgb(59, 69, 93)'
-            }`,
+            theme.palette.type === 'light' ? '#efefef' : 'rgb(59, 69, 93)'
+        }`,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         paddingLeft: 10,
     },
     label: {
@@ -113,7 +110,7 @@ const styles = theme => ({
         alignItems: 'center',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     password: {
         marginTop: 10,
@@ -135,7 +132,7 @@ const styles = theme => ({
         // marginBottom: 10,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     signIn: {
         display: 'flex',
@@ -148,15 +145,6 @@ const styles = theme => ({
         justifyContent: 'center',
         marginTop: 7
     },
-    block: {
-        marginBottom: 10,
-        marginRight: 20,
-        width: '60%',
-    },
-    blockForm: {
-        display: 'flex',
-        alignItems: 'flex-start'
-    },
     formControl: {
         margin: 10,
     },
@@ -168,15 +156,31 @@ const styles = theme => ({
     },
     text: {
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+            theme.palette.type === 'light' ? '#868686' : theme.palette.secondary.dark
+        }`,
+        fontWeight: 'bold',
+
         zIndex: 1303,
+        fontSize: '1.5em'
     },
-    link: {
-        fontSize: '1.1rem',
+    textSex: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
+        zIndex: 1303,
+        fontSize: '1.1em'
+    },
+
+    link: {
+        padding: '20px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '4% 3%',
+        },
+        fontSize: '1.5em',
+        fontWeight: 'bold',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+        }`,
     },
     link2: {
 
@@ -186,42 +190,45 @@ const styles = theme => ({
     backi: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e8e8e8' : 'rgb(59, 69, 93)'
-            }`,
+        }`,
     },
     paperRoot: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#f6f6f6' : '#171b26'
-            }`,
+        }`,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
-
+        }`,
         padding: 30,
         [theme.breakpoints.down('xs')]: {
-            padding: 9,
+            padding: '20px 30px',
         },
         borderRadius: '0 0 5px 5px',
         // paddingTop: 20
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
     },
     labelRoot: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark + '!important'
-            }`,
+        }`,
     },
-    completed: '#79cc9f!important',
+    completed: '#0a8d8d!important',
 
     checked: {
         '&:not($checked)': {
             color: '#000000',
         },
         '&$checked': {
-            color: '#43a296',
+            color: '#0a8d8d',
         },
     },
     controlForm: {
         //  marginTop: 10,
         [theme.breakpoints.down('xs')]: {
-            padding: 0,
+            padding: '0 0 10px 0',
         },
         padding: '0 0 15px 0',
     },
@@ -231,7 +238,7 @@ const styles = theme => ({
     closeIcon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
-            }`,
+        }`,
         cursor: 'pointer',
     },
     rootIndex: {
@@ -256,35 +263,68 @@ const styles = theme => ({
         marginTop: 3,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#bebebe' : '#49519b'
-            }`,
+        }`,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
-            }`,
+        }`,
         boxShadow: theme.shadows[1],
         fontSize: 11,
     },
     formColor: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#fff' : '#1c212d'
-            }`,
-        padding: 20,
+        }`,
+        //padding: 20,
     },
     selectedCustom: {
-        backgroundColor: '#679dbd!important',
+        backgroundColor: '#0a8d8d!important',
 
     },
     newInvite: {
         cursor: 'pointer',
     },
     headerBar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
         borderRadius: '5px 5px 0 0',
-        backgroundColor: '#679dbd',
+        backgroundColor: '#0a8d8d',
         display: 'flex',
         alignItems: 'center',
         padding: '15px 30px',
         [theme.breakpoints.down('xs')]: {
             padding: '15px 9px',
         },
+    },
+    headerInf: {
+        fontSize: '1.5em',
+        fontWeight: 'bold',
+        color: ` ${
+            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+        }`,
+    },
+    headerBarInf: {
+        padding: '15px 0',
+        [theme.breakpoints.down('xs')]: {},
+        //position: 'absolute',
+        // top: 300,
+        display: 'flex',
+        alignItems: 'center',
+    },
+    stepperArea: {
+        overflow: "hidden",
+        position: 'absolute',
+        top: 78,
+        left: 0,
+        right: 0,
+        bottom: 83,
+        [theme.breakpoints.down('xs')]: {
+            bottom: 63,
+        },
+        backgroundColor: '#fff',
+        borderRadius: '10px 10px 0 0',
+        boxShadow: '0 -10px 7px 0px rgba(0, 0, 0, 0.1)',
     },
 });
 
@@ -423,173 +463,169 @@ class InviteForm extends React.Component {
         const workGroup = this.messagesStore.groups.map(workgroup => <MenuItem
             classes={{selected: classes.selectedCustom,}}
             value={workgroup.id}>
-            <Typography>{workgroup.name}</Typography>
+            <Typography variant="h6"
+                        style={{marginTop: 12, color: '#097373', fontSize: '12pt'}}>{workgroup.name}</Typography>
         </MenuItem>);
         return (
-            <div className={classes.root}>
-                <Paper className={classes.paper}>
-                    {/*  <Divider/>*/}
-                    <Typography variant="overline" style={{marginBottom: 20, fontSize: '1em'}} className={classes.text}>Введите
-                        личные данные</Typography>
-                    <form onSubmit={this.handleClick} className={classes.form}>
-                        <div className={classes.blockForm}>
-                            <div className={classes.block}>
+            <>
 
-                                <FormControl classes={{
-                                    fullWidth: classes.controlForm,
-                                }}
-                                             required fullWidth classesName={classes.controlForm}>
-                                    <InputLabel shrink className={classes.label}>
-                                        <Typography variant="subtitle1" className={classes.text}> Имя </Typography>
-                                    </InputLabel>
-                                    <InputBase
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        value={this.state.formValues["name"]}
-                                        onChange={this.handleChange1.bind(this)}
-                                        classes={{input: classes.active}}
-                                    />
-                                </FormControl>
-                                <FormControl classes={{
-                                    fullWidth: classes.controlForm,
-                                }}
-                                             required fullWidth>
-                                    <InputLabel shrink className={classes.label}>
-                                        <Typography variant="subtitle1" className={classes.text}> Фамилия </Typography>
-                                    </InputLabel>
-                                    <InputBase
-                                        id="surname"
-                                        name="surname"
-                                        type="text"
-                                        value={this.state.formValues["surname"]}
-                                        onChange={this.handleChange1.bind(this)}
-                                        classes={{input: classes.active}}
-                                    />
-                                </FormControl>
-                                <FormControl classes={{
-                                    fullWidth: classes.controlForm,
-                                }}
-                                             fullWidth>
-                                    <InputLabel shrink className={classes.label}>
-                                        <Typography variant="subtitle1" className={classes.text}> Отчество </Typography>
-                                    </InputLabel>
-                                    <InputBase
-                                        id="patronymic"
-                                        name="patronymic"
-                                        type="text"
-                                        value={this.state.formValues["patronymic"]}
-                                        onChange={this.handleChange1.bind(this)}
-                                        classes={{input: classes.active}}
-                                    />
-                                </FormControl>
-                            </div>
 
-                            <div style={{marginRight: 0}} className={classes.block}>
-                                <FormControl classes={{
-                                    fullWidth: classes.controlForm,
-                                }}
-                                             fullWidth>
-                                    <InputLabel shrink className={classes.label}>
-                                        <Typography variant="subtitle1"
-                                                    className={classes.text}>Должность
-                                        </Typography>
-                                    </InputLabel>
-                                    <InputBase
-                                        id="role"
-                                        name="role"
-                                        type="text"
-                                        value={this.state.formValues["role"]}
-                                        onChange={this.handleChange1.bind(this)}
-                                        classes={{input: classes.active}}/>
-                                </FormControl>
+                <form style={{overflow: "auto", height: '100%', WebkitOverflowScrolling: 'touch',}}
+                      onSubmit={this.handleClick} className={classes.form}>
+                    <div style={{padding: '0px 30px 20px 30px'}}>
+                        <div className={classes.headerBarInf}>
+                            <Typography variant="h3" className={classes.headerInf}>Введите личные данные</Typography>
+                        </div>
+                        <FormControl classes={{
+                            fullWidth: classes.controlForm,
+                        }}
+                                     required fullWidth classesName={classes.controlForm}>
+                            <InputLabel shrink className={classes.label}>
+                                <Typography variant="subtitle1" className={classes.text}> Имя </Typography>
+                            </InputLabel>
+                            <InputBase
+                                id="name"
+                                name="name"
+                                type="text"
+                                value={this.state.formValues["name"]}
+                                onChange={this.handleChange1.bind(this)}
+                                classes={{input: classes.active}}
+                            />
+                        </FormControl>
+                        <FormControl classes={{
+                            fullWidth: classes.controlForm,
+                        }}
+                                     required fullWidth>
+                            <InputLabel shrink className={classes.label}>
+                                <Typography variant="subtitle1" className={classes.text}> Фамилия </Typography>
+                            </InputLabel>
+                            <InputBase
+                                id="surname"
+                                name="surname"
+                                type="text"
+                                value={this.state.formValues["surname"]}
+                                onChange={this.handleChange1.bind(this)}
+                                classes={{input: classes.active}}
+                            />
+                        </FormControl>
+                        <FormControl classes={{
+                            fullWidth: classes.controlForm,
+                        }}
+                                     fullWidth>
+                            <InputLabel shrink className={classes.label}>
+                                <Typography variant="subtitle1" className={classes.text}> Отчество </Typography>
+                            </InputLabel>
+                            <InputBase
+                                id="patronymic"
+                                name="patronymic"
+                                type="text"
+                                value={this.state.formValues["patronymic"]}
+                                onChange={this.handleChange1.bind(this)}
+                                classes={{input: classes.active}}
+                            />
+                        </FormControl>
+                        <FormControl classes={{
+                            fullWidth: classes.controlForm,
+                        }}
+                                     fullWidth>
+                            <InputLabel shrink className={classes.label}>
+                                <Typography variant="subtitle1"
+                                            className={classes.text}>Должность
+                                </Typography>
+                            </InputLabel>
+                            <InputBase
+                                id="role"
+                                name="role"
+                                type="text"
+                                value={this.state.formValues["role"]}
+                                onChange={this.handleChange1.bind(this)}
+                                classes={{input: classes.active}}/>
+                        </FormControl>
 
-                                {/*<FormControl
+                        <FormControl
+                            classes={{
+                                fullWidth: classes.controlForm,
+                            }}
+                            fullWidth>
+                            <InputLabel shrink className={classes.label}>
+                                <Typography variant="subtitle1" className={classes.text}> Пол </Typography>
+                            </InputLabel>
+                            <RadioGroup
+                                aria-label="gender"
+                                name="gender2"
+                                classes={{
+                                    root: classes.group,
+                                    checked: classes.checked,
+                                    labelPlacementStart: classes.labelPlace
+                                }}
+                                //className={classes.group}
+                                value={this.value}
+                                onChange={this.handleChange}>
+                                <FormControlLabel
+                                    value="female"
+                                    control={
+                                        <Radio classes={{root: classes.checked,}}/>
+                                    }
+                                    label="Женский"
                                     classes={{
-                                        fullWidth: classes.controlForm,
+                                        label: classes.textSex,
+                                        checked: classes.checked,
                                     }}
-                                    required
-                                    fullWidth>
-                                    <InputLabel shrink className={classes.label}>
-                                        <Typography variant="subtitle1" className={classes.text}> Пол </Typography>
-                                    </InputLabel>
-                                    <RadioGroup
-                                        aria-label="gender"
-                                        name="gender2"
-                                        classes={{
-                                            root: classes.group,
-                                            checked: classes.checked,
-                                            labelPlacementStart: classes.labelPlace
-                                        }}
-                                        //className={classes.group}
-                                        value={this.value}
-                                        onChange={this.handleChange}>
-                                        <FormControlLabel
-                                            value="female"
-                                            control={<Radio classes={{
-                                                root: classes.checked,
-                                            }} className={classes.text}/>}
-                                            label="Женский"
-                                            classes={{
-                                                label: classes.text,
-                                                checked: classes.checked,
-                                            }}
-                                            // labelPlacement="start"
-                                        />
-                                        <FormControlLabel
-                                            value="male"
-                                            control={<Radio classes={{root: classes.checked}}
-                                                            className={classes.text}/>}
-                                            label="Мужской"
-                                            classes={{
-                                                label: classes.text,
-                                                checked: classes.checked,
-                                            }}
-                                            //labelPlacement="start"
-                                        />
-                                    </RadioGroup>
-                                </FormControl>*/}
-
-                                <FormControl
+                                    // labelPlacement="start"
+                                />
+                                <FormControlLabel
+                                    value="male"
+                                    control={
+                                        <Radio classes={{root: classes.checked}}/>
+                                    }
+                                    label="Мужской"
                                     classes={{
-                                        root: classes.rootIndex,
+                                        label: classes.textSex,
+                                        checked: classes.checked,
                                     }}
-                                    style={{marginTop: 4}} fullWidth>
-                                    {/*<InputLabel shrink className={classes.label}>
+                                    //labelPlacement="start"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+
+                        <FormControl
+                            classes={{
+                                root: classes.rootIndex,
+                            }}
+                            style={{marginTop: 4}} fullWidth>
+                            {/*<InputLabel shrink className={classes.label}>
                                             <Typography variant="subtitle1"> Рабочая группа </Typography>
                                         </InputLabel>*/}
-                                    <InputLabel shrink className={classes.label}>
-                                        <Typography variant="subtitle1" className={classes.text}> Рабочая
-                                            группа </Typography>
-                                    </InputLabel>
-                                    <Select
-                                        classes={{
-                                            root: classes.rootIndex,
-                                        }}
-                                        className={classes.text}
-                                        value={this.state.workGroup}
-                                        onChange={this.handleChangeSelect}>
+                            <InputLabel shrink className={classes.label}>
+                                <Typography variant="subtitle1" className={classes.text}> Рабочая
+                                    группа </Typography>
+                            </InputLabel>
+                            <Select
+                                classes={{
+                                    root: classes.rootIndex,
+                                }}
+                                className={classes.text}
+                                value={this.state.workGroup}
+                                onChange={this.handleChangeSelect}>
 
-                                        {workGroup}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        </div>
+                                {workGroup}
+                            </Select>
+                        </FormControl>
                         <div className={classes.signIn}>
                             <Button type="submit" variant="contained" className={classes.submit}>Пригласить</Button>
                         </div>
-                    </form>
-                    {
-                        this.state.err ?
-                            (
-                                <Typography style={{textAlign: 'center'}} variant="overline" color={"error"}>Не удалось
-                                    создать
-                                    приглашение</Typography>
-                            ) : ""
-                    }
+                    </div>
+                </form>
+                {
+                    this.state.err ?
+                        (
+                            <Typography style={{textAlign: 'center'}} variant="overline" color={"error"}>Не удалось
+                                создать
+                                приглашение</Typography>
+                        ) : ""
+                }
 
-                </Paper>
-            </div>
+            </>
         )
     };
 
@@ -597,7 +633,7 @@ class InviteForm extends React.Component {
         const {classes, theme,} = this.props;
         return (
             <div className={classes.formColor}>
-                <div style={{display: 'flex', alignItems: 'center'}}>
+
                     <Typography variant="body1" className={classes.link}>Ссылка для
                         приглашения:</Typography>
                     <Tooltip title={this.state.copied ? 'Ссылка скопирована' : 'Нажмите чтобы скопировать'}
@@ -608,7 +644,7 @@ class InviteForm extends React.Component {
                                  borderRadius: 5,
                                  marginLeft: 10,
                                  overflow: 'hidden',
-                                 width: '100%',
+                                 margin: '0 30px'
                              }}>
                             <InputBase
                                 classes={{
@@ -623,7 +659,6 @@ class InviteForm extends React.Component {
                         </div>
                     </Tooltip>
 
-                </div>
                 <div className={classes.signIn}>
                     <div className={classes.newInvite}
                          onClick={this.handleReset}><Typography variant="button" style={{color: 'rgb(131, 131, 131)'}}>Новое
@@ -639,7 +674,7 @@ class InviteForm extends React.Component {
         const {classes, theme,} = this.props;
         const steps = ["Создание", "Приглашение"];
         return (
-            <div>
+            <>
                 <div className={classes.headerBar}>
                     <Typography variant="h5" className={classes.header}>
                         Приглашение пользователя
@@ -648,10 +683,12 @@ class InviteForm extends React.Component {
                         <Close className={classes.closeIcon}/>
                     </IconButton>
                 </div>
-                <div>
+
+                <div className={classes.stepperArea}>
                     {this.getStepContent(this.state.activeStep)}
                 </div>
-               {/* <Divider style={{height: 0.9}}/>*/}
+
+                {/* <Divider style={{height: 0.9}}/>*/}
                 <Stepper
                     classes={{
                         root: classes.paperRoot,
@@ -661,12 +698,12 @@ class InviteForm extends React.Component {
                         steps.map((label) => {
                             return (
                                 <Step key={label} classes={{
-                                    active: classes.labelRoot,
+                                    //active: classes.labelRoot,
                                 }}>
                                     <StepLabel classes={{
                                         label: classes.labelRoot,
                                         completed: classes.completed,
-                                        active: classes.labelRoot,
+                                        //active: classes.labelRoot,
                                     }}>
                                         {label}
                                     </StepLabel>
@@ -675,9 +712,7 @@ class InviteForm extends React.Component {
                         })
                     }
                 </Stepper>
-
-
-            </div>
+            </>
         );
     }
 }

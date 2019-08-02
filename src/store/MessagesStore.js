@@ -304,6 +304,6 @@ export default class MessagesStore {
     }
 
     addGroupChat(message) {
-        this.groupChatsNew.push(message)
+
     };
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Divider from "@material-ui/core/es/Divider";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
 import {Button, IconButton} from "@material-ui/core";
@@ -9,11 +8,12 @@ import rootStore from "../store/RootStore";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import {BACKEND_URL} from "../common";
 import "../css/avatarHover.css"
 import CloudUpload from "@material-ui/icons/CloudUpload"
 import NewChatUsers from "./NewChatUsers";
+import '../css/scrollbar.css'
+import 'array-flat-polyfill';
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -37,10 +37,14 @@ const styles = theme => ({
         //height: 85,
         // width: '100%',
         // padding: 18,
-        backgroundColor: '#48a1a4',
+        backgroundColor: '#0A8D8D',
         display: 'flex',
         alignItems: 'start',
         borderRadius: '5px 5px 0px 0px',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
     },
     header: {
         //textAlign: 'start',
@@ -48,15 +52,20 @@ const styles = theme => ({
         //marginLeft: 10,
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     fixWidth: {
+        position: 'absolute',
+        top: 71,
+        left: 0,
+        right: 0,
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#f6f6f6' : '#171b26'
-            }`,
-        padding: '15px 30px',
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
+        padding: '6px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '3%',
+            padding: '0 3%',
+            top: 61,
         },
         display: 'flex',
         // alignItems: 'center',
@@ -68,14 +77,14 @@ const styles = theme => ({
         fontSize: '1.4rem',
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
-            }`,
+        }`,
         marginBottom: 5,
     },
     role: {
         fontSize: '1rem',
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : '#a7b6ce'
-            }`,
+        }`,
     },
     message2: {
         // fontSize: '0.9rem'
@@ -84,7 +93,7 @@ const styles = theme => ({
         marginLeft: 'auto',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         fontSize: '0.95rem',
     },
     infBlock: {
@@ -99,19 +108,20 @@ const styles = theme => ({
         fontSize: '0.95rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         marginBottom: 5,
     },
     textInfo: {
-        padding: '12px 30px 0px',
+        padding: '20px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '0 3%',
+            padding: '4% 3%',
         },
-        fontSize: '1em',
+        fontSize: '1.5em',
+        fontWeight: 'bold',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
-        marginBottom: 5,
+        }`,
+
     },
     block: {
         width: '100%'
@@ -119,25 +129,35 @@ const styles = theme => ({
     blockForm: {
         //display: 'flex',
         alignItems: 'flex-start',
-        padding: '15px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '3%',
+            padding: '0 3%',
         },
+        marginBottom: 0,
+        overflow: "hidden",
+        height: '100%',
     },
     form: {
-        boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
-        borderRadius: '0px 0px 5px 5px',
-        width: '100%', // Fix IE 11 issue.
+        position: 'absolute',
+        top: 228,
+        bottom: 0,
+        borderRadius: '0 0 10px 10px',
+        left: 0,
+        right: 0,
+        padding: '0px 30px 59px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '0 3% 12% 3%',
+            top: 212,
+        },
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+        }`,
     },
     textInf: {
         // marginBottom: 30,
         fontSize: '1em',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     textPassword: {
 
@@ -158,16 +178,17 @@ const styles = theme => ({
     closeIcon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
-            }`,
+        }`,
         cursor: 'pointer',
     },
     cssLabel: {
         color: ` ${
-            theme.palette.type === 'light' ? '#4f4f4f' : theme.palette.secondary.dark
-            }`,
+            theme.palette.type === 'light' ? '#ffffff' : '#ffffff'
+        }`,
         '&$cssFocused': {
-            color: "#4a4a4a",
+            color: "#ffffff",
         },
+        fontSize: '1.4rem',
     },
     cssFocused: {},
     cssUnderline: {
@@ -198,40 +219,45 @@ const styles = theme => ({
         fontSize: '1.1rem',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     userRole: {
         color: ` ${
             theme.palette.type === 'light' ? '#a5a3a3' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     checkboxRoot: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     signIn: {
+        position: 'absolute',
+        borderRadius: '0 0 10px 10px',
+        bottom: 0,
+        left: 0,
+        right: 0,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30,
-        [theme.breakpoints.down('xs')]: {
-            marginTop: '3%',
-        },
+        [theme.breakpoints.down('xs')]: {},
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+        }`,
 
     },
     submit: {
         width: '30%',
-        marginBottom: 12,
+        margin: 10,
         boxShadow: theme.shadows[0],
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#48a1a4' : '#48a1a4'
-            }`,
+        }`,
         color: '#fff',
         '&:hover': {
             backgroundColor: ` ${
                 theme.palette.type === 'light' ? '#41888b' : '#41888b'
-                }`,
+            }`,
         },
     },
     checkedBox: {
@@ -240,10 +266,24 @@ const styles = theme => ({
     headerBar: {
         padding: '15px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '3%',
+            padding: '0% 3%',
         },
         display: 'flex',
         alignItems: 'center',
+    },
+    infoBlock: {
+        boxShadow: '0 -10px 7px 0px rgba(0, 0, 0, 0.1)',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
+        }`,
+        borderRadius: '10px 10px 0 0',
+        position: 'absolute',
+        top: 176,
+        left: 0,
+        right: 0,
+        [theme.breakpoints.down('xs')]: {
+            top: 160,
+        },
     },
 });
 
@@ -328,8 +368,8 @@ class NewChatModal extends React.Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user_ids: this.state.values,
-                name: this.state.chatName,
+                user_ids: userIds,
+                name: name,
                 purpose: purpose
             })
         })
@@ -351,7 +391,7 @@ class NewChatModal extends React.Component {
 
     handleCreateNewChat = (event) => {
         event.preventDefault();
-        this.createNewChat([1, 11, 6, 15], 'Флудилачка', 'fake')
+        this.createNewChat(this.state.values, this.state.chatName, 'fake')
     };
 
     handleUserToggle = (userArr) => {
@@ -393,10 +433,9 @@ class NewChatModal extends React.Component {
         console.log('dfdfdf', users);
 
         return (
-            <div onclose={this.handleReset}>
+            <div onClose={this.handleReset}>
                 <div className={classes.headerBlock}>
                     <div style={{width: '100%'}}>
-
                         <div className={classes.headerBar}>
                             <Typography variant="h5" className={classes.header}>
                                 Создание чата
@@ -405,78 +444,69 @@ class NewChatModal extends React.Component {
                                 <Close className={classes.closeIcon}/>
                             </IconButton>
                         </div>
-
-
                     </div>
                 </div>
-                <form onSubmit={this.handleCreateNewChat} className={classes.form}>
-                    <div className={classes.fixWidth}>
-                        {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
-                        <label htmlFor='avatar-input'>
-                            {
-                                this.state.avatar_image || avatar_image ?
-                                    (
-                                        <div className="avatarArea">
-                                            <div className="downloadHover">
-                                                <CloudUpload className="downloadIcon"/>
-                                            </div>
-                                            <Avatar
-                                                className={classes.avatar}
-                                                src={this.state.avatar_image || avatar_image.small}/>
+                <div className={classes.fixWidth}>
+                    {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
+                    <label htmlFor='avatar-input'>
+                        {
+                            this.state.avatar_image || avatar_image ?
+                                (
+                                    <div className="avatarArea">
+                                        <div className="downloadHover">
+                                            <CloudUpload className="downloadIcon"/>
                                         </div>
-                                    )
-                                    :
-                                    (<div className="avatarArea">
-                                            <div className="downloadHover">
-                                                <CloudUpload className="downloadIcon"/>
-                                            </div>
-                                            <Avatar className={classes.avatar}>
-                                                {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
-                                            </Avatar>
+                                        <Avatar
+                                            className={classes.avatar}
+                                            src={this.state.avatar_image || avatar_image.small}/>
+                                    </div>
+                                )
+                                :
+                                (<div className="avatarArea">
+                                        <div className="downloadHover">
+                                            <CloudUpload className="downloadIcon"/>
                                         </div>
-                                    )
-                            }
+                                        <Avatar className={classes.avatar}>
+                                            {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
+                                        </Avatar>
+                                    </div>
+                                )
+                        }
 
-                        </label>
-                        <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
-                               accept="image/x-png,image/jpeg"
-                               ref={this.avatarInput}/>
-                        <div className={classes.userName}>
-                            <FormControl className={classes.margin}>
-                                <InputLabel
-                                    htmlFor="custom-css-standard-input"
-                                    classes={{
-                                        root: classes.cssLabel,
-                                        focused: classes.cssFocused,
-                                    }}
-                                >
-                                    Название чата
-                                </InputLabel>
-                                <Input
-                                    value={this.state.chatName}
-                                    onChange={this.handleChangeChatName}
-                                    id="custom-css-standard-input"
-                                    classes={{
-                                        underline: classes.cssUnderline,
-                                        root: classes.baseRoot
-                                    }}
-                                />
-                            </FormControl>
-                        </div>
-                        {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
-                                avatar!</Button>*/}
+                    </label>
+                    <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
+                           accept="image/x-png,image/jpeg"
+                           ref={this.avatarInput}/>
+                    <div className={classes.userName}>
+                        <FormControl className={classes.margin}>
+                            <InputLabel
+                                htmlFor="custom-css-standard-input"
+                                classes={{
+                                    root: classes.cssLabel,
+                                    focused: classes.cssFocused,
+                                }}
+                            >
+                                Название чата
+                            </InputLabel>
+                            <Input
+                                value={this.state.chatName}
+                                onChange={this.handleChangeChatName}
+                                id="custom-css-standard-input"
+                                classes={{
+                                    underline: classes.cssUnderline,
+                                    root: classes.baseRoot
+                                }}/>
+                        </FormControl>
                     </div>
-                    {/* <Divider/>*/}
-
-                    <Typography variant="overline" className={classes.textInfo}>Добавьте пользователей</Typography>
-                    <div className={classes.blockForm} style={{
-                        marginBottom: 0,
-                        overflow: "auto",
-                        maxHeight: 260,
-                        webkitOverflowScrolling: 'touch',
-                        height: '100%',
-                    }}>
-                        <div style={{overflow: "hidden"}}>
+                    {/*<Button disabled={!this.state.blob} variant="outlined" onClick={this.handleAvatarUpload}>Save
+                                avatar!</Button>*/}
+                </div>
+                <div className={classes.infoBlock}>
+                    <Typography variant="h3" className={classes.textInfo}>Добавьте пользователей</Typography>
+                </div>
+                <form onSubmit={this.handleCreateNewChat} className={classes.form}>
+                    <div className={classes.blockForm}>
+                        <div style={{overflow: "auto", height: '100%', WebkitOverflowScrolling: 'touch',}}>
                             {workgroup}
                         </div>
                     </div>

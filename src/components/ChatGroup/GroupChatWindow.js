@@ -91,14 +91,14 @@ class GroupChatWindow extends React.Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const {chat} = this.props;
+       // const {chat} = this.props;
         if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
 
     componentDidMount() {
-        const {chat} = this.props;
+        //const {chat} = this.props;
         if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }

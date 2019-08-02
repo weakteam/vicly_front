@@ -9,9 +9,7 @@ import AvatarColor from "../../services/AvatarColor"
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import AttachmentShow from "./AttachmentShow";
-import List from "@material-ui/core/List";
 import handleViewport from 'react-in-viewport';
-import VisibilitySensor from "react-visibility-sensor";
 import {observer} from "mobx-react";
 
 
@@ -51,8 +49,10 @@ const styles = theme => ({
                 [theme.breakpoints.down('xs')]: {
                     maxWidth: 300,
                 },
+                backgroundColor: ` ${
+                    theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
+                }`,
                 padding: '3px 14px 3px 14px',
-                backgroundColor: '#d5f0ff',
                 borderRadius: '10px 10px 10px 0',
             },
 
@@ -64,8 +64,10 @@ const styles = theme => ({
                 [theme.breakpoints.down('xs')]: {
                     maxWidth: 225,
                 },
+                backgroundColor: ` ${
+                    theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
+                }`,
                 padding: '3px 14px 3px 14px',
-                backgroundColor: '#e2f0f1',
                 borderRadius: '10px 10px 0px 10px',
                 boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
             },
@@ -77,8 +79,11 @@ const styles = theme => ({
                 [theme.breakpoints.down('xs')]: {
                     maxWidth: 225,
                 },
+                //212C3D
+                backgroundColor: ` ${
+                    theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
+                }`,
                 padding: '3px 14px 3px 14px',
-                backgroundColor: '#f9f9f9',
                 borderRadius: '10px 10px 10px 0',
                 boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
             },
@@ -114,8 +119,10 @@ const styles = theme => ({
                 boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
             },
             mess: {
+                color: ` ${
+                    theme.palette.type === 'light' ? '#181818' : '#fff'
+                }`,
                 fontSize: '0.8rem',
-                color: '#181818',
                 whiteSpace: 'pre-wrap',
                 // wordWrap: 'break-word',
                 //overflowWrap: 'break-word',
@@ -125,7 +132,10 @@ const styles = theme => ({
             senderName: {
                 minWidth: 'max-content',
                 fontWeight: 500,
-                color: '#2176a5'
+                color: ` ${
+                    theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
+                }`,
+
             },
             gridList: {
                 margin: '6px 0px 6px 0px!important',

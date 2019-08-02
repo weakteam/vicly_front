@@ -1,22 +1,18 @@
 import React from 'react';
-import {Badge, Hidden, IconButton, withStyles} from "@material-ui/core";
-import InviteIco from "./SearchBar";
+import {Badge, IconButton, withStyles} from "@material-ui/core";
 import ProfileIco from "./ProfileIco";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import InviteIcon from "./InviteIcon";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import rootStore from "../store/RootStore";
-import {Route} from "react-router-dom";
-import InviteForm from "./InviteForm";
-import {Link} from "react-router-dom";
-import ChatWindow from "./ChatUser/ChatWindow";
 
 const {accountStore} = rootStore;
 
 const styles = theme => ({
     position: {
+        zIndex: 1,
         borderRadius: '5px 5px 0 0',
-        margin: '5px 8px 0px 8px',
+        margin: '5px 10px 0px 8px',
         position: 'absolute',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'

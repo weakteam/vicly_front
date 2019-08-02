@@ -5,13 +5,16 @@ import Divider from "@material-ui/core/es/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
 import Close from "@material-ui/icons/Close"
-import {Button} from "@material-ui/core";
-import Icon from '@material-ui/core/Icon';
-import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import rootStore from "../store/RootStore";
 import Save from "@material-ui/icons/SaveOutlined"
 import CloudUpload from "@material-ui/icons/CloudUpload"
+import Phone from '@material-ui/icons/PhoneOutlined'
+import Person from '@material-ui/icons/PersonOutline'
+import CardTravel from '@material-ui/icons/CardTravelOutlined'
+import Group from '@material-ui/icons/GroupOutlined'
+import Info from '@material-ui/icons/InfoOutlined'
+import Create from '@material-ui/icons/CreateOutlined'
 import "../css/avatarHover.css"
 
 const {accountStore, messagesStore} = rootStore;
@@ -31,13 +34,19 @@ const styles = theme => ({
     },
     headerBlock: {
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? 'rgb(105, 79, 79)' : 'rgb(105, 79, 79)'
-            }`,
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
         //height: 85,
-        // width: '100%',
+        //width: '100%',
         padding: '15px 30px',
+        [theme.breakpoints.down('xs')]: {
+            padding: '0% 3%',
+        },
         display: 'flex',
         alignItems: 'start',
+        position: 'absolute',
+        right: 0,
+        left: 0,
         borderRadius: '5px 5px 0px 0px',
     },
     header: {
@@ -46,40 +55,52 @@ const styles = theme => ({
         //marginLeft: 10,
         color: ` ${
             theme.palette.type === 'light' ? '#fff' : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     fixWidth: {
-        padding: '15px 30px',
+        /* boxShadow: '0 6px 6px 0 rgba(0, 0, 0, 0.21)',*/
+        position: 'absolute',
+        top: 50,
+        right: 0,
+        left: 0,
+        padding: '24px 30px',
         //background-color: #f6f6f6;
         backgroundColor: ` ${
-            theme.palette.type === 'light' ? '#f6f6f6' : 'rgb(22, 26, 35)'
-            }`,
+            theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,
         [theme.breakpoints.down('xs')]: {
-            padding: '5%',
+            padding: '0% 3%',
         },
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'start',
     },
     userName: {
-        marginLeft: 10,
+        marginLeft: 18,
         overflow: 'hidden',
     },
     userName1: {
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-       // width: '100%',
-        fontSize: '1.4rem',
+        fontWeight: 'bold',
+        // width: '100%',
+        fontSize: '2.4rem',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '1.4em',
+        },
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+            theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
+        }`,
         marginBottom: 5,
     },
     role: {
-        fontSize: '1rem',
+        fontSize: '1.1rem',
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '1em',
+        },
         color: ` ${
-            theme.palette.type === 'light' ? '#9e9e9e' : '#a7b6ce'
-            }`,
+            theme.palette.type === 'light' ? '#bcffff' : '#bcffff'
+        }`,
     },
     message2: {
         // fontSize: '0.9rem'
@@ -88,12 +109,26 @@ const styles = theme => ({
         marginLeft: 'auto',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         fontSize: '0.95rem',
+    },
+    fioText: {
+        color: ` ${
+            theme.palette.type === 'light' ? '#bfbfbf' : theme.palette.secondary.dark
+        }`,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        //  width: '100%',
+        fontSize: '1rem',
+        marginBottom: 5,
     },
     infBlock: {
         display: 'flex',
         marginTop: 30,
+        [theme.breakpoints.down('xs')]: {
+            marginTop: '9%',
+        },
     },
     infBlockFirst: {
         display: 'flex',
@@ -102,11 +137,11 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-      //  width: '100%',
+        //  width: '100%',
         fontSize: '0.95rem',
         marginBottom: 5,
     },
@@ -114,27 +149,42 @@ const styles = theme => ({
         width: '100%'
     },
     blockForm: {
-        display: 'flex',
-        alignItems: 'flex-start',
-        padding: '15px 30px',
+        overflowY: 'auto',
+        height: '100%',
+        WebkitOverflowScrolling: 'touch',
+        //display: 'flex',
+        // overflow: 'hidden',
+        // alignItems: 'flex-start',
+        padding: '0px 30px',
         [theme.breakpoints.down('xs')]: {
-            padding: '5%',
+            padding: '0 3%',
         },
     },
     form: {
-        boxShadow: '0 -2px 10px 0px rgba(0, 0, 0, 0.15)',
-        borderRadius: '0px 0px 5px 5px',
+
+        position: 'absolute',
+        top: 187,
+        [theme.breakpoints.down('xs')]: {
+            top: 144,
+        },
+        right: 0,
+        bottom: 0,
+        left: 0,
+        overflow: 'hidden',
+        zIndex: 1,
+        boxShadow: '0 -10px 7px 0px rgba(0, 0, 0, 0.1)',
+        borderRadius: 10,
         width: '100%', // Fix IE 11 issue.
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-            }`,
+        }`,
     },
     textInf: {
-        marginBottom: 15,
-        fontSize: '1em',
+        fontSize: '1.5em',
+        fontWeight: 'bold',
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+            theme.palette.type === 'light' ? '#5f5f5f' : theme.palette.secondary.dark
+        }`,
     },
     textPassword: {
 
@@ -150,7 +200,7 @@ const styles = theme => ({
         visibility: 'hidden',
         zIndex: 9000,
         padding: 20,
-      //  display: 'none',
+        //  display: 'none',
 
         '&:hover': {
             backgroundColor: '#000',
@@ -162,8 +212,8 @@ const styles = theme => ({
         },
     },
     avatar: {
-        width: 175,
-        height: 175,
+        width: 90,
+        height: 90,
         [theme.breakpoints.down('xs')]: {
             width: 75,
             height: 75,
@@ -173,17 +223,33 @@ const styles = theme => ({
     closeIcon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
-            }`,
+        }`,
         cursor: 'pointer',
     },
     saveIcon: {
         fontSize: 33,
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     button: {
         marginLeft: 'auto'
+    },
+    infIcons: {
+        marginRight: 10,
+        color: ` ${
+            theme.palette.type === 'light' ? '#5f5f5f' : theme.palette.secondary.dark
+        }`,
+    },
+    infoStyle: {
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: 33,
+        marginTop: 33,
+        [theme.breakpoints.down('xs')]: {
+            marginBottom: '7%',
+            marginTop: '3%',
+        },
     },
 
 });
@@ -223,7 +289,7 @@ class UserProfile extends React.Component {
         let avatar_image = rootStore.imageService.images.find(elem => elem.userId === this.accountStore.userId);
 
         return (
-            <div>
+            <>
                 <div className={classes.headerBlock}>
                     <div style={{width: '100%'}}>
                         <div style={{display: 'flex', alignItems: 'center',}}>
@@ -238,87 +304,129 @@ class UserProfile extends React.Component {
 
                     </div>
                 </div>
-                <form className={classes.form}>
-                    <div className={classes.fixWidth}>
-                        {/*src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
-                        <label htmlFor='avatar-input'>
-                            {
-                                this.state.avatar_image || avatar_image ?
-                                    (
-                                        <div className="avatarArea">
-                                            <div className="downloadHover">
-                                                <CloudUpload className="downloadIcon"/>
-                                            </div>
-                                            <Avatar
-                                                className={classes.avatar}
-                                                src={this.state.avatar_image || avatar_image.small}/>
-
+                <div className={classes.fixWidth}>
+                    {/*//src={user.avatar ? `${BACKEND_URL}/attachment/download/${user.avatar}?width=400` : ""}*/}
+                    <label htmlFor='avatar-input'>
+                        {
+                            this.state.avatar_image || avatar_image ?
+                                (
+                                    <div className="avatarArea">
+                                        <div className="downloadHover">
+                                            <CloudUpload className="downloadIcon"/>
                                         </div>
-                                    )
-                                    :
-                                    (
-                                        <div className="avatarArea">
-                                            <div className="downloadHover">
-                                                <CloudUpload className="downloadIcon"/>
-                                            </div>
+                                        <Avatar
+                                            className={classes.avatar}
+                                            src={this.state.avatar_image || avatar_image.small}/>
+
+                                    </div>
+                                )
+                                :
+                                (
+                                    <div className="avatarArea">
+                                        <div className="downloadHover">
+                                            <CloudUpload className="downloadIcon"/>
+                                        </div>
                                         <Avatar className={classes.avatar}>
                                             {this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}
                                         </Avatar>
-                                        </div>
-                                    )
-                            }
+                                    </div>
+                                )
+                        }
 
-                        </label>
-                        <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
-                               accept="image/x-png,image/jpeg"
-                               ref={this.avatarInput}/>
-                        <div className={classes.userName}>
-                            <Typography variant="h5"
-                                        className={classes.userName1}>{this.accountStore.fullName}</Typography>
-                            <Typography variant="caption"
-                                        noWrap
-                                        className={classes.role}>({this.accountStore.position ? this.accountStore.position : 'Должность не указана'})</Typography>
-                        </div>
-                        <IconButton className={classes.button} color="primary" onClick={this.handleAvatarUpload}
-                                    aria-label="Delete">
-                            <Save style={{color: 'rgb(105, 79, 79)'}} className={classes.saveIcon}/>
-                        </IconButton>
-                        {/* disabled={!this.state.blob} не Работает!!!!*/}
+                    </label>
+                    <input onChange={this.handleImageChange} hidden id="avatar-input" type="file"
+                           accept="image/x-png,image/jpeg"
+                           ref={this.avatarInput}/>
+                    <div className={classes.userName}>
+                        <Typography variant="h5"
+                                    className={classes.userName1}>{this.accountStore.fullName}</Typography>
+                        <Typography variant="caption"
+                                    noWrap
+                                    className={classes.role}>{this.accountStore.position ? this.accountStore.position : 'Должность не указана'}</Typography>
                     </div>
+                    <IconButton className={classes.button} color="primary" onClick={this.handleAvatarUpload}
+                                aria-label="Delete">
+                        <Save style={{color: '#fff'}} className={classes.saveIcon}/>
+                    </IconButton>
+                    {/*  disabled={!this.state.blob} не Работает!!!!*/}
+                </div>
+                <form className={classes.form}>
                     <div className={classes.blockForm}>
-                        <div className={classes.block}>
-                            <Typography variant="overline" className={classes.textInf}>Информация</Typography>
-                            <div className={classes.infBlockFirst}>
-                                <Typography variant="h6" className={classes.text}>Телефон</Typography>
-                                <Typography variant="h6" className={classes.text2}>8(988)996-29-14</Typography>
-                            </div>
-                            <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Логин</Typography>
+                        <div className={classes.infoStyle}>
+                            <Typography variant="h3" className={classes.textInf}>Информация</Typography>
+                            <Create style={{marginLeft: 'auto', color: '#0a8d8d'}}/>
+                        </div>
+                        <div className={classes.infBlockFirst}>
+                            <Phone className={classes.infIcons}/>
+                            <Typography variant="h6" className={classes.text}>Телефон</Typography>
+                            <Typography variant="h6" className={classes.text2}>8(988)996-29-14</Typography>
+                        </div>
+                        <div className={classes.infBlock}>
+                            <Person className={classes.infIcons}/>
+                            <Typography variant="h6" className={classes.text}>Логин</Typography>
+                            <Typography variant="h6" style={{color: '#7278FC'}}
+                                        className={classes.text2}>@{this.accountStore.login}</Typography>
+                        </div>
+                        <div className={classes.infBlock}>
+                            <CardTravel className={classes.infIcons}/>
+                            <Typography variant="h6" className={classes.text}>Должность</Typography>
+                            <div className={classes.text2}>
                                 <Typography variant="h6"
-                                            className={classes.text2}>@{this.accountStore.login}</Typography>
+                                            className={classes.text2}>{this.accountStore.position ? this.accountStore.position : '-'}</Typography>
                             </div>
-                            <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Пароль</Typography>
-                                <InputBase classes={{input: classes.textPassword}}
-                                           className={classes.text2}
-                                           type="password"
-                                           defaultValue="Naked input"/>
+                        </div>
+                        <div className={classes.infBlock}>
+                            <Group className={classes.infIcons}/>
+                            <Typography variant="h6" className={classes.text}>Рабочая группа</Typography>
+                            <div className={classes.text2}>
+                                <Typography variant="h6"
+                                            className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
                             </div>
-                            <Divider/>
-                            <div className={classes.infBlock}>
-                                <Typography variant="h6" className={classes.text}>Рабочая группа</Typography>
+                        </div>
+
+                        <Divider style={{marginLeft: 35}}/>
+                        <div className={classes.infBlock}>
+                            <Info className={classes.infIcons}/>
+                            <Typography variant="h6" className={classes.text}>Пароль</Typography>
+                            <InputBase classes={{input: classes.textPassword}}
+                                       className={classes.text2}
+                                       type="password"
+                                       defaultValue="Naked input"/>
+                        </div>
+                        <Divider style={{marginLeft: 35}}/>
+                        <div style={{marginLeft: 35}} className={classes.infBlock}>
+                            <div>
+                                <Typography variant="h6" className={classes.fioText}>Имя</Typography>
                                 <div className={classes.text2}>
                                     <Typography variant="h6"
-                                                className={classes.text2}>{workgroup.name ? workgroup.name : 'Нет группы'}</Typography>
+                                                className={classes.text2}>{this.accountStore.first_name}</Typography>
                                 </div>
                             </div>
-                            <Divider/>
                         </div>
+                        <Divider/>
+                        <div style={{marginLeft: 35}} className={classes.infBlock}>
+                            <div>
+                                <Typography variant="h6" className={classes.fioText}>Фамилия</Typography>
+                                <div className={classes.text2}>
+                                    <Typography variant="h6"
+                                                className={classes.text2}>{this.accountStore.last_name}</Typography>
+                                </div>
+                            </div>
+                        </div>
+                        <Divider/>
+                        <div style={{marginLeft: 35}} className={classes.infBlock}>
+                            <div>
+                                <Typography variant="h6" className={classes.fioText}>Отчество</Typography>
+                                <div className={classes.text2}>
+                                    <Typography variant="h6"
+                                                className={classes.text2}>-</Typography>
+                                </div>
+                            </div>
+                        </div>
+                        <Divider/>
                     </div>
                 </form>
-            </div>
+            </>
         );
     }
 }

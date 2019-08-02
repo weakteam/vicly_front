@@ -1,7 +1,7 @@
 import {BACKEND_URL} from "../common";
-import {observable} from "mobx";
+//import {observable} from "mobx";
 import Attachment from "../store/models/Attachment";
-import rootStore from "../store/RootStore";
+//import rootStore from "../store/RootStore";
 
 export default class AttachmentService {
     rootStore = null;
