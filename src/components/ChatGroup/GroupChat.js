@@ -174,8 +174,7 @@ class GroupChat extends React.Component {
                                     className={classes.time}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             {
-                                countUnread ? (
-                                    <Badge badgeContent={countUnread} classes={{badge: classes.margin}}/>) : ("")
+                                countUnread ? (<Badge badgeContent={countUnread} classes={{badge: classes.margin}}/>) : ("")
                             }
                         </Grid>
                     </ListItem>
