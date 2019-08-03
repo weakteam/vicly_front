@@ -103,11 +103,6 @@ class Dialog extends React.Component {
         this.accountStore = accountStore;
     }
 
-    state = {
-        avatar_fetched: false,
-        avatar_image: null
-    };
-
     handleDialogClick = () => {
         messagesStore.isCurrentChatForUser = true;
         // messagesStore.chatChanged("user", this.props.userChat.user.id);
@@ -120,6 +115,11 @@ class Dialog extends React.Component {
         // FIXME comment is fix for url chat page reload dafauck mafuck
         this.props.handleDrawerToggle();
     };
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return false;
+    }
+
 
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
@@ -142,9 +142,9 @@ class Dialog extends React.Component {
         const lastMessage = this.props.userChat.last ? this.props.userChat.last.message : null;
         const countUnread = this.props.userChat.unread;
         const lastMessageDatetime = this.props.userChat.last ? this.props.userChat.last.timestamp_post.timestamp : null;
-
+        const selected = this.props.userChat.selected;
         // TODO work ONLY FOR USERS CHATS
-        const selected = userId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === true;
+
         let colorChange = AvatarColor.getColor(firstName[0]);
         let avatar_image = rootStore.imageService.images.find(elem => elem.userId === userId);
 

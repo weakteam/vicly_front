@@ -298,6 +298,7 @@ class Home extends React.Component {
         this.handleLogoutFunc = this.accountStore.unauth.bind(accountStore);
     }
 
+
     state = {
         mobileOpen: false,
         type: this.props.theme.palette.type,
@@ -310,6 +311,10 @@ class Home extends React.Component {
     handleDrawerToggleForMob = () => {
         this.setState({mobileOpen: false});
     };
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return false;
+    }
 
     workgroups() {
         const {classes} = this.props;
@@ -362,9 +367,29 @@ class Home extends React.Component {
     //     }
     // }
 
+    renderChatWindow = (routeProps) => {
+        return (
+            <ChatWindow
+                {...routeProps}
+                chat={this.messagesStore.getCurrentChatNew()}
+            />
+        )
+    };
+
+    renderGroupChatWindow = (routeProps) => {
+        return (
+            <GroupChatWindow
+                {...routeProps}
+                chat={this.messagesStore.getCurrentChatNew()}
+            />
+        )
+    };
+
+    renderChatWindowEmpty = (routeProps) => <ChatWindowEmpty/>;
+
+
     render() {
-        const {classes, theme, chats} = this.props;
-        const vh = vhCheck();
+        const {classes, theme} = this.props;
         let drawer = (
             <div className={classes.scrollDrawer}>
                 <ProfileBar
@@ -463,24 +488,15 @@ class Home extends React.Component {
                     <Route exact path="/home" component={HomeScreen}/>
                     {
                         this.messagesStore.chatsFetched ?
-                            (<>
-                                <Route path="/home/chat/user/:userId"
-                                       render={(routeProps) =>
-                                           <ChatWindow
-                                               {...routeProps}
-                                               handleDrawerToggle={this.handleDrawerToggle}
-                                               chat={this.messagesStore.getCurrentChatNew()}
-                                           />}/>
-                                <Route path="/home/chat/group/:chatId"
-                                       render={(routeProps) =>
-                                           <GroupChatWindow
-                                               {...routeProps}
-                                               handleDrawerToggle={this.handleDrawerToggle}
-                                               chat={this.messagesStore.getCurrentChatNew()}
-                                           />}/>
-                            </>) : (
-                                <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]}
-                                       render={(routeProps) => <ChatWindowEmpty/>}/>
+                            (
+                                <>
+                                    <Route path="/home/chat/user/:userId" render={this.renderChatWindow}/>
+                                    <Route path="/home/chat/group/:chatId" render={this.renderGroupChatWindow}/>
+                                </>
+                            )
+                            :
+                            (
+                                <Route path={["/home/chat/user/:userId", "/home/chat/group/:chatId"]} render={this.renderChatWindowEmpty}/>
                             )
                     }
                 </div>
@@ -489,6 +505,5 @@ class Home extends React.Component {
     }
 }
 
-/*
-export default withSplashScreen(withStyles(styles, {withTheme: true})(Home));*/
+
 export default withStyles(styles, {withTheme: true, index: 1})(Home);

@@ -68,7 +68,8 @@ export default class MessagesStore {
                 const [currentChatId, isCurrentChatForUser] = args;
                 if (currentChatId) {
                     // If opened user chat
-                    let currentChat = this.getCurrentChatNew(currentChatId);
+                    let currentChat = this.getCurrentChatNew();
+                    let previousChat = this.getPreviousChatNew();
                     if (currentChat.messages.length <= 20) {
                         currentChat.loadMessages(currentChat.page);
                     } else {
@@ -77,7 +78,8 @@ export default class MessagesStore {
                             currentChat.loadMessagesAfter(lastMessage.id);
                         }
                     }
-
+                    currentChat.setSelected(true);
+                    previousChat.setSelected(false);
                 }
             },
             {fireImmediately: true}
@@ -268,6 +270,10 @@ export default class MessagesStore {
 
     getCurrentChatNew() {
         return this.isCurrentChatForUser ? this.findUserChatNew(this.currentChatId) : this.findGroupChatNew(this.currentChatId);
+    }
+
+    getPreviousChatNew() {
+        return this.previousIsCurrentChatForUser ? this.findUserChatNew(this.previousCurrentChatId) : this.findGroupChatNew(this.previousCurrentChatId);
     }
 
 

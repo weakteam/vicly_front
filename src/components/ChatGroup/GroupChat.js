@@ -110,12 +110,17 @@ class GroupChat extends React.Component {
         }
     };
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return false;
+    }
+
     render() {
         const {classes} = this.props;
         const {chatId, title: chatTitle, last, unread: countUnread} = this.props.groupChat;
         let lastMessageUser = null;
         let lastMessage = "";
         let lastMessageDatetime = null;
+        const selected = this.props.groupChat.selected;
         if (last){
             lastMessage = last.message;
             lastMessageDatetime = last.timestamp_post.timestamp;
@@ -124,7 +129,7 @@ class GroupChat extends React.Component {
                 lastMessageUser = user ? user.first_name : "error";
             }
         }
-        const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === false;
+
 
         let colorChange = AvatarColor.getColor(chatTitle[0]);
         return (

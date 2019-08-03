@@ -15,10 +15,7 @@ export default class Chat {
     // Array of Message objects
     @observable messages = [];
     page = 0;
-
-
-    //common properties
-    selected = false;
+    @observable selected = false;
 
     constructor(chatObject, chatType, usersNew) {
         this.chatType = chatType;

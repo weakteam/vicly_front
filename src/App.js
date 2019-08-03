@@ -12,16 +12,9 @@ import history from "./store/history"
 import {createMuiTheme} from "@material-ui/core";
 import {ThemeProvider} from '@material-ui/styles';
 import InviteLogin from "./components/login/InviteLogin";
-import withSplashScreen from "./components/withSplashScreen";
 
-if (history.location.pathname.startsWith("/home/chat/user")) {
-    const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
-    rootStore.messagesStore.setCurrentChatId(chatId, true);
-} else if (history.location.pathname.startsWith("/home/chat/group")) {
-    const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
-    rootStore.messagesStore.setCurrentChatId(chatId, false);
-}
-history.listen((location, action) => {
+
+function historyListener() {
     if (history.location.pathname.startsWith("/home/chat/user")) {
         const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
         rootStore.messagesStore.setCurrentChatId(chatId, true);
@@ -29,7 +22,10 @@ history.listen((location, action) => {
         const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
         rootStore.messagesStore.setCurrentChatId(chatId, false);
     }
-});
+}
+historyListener();
+
+history.listen(historyListener);
 
 const themeOptions = {
     typography: {
@@ -114,6 +110,8 @@ class App extends Component {
                             authStatus ?
                                 (
                                     <Switch>
+                                        <Home
+                                            changeThemeType={this.changeThemeType}/>
                                         <Route path="/home" render={() => <Home
                                             changeThemeType={this.changeThemeType}/>}/>
                                         <Route render={() => <Redirect to="/home"/>}/>

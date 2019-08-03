@@ -219,7 +219,8 @@ class Message extends React.Component {
             mobileMessage =
 
                 <div className={classes.messageBlock}>
-                    <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMeMob + " " + msgColor : classes.toMe}>
+                    <div onContextMenu={this.props.onContextMenu}
+                         className={fromMe ? classes.fromMeMob + " " + msgColor : classes.toMe}>
                         <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                             <Typography
                                 variant="body2"
@@ -287,7 +288,8 @@ class Message extends React.Component {
                             )
                     }
                 </div>
-                <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
+                <div onContextMenu={this.props.onContextMenu}
+                     className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                     <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
                         <Typography
                             variant="body2"
@@ -316,33 +318,9 @@ class Message extends React.Component {
                                 </>
                             ) : null
                     }
-                    {/*<GridList cellHeight={150} className={classes.gridList} cols={2}>
-                        <GridListTile key="1" cols={1}>
-                            <img src={img1} alt="lol"/>
-                        </GridListTile>
-                        <GridListTile key="1" cols={1}>
-                            <img src={img2} alt="lol"/>
-                        </GridListTile>
-                        <GridListTile key="1" cols={2}>
-                            <img src={img3} alt="lol"/>
-                        </GridListTile>
-                        <GridListTile key="1" cols={1}>
-                            <img src={img1} alt="lol"/>
-                        </GridListTile>
-                        <GridListTile key="1" cols={1}>
-                            <img src={img1} alt="lol"/>
-                        </GridListTile>
-                        <GridListTile key="1" cols={1}>
-                            <img src={img1} alt="lol"/>
-                        </GridListTile>
-                        <GridListTile key="1" cols={1}>
-                            <img src={img1} alt="lol"/>
-                        </GridListTile>
-                    </GridList>*/}
                 </div>
             </div>
         }
-
         return (
             <div ref={this.props.forwardedRef}>
                 <Hidden smDown implementation="css">
@@ -365,7 +343,8 @@ class Message extends React.Component {
                                 }
 
                             </div>
-                            <div onContextMenu={this.props.onContextMenu} className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe }>
+                            <div onContextMenu={this.props.onContextMenu}
+                                 className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                                 <div style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',

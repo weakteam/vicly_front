@@ -72,6 +72,7 @@ const styles = theme => ({
     },
 });
 
+
 class ProfileBar extends React.Component {
     constructor(props) {
         super(props);
@@ -86,8 +87,7 @@ class ProfileBar extends React.Component {
                 <ProfileIco
                     changeThemeType={this.props.changeThemeType}
                     handleLogout={this.handleLogoutFunc}
-                    name={this.accountStore.fullName}
-                    handleChangeType/>
+                    name={this.accountStore.fullName}/>
 
                 <div className={classes.wrap}>
                     <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>

@@ -97,7 +97,7 @@ class ChatWindow extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {chat} = this.props;
         //const isMessegesChanged = chat.messages.length !== prevProps.chat.messages.length;
-        if (messagesStore.isChatChanged() ) {
+        if (messagesStore.isChatChanged()) {
             this.scrollToBottom();
         }
     };
@@ -117,42 +117,42 @@ class ChatWindow extends React.Component {
             last_name: this.accountStore.last_name,
             userId: this.accountStore.userId
         };
-        if (this.messagesStore.currentChatId) {
-            let messages = null;
-            if (chat) {
-                messages = Array.from(chat.messages);
-            }
-            return (
-                <div className={classes.chatWindow}>
-                    <ThreadWindow/>
-                    <ChatBar match={this.props.match.params.userId} handleDrawerToggle={this.props.handleDrawerToggle}/>
-                    {
-                        messagesStore.messagesLoading ?
-                            (<Loader active inverted>Loading</Loader>)
-                            :
-                            chat && messages && messages.length > 0 ? (
-                                    <MessageList
-                                        myselfUser={myselfUser}
-                                        chatUsers={[chat.user]}
-                                        messages={messages}
-                                        scrollHandler={this.scrollHandler}
-                                        ref={this.messageList}/>
-                                )
-                                :
-                                (
-                                    <div className={classes.emptyChat}>
-                                        <Typography className={classes.text} variant="h5">
-                                            История сообщения пуста...
-                                        </Typography>
-                                    </div>
-                                )
-                    }
-                    <SendMessageBar handleSendMessage={this.handleSendMessage}/>
-                </div>
-            )
-        } else {
-            return (<ChatWindowEmpty/>);
+        // if (this.messagesStore.currentChatId) {
+        let messages = null;
+        if (chat) {
+            messages = Array.from(chat.messages);
         }
+        return (
+            <div className={classes.chatWindow}>
+                <ThreadWindow/>
+                <ChatBar match={this.props.match.params.userId}/>
+                {
+                    messagesStore.messagesLoading ?
+                        (<Loader active inverted>Loading</Loader>)
+                        :
+                        chat && messages && messages.length > 0 ? (
+                                <MessageList
+                                    myselfUser={myselfUser}
+                                    chatUsers={[chat.user]}
+                                    messages={messages}
+                                    scrollHandler={this.scrollHandler}
+                                    ref={this.messageList}/>
+                            )
+                            :
+                            (
+                                <div className={classes.emptyChat}>
+                                    <Typography className={classes.text} variant="h5">
+                                        История сообщения пуста...
+                                    </Typography>
+                                </div>
+                            )
+                }
+                <SendMessageBar handleSendMessage={this.handleSendMessage}/>
+            </div>
+        )
+        // } else {
+        //     return (<ChatWindowEmpty/>);
+        // }
     }
 }
 

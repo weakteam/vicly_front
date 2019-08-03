@@ -9,23 +9,6 @@ import {contextMenu, Item, Menu} from "react-contexify";
 
 const {accountStore, messagesStore} = rootStore;
 
-const styles = theme => ({
-    root: {
-        height: '100%',
-        width: '100%',
-        overflow: 'auto',
-        paddingTop: 15,
-    },
-    listMessages: {
-        //marginLeft: 40,
-        // marginBottom: 205,
-        // marginTop: 23,
-    },
-    chip: {
-        margin: theme.spacing.unit,
-    },
-});
-
 const menuId = 'awesome';
 
 const MyMenu = ({menuId, message}) => {
@@ -106,6 +89,8 @@ class MessageList extends React.Component {
         if (target != null) {
             target.onscroll = this.props.scrollHandler(target);
         }
+
+        console.log("MessageList mounted #:");
     }
 
 
@@ -158,7 +143,7 @@ class MessageList extends React.Component {
             const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
             if (!fromMe && !message.timestamp_read) {
                 return (
-                    <VisibilitySensor active={!fromMe && !message.timestamp_read}
+                    <VisibilitySensor active={true}
                                       onEnterViewport={message.onViewport}
                                       onChange={message.onViewport}>
                         <Message
@@ -168,7 +153,7 @@ class MessageList extends React.Component {
                             messageInfo={message}
                             fromMe={fromMe}
                             avatar={avatar}
-                            onContextMenu={this.handleContextMenu(message)}
+                            // onContextMenu={this.handleContextMenu(message)}
                             ref={i === arr.length - 1 ? this.lastMessage : null}/>
                     </VisibilitySensor>
                 );
@@ -188,7 +173,6 @@ class MessageList extends React.Component {
 
         });
 
-
         return (
             <div style={{WebkitOverflowScrolling: 'touch'}} className="scrollbarMessages" id="style-2"
                  ref={this.messageList}>
@@ -202,7 +186,5 @@ class MessageList extends React.Component {
         );
     }
 }
-
-//export default withStyles(styles)(MessageList);
 
 export default MessageList
