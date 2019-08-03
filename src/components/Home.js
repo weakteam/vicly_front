@@ -88,7 +88,7 @@ const styles = theme => ({
         right: 0,
         borderRadius: '5px 5px 0px 0px',
         margin: 5,
-        zIndex: 1300,
+        zIndex: 1301,
         borderBottom: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
         }`,

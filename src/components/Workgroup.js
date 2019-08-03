@@ -121,7 +121,7 @@ class Workgroup extends React.Component {
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
                 <Collapse in={this.state.open} timeout="auto">
-                    <List component="div" disablePadding className={classes.active}>
+                    <List component="div" disablePadding={true} className={classes.active}>
                         {
                             userChatsNew.map(
                                 userChat =>
