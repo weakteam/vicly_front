@@ -76,6 +76,7 @@ class ProfileBar extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
+        this.handleLogoutFunc = this.accountStore.unauth.bind(accountStore);
     }
 
     render() {
@@ -84,7 +85,7 @@ class ProfileBar extends React.Component {
             <div className={classes.position}>
                 <ProfileIco
                     changeThemeType={this.props.changeThemeType}
-                    handleLogout={this.accountStore.unauth.bind(accountStore)}
+                    handleLogout={this.handleLogoutFunc}
                     name={this.accountStore.fullName}
                     handleChangeType/>
 
@@ -98,7 +99,7 @@ class ProfileBar extends React.Component {
                 <InviteIcon />
 
 
-                <IconButton onClick={this.accountStore.unauth.bind(accountStore)}>
+                <IconButton onClick={this.handleLogoutFunc}>
                     <ExitToApp className={classes.icon}/>
                 </IconButton>
             </div>

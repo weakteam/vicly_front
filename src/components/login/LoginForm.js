@@ -283,7 +283,7 @@ class LoginForm extends React.Component {
                                 <Typography className={classes.text} variant="h5"
                                             style={{fontSize: '1.8rem',}}>Войти</Typography>
                             </div>
-                            <form onSubmit={this.handleSubmit.bind(this)} className={classes.form}>
+                            <form onSubmit={this.handleSubmit} className={classes.form}>
 
                                 <div style={{width: '100%'}}>
                                     <FormControl required fullWidth>

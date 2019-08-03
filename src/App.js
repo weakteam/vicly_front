@@ -9,7 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DevTools from "mobx-react-devtools";
 import rootStore from "./store/RootStore";
 import history from "./store/history"
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
+import {createMuiTheme} from "@material-ui/core";
+import {ThemeProvider} from '@material-ui/styles';
 import InviteLogin from "./components/login/InviteLogin";
 import withSplashScreen from "./components/withSplashScreen";
 
@@ -94,7 +95,7 @@ class App extends Component {
         })
     };
 
-    changeThemeType() {
+    changeThemeType = () => {
         this.setState((prevState) => {
             rootStore.accountStore.setTheme(!(prevState.themeOpt.palette.type === "light"));
             prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
@@ -106,7 +107,7 @@ class App extends Component {
         const theme = createMuiTheme(this.state.themeOpt);
         const authStatus = rootStore.accountStore.status === "authed";
         return (
-            <MuiThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
                 <div>
                     <Router history={history}>
                         {
@@ -114,7 +115,7 @@ class App extends Component {
                                 (
                                     <Switch>
                                         <Route path="/home" render={() => <Home
-                                            changeThemeType={this.changeThemeType.bind(this)}/>}/>
+                                            changeThemeType={this.changeThemeType}/>}/>
                                         <Route render={() => <Redirect to="/home"/>}/>
                                     </Switch>
                                 )
@@ -135,7 +136,7 @@ class App extends Component {
                     <div onClick={console.log('q')}><ToastContainer position="bottom-right"/></div>
                 </div>
                 <DevTools/>
-            </MuiThemeProvider>
+            </ThemeProvider>
         )
 
     }

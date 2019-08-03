@@ -160,7 +160,7 @@ function handleClick() {
 }
 
 @observer
-class Message extends React.PureComponent {
+class Message extends React.Component {
 
     getRandomColor = (letter) => {
         let col = this.colorMap[letter];

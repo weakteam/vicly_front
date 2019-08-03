@@ -131,7 +131,7 @@ class GroupChat extends React.Component {
 
                     <ListItem
                         selected={selected}
-                        onClick={this.handleDialogClick.bind(this)}
+                        onClick={this.handleDialogClick}
                         disableGutters={true}
                         button
                         className={classes.listItemPadding}>

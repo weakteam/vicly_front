@@ -141,7 +141,7 @@ class GroupChatWindow extends React.Component {
                                 </div>
                             )
                     }
-                    <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
+                    <SendMessageBar handleSendMessage={this.handleSendMessage}/>
                 </div>
             )
         } else {

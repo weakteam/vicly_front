@@ -27,7 +27,7 @@ const styles = theme => ({
 @observer
 class MessagePush extends React.Component {
 
-    handleClick() {
+    handleClick = () => {
         history.push(this.props.url);
     }
 
@@ -35,7 +35,7 @@ class MessagePush extends React.Component {
         const {classes, title} = this.props;
 
         return (
-            <div onClick={this.handleClick.bind(this)} className={classes.root}>
+            <div onClick={this.handleClick} className={classes.root}>
                 <Typography variant="h6">Новое сообщение</Typography>
                 <Grid container className={classes.fixWidth}
                       wrap="nowrap"

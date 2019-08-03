@@ -22,6 +22,7 @@ const styles = theme => ({
     groupName: {
         paddingTop: 0,
         paddingBottom: 0,
+        padding: '6px 0 6px 0'
     },
     text: {
         color: ` ${
@@ -39,9 +40,6 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
         }`,
-    },
-    gutters: {
-       padding: '6px 0 6px 0'
     },
 
     badge: {
@@ -109,15 +107,13 @@ class Workgroup extends React.Component {
 
         return (
             <div className={classes.WorkGroupBack}>
-                <ListItem button onClick={this.handleClick} className={classes.groupName}>
-                    <ListItem className={classes.gutters}>
-                        <div className={classes.workgroupName}>
-                            <Typography variant='button' className={classes.text}>
-                                {workgroup.name}
-                            </Typography>
-                            <Loyalty style={{color: `${colorName}`}} className={classes.badge}/>
-                        </div>
-                    </ListItem>
+                <ListItem button key={workgroup.id} onClick={this.handleClick} className={classes.groupName}>
+                    <div className={classes.workgroupName}>
+                        <Typography variant='button' className={classes.text}>
+                            {workgroup.name}
+                        </Typography>
+                        <Loyalty style={{color: `${colorName}`}} className={classes.badge}/>
+                    </div>
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
                 <Collapse in={this.state.open} timeout="auto">
@@ -126,20 +122,18 @@ class Workgroup extends React.Component {
                             userChatsNew.map(
                                 userChat =>
                                     <Dialog
+                                        key={userChat.user.id}
                                         userChat={userChat}
                                         handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
                         {
                             groupChatsNew.map(
-                                groupChat => {
-                                    return (
-                                        <GroupChat
-                                            groupChat={groupChat}
-                                            handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}
-                                        />
-                                    )
-                                }
+                                groupChat =>
+                                    <GroupChat
+                                        key={groupChat.chatId}
+                                        groupChat={groupChat}
+                                        handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
                     </List>
