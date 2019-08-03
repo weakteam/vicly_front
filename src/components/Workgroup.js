@@ -13,6 +13,7 @@ import GroupChat from "./ChatGroup/GroupChat";
 import {observer} from "mobx-react";
 import Badge from "@material-ui/core/Badge";
 import Loyalty from "@material-ui/icons/Loyalty"
+import deferComponentRender from "./DeferredWrapper";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -84,6 +85,11 @@ class Workgroup extends React.Component {
         // You can also log the error to an error reporting service
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextState.open !== this.state.open;
+    }
+
+
     workGroupColor = (letter) => {
         let col = this.colorMap[letter];
         if (col) return col;
@@ -146,4 +152,4 @@ class Workgroup extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(Workgroup);
+export default deferComponentRender(withStyles(styles, {withTheme: true})(Workgroup));
