@@ -45,6 +45,6 @@ class ChatLoader extends React.Component {
     }
 }
 
-const styledWindow = withStyles(styles, {withTheme: true})(ChatLoader);
+const styledWindow = withStyles(styles, {withTheme: true, index: 1})(ChatLoader);
 
 export default styledWindow;

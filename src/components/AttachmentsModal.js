@@ -457,6 +457,6 @@ class AttachmentsModal extends React.Component {
     }
 }
 
-const Attachments = withStyles(styles)(AttachmentsModal);
+const Attachments = withStyles(styles, {withTheme: true, index: 1})(AttachmentsModal);
 
 export default Attachments;

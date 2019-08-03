@@ -322,4 +322,4 @@ class SendMessageBar extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(SendMessageBar);
+export default withStyles(styles, {withTheme: true, index: 1})(SendMessageBar);

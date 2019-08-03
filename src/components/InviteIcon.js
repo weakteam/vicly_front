@@ -103,5 +103,5 @@ class InviteIcon extends React.Component {
 }
 
 // We need an intermediary variable for handling the recursive nesting.
-const SimpleModalWrapped = withStyles(styles)(InviteIcon);
+const SimpleModalWrapped = withStyles(styles, {withTheme: true, index: 1})(InviteIcon);
 export default SimpleModalWrapped;

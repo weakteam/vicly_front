@@ -486,4 +486,4 @@ class Home extends React.Component {
 
 /*
 export default withSplashScreen(withStyles(styles, {withTheme: true})(Home));*/
-export default withStyles(styles, {withTheme: true})(Home);
+export default withStyles(styles, {withTheme: true, index: 1})(Home);

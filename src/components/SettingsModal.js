@@ -531,6 +531,6 @@ class SettingsModal extends React.Component {
     }
 }
 
-const Settings = withStyles(styles)(SettingsModal);
+const Settings = withStyles(styles, {withTheme: true, index: 1})(SettingsModal);
 
 export default Settings;

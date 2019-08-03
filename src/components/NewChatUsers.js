@@ -241,7 +241,7 @@ function UserCheckboxNonStyled(props) {
     )
 }
 
-const UserCheckbox = withStyles(stylesUser)(UserCheckboxNonStyled);
+const UserCheckbox = withStyles(stylesUser, {withTheme: true, index: 1})(UserCheckboxNonStyled);
 
 const styles = theme => ({
     groupName: {
@@ -358,4 +358,4 @@ class NewChatUsers extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(NewChatUsers);
+export default withStyles(styles, {withTheme: true, index: 1})(NewChatUsers);

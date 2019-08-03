@@ -265,6 +265,6 @@ class DocumentWindow extends React.Component {
     }
 }
 
-const Document = withStyles(styles)(DocumentWindow);
+const Document = withStyles(styles, {withTheme: true, index: 1})(DocumentWindow);
 
 export default Document;

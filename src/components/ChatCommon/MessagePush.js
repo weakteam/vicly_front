@@ -62,4 +62,4 @@ class MessagePush extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(MessagePush);
+export default withStyles(styles, {withTheme: true, index: 1})(MessagePush);

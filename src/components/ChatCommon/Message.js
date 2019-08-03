@@ -437,4 +437,4 @@ Message.defaultProps = {
 
 const MessageViewport = handleViewport(Message, {}, {disconnectOnLeave: true});
 
-export default withStyles(styles)(MessageViewport);
+export default withStyles(styles, {withTheme: true, index: 1})(MessageViewport);

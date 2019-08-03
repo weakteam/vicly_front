@@ -119,4 +119,4 @@ class AttachmentBar extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(AttachmentBar);
+export default withStyles(styles, {withTheme: true, index: 1})(AttachmentBar);

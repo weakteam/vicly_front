@@ -299,6 +299,6 @@ class UserCheckbox extends React.Component {
     }
 }
 
-const styledComponent = withStyles(styles, {withTheme: true})(UserCheckbox);
+const styledComponent = withStyles(styles, {withTheme: true, index: 1})(UserCheckbox);
 
 export default styledComponent;

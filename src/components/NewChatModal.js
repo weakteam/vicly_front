@@ -520,6 +520,6 @@ class NewChatModal extends React.Component {
     }
 }
 
-const ChatModal = withStyles(styles)(NewChatModal);
+const ChatModal = withStyles(styles, {withTheme: true, index: 1})(NewChatModal);
 
 export default ChatModal;

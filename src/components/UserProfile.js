@@ -431,6 +431,6 @@ class UserProfile extends React.Component {
     }
 }
 
-const Profile = withStyles(styles)(UserProfile);
+const Profile = withStyles(styles, {withTheme: true, index: 1})(UserProfile);
 
 export default Profile;

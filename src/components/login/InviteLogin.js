@@ -491,4 +491,4 @@ class InviteLogin extends React.Component {
     }
 }
 
-export default withStyles(styles)(InviteLogin);
+export default withStyles(styles, {withTheme: true, index: 1})(InviteLogin);

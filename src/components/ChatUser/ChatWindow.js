@@ -156,5 +156,5 @@ class ChatWindow extends React.Component {
     }
 }
 
-const styledWindow = withStyles(styles, {withTheme: true})(ChatWindow);
+const styledWindow = withStyles(styles, {withTheme: true, index: 1})(ChatWindow);
 export default styledWindow;

@@ -149,4 +149,4 @@ class Workgroup extends React.Component {
     }
 }
 
-export default deferComponentRender(withStyles(styles, {withTheme: true})(Workgroup));
+export default deferComponentRender(withStyles(styles, {withTheme: true, index: 1})(Workgroup));

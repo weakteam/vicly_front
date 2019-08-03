@@ -106,4 +106,4 @@ class ProfileBar extends React.Component {
     }
 }
 
-export default withStyles(styles)(ProfileBar);
+export default withStyles(styles, {withTheme: true, index: 1})(ProfileBar);

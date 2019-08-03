@@ -305,4 +305,4 @@ class ThreadSendMessageBar extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(ThreadSendMessageBar);
+export default withStyles(styles, {withTheme: true, index: 1})(ThreadSendMessageBar);

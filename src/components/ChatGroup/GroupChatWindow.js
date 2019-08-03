@@ -152,5 +152,5 @@ class GroupChatWindow extends React.Component {
     }
 }
 
-const styledWindow = withStyles(styles, {withTheme: true})(GroupChatWindow);
+const styledWindow = withStyles(styles, {withTheme: true, index: 1})(GroupChatWindow);
 export default styledWindow;

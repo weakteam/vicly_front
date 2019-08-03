@@ -347,4 +347,4 @@ class LoginForm extends React.Component {
     }
 }
 
-export default withStyles(styles)(LoginForm);
+export default withStyles(styles, {withTheme: true, index: 1})(LoginForm);

@@ -225,4 +225,4 @@ class ChatBar extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(ChatBar);
+export default withStyles(styles, {withTheme: true, index: 1})(ChatBar);

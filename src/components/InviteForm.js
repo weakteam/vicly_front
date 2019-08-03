@@ -717,4 +717,4 @@ class InviteForm extends React.Component {
     }
 }
 
-export default withStyles(styles)(InviteForm);
+export default withStyles(styles, {withTheme: true, index: 1})(InviteForm);
