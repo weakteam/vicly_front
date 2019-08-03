@@ -367,7 +367,6 @@ class AttachmentsModal extends React.Component {
                                             <Typography style={{color: 'rgb(107, 107, 107)', fontSize: '1.05em', padding: '5px 0 5px 6px'}} variant="h6"> Май </Typography>
                                         </ListSubheader>
                                             <ListItem style={{padding: 6}} disableGutters key={1}>
-                                                <GridList cellHeight={150} className={classes.gridList} cols={3}>
 
                                                         <img style={{ maxHeight: '100%',
                                                             objectFit: 'scale-down',}} src={Image1} alt="lol"/>
@@ -403,7 +402,6 @@ class AttachmentsModal extends React.Component {
                                                         <img style={{ maxHeight: '100%',
                                                             objectFit: 'scale-down',}} src={Image9} alt="lol"/>
 
-                                                </GridList>
                                             </ListItem>
                                     </ul>
                                 </li>
