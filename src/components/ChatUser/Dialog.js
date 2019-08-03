@@ -148,7 +148,7 @@ class Dialog extends React.PureComponent {
                     className={classes.listItemPadding}>
                     <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                           wrap="nowrap"
-                          spacing={16}>
+                          spacing={2}>
                         <Grid item>
                             {
                                 avatar_image ?

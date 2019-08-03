@@ -8,9 +8,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
 import {withRouter} from "react-router-dom";
-import ToastService from '../../services/toastService'
-import Hidden from "@material-ui/core/es/Hidden/Hidden";
-import MessagePush from "../ChatCommon/MessagePush";
 import rootStore from "../../store/RootStore";
 import AvatarColor from "../../services/AvatarColor"
 import Group from "@material-ui/icons/Group";
@@ -140,7 +137,7 @@ class GroupChat extends React.Component {
                         className={classes.listItemPadding}>
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
-                              spacing={16}>
+                              spacing={2}>
                             <Grid item>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
