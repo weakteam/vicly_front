@@ -191,7 +191,7 @@ class Dialog extends React.PureComponent {
                                             </Avatar>
                                         </Badge>
                                     ) : (
-                                        <Avatar classes={{root: classes.avatar}}
+                                        <Avatar
                                                 className={classes.avatar}
                                                 style={{backgroundColor: `${colorChange}`}}>
                                             {firstName[0].toUpperCase() + lastName[0].toUpperCase()}

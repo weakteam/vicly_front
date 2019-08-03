@@ -478,8 +478,8 @@ class InviteForm extends React.Component {
                         </div>
                         <FormControl classes={{
                             fullWidth: classes.controlForm,
-                        }}
-                                     required fullWidth classesName={classes.controlForm}>
+                        }} required
+                                     fullWidth>
                             <InputLabel shrink className={classes.label}>
                                 <Typography variant="subtitle1" className={classes.text}> Имя </Typography>
                             </InputLabel>
