@@ -16,7 +16,9 @@ const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
     fixWidth: {
         margin: 0,
-        width: 'inherit',
+        //width: 'inherit',
+        width: '100%',
+        display: 'flex',
     },
     avatar: {
         width: 45,
@@ -48,18 +50,28 @@ const styles = theme => ({
         paddingLeft: 9,
     },
     userName: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
         fontSize: '1rem',
+        fontWeight: '400',
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#585858' : theme.palette.secondary.dark
         }`,
     },
     message: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
         }`,
         fontSize: '0.9rem'
     },
     time: {
+        fontSize: '0.9rem',
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
         }`,
@@ -143,13 +155,11 @@ class Dialog extends React.PureComponent {
                 <ListItem
                     selected={selected}
                     onClick={this.handleDialogClick.bind(this)}
-                    disableGutters={true}
+                    disableGutters
                     button
                     className={classes.listItemPadding}>
-                    <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
-                          wrap="nowrap"
-                          spacing={2}>
-                        <Grid item>
+                    <div className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}>
+                        <div style={{padding: 8}}>
                             {
                                 avatar_image ?
                                     (
@@ -186,33 +196,29 @@ class Dialog extends React.PureComponent {
                                         )
                                     )
                             }
+                        </div>
 
-                        </Grid>
-
-                        <Grid item xs zeroMinWidth>
-                            <Typography variant="body2"
-                                        color="secondary"
-                                        noWrap
+                        <div style={{padding: 8, overflow: 'hidden',}}>
+                            <Typography variant="h6"
                                         className={classes.userName}
                                         style={{color: selected ? '#fff' : ''}}>{firstName + " " + lastName}</Typography>
-                            <Typography variant="caption"
-                                        noWrap
+                            <Typography variant="h6"
                                         className={classes.message}
                                         style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
-                        </Grid>
+                        </div>
 
-                        <Grid item>
+                        <div style={{padding: 8, margin: '0 0 auto auto'}}>
                             <Typography
                                 className={classes.time}
                                 style={{color: selected ? '#b5dcdc' : ''}}>
                                 {lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}
                             </Typography>
-                        </Grid>
+                        </div>
                         {
                             countUnread ? (<Badge color="secondary" badgeContent={countUnread}
                                                   classes={{badge: classes.margin}}/>) : ("")
                         }
-                    </Grid>
+                    </div>
                 </ListItem>
             </div>
         );

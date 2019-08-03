@@ -64,6 +64,7 @@ export default class MessagesStore {
 
             },
             (args) => {
+                if (!args) return;
                 const [currentChatId, isCurrentChatForUser] = args;
                 if (currentChatId) {
                     // If opened user chat

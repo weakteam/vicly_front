@@ -444,7 +444,7 @@ class InviteLogin extends React.Component {
                                                 placeholder="Логин"
                                                 type="login"
                                                 value={this.state.formValues["login"]}
-                                                onChange={this.handleChange1.bind(this)}
+                                                onChange={this.handleChange1}
                                                 classes={{
                                                     input: classes.active,
                                                     root: classes.width
@@ -466,7 +466,7 @@ class InviteLogin extends React.Component {
                                                 name="password"
                                                 type="password"
                                                 value={this.state.formValues["password"]}
-                                                onChange={this.handleChange1.bind(this)}
+                                                onChange={this.handleChange1}
                                                 placeholder="Пароль"
                                                 classes={{
                                                     input: classes.active,

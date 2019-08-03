@@ -34,7 +34,8 @@
     "semantic-ui-react": "^0.83.0",
     "typeface-roboto": "0.0.54",
     "vh-check": "^2.0.5",
-    "hoist-non-react-statics": "latest"
+    "hoist-non-react-statics": "latest",
+    "@material-ui/styles": "latest"
   },
   "scripts": {
     "start": "rescripts start",

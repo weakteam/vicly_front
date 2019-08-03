@@ -488,7 +488,7 @@ class InviteForm extends React.Component {
                                 name="name"
                                 type="text"
                                 value={this.state.formValues["name"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}
                             />
                         </FormControl>
@@ -504,7 +504,7 @@ class InviteForm extends React.Component {
                                 name="surname"
                                 type="text"
                                 value={this.state.formValues["surname"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}
                             />
                         </FormControl>
@@ -520,7 +520,7 @@ class InviteForm extends React.Component {
                                 name="patronymic"
                                 type="text"
                                 value={this.state.formValues["patronymic"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}
                             />
                         </FormControl>
@@ -538,7 +538,7 @@ class InviteForm extends React.Component {
                                 name="role"
                                 type="text"
                                 value={this.state.formValues["role"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}/>
                         </FormControl>
 

@@ -35,11 +35,11 @@ const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const styles = theme => ({
     root: {
-       // display: 'flex',
-       /* top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,*/
+        // display: 'flex',
+        /* top: 0,
+         bottom: 0,
+         left: 0,
+         right: 0,*/
         flexGrow: 1,
     },
     text: {
@@ -295,6 +295,7 @@ class Home extends React.Component {
         super(props);
         this.accountStore = accountStore;
         this.messagesStore = messagesStore;
+        this.handleLogoutFunc = this.accountStore.unauth.bind(accountStore);
     }
 
     state = {
@@ -315,10 +316,12 @@ class Home extends React.Component {
         if (this.messagesStore.searchActive) {
             if (this.messagesStore.foundedGroups.length) {
                 return this.messagesStore.foundedGroups.map(
-                    workgroup => <Workgroup handleDrawerToggleForMob={this.handleDrawerToggle}
-                                            workgroup={workgroup}
-                                            userChatsNew={this.messagesStore.foundedUserChats.filter(userChat => userChat.groupId === workgroup.id)}
-                                            groupChatsNew={this.messagesStore.foundedGroupChats.filter(groupChat => groupChat.groupId === workgroup.id)}/>
+                    workgroup => <Workgroup
+                        key={workgroup.id}
+                        handleDrawerToggleForMob={this.handleDrawerToggle}
+                        workgroup={workgroup}
+                        userChatsNew={this.messagesStore.foundedUserChats.filter(userChat => userChat.groupId === workgroup.id)}
+                        groupChatsNew={this.messagesStore.foundedGroupChats.filter(groupChat => groupChat.groupId === workgroup.id)}/>
                 )
             } else {
                 return <Typography>Nothing found!</Typography>
@@ -326,11 +329,13 @@ class Home extends React.Component {
         } else {
             if (this.messagesStore.groups.length) {
                 return this.messagesStore.groups.map(
-                    workgroup => <Workgroup handleDrawerToggleForMob={this.handleDrawerToggleForMob}
-                                            mobileOpen={this.state.mobileOpen}
-                                            workgroup={workgroup}
-                                            userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
-                                            groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
+                    workgroup => <Workgroup
+                        key={workgroup.id}
+                        handleDrawerToggleForMob={this.handleDrawerToggleForMob}
+                        mobileOpen={this.state.mobileOpen}
+                        workgroup={workgroup}
+                        userChatsNew={this.messagesStore.userChatsNew.filter(userChat => userChat.groupId === workgroup.id)}
+                        groupChatsNew={this.messagesStore.groupChatsNew.filter(groupChat => groupChat.groupId === workgroup.id)}/>
                 )
 
             } else {
@@ -365,7 +370,7 @@ class Home extends React.Component {
                 <ProfileBar
                     changeThemeType={this.props.changeThemeType}
                     handleChangeType={this.handleChangeType} chats={this.props.chats}
-                    handleLogout={this.accountStore.unauth.bind(accountStore)}/>
+                    handleLogout={this.handleLogoutFunc}/>
                 <SearchBar/>
                 <div className="scrollbar" id={theme.palette.type === 'dark' ? 'style-3' : 'style-3'}>
                     <List className={"scrollDrawer " + classes.listFix}>
@@ -409,7 +414,7 @@ class Home extends React.Component {
                                 <InviteIcon chats={this.props.chats}/>
                                 <ProfileIco
                                     changeThemeType={this.props.changeThemeType}
-                                    handleLogout={this.accountStore.unauth.bind(this.accountStore)}
+                                    handleLogout={this.handleLogoutFunc}
                                     name={this.accountStore.fullName}/>
                             </div>
                         </Toolbar>

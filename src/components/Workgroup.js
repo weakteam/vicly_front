@@ -33,6 +33,8 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
         }`,
+        marginLeft: 'auto',
+        padding: 9,
     },
     root: {
 
@@ -40,6 +42,7 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
         }`,
     },
+
     gutters: {
        padding: '6px 0 6px 0'
     },
@@ -49,7 +52,8 @@ const styles = theme => ({
     },
     workgroupName: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 8,
     },
     WorkGroupBack: {
 
@@ -109,19 +113,17 @@ class Workgroup extends React.Component {
 
         return (
             <div className={classes.WorkGroupBack}>
-                <ListItem button onClick={this.handleClick} className={classes.groupName}>
-                    <ListItem className={classes.gutters}>
+                <ListItem disableGutters button onClick={this.handleClick} className={classes.groupName}>
                         <div className={classes.workgroupName}>
                             <Typography variant='button' className={classes.text}>
                                 {workgroup.name}
                             </Typography>
                             <Loyalty style={{color: `${colorName}`}} className={classes.badge}/>
                         </div>
-                    </ListItem>
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
                 <Collapse in={this.state.open} timeout="auto">
-                    <List component="div" disablePadding={true} className={classes.active}>
+                    <List disablePadding className={classes.active}>
                         {
                             userChatsNew.map(
                                 userChat =>

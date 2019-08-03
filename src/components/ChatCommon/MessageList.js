@@ -55,7 +55,6 @@ class MessageList extends React.Component {
         //console.log("messages:"+props.messages)
         this.messagesEnd = React.createRef();
         this.messageList = React.createRef();
-        this.lastMessage = React.createRef();
         this.accountStore = accountStore;
     }
 

@@ -141,7 +141,7 @@ class UserCheckbox extends React.Component {
                 <Hidden implementation="css" smUp>
                     <ListItem
                         selected={selected}
-                        onClick={this.handleDialogClickMob.bind(this)}
+                        onClick={this.handleDialogClickMob}
                         disableGutters={true}
                         button
                         className={classes.listItemPadding}>
@@ -216,7 +216,7 @@ class UserCheckbox extends React.Component {
                 <Hidden implementation="css" xsDown>
                     <ListItem
                         selected={selected}
-                        onClick={this.handleDialogClick.bind(this)}
+                        onClick={this.handleDialogClick}
                         disableGutters={true}
                         button
                         className={classes.listItemPadding}>
@@ -281,7 +281,7 @@ class UserCheckbox extends React.Component {
                                     style={{color: selected ? '#b5dcdc' : ''}}>{lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}</Typography>
                             </Grid>
                             <Checkbox
-                                onChange={this.handleChange.bind(this)}
+                                onChange={this.handleChange}
                                 value={'b'}
                                 color="primary"
                                 style={{marginLeft: 'auto'}}
