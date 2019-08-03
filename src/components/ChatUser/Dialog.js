@@ -95,7 +95,7 @@ const styles = theme => ({
 });
 
 @observer
-class Dialog extends React.PureComponent {
+class Dialog extends React.Component {
 
     constructor(props) {
         super(props);
@@ -154,8 +154,8 @@ class Dialog extends React.PureComponent {
             <div>
                 <ListItem
                     selected={selected}
-                    onClick={this.handleDialogClick.bind(this)}
-                    disableGutters
+                    onClick={this.handleDialogClick}
+                    disableGutters={true}
                     button
                     className={classes.listItemPadding}>
                     <div className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}>

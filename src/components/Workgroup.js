@@ -22,6 +22,7 @@ const styles = theme => ({
     groupName: {
         paddingTop: 0,
         paddingBottom: 0,
+        padding: '6px 0 6px 0'
     },
     text: {
         color: ` ${
@@ -41,10 +42,6 @@ const styles = theme => ({
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
         }`,
-    },
-
-    gutters: {
-       padding: '6px 0 6px 0'
     },
 
     badge: {
@@ -128,20 +125,18 @@ class Workgroup extends React.Component {
                             userChatsNew.map(
                                 userChat =>
                                     <Dialog
+                                        key={userChat.user.id}
                                         userChat={userChat}
                                         handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
                         {
                             groupChatsNew.map(
-                                groupChat => {
-                                    return (
-                                        <GroupChat
-                                            groupChat={groupChat}
-                                            handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}
-                                        />
-                                    )
-                                }
+                                groupChat =>
+                                    <GroupChat
+                                        key={groupChat.chatId}
+                                        groupChat={groupChat}
+                                        handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
                     </List>
