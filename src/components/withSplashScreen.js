@@ -31,7 +31,7 @@ const style = {
     }
 };
 
-const Loading = withStyles(style)(LoadingMessage);
+const Loading = withStyles(style, {withTheme: true, index: 1})(LoadingMessage);
 
 function withSplashScreen(WrappedComponent) {
     return class extends Component {

@@ -141,7 +141,7 @@ class GroupChatWindow extends React.Component {
                                 </div>
                             )
                     }
-                    <SendMessageBar handleSendMessage={this.handleSendMessage.bind(this)}/>
+                    <SendMessageBar handleSendMessage={this.handleSendMessage}/>
                 </div>
             )
         } else {
@@ -152,5 +152,5 @@ class GroupChatWindow extends React.Component {
     }
 }
 
-const styledWindow = withStyles(styles, {withTheme: true})(GroupChatWindow);
+const styledWindow = withStyles(styles, {withTheme: true, index: 1})(GroupChatWindow);
 export default styledWindow;

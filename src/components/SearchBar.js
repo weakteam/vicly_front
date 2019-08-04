@@ -157,4 +157,4 @@ class SearchBar extends React.Component {
     }
 }
 
-export default withStyles(styles)(SearchBar);
+export default withStyles(styles, {withTheme: true, index: 1})(SearchBar);

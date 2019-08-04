@@ -103,4 +103,4 @@ class AttachmentSmall extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(AttachmentSmall);
+export default withStyles(styles, {withTheme: true, index: 1})(AttachmentSmall);

@@ -31,11 +31,11 @@ const styles = theme => ({
         borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(218, 218, 218), 0px 4px 7px 0px rgba(0, 0, 0, 0.07)' : 'inset 0px -3px 0px 1px rgba(45, 53, 70, 0.86), 0 0 13px 0px #00000014'
-            }`,
+        }`,
         height: 'auto',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
-            }`,
+        }`,
         /* borderTop: ` ${
              theme.palette.type === 'light' ? '1px solid #e6e6e6' : ''
              }`,*/
@@ -76,12 +76,12 @@ const styles = theme => ({
         borderRadius: 4,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? 'rgba(234, 234, 234, 0.59)' : 'rgb(101, 114, 146)'
-            }`,
+        }`,
     },
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     active: {
         /* '&:focus': {
@@ -98,24 +98,24 @@ const styles = theme => ({
         width: 'calc(100% - 18px)',
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         // width: '100%',
         padding: '10px 5px 10px 5px',
         borderLeft: ` ${
             theme.palette.type === 'light' ? '1px solid #e6e6e6' : '1px solid #40485d'
-            }`,
+        }`,
         maxHeight: 150,
         height: 'auto',
     },
     menu: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#efefef' : "#49536d"
-            }`,
+        }`,
     },
     menuItem: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     menuButton: {
         marginLeft: -12,
@@ -229,15 +229,17 @@ class SendMessageBar extends React.Component {
         }
     };
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return this.state !== nextState;
+    }
+
     render() {
-        const {classes, theme} = this.props;
-        const {auth, anchorEl} = this.state;
+        const {classes} = this.props;
+        const {anchorEl} = this.state;
         const open = Boolean(anchorEl);
 
         return (
             <div className={classes.position}>
-
-
                 <IconButton className={classes.iconButton} onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
@@ -246,7 +248,8 @@ class SendMessageBar extends React.Component {
                     {
                         this.state.attachments.length ?
                             (
-                                <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter unmountOnExit>
+                                <Slide direction="up" timeout={300} in={this.state.attachments.length} mountOnEnter
+                                       unmountOnExit>
                                     <AttachmentBar handleDeleteAttachment={this.handleDeleteAttachment}
                                                    attachments={this.state.attachments}/>
                                 </Slide>
@@ -262,8 +265,9 @@ class SendMessageBar extends React.Component {
                         classes={{input: classes.active}}
                         endAdornment={
                             <InputAdornment position="end" color="secondary">
-                                <IconButton disabled={!this.state.messageText.trim() && !this.state.attachments.length > 0}
-                                            onClick={this.handleSendButton.bind(this)}>
+                                <IconButton
+                                    disabled={!this.state.messageText.trim() && !this.state.attachments.length > 0}
+                                    onClick={this.handleSendButton}>
                                     <SendOutlined/>
                                 </IconButton>
                             </InputAdornment>
@@ -298,12 +302,10 @@ class SendMessageBar extends React.Component {
                             Документ
                         </MenuItem>
                     </Menu>
-
                     <input onChange={this.handleFileChange} hidden id="file-input" type="file"
                            ref={this.fileInput}
                            multiple/>
                 </FormControl>
-
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
@@ -312,14 +314,14 @@ class SendMessageBar extends React.Component {
                     style={{zIndex: 1303}}>
 
                     <div style={getModalStyle()} className={classes.paper}>
-                        <DocumentWindow upload={this.state.upload} attachments={this.state.attachments} handleAddAttachments={this.handleAddAttachments} handleMenuClose={this.handleMenuClose}/>
+                        <DocumentWindow upload={this.state.upload} attachments={this.state.attachments}
+                                        handleAddAttachments={this.handleAddAttachments}
+                                        handleMenuClose={this.handleMenuClose}/>
                     </div>
-
                 </Modal>
-
             </div>
         )
     }
 }
 
-export default withStyles(styles, {withTheme: true})(SendMessageBar);
+export default withStyles(styles, {withTheme: true, index: 1})(SendMessageBar);

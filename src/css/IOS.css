@@ -1,3 +1,22 @@
+.drawerTest {
+    display: none
+}
+
+.drawerDesktop {
+    display: none;
+}
+
+@media (max-width: 599px) {
+    .drawerTest {
+        display: block;
+    }
+}
+@media (min-width: 600px) {
+    .drawerDesktop {
+        display: block;
+    }
+}
+
 .scroll {
     -webkit-overflow-scrolling: touch;
     width: 100%;
@@ -7,12 +26,14 @@
 .scrollDrawer {
     -webkit-overflow-scrolling: touch;
    /* height: 100%;*/
-    width: 100%;
+    width: initial;
+
 }
 
 .scrollMessageArea {
     height: auto;
     padding-top: 10px;
 }
+
 
 

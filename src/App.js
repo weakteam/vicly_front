@@ -6,21 +6,14 @@ import {Router, Redirect, Route, Switch} from "react-router-dom";
 import {observer} from "mobx-react";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DevTools from "mobx-react-devtools";
 import rootStore from "./store/RootStore";
 import history from "./store/history"
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
+import {createMuiTheme} from "@material-ui/core";
+import {ThemeProvider} from '@material-ui/styles';
 import InviteLogin from "./components/login/InviteLogin";
-import withSplashScreen from "./components/withSplashScreen";
 
-if (history.location.pathname.startsWith("/home/chat/user")) {
-    const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
-    rootStore.messagesStore.setCurrentChatId(chatId, true);
-} else if (history.location.pathname.startsWith("/home/chat/group")) {
-    const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
-    rootStore.messagesStore.setCurrentChatId(chatId, false);
-}
-history.listen((location, action) => {
+
+function historyListener() {
     if (history.location.pathname.startsWith("/home/chat/user")) {
         const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
         rootStore.messagesStore.setCurrentChatId(chatId, true);
@@ -28,7 +21,11 @@ history.listen((location, action) => {
         const chatId = parseInt(history.location.pathname.substr(history.location.pathname.lastIndexOf('/') + 1), 10);
         rootStore.messagesStore.setCurrentChatId(chatId, false);
     }
-});
+}
+
+historyListener();
+
+history.listen(historyListener);
 
 const themeOptions = {
     typography: {
@@ -66,7 +63,7 @@ const themeOptions = {
             default: "#fcfcfc",
         },
         action: {
-            active: "rgb(72, 170, 210)",
+            active: "#0A8D8D",
             hover: "rgba(198,190,200,0.21)",
             hoverOpacity: 0.08,
             selected: "#2d807f",
@@ -94,7 +91,7 @@ class App extends Component {
         })
     };
 
-    changeThemeType() {
+    changeThemeType = () => {
         this.setState((prevState) => {
             rootStore.accountStore.setTheme(!(prevState.themeOpt.palette.type === "light"));
             prevState.themeOpt.palette.type = prevState.themeOpt.palette.type === "dark" ? "light" : "dark";
@@ -102,40 +99,40 @@ class App extends Component {
         });
     };
 
+    renderHome = () => {
+        return <Home changeThemeType={this.changeThemeType}/>
+    };
+
     render() {
         const theme = createMuiTheme(this.state.themeOpt);
         const authStatus = rootStore.accountStore.status === "authed";
         return (
-            <MuiThemeProvider theme={theme}>
-                <div>
-                    <Router history={history}>
-                        {
-                            authStatus ?
-                                (
-                                    <Switch>
-                                        <Route path="/home" render={() => <Home
-                                            changeThemeType={this.changeThemeType.bind(this)}/>}/>
-                                        <Route render={() => <Redirect to="/home"/>}/>
-                                    </Switch>
-                                )
-                                :
-                                (
-                                    <Switch>
-                                        <Route exact path="/login" component={Login}/>
-                                        <Route path="/login/invite/:uuid"
-                                               render={(routeProps) =>
-                                                   <InviteLogin setLoading={this.setLoading}
-                                                                {...routeProps}
-                                                   />}/>
-                                        <Route render={() => <Redirect to="/login"/>}/>
-                                    </Switch>
-                                )
-                        }
-                    </Router>
-                    <div onClick={console.log('q')}><ToastContainer position="bottom-right"/></div>
-                </div>
-                <DevTools/>
-            </MuiThemeProvider>
+            <ThemeProvider theme={theme}>
+                <Router history={history}>
+                    {
+                        authStatus ?
+                            (
+                                <Switch>
+                                    <Route path="/home" render={this.renderHome}/>
+                                    <Route render={() => <Redirect to="/home"/>}/>
+                                </Switch>
+                            )
+                            :
+                            (
+                                <Switch>
+                                    <Route exact path="/login" component={Login}/>
+                                    <Route path="/login/invite/:uuid"
+                                           render={(routeProps) =>
+                                               <InviteLogin setLoading={this.setLoading}
+                                                            {...routeProps}
+                                               />}/>
+                                    <Route render={() => <Redirect to="/login"/>}/>
+                                </Switch>
+                            )
+                    }
+                </Router>
+                <ToastContainer position="bottom-right"/>
+            </ThemeProvider>
         )
 
     }

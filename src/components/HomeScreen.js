@@ -106,6 +106,6 @@ class HomeScreen extends React.Component {
     }
 }
 
-const styledHomeScree = withStyles(styles, {withTheme: true})(HomeScreen);
+const styledHomeScree = withStyles(styles, {withTheme: true, index: 1})(HomeScreen);
 
 export default styledHomeScree;

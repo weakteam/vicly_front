@@ -8,9 +8,6 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
 import {withRouter} from "react-router-dom";
-import ToastService from '../../services/toastService'
-import Hidden from "@material-ui/core/es/Hidden/Hidden";
-import MessagePush from "../ChatCommon/MessagePush";
 import rootStore from "../../store/RootStore";
 import AvatarColor from "../../services/AvatarColor"
 import Group from "@material-ui/icons/Group";
@@ -119,6 +116,7 @@ class GroupChat extends React.Component {
         let lastMessageUser = null;
         let lastMessage = "";
         let lastMessageDatetime = null;
+        const selected = this.props.groupChat.selected;
         if (last){
             lastMessage = last.message;
             lastMessageDatetime = last.timestamp_post.timestamp;
@@ -127,20 +125,20 @@ class GroupChat extends React.Component {
                 lastMessageUser = user ? user.first_name : "error";
             }
         }
-        const selected = chatId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === false;
+
 
         let colorChange = AvatarColor.getColor(chatTitle[0]);
         return (
 
                     <ListItem
                         selected={selected}
-                        onClick={this.handleDialogClick.bind(this)}
+                        onClick={this.handleDialogClick}
                         disableGutters={true}
                         button
                         className={classes.listItemPadding}>
                         <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
                               wrap="nowrap"
-                              spacing={16}>
+                              spacing={2}>
                             <Grid item>
                                 <Avatar
                                     className={classes.avatar} style={{backgroundColor: `${colorChange}`}}>
@@ -182,6 +180,6 @@ class GroupChat extends React.Component {
     }
 }
 
-const styledComponent = withStyles(styles)(withRouter(GroupChat));
+const styledComponent = withStyles(styles, {withTheme: true, index: 1})(withRouter(GroupChat));
 
 export default styledComponent;

@@ -428,4 +428,4 @@ ProfileIco.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ProfileIco);
+export default withStyles(styles, {withTheme: true, index: 1})(ProfileIco);

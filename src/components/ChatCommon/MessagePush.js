@@ -27,24 +27,24 @@ const styles = theme => ({
 @observer
 class MessagePush extends React.Component {
 
-    handleClick() {
+    handleClick = () => {
         history.push(this.props.url);
     }
 
     render() {
-        const {classes, message} = this.props;
+        const {classes, title} = this.props;
+
         return (
-            <div onClick={this.handleClick.bind(this)} className={classes.root}>
+            <div onClick={this.handleClick} className={classes.root}>
                 <Typography variant="h6">Новое сообщение</Typography>
                 <Grid container className={classes.fixWidth}
                       wrap="nowrap"
                       spacing={16}>
-
                     <Grid item md>
                         <Avatar
-                            src="https://www.pnp.ru/upload/entities/2017/12/04/article/detailPicture/16/0e/06/22/19de7995e55dc70227809059f9b31bd5.jpg"
+                            src={this.props.avatar ? this.props.avatar.small : ""}
                             className={classes.avatar}>
-                            {"Mock !!!"}
+                            {this.props.title}
                         </Avatar>
                     </Grid>
 
@@ -54,7 +54,7 @@ class MessagePush extends React.Component {
                                     className={classes.userName1}>{this.props.title}</Typography>
                         <Typography variant="caption"
                                     noWrap
-                                    className={classes.message2}>{message.message}</Typography>
+                                    className={classes.message2}>{this.props.message}</Typography>
                     </Grid>
                 </Grid>
             </div>
@@ -62,4 +62,4 @@ class MessagePush extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(MessagePush);
+export default withStyles(styles, {withTheme: true, index: 1})(MessagePush);

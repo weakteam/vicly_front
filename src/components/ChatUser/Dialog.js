@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid/index';
 import Avatar from '@material-ui/core/Avatar/index';
 import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
@@ -7,17 +6,18 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
-import {withRouter} from "react-router-dom";
-import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import rootStore from "../../store/RootStore";
 import AvatarColor from "../../services/AvatarColor"
+import history from "../../store/history";
 
 const {accountStore, messagesStore} = rootStore;
 
 const styles = theme => ({
     fixWidth: {
         margin: 0,
-        width: 'inherit',
+        //width: 'inherit',
+        width: '100%',
+        display: 'flex',
     },
     avatar: {
         width: 45,
@@ -49,18 +49,28 @@ const styles = theme => ({
         paddingLeft: 9,
     },
     userName: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
         fontSize: '1rem',
+        fontWeight: '400',
         color: ` ${
-            theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
+            theme.palette.type === 'light' ? '#585858' : theme.palette.secondary.dark
         }`,
     },
     message: {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        width: '100%',
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
         }`,
         fontSize: '0.9rem'
     },
     time: {
+        fontSize: '0.9rem',
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
         }`,
@@ -84,7 +94,7 @@ const styles = theme => ({
 });
 
 @observer
-class Dialog extends React.PureComponent {
+class Dialog extends React.Component {
 
     constructor(props) {
         super(props);
@@ -92,16 +102,9 @@ class Dialog extends React.PureComponent {
         this.accountStore = accountStore;
     }
 
-    state = {
-        avatar_fetched: false,
-        avatar_image: null
-    };
-
     handleDialogClick = () => {
-        messagesStore.isCurrentChatForUser = true;
-        // messagesStore.chatChanged("user", this.props.userChat.user.id);
-        this.props.history.push(`/home/chat/user/${this.props.userChat.user.id}`);
-            this.props.handleDrawerToggleForMob();
+        history.push(`/home/chat/user/${this.props.userChat.user.id}`);
+        this.props.handleDrawerToggleForMob();
     };
 
     handleDialogClickMob = () => {
@@ -124,16 +127,16 @@ class Dialog extends React.PureComponent {
     };
 
     render() {
-        const {classes} = this.props;
-        const userId = this.props.userChat.user.id;
-        const firstName = this.props.userChat.user.first_name;
-        const lastName = this.props.userChat.user.last_name;
-        const lastMessage = this.props.userChat.last ? this.props.userChat.last.message : null;
-        const countUnread = this.props.userChat.unread;
-        const lastMessageDatetime = this.props.userChat.last ? this.props.userChat.last.timestamp_post.timestamp : null;
-
+        const {classes, userChat} = this.props;
+        const userId = userChat.user.id;
+        const firstName = userChat.user.first_name;
+        const lastName = userChat.user.last_name;
+        const lastMessage = userChat.last ? this.props.userChat.last.message : null;
+        const countUnread = userChat.unread;
+        const lastMessageDatetime = userChat.last ? userChat.last.timestamp_post.timestamp : null;
+        const selected = userChat.selected;
         // TODO work ONLY FOR USERS CHATS
-        const selected = userId === this.messagesStore.currentChatId && this.messagesStore.isCurrentChatForUser === true;
+
         let colorChange = AvatarColor.getColor(firstName[0]);
         let avatar_image = rootStore.imageService.images.find(elem => elem.userId === userId);
 
@@ -141,85 +144,79 @@ class Dialog extends React.PureComponent {
 
         return (
             <div>
-                    <ListItem
-                        selected={selected}
-                        onClick={this.handleDialogClick.bind(this)}
-                        disableGutters={true}
-                        button
-                        className={classes.listItemPadding}>
-                        <Grid container className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}
-                              wrap="nowrap"
-                              spacing={16}>
-                            <Grid item>
-                                {
-                                    avatar_image ?
-                                        (
-                                            online ? (
-                                                <Badge color="secondary"
-                                                       classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
-                                                    <Avatar
-                                                        className={classes.avatar}
-                                                        // style={{backgroundColor: `${colorChange}`}}
-                                                        src={avatar_image.small}/>
-                                                </Badge>
-                                            ) : (
+                <ListItem
+                    selected={selected}
+                    onClick={this.handleDialogClick}
+                    disableGutters={true}
+                    button
+                    className={classes.listItemPadding}>
+                    <div className={`${classes.fixWidth} ${selected ? classes.selected : ""}`}>
+                        <div style={{padding: 8}}>
+                            {
+                                avatar_image ?
+                                    (
+                                        online ? (
+                                            <Badge color="secondary"
+                                                   classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                 <Avatar
                                                     className={classes.avatar}
                                                     // style={{backgroundColor: `${colorChange}`}}
                                                     src={avatar_image.small}/>
-                                            )
+                                            </Badge>
                                         ) : (
-                                            online ? (
-                                                <Badge color="secondary"
-                                                       classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
-                                                    <Avatar
-                                                        className={classes.avatar}
-                                                        style={{backgroundColor: `${colorChange}`}}>
-                                                        {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
-                                                    </Avatar>
-                                                </Badge>
-                                            ) : (
+                                            <Avatar
+                                                className={classes.avatar}
+                                                // style={{backgroundColor: `${colorChange}`}}
+                                                src={avatar_image.small}/>
+                                        )
+                                    ) : (
+                                        online ? (
+                                            <Badge color="secondary"
+                                                   classes={{badge: selected ? classes.onlineSelected : classes.onlineNotSelected}}>
                                                 <Avatar
                                                     className={classes.avatar}
                                                     style={{backgroundColor: `${colorChange}`}}>
                                                     {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
                                                 </Avatar>
-                                            )
+                                            </Badge>
+                                        ) : (
+                                            <Avatar
+                                                className={classes.avatar}
+                                                style={{backgroundColor: `${colorChange}`}}>
+                                                {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
+                                            </Avatar>
                                         )
-                                }
-
-                            </Grid>
-
-                            <Grid item xs zeroMinWidth>
-                                <Typography variant="body2"
-                                            color="secondary"
-                                            noWrap
-                                            className={classes.userName}
-                                            style={{color: selected ? '#fff' : ''}}>{firstName + " " + lastName}</Typography>
-                                <Typography variant="caption"
-                                            noWrap
-                                            className={classes.message}
-                                            style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
-                            </Grid>
-
-                            <Grid item>
-                                <Typography
-                                    className={classes.time}
-                                    style={{color: selected ? '#b5dcdc' : ''}}>
-                                    {lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}
-                                </Typography>
-                            </Grid>
-                            {
-                                countUnread ? (<Badge color="secondary" badgeContent={countUnread}
-                                                      classes={{badge: classes.margin}}/>) : ("")
+                                    )
                             }
-                        </Grid>
-                    </ListItem>
+                        </div>
+
+                        <div style={{padding: 8, overflow: 'hidden',}}>
+                            <Typography variant="h6"
+                                        className={classes.userName}
+                                        style={{color: selected ? '#fff' : ''}}>{firstName + " " + lastName}</Typography>
+                            <Typography variant="h6"
+                                        className={classes.message}
+                                        style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
+                        </div>
+
+                        <div style={{padding: 8, margin: '0 0 auto auto'}}>
+                            <Typography
+                                className={classes.time}
+                                style={{color: selected ? '#b5dcdc' : ''}}>
+                                {lastMessageDatetime ? this.formatDate(lastMessageDatetime) : ""}
+                            </Typography>
+                        </div>
+                        {
+                            countUnread ? (<Badge color="secondary" badgeContent={countUnread}
+                                                  classes={{badge: classes.margin}}/>) : ("")
+                        }
+                    </div>
+                </ListItem>
             </div>
         );
     }
 }
 
-const styledComponent = withStyles(styles)(withRouter(Dialog));
+const styledComponent = withStyles(styles, {withTheme: true, index: 1})(Dialog);
 
 export default styledComponent;

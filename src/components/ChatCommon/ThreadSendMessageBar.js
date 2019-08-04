@@ -246,7 +246,7 @@ class ThreadSendMessageBar extends React.Component {
                         endAdornment={
                             <InputAdornment position="end" color="secondary">
                                 <IconButton disabled={!this.state.messageText.trim() && !this.state.attachments.length > 0}
-                                            onClick={this.handleSendButton.bind(this)}>
+                                            onClick={this.handleSendButton}>
                                     <SendOutlined/>
                                 </IconButton>
                             </InputAdornment>
@@ -305,4 +305,4 @@ class ThreadSendMessageBar extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(ThreadSendMessageBar);
+export default withStyles(styles, {withTheme: true, index: 1})(ThreadSendMessageBar);

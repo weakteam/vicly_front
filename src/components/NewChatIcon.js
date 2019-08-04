@@ -100,5 +100,5 @@ class NewChatIcon extends React.Component {
 }
 
 // We need an intermediary variable for handling the recursive nesting.
-const NewChat = withStyles(styles)(NewChatIcon);
+const NewChat = withStyles(styles, {withTheme: true, index: 1})(NewChatIcon);
 export default NewChat;

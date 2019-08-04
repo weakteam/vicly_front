@@ -20,18 +20,18 @@ const styles = theme => ({
         borderRadius: '5px 5px 5px 5px',
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(218, 218, 218), 0px 4px 7px 0px rgba(0, 0, 0, 0.07)' : 'inset 0px -3px 0px 1px rgba(45, 53, 70, 0.86), 0 0 13px 0px rgba(0, 0, 0, 0.21)'
-            }`,
+        }`,
         position: 'absolute',
         top: 0,
         right: 0,
         left: 0,
         display: 'inline-flex',
         justifyContent: 'space-between',
-       // height: 55,
+        // height: 55,
         zIndex: 1,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
-            }`,
+        }`,
         [theme.breakpoints.down('xs')]: {
             top: 55,
             borderRadius: '0 0 5px 5px',
@@ -44,18 +44,18 @@ const styles = theme => ({
               theme.palette.mime === 'light' ? '1px solid #e6e6e6' : ''
               }`,*/
 
-     /*   left: 400,
-        [theme.breakpoints.down('md')]: {
-            left: 280,
-        },
-        [theme.breakpoints.down('sm')]: {
-            left: 250
-        },
-        [theme.breakpoints.down('xs')]: {
-            left: 0,
-            top: 55,
-            borderRadius: '0 0 5px 5px',
-        },*/
+        /*   left: 400,
+           [theme.breakpoints.down('md')]: {
+               left: 280,
+           },
+           [theme.breakpoints.down('sm')]: {
+               left: 250
+           },
+           [theme.breakpoints.down('xs')]: {
+               left: 0,
+               top: 55,
+               borderRadius: '0 0 5px 5px',
+           },*/
     },
     namePosition: {
         display: 'inline-flex',
@@ -78,12 +78,12 @@ const styles = theme => ({
     dialogIco: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     text: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     search: {
         position: 'relative',
@@ -102,12 +102,12 @@ const styles = theme => ({
     inputRoot: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     inputInput: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#efefef' : "#49536d"
-            }`,
+        }`,
         width: '100%',
         borderRadius: 4,
         padding: 8,
@@ -115,22 +115,22 @@ const styles = theme => ({
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
     iconSearch: {
         color: ` ${
             theme.palette.type === 'light' ? '#d2d2d2' : 'rgba(255, 255, 255, 0.17)'
-            }`,
+        }`,
     },
     menu: {
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#efefef' : "#49536d"
-            }`,
+        }`,
     },
     menuItem: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
 
 });
@@ -162,11 +162,10 @@ class ChatBar extends React.Component {
     };
 
     render() {
-        const {auth, anchorEl} = this.state;
+        const {anchorEl} = this.state;
         const open = Boolean(anchorEl);
-        const {classes, theme, match} = this.props;
-
-        let interlocutorName = this.messagesStore.users_new.find(elem => elem.id === +match);
+        const {classes, chat} = this.props;
+        const title = chat.user.first_name + " " + chat.user.last_name;
 
         return (
             <div className={classes.position}>
@@ -185,8 +184,9 @@ class ChatBar extends React.Component {
                 </div>
 
                 <div className={classes.namePosition}>
-                    <Typography variant="h6" className={classes.text}
-                                noWrap>{interlocutorName.first_name}</Typography>
+                    <Typography variant="h6" className={classes.text} noWrap>
+                        {title}
+                    </Typography>
                 </div>
 
                 <div>
@@ -225,4 +225,4 @@ class ChatBar extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(ChatBar);
+export default withStyles(styles, {withTheme: true, index: 1})(ChatBar);

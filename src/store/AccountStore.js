@@ -13,7 +13,7 @@ export default class AccountStore {
     @observable status = "unauthed";
     err_message = "";
     theme = 'light';
-    @observable online = [];
+     online = [];
 
     constructor(RootStore) {
         this.fullName = sessionStorage.getItem("fullName");

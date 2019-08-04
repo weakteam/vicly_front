@@ -77,4 +77,8 @@ export default class GroupChat extends Chat {
         return this.title;
     }
 
+    getAvatarSrc() {
+        return null;
+    }
+
 }

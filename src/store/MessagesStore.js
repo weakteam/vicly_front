@@ -9,14 +9,14 @@ import GroupChat from "./models/GroupChat";
 import Message from "./models/Message";
 
 export default class MessagesStore {
-    @observable groups = [];
+    @observable.shallow groups = [];
     @observable foundedGroups = [];
     @observable foundedUserChats = [];
     @observable foundedGroupChats = [];
     @observable searchActive = false;
     users = [];
-    @observable userChatsNew = [];
-    @observable groupChatsNew = [];
+    @observable.shallow userChatsNew = [];
+    @observable.shallow groupChatsNew = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
     previousCurrentChatId = null;
@@ -64,10 +64,12 @@ export default class MessagesStore {
 
             },
             (args) => {
+                if (!args) return;
                 const [currentChatId, isCurrentChatForUser] = args;
                 if (currentChatId) {
                     // If opened user chat
-                    let currentChat = this.getCurrentChatNew(currentChatId);
+                    let currentChat = this.getCurrentChatNew();
+                    let previousChat = this.getPreviousChatNew();
                     if (currentChat.messages.length <= 20) {
                         currentChat.loadMessages(currentChat.page);
                     } else {
@@ -76,7 +78,8 @@ export default class MessagesStore {
                             currentChat.loadMessagesAfter(lastMessage.id);
                         }
                     }
-
+                    currentChat.setSelected(true);
+                    previousChat.setSelected(false);
                 }
             },
             {fireImmediately: true}
@@ -172,7 +175,6 @@ export default class MessagesStore {
     addMessageToEnd(message) {
         //TODO for websocket push
         const myselfUserId = this.accountStore.userId;
-        // TODO Its fucking bullshit !!! NEED WORK ON BACKEND!!!
         let chat;
         if (message.chat.chat_type === "user") {
             const userIds = this.uniq(message.chat.user_ids);
@@ -268,6 +270,10 @@ export default class MessagesStore {
 
     getCurrentChatNew() {
         return this.isCurrentChatForUser ? this.findUserChatNew(this.currentChatId) : this.findGroupChatNew(this.currentChatId);
+    }
+
+    getPreviousChatNew() {
+        return this.previousIsCurrentChatForUser ? this.findUserChatNew(this.previousCurrentChatId) : this.findGroupChatNew(this.previousCurrentChatId);
     }
 
 

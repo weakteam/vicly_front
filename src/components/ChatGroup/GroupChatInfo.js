@@ -367,6 +367,6 @@ class GroupChatInfo extends React.Component {
     }
 }
 
-const GroupChat = withStyles(styles)(GroupChatInfo);
+const GroupChat = withStyles(styles, {withTheme: true, index: 1})(GroupChatInfo);
 
 export default GroupChat;

@@ -15,10 +15,7 @@ export default class Chat {
     // Array of Message objects
     @observable messages = [];
     page = 0;
-
-
-    //common properties
-    selected = false;
+    @observable selected = false;
 
     constructor(chatObject, chatType, usersNew) {
         this.chatType = chatType;
@@ -54,11 +51,15 @@ export default class Chat {
     }
 
     genereteChatUrl() {
-        //REALLY ABTRACT
+        //REALLY ABSTRACT
+    }
+
+    getAvatarSrc() {
+        //REALLY ABSTRACT
     }
 
     getChatEventName() {
-        //REALLY ABTRACT
+        //REALLY ABSTRACT
     }
 
     addMessageToEndPost(message) {
@@ -67,9 +68,7 @@ export default class Chat {
             message.readMessage();
         } else {
             this.unread++;
-            const title = this.getChatEventName();
-            const url = this.genereteChatUrl();
-            rootStore.toastService.toastNewMessage(title, message.message, url);
+            rootStore.toastService.toastNewMessage(this.getChatEventName(), message.message, this.genereteChatUrl(), this.getAvatarSrc());
         }
     }
 

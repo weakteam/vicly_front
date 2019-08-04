@@ -68,4 +68,8 @@ export default class UserChat extends Chat {
         return this.user.first_name + " " + this.user.last_name;
     }
 
+    getAvatarSrc() {
+        return rootStore.imageService.images.find(elem => elem.userId === this.user.id);
+    }
+
 }

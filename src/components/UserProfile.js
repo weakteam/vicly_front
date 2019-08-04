@@ -338,8 +338,8 @@ class UserProfile extends React.Component {
                            accept="image/x-png,image/jpeg"
                            ref={this.avatarInput}/>
                     <div className={classes.userName}>
-                        <Typography variant="h5"
-                                    className={classes.userName1}>{this.accountStore.fullName}</Typography>
+                        <Typography variant="h3"
+                                    className={classes.userName1 +' userName11'}>{this.accountStore.fullName}</Typography>
                         <Typography variant="caption"
                                     noWrap
                                     className={classes.role}>{this.accountStore.position ? this.accountStore.position : 'Должность не указана'}</Typography>
@@ -431,6 +431,6 @@ class UserProfile extends React.Component {
     }
 }
 
-const Profile = withStyles(styles)(UserProfile);
+const Profile = withStyles(styles, {withTheme: true, index: 1})(UserProfile);
 
 export default Profile;

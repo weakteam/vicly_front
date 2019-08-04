@@ -13,7 +13,7 @@ image:{
  */
 export default class ImageService {
     rootStore = null;
-    @observable images = [];
+    images = [];
 
     constructor(RootStore) {
         this.rootStore = RootStore;
@@ -34,24 +34,29 @@ export default class ImageService {
         let avatar = this.images.find(elem => elem.userId === userId);
         if (avatar)
             return avatar;
-        const response = await fetch(`${BACKEND_URL}/attachment/download_avatar/${userId}?width=200`, {
-            method: 'GET',
-            headers: {
-                'Authorization': this.rootStore.accountStore.token
+        try {
+            const response = await fetch(`${BACKEND_URL}/attachment/download_avatar/${userId}?width=200`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': this.rootStore.accountStore.token
+                }
+            });
+            if (!response.ok) {
+                console.log("There are no avatar for user:" + userId);
+            } else {
+                avatar = {
+                    isAvatar: true,
+                    userId: userId,
+                    small: URL.createObjectURL(await response.blob()),
+                    big: null
+                };
+                this.images.push(avatar);
             }
-        });
-        if (!response.ok) {
-            console.log("There are no avatar for user:" + userId);
-        } else {
-            avatar = {
-                isAvatar: true,
-                userId: userId,
-                small: URL.createObjectURL(await response.blob()),
-                big: null
-            };
-            this.images.push(avatar);
+            return avatar;
+        } catch (e) {
+            console.log("cant load avatar for user:" + userId);
+            return null;
         }
-        return avatar;
     }
 
     async getAvatarFull(userId) {

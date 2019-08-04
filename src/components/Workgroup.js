@@ -13,6 +13,7 @@ import GroupChat from "./ChatGroup/GroupChat";
 import {observer} from "mobx-react";
 import Badge from "@material-ui/core/Badge";
 import Loyalty from "@material-ui/icons/Loyalty"
+import deferComponentRender from "./DeferredWrapper";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -21,6 +22,7 @@ const styles = theme => ({
     groupName: {
         paddingTop: 0,
         paddingBottom: 0,
+        padding: '6px 0 6px 0'
     },
     text: {
         color: ` ${
@@ -32,6 +34,8 @@ const styles = theme => ({
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
         }`,
+        marginLeft: 'auto',
+        padding: 9,
     },
     root: {
 
@@ -39,17 +43,14 @@ const styles = theme => ({
             theme.palette.type === 'light' ? '#e6e6e6' : '#40485d'
         }`,
     },
-    gutters: {
-        paddingTop: 6,
-        paddingBottom: 6,
-    },
 
     badge: {
         marginLeft: 10,
     },
     workgroupName: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 8,
     },
     WorkGroupBack: {
 
@@ -104,41 +105,35 @@ class Workgroup extends React.Component {
 
         return (
             <div className={classes.WorkGroupBack}>
-                <ListItem button onClick={this.handleClick} className={classes.groupName}>
-                    <ListItem disableGutters classes={{
-                        root: classes.gutters,
-                    }}>
+                <ListItem disableGutters button onClick={this.handleClick} className={classes.groupName}>
                         <div className={classes.workgroupName}>
                             <Typography variant='button' className={classes.text}>
                                 {workgroup.name}
                             </Typography>
                             <Loyalty style={{color: `${colorName}`}} className={classes.badge}/>
                         </div>
-                    </ListItem>
                     {this.state.open ? <ExpandLess className={classes.icon}/> : <ExpandMore className={classes.icon}/>}
                 </ListItem>
-                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding className={classes.active}>
+                <Collapse in={this.state.open} timeout="auto">
+                    <List disablePadding className={classes.active}>
                         {
                             userChatsNew.map(
                                 userChat =>
                                     <Dialog
+                                        key={userChat.user.id}
                                         userChat={userChat}
                                         handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
-                        {
-                            groupChatsNew.map(
-                                groupChat => {
-                                    return (
-                                        <GroupChat
-                                            groupChat={groupChat}
-                                            handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}
-                                        />
-                                    )
-                                }
-                            )
-                        }
+                        {/*{*/}
+                        {/*    groupChatsNew.map(*/}
+                        {/*        groupChat =>*/}
+                        {/*            <GroupChat*/}
+                        {/*                key={groupChat.chatId}*/}
+                        {/*                groupChat={groupChat}*/}
+                        {/*                handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>*/}
+                        {/*    )*/}
+                        {/*}*/}
                     </List>
                 </Collapse>
             </div>
@@ -146,4 +141,4 @@ class Workgroup extends React.Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(Workgroup);
+export default deferComponentRender(withStyles(styles, {withTheme: true, index: 1})(Workgroup));

@@ -4,7 +4,7 @@ import FormControl from '@material-ui/core/FormControl/index';
 import InputLabel from '@material-ui/core/InputLabel/index';
 import Typography from '@material-ui/core/Typography/index';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {observer} from "mobx-react/index";
+import {observer} from "mobx-react";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import InputBase from "@material-ui/core/InputBase/index";
 import Select from "@material-ui/core/Select/index";
@@ -478,8 +478,8 @@ class InviteForm extends React.Component {
                         </div>
                         <FormControl classes={{
                             fullWidth: classes.controlForm,
-                        }}
-                                     required fullWidth classesName={classes.controlForm}>
+                        }} required
+                                     fullWidth>
                             <InputLabel shrink className={classes.label}>
                                 <Typography variant="subtitle1" className={classes.text}> Имя </Typography>
                             </InputLabel>
@@ -488,7 +488,7 @@ class InviteForm extends React.Component {
                                 name="name"
                                 type="text"
                                 value={this.state.formValues["name"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}
                             />
                         </FormControl>
@@ -504,7 +504,7 @@ class InviteForm extends React.Component {
                                 name="surname"
                                 type="text"
                                 value={this.state.formValues["surname"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}
                             />
                         </FormControl>
@@ -520,7 +520,7 @@ class InviteForm extends React.Component {
                                 name="patronymic"
                                 type="text"
                                 value={this.state.formValues["patronymic"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}
                             />
                         </FormControl>
@@ -538,7 +538,7 @@ class InviteForm extends React.Component {
                                 name="role"
                                 type="text"
                                 value={this.state.formValues["role"]}
-                                onChange={this.handleChange1.bind(this)}
+                                onChange={this.handleChange1}
                                 classes={{input: classes.active}}/>
                         </FormControl>
 
@@ -717,4 +717,4 @@ class InviteForm extends React.Component {
     }
 }
 
-export default withStyles(styles)(InviteForm);
+export default withStyles(styles, {withTheme: true, index: 1})(InviteForm);
