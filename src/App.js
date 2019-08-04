@@ -6,7 +6,6 @@ import {Router, Redirect, Route, Switch} from "react-router-dom";
 import {observer} from "mobx-react";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DevTools from "mobx-react-devtools";
 import rootStore from "./store/RootStore";
 import history from "./store/history"
 import {createMuiTheme} from "@material-ui/core";
@@ -23,6 +22,7 @@ function historyListener() {
         rootStore.messagesStore.setCurrentChatId(chatId, false);
     }
 }
+
 historyListener();
 
 history.listen(historyListener);
@@ -99,41 +99,39 @@ class App extends Component {
         });
     };
 
+    renderHome = () => {
+        return <Home changeThemeType={this.changeThemeType}/>
+    };
+
     render() {
         const theme = createMuiTheme(this.state.themeOpt);
         const authStatus = rootStore.accountStore.status === "authed";
         return (
             <ThemeProvider theme={theme}>
-                <div>
-                    <Router history={history}>
-                        {
-                            authStatus ?
-                                (
-                                    <Switch>
-                                        <Home
-                                            changeThemeType={this.changeThemeType}/>
-                                        <Route path="/home" render={() => <Home
-                                            changeThemeType={this.changeThemeType}/>}/>
-                                        <Route render={() => <Redirect to="/home"/>}/>
-                                    </Switch>
-                                )
-                                :
-                                (
-                                    <Switch>
-                                        <Route exact path="/login" component={Login}/>
-                                        <Route path="/login/invite/:uuid"
-                                               render={(routeProps) =>
-                                                   <InviteLogin setLoading={this.setLoading}
-                                                                {...routeProps}
-                                                   />}/>
-                                        <Route render={() => <Redirect to="/login"/>}/>
-                                    </Switch>
-                                )
-                        }
-                    </Router>
-                    <div onClick={console.log('q')}><ToastContainer position="bottom-right"/></div>
-                </div>
-                <DevTools/>
+                <Router history={history}>
+                    {
+                        authStatus ?
+                            (
+                                <Switch>
+                                    <Route path="/home" render={this.renderHome}/>
+                                    <Route render={() => <Redirect to="/home"/>}/>
+                                </Switch>
+                            )
+                            :
+                            (
+                                <Switch>
+                                    <Route exact path="/login" component={Login}/>
+                                    <Route path="/login/invite/:uuid"
+                                           render={(routeProps) =>
+                                               <InviteLogin setLoading={this.setLoading}
+                                                            {...routeProps}
+                                               />}/>
+                                    <Route render={() => <Redirect to="/login"/>}/>
+                                </Switch>
+                            )
+                    }
+                </Router>
+                <ToastContainer position="bottom-right"/>
             </ThemeProvider>
         )
 

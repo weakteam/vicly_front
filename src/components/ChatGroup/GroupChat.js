@@ -110,10 +110,6 @@ class GroupChat extends React.Component {
         }
     };
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return false;
-    }
-
     render() {
         const {classes} = this.props;
         const {chatId, title: chatTitle, last, unread: countUnread} = this.props.groupChat;

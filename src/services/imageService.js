@@ -13,7 +13,7 @@ image:{
  */
 export default class ImageService {
     rootStore = null;
-    @observable images = [];
+    images = [];
 
     constructor(RootStore) {
         this.rootStore = RootStore;

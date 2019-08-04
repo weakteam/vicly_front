@@ -1,17 +1,18 @@
-import React from 'react';
-import {withStyles} from '@material-ui/core';
-import ChatWindow from "./ChatUser/ChatWindow"
-import {observer} from "mobx-react";
-import {Route} from "react-router-dom";
-import rootStore from "../store/RootStore";
-import GroupChatWindow from "./ChatGroup/GroupChatWindow";
-import ChatWindowEmpty from "./ChatCommon/ChatLoader";
-import 'react-contexify/dist/ReactContexify.min.css';
-import HomeScreen from './HomeScreen'
+import React, {Component} from "react";
+import ProfileBar from "./ProfileBar";
+import SearchBar from "./SearchBar";
+import Logo from "../images/logoVicly.svg";
+import LogoDark from "../images/LoginLogo.svg";
+import {withStyles, Drawer, AppBar, Toolbar, IconButton, SwipeableDrawer, List, Typography} from "@material-ui/core";
+import MenuIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import InviteIcon from "./InviteIcon";
+import ProfileIco from "./ProfileIco";
 import '../css/IOS.css'
 import '../css/scrollbar.css'
-//import withSplashScreen from "./withSplashScreen";
-import NavDrawer from "./NavDrawer";
+import rootStore from "../store/RootStore";
+import WorkgroupList from "./WorkgroupList";
+
+const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -271,7 +272,7 @@ const styles = theme => ({
     },
 });
 
-class Home extends React.Component {
+class NavDrawer extends Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
@@ -279,34 +280,55 @@ class Home extends React.Component {
         this.handleLogoutFunc = this.accountStore.unauth.bind(accountStore);
     }
 
-    renderChatWindow = () => {
-        const chat = this.messagesStore.getCurrentChatNew();
-        if (chat) {
-            return (
-                <ChatWindow chat={chat}
-                />
-            )
-        } else {
-            return <ChatWindowEmpty/>
-        }
-
+    state = {
+        mobileOpen: false,
+        type: this.props.theme.palette.type,
     };
 
-    renderGroupChatWindow = (routeProps) => {
-        const chat = this.messagesStore.getCurrentChatNew();
-        if (chat) {
-            return (
-                <GroupChatWindow
-                    {...routeProps}
-                    chat={chat}
-                />
-            )
-        } else {
-            return <ChatWindowEmpty/>
-        }
+    handleDrawerToggle = () => {
+        this.setState(state => ({mobileOpen: !state.mobileOpen}));
     };
 
-    renderChatWindowEmpty = (routeProps) => <ChatWindowEmpty/>;
+    handleDrawerToggleForMob = () => {
+        this.setState({mobileOpen: false});
+    };
+
+    drawer = () => {
+        const {classes, theme} = this.props;
+        return (
+            <div className={classes.scrollDrawer}>
+                <ProfileBar
+                    changeThemeType={this.props.changeThemeType}
+                    chats={this.props.chats}
+                    handleLogout={this.handleLogoutFunc}/>
+                <SearchBar/>
+                <div className="scrollbar" id='style-3'>
+                    <List className={"scrollDrawer " + classes.listFix}>
+                        <WorkgroupList handleDrawerToggle={this.handleDrawerToggleForMob}/>
+                    </List>
+                </div>
+                <div className={classes.logoDrawer}>
+                    <img className={classes.logoImage} alt="Logo"
+                         src={theme.palette.type === 'light' ? Logo : LogoDark}/>
+                    <Typography variant="h6" className={classes.logoText}> Vicly Messenger </Typography>
+                </div>
+            </div>
+        );
+    };
+    drawerMobile = () => {
+        const {classes, theme} = this.props;
+        return (
+            <div className={classes.scrollDrawer}>
+                <SearchBar/>
+                <div className="scrollbar" id='style-3'>
+                    <List className={"scrollDrawer " + classes.listFix}>
+                        <WorkgroupList handleDrawerToggle={this.handleDrawerToggleForMob}/>
+                    </List>
+                </div>
+
+            </div>
+        );
+    };
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return false;
@@ -314,19 +336,57 @@ class Home extends React.Component {
 
     render() {
         const {classes, theme} = this.props;
+
         return (
-            <div className={classes.root}>
-                {/*<div style={{pointerEvents: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>*/}
-                <div className={classes.content}>
-                    <NavDrawer changeThemeType={this.props.changeThemeType}/>
-                    <Route exact path="/home" component={HomeScreen}/>
-                    <Route path="/home/chat/(user|group)/:userId" render={this.renderChatWindow}/>
-                    {/*<Route path="/home/chat/group/:chatId" render={this.renderGroupChatWindow}/>*/}
+            <>
+                <div className="drawerDesktop">
+                    <Drawer classes={{paper: classes.drawerPaper}} variant="permanent">
+                        {this.drawer()}
+                    </Drawer>
                 </div>
-            </div>
+                <div className="drawerTest">
+                    <AppBar position="fixed" className={classes.appBar}>
+                        <Toolbar disableGutters>
+                            <IconButton aria-label="Open drawer" onClick={this.handleDrawerToggle}>
+                                <MenuIcon className={classes.icon}/>
+                            </IconButton>
+                            <div className={classes.logoDiv}>
+                                <Typography variant="h6" className={classes.text}>
+                                    Vicly Messenger
+                                </Typography>
+                            </div>
+                            <div className={classes.userBar}>
+                                <InviteIcon chats={this.props.chats}/>
+                                <ProfileIco
+                                    changeThemeType={this.props.changeThemeType}
+                                    handleLogout={this.handleLogoutFunc}
+                                    name={this.accountStore.fullName}/>
+                            </div>
+                        </Toolbar>
+                    </AppBar>
+                    <SwipeableDrawer
+                        disableBackdropTransition={!iOS}
+                        disableDiscovery={iOS}
+                        container={this.props.container}
+                        variant="temporary"
+                        transitionDuration={300}
+                        anchor="left"
+                        open={this.state.mobileOpen}
+                        onClose={this.handleDrawerToggle}
+                        onOpen={this.handleDrawerToggle}
+                        className={classes.rootIndex}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}>
+                        {this.drawerMobile()}
+                    </SwipeableDrawer>
+                </div>
+            </>
         );
     }
 }
 
-
-export default withStyles(styles, {withTheme: true, index: 1})(Home);
+export default withStyles(styles, {withTheme: true, index: 1})(NavDrawer);

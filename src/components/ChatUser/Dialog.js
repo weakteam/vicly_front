@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid/index';
 import Avatar from '@material-ui/core/Avatar/index';
 import Typography from '@material-ui/core/Typography/index';
 import 'typeface-roboto';
@@ -7,9 +6,9 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Badge from "@material-ui/core/Badge/Badge";
 import {observer} from "mobx-react";
-import {withRouter} from "react-router-dom";
 import rootStore from "../../store/RootStore";
 import AvatarColor from "../../services/AvatarColor"
+import history from "../../store/history";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -104,9 +103,7 @@ class Dialog extends React.Component {
     }
 
     handleDialogClick = () => {
-        messagesStore.isCurrentChatForUser = true;
-        // messagesStore.chatChanged("user", this.props.userChat.user.id);
-        this.props.history.push(`/home/chat/user/${this.props.userChat.user.id}`);
+        history.push(`/home/chat/user/${this.props.userChat.user.id}`);
         this.props.handleDrawerToggleForMob();
     };
 
@@ -115,11 +112,6 @@ class Dialog extends React.Component {
         // FIXME comment is fix for url chat page reload dafauck mafuck
         this.props.handleDrawerToggle();
     };
-
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return false;
-    }
-
 
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
@@ -135,14 +127,14 @@ class Dialog extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
-        const userId = this.props.userChat.user.id;
-        const firstName = this.props.userChat.user.first_name;
-        const lastName = this.props.userChat.user.last_name;
-        const lastMessage = this.props.userChat.last ? this.props.userChat.last.message : null;
-        const countUnread = this.props.userChat.unread;
-        const lastMessageDatetime = this.props.userChat.last ? this.props.userChat.last.timestamp_post.timestamp : null;
-        const selected = this.props.userChat.selected;
+        const {classes, userChat} = this.props;
+        const userId = userChat.user.id;
+        const firstName = userChat.user.first_name;
+        const lastName = userChat.user.last_name;
+        const lastMessage = userChat.last ? this.props.userChat.last.message : null;
+        const countUnread = userChat.unread;
+        const lastMessageDatetime = userChat.last ? userChat.last.timestamp_post.timestamp : null;
+        const selected = userChat.selected;
         // TODO work ONLY FOR USERS CHATS
 
         let colorChange = AvatarColor.getColor(firstName[0]);
@@ -225,6 +217,6 @@ class Dialog extends React.Component {
     }
 }
 
-const styledComponent = withStyles(styles, {withTheme: true, index: 1})(withRouter(Dialog));
+const styledComponent = withStyles(styles, {withTheme: true, index: 1})(Dialog);
 
 export default styledComponent;

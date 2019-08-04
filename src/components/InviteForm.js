@@ -4,7 +4,7 @@ import FormControl from '@material-ui/core/FormControl/index';
 import InputLabel from '@material-ui/core/InputLabel/index';
 import Typography from '@material-ui/core/Typography/index';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {observer} from "mobx-react/index";
+import {observer} from "mobx-react";
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import InputBase from "@material-ui/core/InputBase/index";
 import Select from "@material-ui/core/Select/index";

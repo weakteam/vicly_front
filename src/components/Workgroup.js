@@ -85,11 +85,6 @@ class Workgroup extends React.Component {
         // You can also log the error to an error reporting service
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return nextState.open !== this.state.open;
-    }
-
-
     workGroupColor = (letter) => {
         let col = this.colorMap[letter];
         if (col) return col;
@@ -130,15 +125,15 @@ class Workgroup extends React.Component {
                                         handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
-                        {
-                            groupChatsNew.map(
-                                groupChat =>
-                                    <GroupChat
-                                        key={groupChat.chatId}
-                                        groupChat={groupChat}
-                                        handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
-                            )
-                        }
+                        {/*{*/}
+                        {/*    groupChatsNew.map(*/}
+                        {/*        groupChat =>*/}
+                        {/*            <GroupChat*/}
+                        {/*                key={groupChat.chatId}*/}
+                        {/*                groupChat={groupChat}*/}
+                        {/*                handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>*/}
+                        {/*    )*/}
+                        {/*}*/}
                     </List>
                 </Collapse>
             </div>

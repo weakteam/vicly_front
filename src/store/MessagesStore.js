@@ -9,14 +9,14 @@ import GroupChat from "./models/GroupChat";
 import Message from "./models/Message";
 
 export default class MessagesStore {
-    @observable groups = [];
+    @observable.shallow groups = [];
     @observable foundedGroups = [];
     @observable foundedUserChats = [];
     @observable foundedGroupChats = [];
     @observable searchActive = false;
     users = [];
-    @observable userChatsNew = [];
-    @observable groupChatsNew = [];
+    @observable.shallow userChatsNew = [];
+    @observable.shallow groupChatsNew = [];
     @observable fetchFail = false;
     @observable currentChatId = null;
     previousCurrentChatId = null;
