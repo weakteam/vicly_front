@@ -316,7 +316,7 @@ class NavDrawer extends Component {
         );
     };
     drawerMobile = () => {
-        const {classes, theme} = this.props;
+        const {classes} = this.props;
         return (
             <div className={classes.scrollDrawer}>
                 <SearchBar/>
@@ -331,7 +331,7 @@ class NavDrawer extends Component {
     };
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return false;
+        return this.state.mobileOpen !== nextState.mobileOpen;
     }
 
     render() {
@@ -339,11 +339,6 @@ class NavDrawer extends Component {
 
         return (
             <>
-                <div className="drawerDesktop">
-                    <Drawer classes={{paper: classes.drawerPaper}} variant="permanent">
-                        {this.drawer()}
-                    </Drawer>
-                </div>
                 <div className="drawerTest">
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar disableGutters>
@@ -384,6 +379,12 @@ class NavDrawer extends Component {
                         {this.drawerMobile()}
                     </SwipeableDrawer>
                 </div>
+                <div className="drawerDesktop">
+                    <Drawer classes={{paper: classes.drawerPaper}} variant="permanent">
+                        {this.drawer()}
+                    </Drawer>
+                </div>
+
             </>
         );
     }

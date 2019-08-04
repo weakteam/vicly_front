@@ -1,15 +1,12 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core';
 import ChatWindow from "./ChatUser/ChatWindow"
-import {observer} from "mobx-react";
 import {Route} from "react-router-dom";
 import rootStore from "../store/RootStore";
 import GroupChatWindow from "./ChatGroup/GroupChatWindow";
 import ChatWindowEmpty from "./ChatCommon/ChatLoader";
 import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
-import '../css/IOS.css'
-import '../css/scrollbar.css'
 //import withSplashScreen from "./withSplashScreen";
 import NavDrawer from "./NavDrawer";
 
@@ -314,11 +311,12 @@ class Home extends React.Component {
 
     render() {
         const {classes, theme} = this.props;
+
+        /*<div style={{pointerEvents: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>*/
         return (
             <div className={classes.root}>
-                {/*<div style={{pointerEvents: this.state.mobileOpen ? 'none' : ''}} className={classes.content}>*/}
-                <div className={classes.content}>
-                    <NavDrawer changeThemeType={this.props.changeThemeType}/>
+                <NavDrawer changeThemeType={this.props.changeThemeType}/>
+                <div style={{pointerEvents: ''}} className={classes.content}>
                     <Route exact path="/home" component={HomeScreen}/>
                     <Route path="/home/chat/(user|group)/:userId" render={this.renderChatWindow}/>
                     {/*<Route path="/home/chat/group/:chatId" render={this.renderGroupChatWindow}/>*/}
