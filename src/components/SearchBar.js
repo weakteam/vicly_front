@@ -113,7 +113,6 @@ class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.accountStore = accountStore;
-        this.chatsStore = messagesStore;
     }
 
     state = {
