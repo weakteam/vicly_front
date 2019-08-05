@@ -64,6 +64,7 @@ const styles = theme => ({
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         width: '100%',
+        fontWeight: 400,
         color: ` ${
             theme.palette.type === 'light' ? '#adacac' : theme.palette.secondary.dark
         }`,

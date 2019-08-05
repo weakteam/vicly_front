@@ -7,7 +7,6 @@ import MessageList from "../ChatCommon/MessageList";
 import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
 
 const {accountStore, messagesStore} = rootStore;
@@ -121,7 +120,7 @@ class ChatWindow extends React.Component {
                 <ChatBar match={chat.user.id} chat={chat}/>
                 {
                     messagesStore.messagesLoading ?
-                        (<Loader active inverted>Loading</Loader>)
+                        (<Typography>загрузачка</Typography>)
                         :
                         chat && messages && messages.length > 0 ?
                             (

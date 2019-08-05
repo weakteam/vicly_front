@@ -1,0 +1,26 @@
+.messageBlock {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: flex;
+}
+.fromMeMob {
+    padding: 3px 14px 3px 14px;
+    border-radius: 10px 10px 0px 10px;
+    box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+}
+.nameAndDate {
+    display: flex;
+    align-items: start;
+    width: 100%;
+}
+@media (max-width: 599px) {
+    .fromMeMob {
+        max-width: 225px;
+    }
+}
+@media (min-width: 600px) and (max-width: 959px) {
+    .fromMeMob {
+        max-width: 300px;
+    }
+}

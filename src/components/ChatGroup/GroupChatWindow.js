@@ -6,7 +6,6 @@ import SendMessageBar from "../ChatCommon/SendMessageBar";
 import MessageList from "../ChatCommon/MessageList";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
-import Loader from "semantic-ui-react/dist/commonjs/elements/Loader";
 import GroupChatBar from "./GroupChatBar"
 import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 
@@ -125,7 +124,7 @@ class GroupChatWindow extends React.Component {
                     {
                         messagesStore.messagesLoading ?
                             (
-                                <Loader active inverted>Loading</Loader>
+                                <Typography>загрузачка</Typography>
                             )
                             :
                             chat && messages && messages.length > 0 ? (

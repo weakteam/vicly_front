@@ -47,7 +47,7 @@ const styles = theme => ({
         position: 'absolute',
         right: 0,
         left: 0,
-        borderRadius: '5px 5px 0px 0px',
+        borderRadius: '10px 10px 0px 0px',
     },
     header: {
         textAlign: 'start',
@@ -79,19 +79,13 @@ const styles = theme => ({
         overflow: 'hidden',
     },
     userName1: {
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        fontWeight: 'bold',
         // width: '100%',
-        fontSize: '2.4rem',
         [theme.breakpoints.down('xs')]: {
             fontSize: '1.4em',
         },
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.dark : theme.palette.secondary.dark
         }`,
-        marginBottom: 5,
     },
     role: {
         fontSize: '1.1rem',
@@ -338,7 +332,7 @@ class UserProfile extends React.Component {
                            accept="image/x-png,image/jpeg"
                            ref={this.avatarInput}/>
                     <div className={classes.userName}>
-                        <Typography variant="h3"
+                        <Typography variant="h6"
                                     className={classes.userName1 +' userName11'}>{this.accountStore.fullName}</Typography>
                         <Typography variant="caption"
                                     noWrap
