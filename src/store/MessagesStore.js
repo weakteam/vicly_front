@@ -70,11 +70,11 @@ export default class MessagesStore {
                     // If opened user chat
                     let currentChat = this.getCurrentChatNew();
                     let previousChat = this.getPreviousChatNew();
-                    if (currentChat.messages.length <= 20) {
+                    if (!currentChat.wasFetched) {
                         currentChat.loadMessages(currentChat.page);
                     } else {
-                        const lastMessage = currentChat.messages[currentChat.messages.length - 1];
-                        if (lastMessage) {
+                        if (currentChat.messages.length) {
+                            const lastMessage = currentChat.messages[currentChat.messages.length - 1];
                             currentChat.loadMessagesAfter(lastMessage.id);
                         }
                     }

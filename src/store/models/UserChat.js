@@ -29,6 +29,7 @@ export default class UserChat extends Chat {
     }
 
     async loadMessages(page) {
+        super.loadMessages();
         try {
             const response = await rootStore.api.getUserChatMessages(this.user.id, page);
             if (!response.ok) {
@@ -36,9 +37,15 @@ export default class UserChat extends Chat {
             }
             let messages = await response.json();
             runInAction("getAllMessagesById", () => {
+                this.fetching = false;
+                this.wasFetched = true;
+                this.lastFetchedPage = page;
+                this.lastFetchedCount = messages.length;
                 this.updateChat(messages);
             });
+
         } catch (err) {
+            this.fetching = false;
             console.log(err);
             // return dispatch(setChatList(err))
         }

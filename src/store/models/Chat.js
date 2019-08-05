@@ -1,4 +1,4 @@
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
 import Message from "./Message";
 //import toastService from "../../services/toastService";
 import rootStore from "../RootStore";
@@ -13,9 +13,13 @@ export default class Chat {
     @observable last = null;
     @observable unread = 0;
     // Array of Message objects
-    @observable messages = [];
+    @observable.shallow messages = [];
     page = 0;
     @observable selected = false;
+    @observable fetching = false;
+    wasFetched = false;
+    lastFetchedPage = null;
+    lastFetchedCount = 0;
 
     constructor(chatObject, chatType, usersNew) {
         this.chatType = chatType;
@@ -25,7 +29,14 @@ export default class Chat {
             this.messages = chatObject.messages.map(message => new Message(message))
         }
         this.unread = chatObject.unread;
+        // chatObject.userIds.map(userId => {
+        //
+        // });
     }
+
+    // @computed messageLength() {
+    //     return this.messages.length
+    // }
 
     setSelected(isSelected) {
         this.selected = isSelected;
@@ -100,15 +111,19 @@ export default class Chat {
 
     loadMessages(page) {
         //ABSTRACT
+        this.fetching = true;
     }
 
     loadMessagesAfter(messageId) {
         //ABSTRACT
+        this.fetching = true;
     }
 
     nextPage() {
         rootStore.messagesStore.invalidateChatChanged();
-        this.loadMessages(++this.page);
+        if (this.lastFetchedCount > 0) {
+            this.loadMessages(++this.page);
+        }
     }
 
     postMessage(message) {

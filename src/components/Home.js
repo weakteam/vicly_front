@@ -305,9 +305,9 @@ class Home extends React.Component {
 
     renderChatWindowEmpty = (routeProps) => <ChatWindowEmpty/>;
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return false;
-    }
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     return false;
+    // }
 
     render() {
         const {classes, theme} = this.props;

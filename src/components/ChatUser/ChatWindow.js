@@ -8,6 +8,7 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
+import {ScaleLoader} from 'halogenium';
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -54,6 +55,7 @@ const styles = theme => ({
     },
 });
 
+@observer
 class ChatWindow extends React.Component {
     constructor(props) {
         super(props);
@@ -63,36 +65,13 @@ class ChatWindow extends React.Component {
         this.messagesEnd = React.createRef();
     }
 
-    scrollHandler = (target) => {
-        let scrolledOnTop = false;
-        return () => {
-            if (target.scrollTop <= (target.scrollHeight / 10) && !scrolledOnTop) {
-                scrolledOnTop = true;
-                this.props.chat.nextPage();
-                //alert("IAMONTOPFUCKU");
-            } else if (target.scrollTop > (target.scrollHeight / 10) && scrolledOnTop) {
-                scrolledOnTop = false;
-            }
-        };
-    };
-
     handleSendMessage = (message) => {
         this.props.chat.postMessage(message.message, message.attachments);
-        // this.scrollToBottom();
     };
 
-    // scrollToBottom = () => {
-    //     this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
-    //     //TODO scroll child
-    //     // if (this.scrollMessageList.current) {
-    //     //     this.scrollMessageList.current.scrollToEnd();
-    //     //     // this.scrollMessageList.current.scrollToLastMessage();
-    //     // }
-    // };
-
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (messagesStore.isChatChanged()) {
-            // this.scrollToBottom();
+        if (messagesStore.isChatChanged() && this.messagesEnd.current) {
+            this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
         }
     };
 
@@ -110,36 +89,16 @@ class ChatWindow extends React.Component {
             last_name: this.accountStore.last_name,
             userId: this.accountStore.userId
         };
-        let messages = null;
-        if (chat) {
-            messages = chat.messages;
-        }
         return (
             <div className={classes.chatWindow}>
                 <ThreadWindow/>
                 <ChatBar match={chat.user.id} chat={chat}/>
-                {
-                    messagesStore.messagesLoading ?
-                        (<Typography>загрузачка</Typography>)
-                        :
-                        chat && messages && messages.length > 0 ?
-                            (
-                                <MessageList
-                                    myselfUser={myselfUser}
-                                    chatUsers={[chat.user]}
-                                    messages={messages}
-                                    scrollHandler={this.scrollHandler}
-                                    ref={this.messageList}/>
-                            )
-                            :
-                            (
-                                <div className={classes.emptyChat}>
-                                    <Typography className={classes.text} variant="h5">
-                                        История сообщения пуста...
-                                    </Typography>
-                                </div>
-                            )
-                }
+                <MessageList
+                    myselfUser={myselfUser}
+                    chat={chat}
+                    scrollHandler={this.scrollHandler}
+                    messageEnd={this.messagesEnd}
+                    ref={this.messageList}/>
                 <SendMessageBar handleSendMessage={this.handleSendMessage}/>
             </div>
         )

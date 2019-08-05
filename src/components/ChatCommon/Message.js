@@ -256,7 +256,7 @@ class Message extends React.Component {
         const fromMe = this.props.fromMe ? 'from-me' : '';
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
         return (
-            <Hidden smDown implementation="css">
+            <Hidden smDown implementation="js">
                 <div className={classes.messageBlock}>
                     <div className={classes.avatar}>
                         {
