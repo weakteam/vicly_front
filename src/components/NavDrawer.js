@@ -11,6 +11,7 @@ import '../css/IOS.css'
 import '../css/scrollbar.css'
 import rootStore from "../store/RootStore";
 import WorkgroupList from "./WorkgroupList";
+import Hidden from "@material-ui/core/Hidden";
 
 const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -325,7 +326,6 @@ class NavDrawer extends Component {
                         <WorkgroupList handleDrawerToggle={this.handleDrawerToggleForMob}/>
                     </List>
                 </div>
-
             </div>
         );
     };
@@ -339,7 +339,7 @@ class NavDrawer extends Component {
 
         return (
             <>
-                <div className="drawerTest">
+                <Hidden smUp>
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar disableGutters>
                             <IconButton aria-label="Open drawer" onClick={this.handleDrawerToggle}>
@@ -378,13 +378,13 @@ class NavDrawer extends Component {
                         }}>
                         {this.drawerMobile()}
                     </SwipeableDrawer>
-                </div>
-                <div className="drawerDesktop">
+                </Hidden>
+
+                <Hidden xsDown>
                     <Drawer classes={{paper: classes.drawerPaper}} variant="permanent">
                         {this.drawer()}
                     </Drawer>
-                </div>
-
+                </Hidden>
             </>
         );
     }
