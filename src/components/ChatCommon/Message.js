@@ -11,6 +11,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import AttachmentShow from "./AttachmentShow";
 import handleViewport from 'react-in-viewport';
 import {observer} from "mobx-react";
+import "../../css/message.css"
 
 
 const styles = theme => ({
@@ -91,7 +92,7 @@ const styles = theme => ({
                 wordWrap: 'break-word',
                 overflowWrap: 'break-word',
                 display: 'flex',
-paddingBottom: 10,
+                paddingBottom: 10,
             },
             caption: {
                 marginLeft: 14,
@@ -162,24 +163,6 @@ function handleClick() {
 @observer
 class Message extends React.Component {
 
-    getRandomColor = (letter) => {
-        let col = this.colorMap[letter];
-        if (col) return col;
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    };
-
-    colorMap = {
-        "Р": "#2ab49b",
-        "А": "#d15c17",
-        "И": "#9e72cf"
-    };
-
-
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
         let date = new Date(timestamp);
@@ -191,76 +174,6 @@ class Message extends React.Component {
             //  return date.getHours() + ":" + mins + " " + date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
             return date.getHours() + ":" + mins;
         }
-    };
-
-    mobileMessagesFromMe = () => {
-        const {classes, theme} = this.props;
-        const name = this.props.userInfo.first_name[0];
-        let colorChange = AvatarColor.getColor(name);
-        let colsNumber;
-        if (this.props.messageInfo.attachments.length === 1) {
-            colsNumber = 2;
-        } else {
-            colsNumber = 1;
-        }
-        const fromMe = this.props.fromMe ? 'from-me' : '';
-        const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
-        return (
-            <Hidden mdUp implementation="css">
-                <div className={classes.messageBlock}>
-                    <div onContextMenu={this.props.onContextMenu}
-                         className={fromMe ? classes.fromMeMob + " " + msgColor : classes.toMe}>
-                        <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
-                            <Typography
-                                variant="body2"
-                                className={classes.senderName}>Я</Typography>
-                            <Typography variant="caption"
-                                        className={classes.caption}
-                                        style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
-                        </div>
-                        <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
-
-                        {
-                            this.props.messageInfo.attachments.length ?
-                                (
-                                    <>
-                                        <GridList className={classes.gridList} cols={2}>
-                                            {
-                                                this.props.messageInfo.attachments.map(atta => {
-                                                    return (
-                                                        <GridListTile style={{height: 'auto'}} key={atta.id}
-                                                                      cols={colsNumber}>
-                                                            <AttachmentShow attachment={atta}/>
-                                                        </GridListTile>
-                                                    )
-                                                })
-                                            }
-                                        </GridList>
-
-                                    </>
-                                ) : null
-                        }
-
-                    </div>
-                    <div className={classes.avatarMob}>
-                        {
-                            this.props.avatar ?
-                                (
-                                    <Avatar className={classes.avatarIco}
-                                            src={this.props.avatar.small}/>
-                                )
-                                :
-                                (
-                                    <Avatar className={classes.avatarIco}
-                                            style={{backgroundColor: `${colorChange}`}}>
-                                        {this.props.userInfo.first_name[0].toUpperCase()}
-                                    </Avatar>
-                                )
-                        }
-                    </div>
-                </div>
-            </Hidden>
-        );
     };
 
     mobileMessages = () => {
@@ -276,9 +189,9 @@ class Message extends React.Component {
         const fromMe = this.props.fromMe ? 'from-me' : '';
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
         return (
-            <Hidden mdUp implementation="css">
-                <div style={{ flexDirection: fromMe ? 'row-reverse' : ''}} className={classes.messageBlock}>
-                    <div  style={{margin: fromMe ? '0 0 0 9px' : ''}}  className={classes.avatar}>
+            <Hidden mdUp>
+                <div style={{flexDirection: fromMe ? 'row-reverse' : ''}} className={classes.messageBlock}>
+                    <div style={{margin: fromMe ? '0 0 0 9px' : ''}} className={classes.avatar}>
                         {
                             this.props.avatar ?
                                 (
@@ -295,8 +208,8 @@ class Message extends React.Component {
                         }
                     </div>
                     <div onContextMenu={this.props.onContextMenu}
-                         className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
-                        <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
+                         className={fromMe ? classes.fromMeMob + " " + msgColor : classes.toMe}>
+                        <div style={{display: 'inline-flex', alignItems: 'start', width: '-webkit-fill-available'}}>
                             <Typography
                                 variant="body2"
                                 className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
@@ -344,85 +257,82 @@ class Message extends React.Component {
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
         return (
             <Hidden smDown implementation="css">
-                    <div className={classes.messageBlock}>
-                        <div className={classes.avatar}>
-                            {
-                                this.props.avatar ?
-                                    (
-                                        <Avatar className={classes.avatarIco}
-                                                src={this.props.avatar.small}/>
-                                    )
-                                    :
-                                    (
-                                        <Avatar className={classes.avatarIco}
-                                                style={{backgroundColor: `${colorChange}`}}>
-                                            {this.props.userInfo.first_name[0].toUpperCase()}
-                                        </Avatar>
-                                    )
-                            }
+                <div className={classes.messageBlock}>
+                    <div className={classes.avatar}>
+                        {
+                            this.props.avatar ?
+                                (
+                                    <Avatar className={classes.avatarIco}
+                                            src={this.props.avatar.small}/>
+                                )
+                                :
+                                (
+                                    <Avatar className={classes.avatarIco}
+                                            style={{backgroundColor: `${colorChange}`}}>
+                                        {this.props.userInfo.first_name[0].toUpperCase()}
+                                    </Avatar>
+                                )
+                        }
 
-                        </div>
-                        <div onContextMenu={this.props.onContextMenu}
-                             className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
-                            <div style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                width: '-webkit-fill-available'
-                            }}>
-                                {
-                                    fromMe ? (
-                                        <Typography
-                                            variant="body2"
-                                            className={classes.senderName}>Я</Typography>
-                                    ) : (
-                                        <Typography
-                                            variant="body2"
-                                            className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
-                                    )
-                                }
-
-                            </div>
-                            <Typography variant="body1" className={classes.mess}>
-                                {this.props.message}
-                            </Typography>
-
-                            {
-                                this.props.messageInfo.attachments.length ?
-                                    (
-                                        <>
-                                            <GridList className={classes.gridList} cols={2}>
-                                                {
-                                                    this.props.messageInfo.attachments.map(atta => {
-                                                        return (
-                                                            <GridListTile style={{height: 'auto'}} key={atta.id}
-                                                                          cols={colsNumber}>
-                                                                <AttachmentShow attachment={atta}/>
-                                                            </GridListTile>
-                                                        )
-                                                    })
-                                                }
-                                            </GridList>
-
-                                        </>
-                                    ) : null
-                            }
-                        </div>
-                        <Typography variant="caption"
-                                    className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                     </div>
+                    <div onContextMenu={this.props.onContextMenu}
+                         className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
+                        <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            width: '-webkit-fill-available'
+                        }}>
+                            {
+                                fromMe ? (
+                                    <Typography
+                                        variant="body2"
+                                        className={classes.senderName}>Я</Typography>
+                                ) : (
+                                    <Typography
+                                        variant="body2"
+                                        className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                )
+                            }
+
+                        </div>
+                        <Typography variant="body1" className={classes.mess}>
+                            {this.props.message}
+                        </Typography>
+
+                        {
+                            this.props.messageInfo.attachments.length ?
+                                (
+                                    <>
+                                        <GridList className={classes.gridList} cols={2}>
+                                            {
+                                                this.props.messageInfo.attachments.map(atta => {
+                                                    return (
+                                                        <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                      cols={colsNumber}>
+                                                            <AttachmentShow attachment={atta}/>
+                                                        </GridListTile>
+                                                    )
+                                                })
+                                            }
+                                        </GridList>
+
+                                    </>
+                                ) : null
+                        }
+                    </div>
+                    <Typography variant="caption"
+                                className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                </div>
             </Hidden>
         );
     };
 
     render() {
-        const {classes} = this.props;
-        const fromMe = this.props.fromMe ? 'from-me' : '';
         return (
             <div ref={this.props.forwardedRef}>
                 {this.desktopMessages()}
                 {this.mobileMessages()}
             </div>
-
         );
     }
 }
