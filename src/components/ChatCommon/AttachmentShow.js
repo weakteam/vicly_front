@@ -9,6 +9,7 @@ import rootStore from "../../store/RootStore";
 import getLinkFromMime from "../../utils/mimetypes";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
+import "../../css/AttachmentShow.css"
 
 function getModalStyle() {
     const top = 50;
@@ -55,14 +56,7 @@ const styles = theme => ({
         objectFit: 'cover',
         paddingRight: 5,
     },
-    attachDiv: {
-        alignSelf: 'center',
-        marginLeft: 'auto',
-        //  margin: '5px 15px 5px 5px',
-        //   width: 110,
-        height: '100%',
-        // backgroundColor: '#f5f5f5'
-    },
+    attachDiv: {},
     filename: {
         maxWidth: 100,
         position: 'absolute',
@@ -79,8 +73,6 @@ const styles = theme => ({
         color: "#f1f1f1",
         fontSize: 32,
         cursor: 'pointer',
-        // fontWeight: "bold",
-        transition: 0.3
     },
     imagePreview: {
         "&:hover":
@@ -325,7 +317,7 @@ class AttachmentShow extends React.Component {
         const {classes, theme, attachment} = this.props;
         const canViewed = attachment.canShowPreview();
         return (
-            <div onClick={this.handleAttachmentDownload} className={classes.attachDiv}>
+            <div onClick={this.handleAttachmentDownload} className="attachDiv">
                 {
                     canViewed ?
                         (
@@ -337,16 +329,16 @@ class AttachmentShow extends React.Component {
                                     onClose={this.imagePreviewModalClose}
                                 >
                                     <div style={getModalStyle()}
-                                         className={classes.paper}>
-                                        <Close onClick={this.imagePreviewModalClose} className={classes.close}/>
-                                        <div style={{width: '100%', textAlign: 'center'}}>
+                                         className="paper">
+                                        <Close onClick={this.imagePreviewModalClose} className="close"/>
+                                        <div className="contentDiv">
                                             {this.state.imageModal ? this.bigPreview(false) : null}
                                             {/*{this.state.imageModal ? this.fullImage(false) : null}*/}
                                         </div>
 
-                                        <div className={classes.commentBlock}>
-                                            <div className={classes.infBlockFirst}>
-                                                <Avatar className={classes.userAvatar}>
+                                        <div className="commentBlock">
+                                            <div className="infBlockFirst">
+                                                <Avatar className="userAvatar">
                                                     {/*{this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}*/}
                                                     LL
                                                 </Avatar>
@@ -357,26 +349,21 @@ class AttachmentShow extends React.Component {
                                                                 noWrap
                                                                 className={classes.userRole}>Программист</Typography>
                                                 </div>
-
                                             </div>
                                             <Divider/>
                                             {/*  <Typography variant="caption"
                                                         className={classes.caption}>{attachment.filename}</Typography>*/}
                                         </div>
                                     </div>
-
                                 </Modal>
                                 {
                                     this.viewableAttachment()
                                 }
                             </>
-                        )
-                        :
-                        (
+                        ) : (
                             this.non_viewableAttachment()
                         )
                 }
-
             </div>
         )
     }
