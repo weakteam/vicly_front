@@ -118,6 +118,7 @@ class ChatWindow extends React.Component {
             <div className={classes.chatWindow}>
                 <ThreadWindow/>
                 <ChatBar match={chat.user.id} chat={chat}/>
+                <SendMessageBar handleSendMessage={this.handleSendMessage}/>
                 {
                     messagesStore.messagesLoading ?
                         (<Typography>загрузачка</Typography>)
@@ -140,7 +141,7 @@ class ChatWindow extends React.Component {
                                 </div>
                             )
                 }
-                <SendMessageBar handleSendMessage={this.handleSendMessage}/>
+
             </div>
         )
     }

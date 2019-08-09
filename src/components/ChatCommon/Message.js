@@ -204,7 +204,8 @@ class Message extends React.Component {
                                 )
                                 :
                                 (
-                                    <Avatar className="avatarIco">
+                                    <Avatar className="avatarIco"
+                                            style={{backgroundColor: `${colorChange}`}}>
                                         {this.props.userInfo.first_name[0].toUpperCase()}
                                     </Avatar>
                                 )
@@ -212,7 +213,7 @@ class Message extends React.Component {
 
                     </div>
                     <div onContextMenu={this.props.onContextMenu}
-                         className={fromMe ? classes.fromMe  : classes.toMe}>
+                         className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
                             {
                                 fromMe ? (
                                     <Typography
