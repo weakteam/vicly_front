@@ -4,7 +4,6 @@ import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
-import VisibilitySensor from "react-visibility-sensor";
 import {contextMenu, Item, Menu} from "react-contexify";
 import Typography from "@material-ui/core/Typography";
 
@@ -38,6 +37,7 @@ class MessageList extends React.Component {
         super(props);
         //console.log("messages:"+props.messages)
         this.messageList = React.createRef();
+        this.messageEnd = React.createRef();
         this.accountStore = accountStore;
         this.state = {
             messageLength: 0
@@ -49,10 +49,12 @@ class MessageList extends React.Component {
         // Capture the scroll position so we can adjust scroll later.
         // if (prevProps.messages.length < this.props.messages.length) {
         const list = this.messageList.current;
+        const {chat} = this.props;
         if (list && list.scrollTop + list.offsetHeight === list.scrollHeight)
             return null; // FIXME return null if was been at bottom!!!
-        else {
+        else if (chat.messages.length !== chat.prevMessageLength) {
             return {
+                direction: chat.direction,
                 scrollT: list.scrollTop,
                 scrollH: list.scrollHeight,
             }
@@ -61,7 +63,17 @@ class MessageList extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         const list = this.messageList.current;
+        if (messagesStore.isChatChanged()) {
+            list.scrollTop = list.scrollHeight;
+            // this.scrollToBottom();
+        }
         if (snapshot) {
+            if (snapshot.direction === "append" && snapshot.scrollT === snapshot.scrollH) {
+                list.scrollTop = list.scrollHeight;
+            }
+            if (snapshot.direction === "prepend"){
+                list.scrollTop += list.scrollHeight - snapshot.scrollH;
+            }
             console.log(JSON.stringify(snapshot));
         } else {
             list.scrollTop = list.scrollHeight;
@@ -88,9 +100,9 @@ class MessageList extends React.Component {
         this.messageList.current.scrollTop = this.messageList.current.scrollHeight;
     };
 
-    scrollToLastMessage(smooth = false) {
-        if (this.lastMessage.current) {
-            this.lastMessage.current.scrollIntoView({behavior: smooth ? "smooth" : "instant"});
+    scrollToBottom() {
+        if (this.lastMessamessageEndge.current) {
+            this.messageEnd.current.scrollIntoView({behavior: "instant"});
         } else {
             console.log("scroll failed !)?");
         }
@@ -123,7 +135,7 @@ class MessageList extends React.Component {
     };
 
     render() {
-        const {classes, chat} = this.props;
+        const {chat} = this.props;
         // Loop through all the messages in the state and create a Message component
         const myUserId = this.accountStore.userId;
         //FIXME group chats and user chats
@@ -132,39 +144,20 @@ class MessageList extends React.Component {
         );
         avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null);
 
-        const messages = this.props.messages.map((message, i, arr) => {
+        const messages = chat.messages.map((message, i, arr) => {
             const user = [chat.user].find(user => message.from === user.id);
             const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
-            if (!message.fromMe && !message.timestamp_read) {
-                return (
-                    <VisibilitySensor active={true}
-                                      onEnterViewport={message.onViewport}
-                                      onChange={message.onViewport}>
-                        <Message
-                            key={message.id}
-                            userInfo={message.fromMe ? this.props.myselfUser : chat.user}
-                            message={message.message}
-                            messageInfo={message}
-                            fromMe={message.fromMe}
-                            avatar={avatar}
-                            // onContextMenu={this.handleContextMenu(message)}
-                            ref={i === arr.length - 1 ? this.lastMessage : null}/>
-                    </VisibilitySensor>
-                );
-            } else {
-                return (
-                    <Message
-                        key={message.id}
-                        userInfo={message.fromMe ? this.props.myselfUser : user}
-                        message={message.message}
-                        messageInfo={message}
-                        fromMe={message.fromMe}
-                        avatar={avatar}
-                        onContextMenu={this.handleContextMenu(message)}
-                        ref={i === arr.length - 1 ? this.lastMessage : null}/>
-                )
-            }
-
+            return (
+                <Message
+                    key={message.id}
+                    userInfo={message.fromMe ? this.props.myselfUser : user}
+                    message={message.message}
+                    messageInfo={message}
+                    fromMe={message.fromMe}
+                    avatar={avatar}
+                    onContextMenu={this.handleContextMenu(message)}
+                    ref={i === arr.length - 1 ? this.lastMessage : null}/>
+            )
         });
 
         return (
@@ -172,15 +165,14 @@ class MessageList extends React.Component {
                  ref={this.messageList}>
                 <div className={"scroll scrollMessageArea"} id='messageList'>
                     {messages}
-                    <div ref={this.props.messagesEnd}/>
+                    {/*<div ref={this.messageEnd}/>*/}
                 </div>
                 <MyMenu menuId={menuId}/>
-                /////////////////////
-                <div className={classes.emptyChat}>
-                    <Typography className={classes.text} variant="h5">
-                        История сообщения пуста...
-                    </Typography>
-                </div>
+                {/*<div>*/}
+                {/*    <Typography variant="h5">*/}
+                {/*        История сообщения пуста...*/}
+                {/*    </Typography>*/}
+                {/*</div>*/}
             </div>
 
         );

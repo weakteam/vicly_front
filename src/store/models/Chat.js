@@ -14,6 +14,8 @@ export default class Chat {
     @observable unread = 0;
     // Array of Message objects
     @observable.shallow messages = [];
+    prevMessageLength = 0;
+    direction = null;
     page = 0;
     @observable selected = false;
     @observable fetching = false;
@@ -50,6 +52,8 @@ export default class Chat {
     addMessageToEnd(message) {
         const myselfUserId = rootStore.accountStore.userId;
         // WE MUST ALWAYS FIND CHAT!!!
+        this.prevMessageLength = this.messages.length;
+        this.direction = "append";
         if (rootStore.accountStore.userId === message.from) {
             this.messages.push(message);
             this.last = message;
@@ -87,6 +91,8 @@ export default class Chat {
         if (newMessages.length > 0 && this.messages.find(elem => elem.id === newMessages[0].id) && this.messages.find(elem => elem.id === newMessages[newMessages.length - 1].id)) {
             return;
         }
+        this.prevMessageLength = this.messages.length;
+        this.direction = "append";
         newMessages = newMessages.map(message => new Message(message));
         this.messages = this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.last = this.messages[this.messages.length - 1];
@@ -102,6 +108,8 @@ export default class Chat {
 
     prependChat(newMessages) {
         newMessages = newMessages.map(message => new Message(message));
+        this.direction = "prepend";
+        this.prevMessageLength = this.messages.length;
         this.messages = this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
     }
 

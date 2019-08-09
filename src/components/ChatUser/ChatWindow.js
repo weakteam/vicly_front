@@ -1,6 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles/index';
-import Typography from '@material-ui/core/Typography/index';
+import {withStyles} from '@material-ui/styles';
 import 'typeface-roboto';
 import SendMessageBar from "../ChatCommon/SendMessageBar";
 import MessageList from "../ChatCommon/MessageList";
@@ -8,7 +7,7 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
-import {ScaleLoader} from 'halogenium';
+import Fade from "@material-ui/core/Fade";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -70,9 +69,9 @@ class ChatWindow extends React.Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (messagesStore.isChatChanged() && this.messagesEnd.current) {
-            this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
-        }
+        // if (messagesStore.isChatChanged() && this.messagesEnd.current) {
+        //     this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
+        // }
     };
 
     componentDidMount() {
@@ -89,6 +88,7 @@ class ChatWindow extends React.Component {
             last_name: this.accountStore.last_name,
             userId: this.accountStore.userId
         };
+        this.messagesStore.isChatChanged();
         return (
             <div className={classes.chatWindow}>
                 <ThreadWindow/>

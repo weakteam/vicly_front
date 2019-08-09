@@ -54,7 +54,7 @@ const styles = theme => ({
         [theme.breakpoints.down('xs')]: {
             left: 0,
         },*/
-        bottom: 55,
+        bottom: 0,
         display: 'inline-flex',
         position: 'absolute',
         alignItems: 'center',

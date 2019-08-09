@@ -12,74 +12,75 @@ import AttachmentShow from "./AttachmentShow";
 import handleViewport from 'react-in-viewport';
 import {observer} from "mobx-react";
 import "../../css/message.css"
+import VisibilitySensor from "react-visibility-sensor";
 
 const styles = theme => ({
-            fromMe: {
-                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-                maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 226,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 300,
-                },
-                backgroundColor: ` ${
-                    theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
-                }`,
-                padding: '3px 14px 3px 14px',
-                borderRadius: '10px 10px 10px 0',
+        fromMe: {
+            boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+            maxWidth: 500,
+            [theme.breakpoints.down('md')]: {
+                maxWidth: 226,
             },
-            fromMeMob: {
-                maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 300,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 225,
-                },
-                backgroundColor: ` ${
-                    theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
-                }`,
-                padding: '3px 14px 3px 14px',
-                borderRadius: '10px 10px 0px 10px',
-                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: 300,
             },
-            toMe: {
-                maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 226,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 225,
-                },
-                backgroundColor: ` ${
-                    theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
-                }`,
-                padding: '3px 14px 3px 14px',
-                borderRadius: '10px 10px 10px 0',
-                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
+            }`,
+            padding: '3px 14px 3px 14px',
+            borderRadius: '10px 10px 10px 0',
+        },
+        fromMeMob: {
+            maxWidth: 500,
+            [theme.breakpoints.down('md')]: {
+                maxWidth: 300,
             },
-            // If my message not readed yet!
-            nonread: {
-                transition: theme.transitions.create(['border-color', 'box-shadow']),
-                boxShadow: `${fade('#fb8c00', 0.25)} 0 0 0 0.2rem`,
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: 225,
             },
-            nondelivered: {
-                transition: theme.transitions.create(['border-color', 'box-shadow']),
-                boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
+            }`,
+            padding: '3px 14px 3px 14px',
+            borderRadius: '10px 10px 0px 10px',
+            boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+        },
+        toMe: {
+            maxWidth: 500,
+            [theme.breakpoints.down('md')]: {
+                maxWidth: 226,
             },
-            mess: {
-                color: ` ${
-                    theme.palette.type === 'light' ? '#181818' : '#fff'
-                }`,
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: 225,
             },
-            senderName: {
-                color: ` ${
-                    theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
-                }`,
-            },
-        }
-    );
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
+            }`,
+            padding: '3px 14px 3px 14px',
+            borderRadius: '10px 10px 10px 0',
+            boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+        },
+        // If my message not readed yet!
+        nonread: {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            boxShadow: `${fade('#fb8c00', 0.25)} 0 0 0 0.2rem`,
+        },
+        nondelivered: {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
+        },
+        mess: {
+            color: ` ${
+                theme.palette.type === 'light' ? '#181818' : '#fff'
+            }`,
+        },
+        senderName: {
+            color: ` ${
+                theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
+            }`,
+        },
+    }
+);
 
 function handleDelete() {
     alert('You clicked the delete icon.'); // eslint-disable-line no-alert
@@ -143,11 +144,11 @@ class Message extends React.Component {
                                 fromMe ? (
                                     <Typography
                                         variant="body2"
-                                        className={classes.senderName +' senderName1'}>Я</Typography>
+                                        className={classes.senderName + ' senderName1'}>Я</Typography>
                                 ) : (
                                     <Typography
                                         variant="body2"
-                                        className={classes.senderName +' senderName1'}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                        className={classes.senderName + ' senderName1'}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                                 )
                             }
                             <Typography variant="caption"
@@ -214,19 +215,19 @@ class Message extends React.Component {
                     </div>
                     <div onContextMenu={this.props.onContextMenu}
                          className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
-                            {
-                                fromMe ? (
-                                    <Typography
-                                        variant="body2"
-                                        className={classes.senderName +' senderName1'}>Я</Typography>
-                                ) : (
-                                    <Typography
-                                        variant="body2"
-                                        className={classes.senderName +' senderName1'}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
-                                )
-                            }
+                        {
+                            fromMe ? (
+                                <Typography
+                                    variant="body2"
+                                    className={classes.senderName + ' senderName1'}>Я</Typography>
+                            ) : (
+                                <Typography
+                                    variant="body2"
+                                    className={classes.senderName + ' senderName1'}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                            )
+                        }
 
-                        <Typography variant="body1" className={classes.mess +' mess'}>
+                        <Typography variant="body1" className={classes.mess + ' mess'}>
                             {this.props.message}
                         </Typography>
 
@@ -258,12 +259,29 @@ class Message extends React.Component {
     };
 
     render() {
-        return (
-            <div ref={this.props.forwardedRef}>
-                {this.desktopMessages()}
-                {this.mobileMessages()}
-            </div>
-        );
+
+        const {messageInfo} = this.props;
+
+        if (!messageInfo.fromMe && !messageInfo.timestamp_read) {
+            return (
+                <VisibilitySensor active={true}
+                                  onEnterViewport={messageInfo.onViewport}
+                                  onChange={messageInfo.onViewport}>
+                    <div ref={this.props.forwardedRef}>
+                        {this.desktopMessages()}
+                        {this.mobileMessages()}
+                    </div>
+                </VisibilitySensor>
+            );
+        } else {
+            return (
+                <div ref={this.props.forwardedRef}>
+                    {this.desktopMessages()}
+                    {this.mobileMessages()}
+                </div>
+            );
+        }
+
     }
 }
 
