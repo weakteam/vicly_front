@@ -9,7 +9,6 @@ import AvatarColor from "../../services/AvatarColor"
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import AttachmentShow from "./AttachmentShow";
-import handleViewport from 'react-in-viewport';
 import {observer} from "mobx-react";
 import "../../css/message.css"
 import VisibilitySensor from "react-visibility-sensor";
@@ -116,7 +115,7 @@ class Message extends React.Component {
         } else {
             colsNumber = 1;
         }
-        const fromMe = this.props.fromMe ? 'from-me' : '';
+        const fromMe = this.props.messageInfo.fromMe ? 'from-me' : '';
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
         return (
             <Hidden mdUp>
@@ -154,7 +153,8 @@ class Message extends React.Component {
                             <Typography variant="caption"
                                         className="caption">{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                         </div>
-                        <Typography variant="body1" className={classes.mess + ' mess'}>{this.props.message}</Typography>
+                        <Typography variant="body1"
+                                    className={classes.mess + ' mess'}>{this.props.messageInfo.message}</Typography>
                         {
                             this.props.messageInfo.attachments.length ?
                                 (
@@ -191,7 +191,7 @@ class Message extends React.Component {
         } else {
             colsNumber = 1;
         }
-        const fromMe = this.props.fromMe ? 'from-me' : '';
+        const fromMe = this.props.messageInfo.fromMe ? 'from-me' : '';
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
         return (
             <Hidden smDown>
@@ -228,7 +228,7 @@ class Message extends React.Component {
                         }
 
                         <Typography variant="body1" className={classes.mess + ' mess'}>
-                            {this.props.message}
+                            {this.props.messageInfo.message}
                         </Typography>
 
                         {
@@ -257,6 +257,12 @@ class Message extends React.Component {
             </Hidden>
         );
     };
+
+    componentDidMount() {
+        // this.props.cache.clear(this.props.index);
+        // this.props.listRef.current.recomputeRowHeights(this.props.index);
+        // this.props.measure();
+    }
 
     render() {
 
@@ -291,6 +297,4 @@ Message.defaultProps = {
     fromMe: false
 };
 
-const MessageViewport = handleViewport(Message, {}, {disconnectOnLeave: true});
-
-export default withStyles(styles, {withTheme: true, index: 1})(MessageViewport);
+export default withStyles(styles, {withTheme: true, index: 1})(Message);

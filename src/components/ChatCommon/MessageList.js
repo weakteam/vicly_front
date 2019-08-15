@@ -5,7 +5,6 @@ import {observer} from "mobx-react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
 import {contextMenu, Item, Menu} from "react-contexify";
-import Typography from "@material-ui/core/Typography";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -41,7 +40,8 @@ class MessageList extends React.Component {
         this.accountStore = accountStore;
         this.state = {
             messageLength: 0
-        }
+        };
+        this.lol = null;
     }
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -50,40 +50,52 @@ class MessageList extends React.Component {
         // if (prevProps.messages.length < this.props.messages.length) {
         const list = this.messageList.current;
         const {chat} = this.props;
-        if (list && list.scrollTop + list.offsetHeight === list.scrollHeight)
-            return null; // FIXME return null if was been at bottom!!!
-        else if (chat.messages.length !== chat.prevMessageLength) {
-            return {
-                direction: chat.direction,
-                scrollT: list.scrollTop,
-                scrollH: list.scrollHeight,
-            }
-        }
+
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    async componentDidUpdate(prevProps, prevState) {
         const list = this.messageList.current;
         if (messagesStore.isChatChanged()) {
             list.scrollTop = list.scrollHeight;
             // this.scrollToBottom();
         }
-        if (snapshot) {
-            if (snapshot.direction === "append" && snapshot.scrollT === snapshot.scrollH) {
-                list.scrollTop = list.scrollHeight;
+        this.printTop("didupdate");
+        if (this.lol) {
+            if (this.lol.direction === "append" && this.lol.scrollT === this.lol.scrollH) {
+                this.scrollToBottom();
             }
-            if (snapshot.direction === "prepend"){
-                list.scrollTop += list.scrollHeight - snapshot.scrollH;
+            if (this.lol.direction === "prepend") {
+                list.scrollTop += list.scrollHeight - this.lol.scrollH;
             }
-            console.log(JSON.stringify(snapshot));
+            console.log(JSON.stringify(this.lol));
         } else {
-            list.scrollTop = list.scrollHeight;
+            this.scrollToBottom();
         }
     }
 
+    scroll = () => {
+        const list = this.messageList.current;
+        if (list)
+            list.scrollTop = list.scrollHeight - list.clientHeight;
+    };
+    scrollToBottom = () => setTimeout(this.scroll, 20);
+
     componentDidMount() {
-        const target = this.messageList.current;
-        if (target != null) {
-            target.onscroll = this.scrollHandler(target);
+        const list = this.messageList.current;
+        if (list != null) {
+            list.onscroll = this.scrollHandler(list);
+        }
+
+        if (this.lol) {
+            if (this.lol.direction === "append") {
+                this.scrollToBottom();
+            }
+            if (this.lol.direction === "prepend") {
+                list.scrollTop += list.scrollHeight - this.lol.scrollH;
+            }
+            console.log(JSON.stringify(this.lol));
+        } else {
+            list.scrollTop = list.scrollHeight;
         }
         console.log("MessageList mounted #:");
     }
@@ -96,17 +108,13 @@ class MessageList extends React.Component {
         }
     }
 
-    scrollToEnd() {
-        this.messageList.current.scrollTop = this.messageList.current.scrollHeight;
-    };
-
-    scrollToBottom() {
-        if (this.lastMessamessageEndge.current) {
-            this.messageEnd.current.scrollIntoView({behavior: "instant"});
-        } else {
-            console.log("scroll failed !)?");
-        }
-    }
+    // scrollToBottom() {
+    //     if (this.lastMessamessageEndge.current) {
+    //         this.messageEnd.current.scrollIntoView({behavior: "instant"});
+    //     } else {
+    //         console.log("scroll failed !)?");
+    //     }
+    // }
 
     scrollHandler = (target) => {
         let scrolledOnTop = false;
@@ -134,8 +142,38 @@ class MessageList extends React.Component {
         });
     };
 
-    render() {
+    saveScrollPosition = () => {
         const {chat} = this.props;
+        const list = this.messageList.current;
+        if (list && list.scrollTop + list.clientHeight >= list.scrollHeight)
+            this.lol = null; // FIXME return null if was been at bottom!!!
+        else {
+            if (list && chat.messages.length !== chat.prevMessageLength) {
+                this.lol = {
+                    direction: chat.direction,
+                    scrollT: list.scrollTop,
+                    scrollH: list.scrollHeight,
+                    clientH: list.clientHeight
+                }
+            } else {
+                this.lol = null;
+            }
+        }
+    };
+
+    printTop = (arg) => {
+        const list = this.messageList.current;
+        if (list)
+            console.log(arg + " scrollHeight:" + list.scrollHeight);
+        else
+            console.log(arg + " now havent list");
+    };
+
+    render() {
+        this.saveScrollPosition();
+        const {chat} = this.props;
+        this.printTop("render");
+
         // Loop through all the messages in the state and create a Message component
         const myUserId = this.accountStore.userId;
         //FIXME group chats and user chats
@@ -144,19 +182,17 @@ class MessageList extends React.Component {
         );
         avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null);
 
-        const messages = chat.messages.map((message, i, arr) => {
+        const messages = chat.messages.map(message => {
             const user = [chat.user].find(user => message.from === user.id);
             const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
             return (
                 <Message
                     key={message.id}
                     userInfo={message.fromMe ? this.props.myselfUser : user}
-                    message={message.message}
                     messageInfo={message}
-                    fromMe={message.fromMe}
                     avatar={avatar}
                     onContextMenu={this.handleContextMenu(message)}
-                    ref={i === arr.length - 1 ? this.lastMessage : null}/>
+                />
             )
         });
 
@@ -165,7 +201,7 @@ class MessageList extends React.Component {
                  ref={this.messageList}>
                 <div className={"scroll scrollMessageArea"} id='messageList'>
                     {messages}
-                    {/*<div ref={this.messageEnd}/>*/}
+                    <div ref={this.messageEnd}/>
                 </div>
                 <MyMenu menuId={menuId}/>
                 {/*<div>*/}

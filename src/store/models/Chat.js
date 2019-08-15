@@ -91,8 +91,8 @@ export default class Chat {
         if (newMessages.length > 0 && this.messages.find(elem => elem.id === newMessages[0].id) && this.messages.find(elem => elem.id === newMessages[newMessages.length - 1].id)) {
             return;
         }
-        this.prevMessageLength = this.messages.length;
         this.direction = "append";
+        this.prevMessageLength = this.messages.length;
         newMessages = newMessages.map(message => new Message(message));
         this.messages = this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.last = this.messages[this.messages.length - 1];
@@ -107,7 +107,7 @@ export default class Chat {
     }
 
     prependChat(newMessages) {
-        newMessages = newMessages.map(message => new Message(message));
+        newMessages = newMessages.map(message => new Message(message)).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.direction = "prepend";
         this.prevMessageLength = this.messages.length;
         this.messages = this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
@@ -127,12 +127,13 @@ export default class Chat {
         this.fetching = true;
     }
 
-    nextPage() {
+    nextPage = () => {
         rootStore.messagesStore.invalidateChatChanged();
         if (this.lastFetchedCount > 0) {
+            this.direction = "prepend";
             this.loadMessages(++this.page);
         }
-    }
+    };
 
     postMessage(message) {
         // ABSTRACT

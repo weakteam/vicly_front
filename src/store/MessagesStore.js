@@ -310,6 +310,13 @@ export default class MessagesStore {
         this.previousCurrentChatId = this.currentChatId;
     }
 
+    invalidateToHome() {
+        this.previousIsCurrentChatForUser = null;
+        this.previousCurrentChatId = null;
+        this.currentChatId = null;
+        this.isCurrentChatForUser = null;
+    }
+
     addGroupChat(message) {
 
     };

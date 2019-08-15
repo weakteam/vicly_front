@@ -9,11 +9,36 @@ export default class UserChat extends Chat {
 
     constructor(chatObject, user) {
         super(chatObject, "user", user);
+        if (chatObject.fake) {
+
+            this.chatId = chatObject.chatId;
+            this.fake = true;
+        }
         this.chatId = chatObject.user_chat ? chatObject.user_chat.id : null;
         this.userIds = chatObject.user_chat ? chatObject.user_chat.user_ids : null;
         // usersNew must be instance of User
         this.user = user;
-        this.groupId = chatObject.user.group_id;
+        this.groupId = chatObject.user && chatObject.user.group_id;
+    }
+
+    updateFields(chat) {
+        this.user = chat.user;
+        this.chatId = chat.chatId;
+        this.groupId = chat.groupId;
+        this.chatType = chat.chatType;
+        this.userIds = chat.userIds;
+        this.unread = chat.unread;
+        this.messages = chat.messages;
+        this.last = chat.last;
+        this.prevMessageLength = chat.prevMessageLength;
+        this.direction = chat.direction;
+        this.page = chat.page;
+        this.selected = chat.selected;
+        this.fetching = chat.fetching;
+        this.wasFetched = chat.wasFetched;
+        this.lastFetchedPage = chat.lastFetchedPage;
+        this.lastFetchedCount = chat.lastFetchedCount;
+        this.fake = undefined;
     }
 
     async postMessage(message, attachments = []) {
@@ -41,7 +66,7 @@ export default class UserChat extends Chat {
                 this.wasFetched = true;
                 this.lastFetchedPage = page;
                 this.lastFetchedCount = messages.length;
-                this.updateChat(messages);
+                this.prependChat(messages);
             });
 
         } catch (err) {

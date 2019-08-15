@@ -2,12 +2,12 @@ import React from 'react';
 import {withStyles} from '@material-ui/styles';
 import 'typeface-roboto';
 import SendMessageBar from "../ChatCommon/SendMessageBar";
-import MessageList from "../ChatCommon/MessageList";
+import MessageList from "../ChatCommon/MessageListH";
 import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
-import Fade from "@material-ui/core/Fade";
+import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -64,19 +64,42 @@ class ChatWindow extends React.Component {
         this.messagesEnd = React.createRef();
     }
 
+    state = {
+        fakeUpdated: false,
+        chat: null
+    };
+
     handleSendMessage = (message) => {
         this.props.chat.postMessage(message.message, message.attachments);
+    };
+
+    updateCount = 0;
+    fakeUpdater = () => {
+        const chat = rootStore.messagesStore.getCurrentChatNew();
+        if (chat && !chat.fake) {
+            this.setState({
+                fakeUpdated: true,
+                chat: chat
+            });
+            return;
+        }
+        if (this.updateCount++ < 10) {
+            setTimeout(this.fakeUpdater, 500);
+        }
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // if (messagesStore.isChatChanged() && this.messagesEnd.current) {
         //     this.messagesEnd.current.scrollIntoView({behavior: "smooth"});
         // }
+        if (this.props.chat.fake && !this.state.chat) {
+            this.fakeUpdater();
+        }
     };
 
     componentDidMount() {
-        if (messagesStore.isChatChanged()) {
-            // this.scrollToBottom();
+        if (this.props.chat.fake && !this.state.chat) {
+            this.fakeUpdater();
         }
     }
 
@@ -88,7 +111,7 @@ class ChatWindow extends React.Component {
             last_name: this.accountStore.last_name,
             userId: this.accountStore.userId
         };
-        this.messagesStore.isChatChanged();
+
         return (
             <div className={classes.chatWindow}>
                 <ThreadWindow/>
