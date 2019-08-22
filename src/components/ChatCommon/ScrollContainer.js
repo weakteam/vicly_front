@@ -1,7 +1,6 @@
-import React, {useCallback, useEffect, useRef} from "react";
+import React, {useCallback, useRef} from "react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
-import rootStore from "../../store/RootStore";
 
 
 const MyScrollContainer = (scrollCallback, resizeObserver) => ({
@@ -21,8 +20,8 @@ const MyScrollContainer = (scrollCallback, resizeObserver) => ({
 
     const ref = useCallback((theRef) => {
         if (theRef) {
-            theRef.addEventListener('scroll', onScroll, {passive: true})
-            elRef.current = theRef
+            theRef.addEventListener('scroll', onScroll, {passive: true});
+            elRef.current = theRef;
             const ro = new ResizeObserver(resizeObserver);
             ro.observe(elRef.current);
             return () => ro.disconnect();
@@ -47,16 +46,7 @@ const MyScrollContainer = (scrollCallback, resizeObserver) => ({
             {children}
         </div>
     )
-
-    // return (
-    //     <div ref={ref} style={{
-    //         ...style, border: '5px dashed gray',
-    //         borderRadius: '4px',
-    //     }} tabIndex={0} className={className}>
-    //         {children}
-    //     </div>
-    // )
-}
+};
 
 
 export default MyScrollContainer

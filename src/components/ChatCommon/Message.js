@@ -8,7 +8,7 @@ import {fade} from "@material-ui/core/styles/colorManipulator";
 import AvatarColor from "../../services/AvatarColor"
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import AttachmentShow from "./AttachmentShow";
+import AttachmentShowH from "./AttachmentShowH";
 import {observer} from "mobx-react";
 import "../../css/message.css"
 import VisibilitySensor from "react-visibility-sensor";
@@ -165,7 +165,7 @@ class Message extends React.Component {
                                                     return (
                                                         <GridListTile style={{height: 'auto'}} key={atta.id}
                                                                       cols={colsNumber}>
-                                                            <AttachmentShow attachment={atta}/>
+                                                            <AttachmentShowH attachment={atta}/>
                                                         </GridListTile>
                                                     )
                                                 })
@@ -241,7 +241,7 @@ class Message extends React.Component {
                                                     return (
                                                         <GridListTile style={{height: 'auto'}} key={atta.id}
                                                                       cols={colsNumber}>
-                                                            <AttachmentShow attachment={atta}/>
+                                                            <AttachmentShowH attachment={atta}/>
                                                         </GridListTile>
                                                     )
                                                 })

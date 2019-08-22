@@ -104,4 +104,10 @@ export default class UserChat extends Chat {
         return rootStore.imageService.images.find(elem => elem.userId === this.user.id);
     }
 
+    processNewMessage(message){
+        if (message.from !== rootStore.accountStore.userId && message.from === this.user.id === rootStore.messagesStore.currentChatId){
+            rootStore.toastService.toastNewMessage(this.getChatEventName(), message.message, this.genereteChatUrl(), this.getAvatarSrc());
+        }
+    }
+
 }

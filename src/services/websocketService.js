@@ -104,7 +104,7 @@ export default class WebsocketService {
                 this.rootStore.messagesStore.onReadMessage(payload.message);
                 break;
             case NEW_GROUP_CHAT:
-                console.log('NEW FUCKIN GROUP CHAT!!!!!' +payload.message.id);
+                // console.log('NEW FUCKIN GROUP CHAT!!!!!' +payload.message.id);
                 this.rootStore.messagesStore.addGroupChat(payload.message.id);
                 break;
             default:

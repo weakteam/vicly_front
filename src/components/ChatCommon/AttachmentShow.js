@@ -159,7 +159,8 @@ const styles = theme => ({
 class AttachmentShow extends React.Component {
     state = {
         messageText: "",
-        imageModal: false
+        imageModal: false,
+        play: false
     };
 
     imagePreviewModalOpen = () => {
@@ -174,37 +175,24 @@ class AttachmentShow extends React.Component {
         })
     };
 
-    // preview() {
-    //     const {classes, theme, attachment} = this.props;
-    //     if (attachment.statusFull === "ready") {
-    //         if (attachment.previewSrc) {
-    //             return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
-    //                         className={classes.attached + " " + classes.imagePreview}/>
-    //         } else {
-    //             const src = getLinkFromMime(attachment.mime);
-    //             return (
-    //                 <div style={{display: "flex"}}>
-    //                     <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
-    //                          className={classes.attachedIcon}/>
-    //                     <div>
-    //                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
-    //                         <Typography className={classes.caption}>15 МБ</Typography>
-    //                     </div>
-    //                 </div>
-    //
-    //             )
-    //         }
-    //     } else if (attachment.statusFull === "loading") {
-    //         return <CircularProgress variant="indeterminate" value={attachment.progressFull}/>
-    //     } else if (attachment.statusFull === "none" || attachment.statusFull === "error") {
-    //         return "ERROR!"
-    //     }
-    // }
+    handleMouseOver = () => {
+        const {attachment} = this.props;
+        if (!attachment.previewSrcBig) {
+            attachment.loadPreviewBig();
+        } else {
+            this.setState({play: true});
+        }
+    };
+    handleMouseOut = () => {
+        this.setState({play: false});
+    };
 
     viewableAttachment() {
         const {classes, theme, attachment} = this.props;
         if (attachment.previewSmall && attachment.previewSrcSmall) {
-            return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrcSmall} alt="kek"
+            return <img onMouseOver={this.handleMouseOver}
+                        onClick={this.imagePreviewModalOpen}
+                        src={attachment.previewSrcSmall} alt="kek"
                         className={classes.attached + " " + classes.imagePreview}/>
         } else if (attachment.previewSmall && attachment.statusPreview === "loading") {
             return <CircularProgress variant={attachment.progressPreview === 100 ? "indeterminate" : "static"}
@@ -351,13 +339,12 @@ class AttachmentShow extends React.Component {
                                                 </div>
                                             </div>
                                             <Divider/>
-                                            {/*  <Typography variant="caption"
-                                                        className={classes.caption}>{attachment.filename}</Typography>*/}
                                         </div>
                                     </div>
                                 </Modal>
                                 {
-                                    this.viewableAttachment()
+                                    this.state.play ? <video className={classes.attached} onMouseOut={this.handleMouseOut} src={attachment.previewSrcBig} autoPlay
+                                                             loop/> : this.viewableAttachment()
                                 }
                             </>
                         ) : (
