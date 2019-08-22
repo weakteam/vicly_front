@@ -48,21 +48,29 @@ function handleContextMenu(message) {
     };
 }
 
+const mapHeight = new Map();
+
 function MessageListH(props) {
     const {chat} = props;
     const virtuoso = useRef(null);
     const list = useRef(null);
     let scrollTop = useRef(0);
+    let oldScrollHeight = useRef(0);
     let scrollHeight = useRef(0);
     let clientHeight = useRef(0);
+    const chatId = (rootStore.messagesStore.isCurrentChatForUser ? 'user' : 'group') + rootStore.messagesStore.currentChatId;
+    if (!mapHeight.has(chatId))
+        mapHeight.set(chatId, {scrollTop: NaN});
 
     const scrollHandler = (event) => {
         scrollTop.current = event.target.scrollTop;
         clientHeight.current = event.target.clientHeight;
+        mapHeight.get(chatId).scrollTop = event.target.scrollTop;
         if (event.target) {
             if (scrollTop.current <= (scrollHeight.current / 10) && !scrolledOnTop.current) {
                 scrolledOnTop.current = true;
-                chat.nextPage();
+                let chat1 = rootStore.messagesStore.getCurrentChatNew();
+                chat1.nextPage();
                 //alert("IAMONTOPFUCKU");
             } else if (scrollTop.current > (scrollHeight.current / 10) && scrolledOnTop.current) {
                 scrolledOnTop.current = false;
@@ -76,27 +84,35 @@ function MessageListH(props) {
             list.current = elem;
         }
         clientHeight.current = elem.clientHeight;
-    }
+    };
 
     let scroller = useRef(ScrollContainer(scrollHandler, ro));
     let scrolledOnTop = useRef(false);
 
+    useLayoutEffect(() => {
+        if (chat.direction === "append" && scrollTop.current + clientHeight.current === oldScrollHeight.current) {
+            list.current.target.scrollTop = scrollHeight.current - clientHeight.current;
+        }
+        if (chat.direction === "prepend" && list.current && !rootStore.messagesStore.isChatChanged()) {
+            list.current.target.scrollTop = scrollTop.current + scrollHeight.current - oldScrollHeight.current;
+        }
+    }, [scrollTop.current, clientHeight.current, scrollHeight.current]);
+
+    useLayoutEffect(() => {
+        let scrollT = mapHeight.get(chatId).scrollTop;
+        if (scrollT === NaN && list.current) {
+            list.current.target.scrollTop = scrollHeight.current;
+        }
+        if ((scrollT || scrollT === 0) && list.current) {
+            list.current.target.scrollTop = scrollT
+        }
+        return () => mapHeight.get(chatId).scrollTop = scrollTop.current;
+    }, [rootStore.messagesStore.currentChatId, rootStore.messagesStore.isCurrentChatForUser]);
+
     const resizeHandler = (height) => {
-        console.log("full list srollHeight:" + height);
-        console.log("full list srollTop:" + scrollTop.current);
-
-        if(rootStore.messagesStore.isChatChanged()){
-            // virtuoso.current.scrollToIndex({index: messages.length, align: "end"});
-        }
-
-        if (chat.direction === "append" && scrollTop.current + clientHeight.current === scrollHeight.current) {
-            virtuoso.current.scrollToIndex({index: messages.length-1, align: "end"});
-            list.current.target.scrollTop = height;
-        }
-        if (chat.direction === "prepend" && list.current) {
-            list.current.target.scrollTop += scrollTop.current - scrollHeight.current;
-        }
-        scrollHeight.current = height
+        if (height === scrollHeight.current) return;
+        oldScrollHeight.current = scrollHeight.current;
+        scrollHeight.current = height;
     };
 
     // ----------------------------------//
@@ -138,11 +154,11 @@ function MessageListH(props) {
         <Virtuoso
             ScrollContainer={scroller.current}
             style={{width: '100%', height: '100%', marginTop: 10, marginBottom: 10}}
-            overscan={100}
+            overscan={0}
             totalCount={messages.length}
             item={rendererVirtuoso}
             ref={virtuoso}
-            heightCallback={resizeHandler}
+            totalListHeightChanged={resizeHandler}
         />
     );
 }
