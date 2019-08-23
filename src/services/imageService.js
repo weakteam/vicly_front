@@ -85,47 +85,6 @@ export default class ImageService {
         return avatar;
     }
 
-    //TODO separate image thumb and full
-    async getImage(attachment) {
-        if (!attachment instanceof Attachment) {
-            throw Error("It's not Attachment instance");
-        }
-        if (attachment.fullSrc) {
-            return
-        }
-        // let image = this.images.get(attachment.id);
-        // if (image)
-        //     return image;
-
-
-        let ajax = new XMLHttpRequest();
-
-        const innerProgressHandler = (event) => {
-            attachment.onLoadFullProgress((event.loaded / event.total) * 100);
-        };
-
-        const innerLoadEnd = (event) => {
-            const image = {
-                id: attachment.id,
-                isAvatar: false,
-                userId: null,
-                small: null,
-                big: URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime}))
-            };
-            this.images.push(image);
-            attachment.onFullLoaded(image);
-        };
-
-        ajax.onprogress = innerProgressHandler;
-        ajax.onload = innerLoadEnd;
-        ajax.onerror = attachment.onLoadError;
-        ajax.onabort = attachment.onLoadError;
-        ajax.responseType = "arraybuffer";
-        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}`, true);
-        ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
-        ajax.send();
-    }
-
     async getImagePreview(attachment, isPreviewBig = false) {
         if (!attachment instanceof Attachment) {
             throw Error("It's not Attachment instance");

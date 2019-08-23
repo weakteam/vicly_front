@@ -1,4 +1,4 @@
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
 import Message from "./Message";
 //import toastService from "../../services/toastService";
 import rootStore from "../RootStore";
@@ -13,19 +13,39 @@ export default class Chat {
     @observable last = null;
     @observable unread = 0;
     // Array of Message objects
-    @observable messages = [];
+    @observable.shallow messages = [];
+    prevMessageLength = 0;
+    direction = null;
     page = 0;
     @observable selected = false;
+    @observable fetching = false;
+    wasFetched = false;
+    lastFetchedPage = null;
+    lastFetchedCount = 0;
+
+    // get direction(){
+    //     let d = this.direction;
+    //     this.direction = null;
+    //     return d;
+    // }
 
     constructor(chatObject, chatType, usersNew) {
         this.chatType = chatType;
         // Messages objects init
         this.last = chatObject.last ? new Message(chatObject.last) : null;
         if (chatObject.messages && chatObject.messages.length) {
-            this.messages = chatObject.messages.map(message => new Message(message))
+            this.messages = chatObject.messages.map(message => new Message(message));
+            this.lastFetchedCount = this.messages.length;
         }
         this.unread = chatObject.unread;
+        // chatObject.userIds.map(userId => {
+        //
+        // });
     }
+
+    // @computed messageLength() {
+    //     return this.messages.length
+    // }
 
     setSelected(isSelected) {
         this.selected = isSelected;
@@ -39,15 +59,20 @@ export default class Chat {
     addMessageToEnd(message) {
         const myselfUserId = rootStore.accountStore.userId;
         // WE MUST ALWAYS FIND CHAT!!!
-        if (rootStore.accountStore.userId === message.from) {
-            this.messages.push(message);
-            this.last = message;
-        } else {
-            this.messages.push(message);
-            this.last = message;
+        this.prevMessageLength = this.messages.length;
+        this.direction = "append";
+        this.messages.push(message);
+        this.last = message;
+        if (rootStore.accountStore.userId !== message.from) {
             message.deliveryMessage();
-            this.addMessageToEndPost(message);
+            this.unread++;
         }
+        this.processNewMessage(message);
+
+    }
+
+    processNewMessage(message){
+        //REALLY ABSTRACT
     }
 
     genereteChatUrl() {
@@ -62,23 +87,24 @@ export default class Chat {
         //REALLY ABSTRACT
     }
 
-    addMessageToEndPost(message) {
-        //MUST BE CALLED IN CHILD!
-        if (rootStore.messagesStore.currentChatId === this.id) {
-            message.readMessage();
-        } else {
-            this.unread++;
-            rootStore.toastService.toastNewMessage(this.getChatEventName(), message.message, this.genereteChatUrl(), this.getAvatarSrc());
-        }
-    }
+    // addMessageToEndPost(message) {
+    //     //MUST BE CALLED IN CHILD!
+    //     if (rootStore.messagesStore.currentChatId === this.chatId) {
+    //     } else {
+    //
+    //     }
+    // }
 
     updateChat(newMessages) {
         if (newMessages.length > 0 && this.messages.find(elem => elem.id === newMessages[0].id) && this.messages.find(elem => elem.id === newMessages[newMessages.length - 1].id)) {
             return;
         }
+        this.direction = "append";
+        this.prevMessageLength = this.messages.length;
         newMessages = newMessages.map(message => new Message(message));
         this.messages = this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.last = this.messages[this.messages.length - 1];
+        this.lastFetchedCount = newMessages.length;
         // FIXME we can't trust this shit! need to retrieve this info from backend
         // let unread = 0;
         // for (let message of newMessages) {
@@ -90,8 +116,10 @@ export default class Chat {
     }
 
     prependChat(newMessages) {
-        newMessages = newMessages.map(message => new Message(message));
-        this.messages = this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
+        newMessages = newMessages.map(message => new Message(message)).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
+        this.direction = "prepend";
+        this.prevMessageLength = this.messages.length;
+        this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
     }
 
     postMessage() {
@@ -100,16 +128,21 @@ export default class Chat {
 
     loadMessages(page) {
         //ABSTRACT
+        this.fetching = true;
     }
 
     loadMessagesAfter(messageId) {
         //ABSTRACT
+        this.fetching = true;
     }
 
-    nextPage() {
+    nextPage = () => {
         rootStore.messagesStore.invalidateChatChanged();
-        this.loadMessages(++this.page);
-    }
+        if (this.lastFetchedCount > 0) {
+            this.direction = "prepend";
+            this.loadMessages(++this.page);
+        }
+    };
 
     postMessage(message) {
         // ABSTRACT

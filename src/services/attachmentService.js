@@ -44,41 +44,6 @@ export default class AttachmentService {
         return attachment;
     }
 
-    async downloadFile(attachment) {
-        if (!attachment instanceof Attachment) {
-            throw Error("It's not Attachment instance");
-        }
-        if (attachment.canShowPreview()) {
-            throw Error("This method only for non-previewable attachments!");
-            // return
-        }
-        if(attachment.fullSrc){
-            throw Error("That attachment already downloaded!!");
-        }
-
-        let ajax = new XMLHttpRequest();
-
-        const innerProgressHandler = (event) => {
-            attachment.onLoadFullProgress((event.loaded / event.total) * 100);
-        };
-
-        const innerLoadEnd = (event) => {
-            const surrogate = {
-                big: URL.createObjectURL(new Blob([ajax.response], {type: attachment.mime}))
-            };
-            attachment.onFullLoaded(surrogate);
-        };
-
-        ajax.onprogress = innerProgressHandler;
-        ajax.onload = innerLoadEnd;
-        ajax.onerror = attachment.onLoadError;
-        ajax.onabort = attachment.onLoadError;
-        ajax.responseType = "blob";
-        ajax.open("GET", `${BACKEND_URL}/attachment/download/${attachment.id}`, true);
-        ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
-        ajax.send();
-    }
-
     loadAttachmentInfo(attachmentId) {
         let attachment = new Attachment({id: attachmentId});
         const innerProgressHandler = (event) => {

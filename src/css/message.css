@@ -1,0 +1,64 @@
+.messageBlock {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: flex;
+    padding-bottom: 10px;
+}
+.avatar {
+    margin-right: 9px;
+    display: flex;
+    align-items: flex-end;
+    border-radius: 0;
+}
+.avatarIco {
+    width: 40px!important;
+    height: 40px!important;
+    border-radius: 5px!important;
+    box-shadow: inset 0 4px 2px 0 rgba(0, 0, 0, 0.08);
+}
+.senderName1 {
+    min-width: max-content;
+    font-weight: 500;
+}
+.caption {
+    margin-left: 14px!important;
+    color: #bbb;
+}
+.mess {
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: flex;
+}
+.fromMeMob {
+    padding: 3px 14px 3px 14px;
+    border-radius: 10px 10px 0px 10px;
+    box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+}
+.nameAndDate {
+    display: flex;
+    align-items: start;
+    width: 100%;
+}
+.gridList {
+    margin: 6px 0 6px 0!important;
+    max-width: 300px;
+}
+.mobileHeaderPosition {
+    display: flex;
+    align-items: start;
+}
+@media (max-width: 599px) {
+    .fromMeMob {
+        max-width: 225px;
+    }
+    .gridList {
+        max-width: 250px;
+    }
+}
+@media (min-width: 600px) and (max-width: 959px) {
+    .fromMeMob {
+        max-width: 300px;
+    }
+}

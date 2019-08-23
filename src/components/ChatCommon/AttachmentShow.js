@@ -9,6 +9,7 @@ import rootStore from "../../store/RootStore";
 import getLinkFromMime from "../../utils/mimetypes";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
+import "../../css/AttachmentShow.css"
 
 function getModalStyle() {
     const top = 50;
@@ -55,14 +56,7 @@ const styles = theme => ({
         objectFit: 'cover',
         paddingRight: 5,
     },
-    attachDiv: {
-        alignSelf: 'center',
-        marginLeft: 'auto',
-        //  margin: '5px 15px 5px 5px',
-        //   width: 110,
-        height: '100%',
-        // backgroundColor: '#f5f5f5'
-    },
+    attachDiv: {},
     filename: {
         maxWidth: 100,
         position: 'absolute',
@@ -79,8 +73,6 @@ const styles = theme => ({
         color: "#f1f1f1",
         fontSize: 32,
         cursor: 'pointer',
-        // fontWeight: "bold",
-        transition: 0.3
     },
     imagePreview: {
         "&:hover":
@@ -167,7 +159,8 @@ const styles = theme => ({
 class AttachmentShow extends React.Component {
     state = {
         messageText: "",
-        imageModal: false
+        imageModal: false,
+        play: false
     };
 
     imagePreviewModalOpen = () => {
@@ -182,37 +175,24 @@ class AttachmentShow extends React.Component {
         })
     };
 
-    // preview() {
-    //     const {classes, theme, attachment} = this.props;
-    //     if (attachment.statusFull === "ready") {
-    //         if (attachment.previewSrc) {
-    //             return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrc} alt="kek"
-    //                         className={classes.attached + " " + classes.imagePreview}/>
-    //         } else {
-    //             const src = getLinkFromMime(attachment.mime);
-    //             return (
-    //                 <div style={{display: "flex"}}>
-    //                     <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
-    //                          className={classes.attachedIcon}/>
-    //                     <div>
-    //                         <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
-    //                         <Typography className={classes.caption}>15 МБ</Typography>
-    //                     </div>
-    //                 </div>
-    //
-    //             )
-    //         }
-    //     } else if (attachment.statusFull === "loading") {
-    //         return <CircularProgress variant="indeterminate" value={attachment.progressFull}/>
-    //     } else if (attachment.statusFull === "none" || attachment.statusFull === "error") {
-    //         return "ERROR!"
-    //     }
-    // }
+    handleMouseOver = () => {
+        const {attachment} = this.props;
+        if (!attachment.previewSrcBig) {
+            attachment.loadPreviewBig();
+        } else {
+            this.setState({play: true});
+        }
+    };
+    handleMouseOut = () => {
+        this.setState({play: false});
+    };
 
     viewableAttachment() {
         const {classes, theme, attachment} = this.props;
         if (attachment.previewSmall && attachment.previewSrcSmall) {
-            return <img onClick={this.imagePreviewModalOpen} src={attachment.previewSrcSmall} alt="kek"
+            return <img onMouseOver={this.handleMouseOver}
+                        onClick={this.imagePreviewModalOpen}
+                        src={attachment.previewSrcSmall} alt="kek"
                         className={classes.attached + " " + classes.imagePreview}/>
         } else if (attachment.previewSmall && attachment.statusPreview === "loading") {
             return <CircularProgress variant={attachment.progressPreview === 100 ? "indeterminate" : "static"}
@@ -325,7 +305,7 @@ class AttachmentShow extends React.Component {
         const {classes, theme, attachment} = this.props;
         const canViewed = attachment.canShowPreview();
         return (
-            <div onClick={this.handleAttachmentDownload} className={classes.attachDiv}>
+            <div onClick={this.handleAttachmentDownload} className="attachDiv">
                 {
                     canViewed ?
                         (
@@ -337,16 +317,16 @@ class AttachmentShow extends React.Component {
                                     onClose={this.imagePreviewModalClose}
                                 >
                                     <div style={getModalStyle()}
-                                         className={classes.paper}>
-                                        <Close onClick={this.imagePreviewModalClose} className={classes.close}/>
-                                        <div style={{width: '100%', textAlign: 'center'}}>
+                                         className="paper">
+                                        <Close onClick={this.imagePreviewModalClose} className="close"/>
+                                        <div className="contentDiv">
                                             {this.state.imageModal ? this.bigPreview(false) : null}
                                             {/*{this.state.imageModal ? this.fullImage(false) : null}*/}
                                         </div>
 
-                                        <div className={classes.commentBlock}>
-                                            <div className={classes.infBlockFirst}>
-                                                <Avatar className={classes.userAvatar}>
+                                        <div className="commentBlock">
+                                            <div className="infBlockFirst">
+                                                <Avatar className="userAvatar">
                                                     {/*{this.accountStore.first_name[0].toUpperCase() + this.accountStore.last_name[0].toUpperCase()}*/}
                                                     LL
                                                 </Avatar>
@@ -357,26 +337,20 @@ class AttachmentShow extends React.Component {
                                                                 noWrap
                                                                 className={classes.userRole}>Программист</Typography>
                                                 </div>
-
                                             </div>
                                             <Divider/>
-                                            {/*  <Typography variant="caption"
-                                                        className={classes.caption}>{attachment.filename}</Typography>*/}
                                         </div>
                                     </div>
-
                                 </Modal>
                                 {
-                                    this.viewableAttachment()
+                                    this.state.play ? <video className={classes.attached} onMouseOut={this.handleMouseOut} src={attachment.previewSrcBig} autoPlay
+                                                             loop/> : this.viewableAttachment()
                                 }
                             </>
-                        )
-                        :
-                        (
+                        ) : (
                             this.non_viewableAttachment()
                         )
                 }
-
             </div>
         )
     }

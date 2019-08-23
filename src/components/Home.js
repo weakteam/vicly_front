@@ -9,6 +9,7 @@ import 'react-contexify/dist/ReactContexify.min.css';
 import HomeScreen from './HomeScreen'
 //import withSplashScreen from "./withSplashScreen";
 import NavDrawer from "./NavDrawer";
+import history from "../store/history";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -280,12 +281,13 @@ class Home extends React.Component {
         const chat = this.messagesStore.getCurrentChatNew();
         if (chat) {
             return (
-                <ChatWindow chat={chat}
-                />
+                <ChatWindow chat={chat}/>
             )
         } else {
-            return <ChatWindowEmpty/>
+            rootStore.messagesStore.invalidateToHome();
+            history.push("/home");
         }
+
 
     };
 
@@ -305,9 +307,9 @@ class Home extends React.Component {
 
     renderChatWindowEmpty = (routeProps) => <ChatWindowEmpty/>;
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return false;
-    }
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     return false;
+    // }
 
     render() {
         const {classes, theme} = this.props;

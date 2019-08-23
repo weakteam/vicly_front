@@ -8,148 +8,78 @@ import {fade} from "@material-ui/core/styles/colorManipulator";
 import AvatarColor from "../../services/AvatarColor"
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import AttachmentShow from "./AttachmentShow";
-import handleViewport from 'react-in-viewport';
+import AttachmentShowH from "./AttachmentShowH";
 import {observer} from "mobx-react";
-
+import "../../css/message.css"
+import VisibilitySensor from "react-visibility-sensor";
 
 const styles = theme => ({
-            root: {
-                paddingBottom: 20,
-
+        fromMe: {
+            boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+            maxWidth: 500,
+            [theme.breakpoints.down('md')]: {
+                maxWidth: 226,
             },
-            rootMob: {
-                paddingBottom: 20,
-                display: 'flex',
-                justifyContent: 'flex-end',
-            },
-            avatar: {
-                marginRight: 9,
-                display: 'flex',
-                alignItems: 'flex-end',
-                borderRadius: 0,
-            },
-            avatarMob: {
-                marginLeft: 9,
-                display: 'flex',
-                alignItems: 'flex-end',
-            },
-            avatarIco: {
-                width: 40,
-                height: 40,
-                borderRadius: 5,
-                boxShadow: 'inset 0px 4px 2px 0px rgba(0, 0, 0, 0.08)',
-            },
-            fromMe: {
-                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-                maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 226,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 300,
-                },
-                backgroundColor: ` ${
-                    theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
-                }`,
-                padding: '3px 14px 3px 14px',
-                borderRadius: '10px 10px 10px 0',
-            },
-
-            fromMeMob: {
-                maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 300,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 225,
-                },
-                backgroundColor: ` ${
-                    theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
-                }`,
-                padding: '3px 14px 3px 14px',
-                borderRadius: '10px 10px 0px 10px',
-                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-            },
-            toMe: {
-                maxWidth: 500,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 226,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 225,
-                },
-                //212C3D
-                backgroundColor: ` ${
-                    theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
-                }`,
-                padding: '3px 14px 3px 14px',
-                borderRadius: '10px 10px 10px 0',
-                boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
-            },
-            messageBlock: {
-                wordWrap: 'break-word',
-                overflowWrap: 'break-word',
-                display: 'flex',
-
-            },
-            caption: {
-                marginLeft: 14,
-                color: '#bbb',
-            },
-            wrap: {
-                maxWidth: 500,
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 300,
-                },
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 300,
-                },
-                padding: 8,
-                backgroundColor: '#efefef',
-                borderRadius: 10,
-            },
-            // If my message not readed yet!
-            nonread: {
-                transition: theme.transitions.create(['border-color', 'box-shadow']),
-                boxShadow: `${fade('#fb8c00', 0.25)} 0 0 0 0.2rem`,
-            },
-            nondelivered: {
-                transition: theme.transitions.create(['border-color', 'box-shadow']),
-                boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
-            },
-            mess: {
-                color: ` ${
-                    theme.palette.type === 'light' ? '#181818' : '#fff'
-                }`,
-                fontSize: '0.8rem',
-                whiteSpace: 'pre-wrap',
-                // wordWrap: 'break-word',
-                //overflowWrap: 'break-word',
-                wordBreak: 'break-all',
-                display: 'flex'
-            },
-            senderName: {
-                minWidth: 'max-content',
-                fontWeight: 500,
-                color: ` ${
-                    theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
-                }`,
-
-            },
-            gridList: {
-                margin: '6px 0px 6px 0px!important',
+            [theme.breakpoints.down('xs')]: {
                 maxWidth: 300,
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: 300,
-                },
-                [theme.breakpoints.down('xs')]: {
-                    maxWidth: 250,
-                },
             },
-        }
-    )
-;
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
+            }`,
+            padding: '3px 14px 3px 14px',
+            borderRadius: '10px 10px 10px 0',
+        },
+        fromMeMob: {
+            maxWidth: 500,
+            [theme.breakpoints.down('md')]: {
+                maxWidth: 300,
+            },
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: 225,
+            },
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
+            }`,
+            padding: '3px 14px 3px 14px',
+            borderRadius: '10px 10px 0px 10px',
+            boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+        },
+        toMe: {
+            maxWidth: 500,
+            [theme.breakpoints.down('md')]: {
+                maxWidth: 226,
+            },
+            [theme.breakpoints.down('xs')]: {
+                maxWidth: 225,
+            },
+            backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
+            }`,
+            padding: '3px 14px 3px 14px',
+            borderRadius: '10px 10px 10px 0',
+            boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
+        },
+        // If my message not readed yet!
+        nonread: {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            boxShadow: `${fade('#fb8c00', 0.25)} 0 0 0 0.2rem`,
+        },
+        nondelivered: {
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
+        },
+        mess: {
+            color: ` ${
+                theme.palette.type === 'light' ? '#181818' : '#fff'
+            }`,
+        },
+        senderName: {
+            color: ` ${
+                theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
+            }`,
+        },
+    }
+);
 
 function handleDelete() {
     alert('You clicked the delete icon.'); // eslint-disable-line no-alert
@@ -161,24 +91,6 @@ function handleClick() {
 
 @observer
 class Message extends React.Component {
-
-    getRandomColor = (letter) => {
-        let col = this.colorMap[letter];
-        if (col) return col;
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    };
-
-    colorMap = {
-        "Р": "#2ab49b",
-        "А": "#d15c17",
-        "И": "#9e72cf"
-    };
-
 
     formatDate = (timestamp) => {
         const now = new Date(Date.now());
@@ -193,9 +105,7 @@ class Message extends React.Component {
         }
     };
 
-    render() {
-        // Was the message sent by the current user. If so, add a css class
-        const fromMe = this.props.fromMe ? 'from-me' : '';
+    mobileMessages = () => {
         const {classes} = this.props;
         const name = this.props.userInfo.first_name[0];
         let colorChange = AvatarColor.getColor(name);
@@ -205,43 +115,57 @@ class Message extends React.Component {
         } else {
             colsNumber = 1;
         }
-
-        let mobileMessage;
-
-        // const imagesAttachments = this.props.messageInfo.attachments.filter(elem => elem.canShowPreview() || elem.dataFetched !== "ready");
-        // const otherAttachments = this.props.messageInfo.attachments.filter(elem => !elem.canShowPreview() && elem.dataFetched !== "ready");
-        //
-        // const visibleSensor = !this.props.messageInfo.timestamp_read && !this.props.fromMe;
-
+        const fromMe = this.props.messageInfo.fromMe ? 'from-me' : '';
         const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
-
-        if (fromMe) {
-            mobileMessage =
-
-                <div className={classes.messageBlock}>
+        return (
+            <Hidden mdUp>
+                <div style={{flexDirection: fromMe ? 'row-reverse' : ''}} className="messageBlock">
+                    <div style={{margin: fromMe ? '0 0 0 9px' : ''}} className="avatar">
+                        {
+                            this.props.avatar ?
+                                (
+                                    <Avatar className="avatarIco"
+                                            src={this.props.avatar.small}/>
+                                )
+                                :
+                                (
+                                    <Avatar className="avatarIco"
+                                            style={{backgroundColor: `${colorChange}`}}>
+                                        {this.props.userInfo.first_name[0].toUpperCase()}
+                                    </Avatar>
+                                )
+                        }
+                    </div>
                     <div onContextMenu={this.props.onContextMenu}
                          className={fromMe ? classes.fromMeMob + " " + msgColor : classes.toMe}>
-                        <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
-                            <Typography
-                                variant="body2"
-                                className={classes.senderName}>Я</Typography>
+                        <div className="mobileHeaderPosition">
+                            {
+                                fromMe ? (
+                                    <Typography
+                                        variant="body2"
+                                        className={classes.senderName + ' senderName1'}>Я</Typography>
+                                ) : (
+                                    <Typography
+                                        variant="body2"
+                                        className={classes.senderName + ' senderName1'}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
+                                )
+                            }
                             <Typography variant="caption"
-                                        className={classes.caption}
-                                        style={{marginRight: 14}}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
+                                        className="caption">{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                         </div>
-                        <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
-
+                        <Typography variant="body1"
+                                    className={classes.mess + ' mess'}>{this.props.messageInfo.message}</Typography>
                         {
                             this.props.messageInfo.attachments.length ?
                                 (
                                     <>
-                                        <GridList className={classes.gridList} cols={2}>
+                                        <GridList className="gridList" cols={2}>
                                             {
                                                 this.props.messageInfo.attachments.map(atta => {
                                                     return (
                                                         <GridListTile style={{height: 'auto'}} key={atta.id}
                                                                       cols={colsNumber}>
-                                                            <AttachmentShow attachment={atta}/>
+                                                            <AttachmentShowH attachment={atta}/>
                                                         </GridListTile>
                                                     )
                                                 })
@@ -251,160 +175,119 @@ class Message extends React.Component {
                                     </>
                                 ) : null
                         }
-
                     </div>
-                    <div className={classes.avatarMob}>
+                </div>
+            </Hidden>
+        )
+    };
+
+    desktopMessages = () => {
+        const {classes} = this.props;
+        const name = this.props.userInfo.first_name[0];
+        let colorChange = AvatarColor.getColor(name);
+        let colsNumber;
+        if (this.props.messageInfo.attachments.length === 1) {
+            colsNumber = 2;
+        } else {
+            colsNumber = 1;
+        }
+        const fromMe = this.props.messageInfo.fromMe ? 'from-me' : '';
+        const msgColor = this.props.messageInfo.timestamp_read ? "" : this.props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
+        return (
+            <Hidden smDown>
+                <div className="messageBlock">
+                    <div className="avatar">
                         {
                             this.props.avatar ?
                                 (
-                                    <Avatar className={classes.avatarIco}
+                                    <Avatar className="avatarIco"
                                             src={this.props.avatar.small}/>
                                 )
                                 :
                                 (
-                                    <Avatar className={classes.avatarIco}
+                                    <Avatar className="avatarIco"
                                             style={{backgroundColor: `${colorChange}`}}>
                                         {this.props.userInfo.first_name[0].toUpperCase()}
                                     </Avatar>
                                 )
                         }
+
                     </div>
-                </div>
-        } else {
-            mobileMessage = <div className={classes.messageBlock}>
-                <div className={classes.avatar}>
-                    {
-                        this.props.avatar ?
-                            (
-                                <Avatar className={classes.avatarIco}
-                                        src={this.props.avatar.small}/>
+                    <div onContextMenu={this.props.onContextMenu}
+                         className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
+                        {
+                            fromMe ? (
+                                <Typography
+                                    variant="body2"
+                                    className={classes.senderName + ' senderName1'}>Я</Typography>
+                            ) : (
+                                <Typography
+                                    variant="body2"
+                                    className={classes.senderName + ' senderName1'}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
                             )
-                            :
-                            (
-                                <Avatar className={classes.avatarIco}
-                                        style={{backgroundColor: `${colorChange}`}}>
-                                    {this.props.userInfo.first_name[0].toUpperCase()}
-                                </Avatar>
-                            )
-                    }
+                        }
+
+                        <Typography variant="body1" className={classes.mess + ' mess'}>
+                            {this.props.messageInfo.message}
+                        </Typography>
+
+                        {
+                            this.props.messageInfo.attachments.length ?
+                                (
+                                    <>
+                                        <GridList className="gridList" cols={2}>
+                                            {
+                                                this.props.messageInfo.attachments.map(atta => {
+                                                    return (
+                                                        <GridListTile style={{height: 'auto'}} key={atta.id}
+                                                                      cols={colsNumber}>
+                                                            <AttachmentShowH attachment={atta}/>
+                                                        </GridListTile>
+                                                    )
+                                                })
+                                            }
+                                        </GridList>
+                                    </>
+                                ) : null
+                        }
+                    </div>
+                    <Typography variant="caption"
+                                className="caption">{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
                 </div>
-                <div onContextMenu={this.props.onContextMenu}
-                     className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
-                    <div style={{display: 'inline-flex', alignItems: 'center', width: '-webkit-fill-available'}}>
-                        <Typography
-                            variant="body2"
-                            className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
-                        <Typography variant="caption"
-                                    className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
-                    </div>
-                    <Typography variant="body1" className={classes.mess}>{this.props.message}</Typography>
-                    {
-                        this.props.messageInfo.attachments.length ?
-                            (
-                                <>
-                                    <GridList className={classes.gridList} cols={2}>
-                                        {
-                                            this.props.messageInfo.attachments.map(atta => {
-                                                return (
-                                                    <GridListTile style={{height: 'auto'}} key={atta.id}
-                                                                  cols={colsNumber}>
-                                                        <AttachmentShow attachment={atta}/>
-                                                    </GridListTile>
-                                                )
-                                            })
-                                        }
-                                    </GridList>
-
-                                </>
-                            ) : null
-                    }
-                </div>
-            </div>
-        }
-        return (
-            <div ref={this.props.forwardedRef}>
-                <Hidden smDown implementation="css">
-                    <div className={classes.root}>
-                        <div className={classes.messageBlock}>
-                            <div className={classes.avatar}>
-                                {
-                                    this.props.avatar ?
-                                        (
-                                            <Avatar className={classes.avatarIco}
-                                                    src={this.props.avatar.small}/>
-                                        )
-                                        :
-                                        (
-                                            <Avatar className={classes.avatarIco}
-                                                    style={{backgroundColor: `${colorChange}`}}>
-                                                {this.props.userInfo.first_name[0].toUpperCase()}
-                                            </Avatar>
-                                        )
-                                }
-
-                            </div>
-                            <div onContextMenu={this.props.onContextMenu}
-                                 className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
-                                <div style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    width: '-webkit-fill-available'
-                                }}>
-                                    {
-                                        fromMe ? (
-                                            <Typography
-                                                variant="body2"
-                                                className={classes.senderName}>Я</Typography>
-                                        ) : (
-                                            <Typography
-                                                variant="body2"
-                                                className={classes.senderName}>{`${this.props.userInfo.first_name} ${this.props.userInfo.last_name}`}</Typography>
-                                        )
-                                    }
-
-                                </div>
-                                <Typography variant="body1" className={classes.mess}>
-                                    {this.props.message}
-                                </Typography>
-
-                                {
-                                    this.props.messageInfo.attachments.length ?
-                                        (
-                                            <>
-                                                <GridList className={classes.gridList} cols={2}>
-                                                    {
-                                                        this.props.messageInfo.attachments.map(atta => {
-                                                            return (
-                                                                <GridListTile style={{height: 'auto'}} key={atta.id}
-                                                                              cols={colsNumber}>
-                                                                    <AttachmentShow attachment={atta}/>
-                                                                </GridListTile>
-                                                            )
-                                                        })
-                                                    }
-                                                </GridList>
-
-                                            </>
-                                        ) : null
-                                }
-
-
-                            </div>
-                            <Typography variant="caption"
-                                        className={classes.caption}>{this.formatDate(this.props.messageInfo.timestamp_post.timestamp)}</Typography>
-                        </div>
-                    </div>
-                </Hidden>
-
-
-                <Hidden mdUp implementation="css">
-                    <div className={fromMe ? classes.rootMob : classes.root}>
-                        {mobileMessage}
-                    </div>
-                </Hidden>
-            </div>
-
+            </Hidden>
         );
+    };
+
+    componentDidMount() {
+        // this.props.cache.clear(this.props.index);
+        // this.props.listRef.current.recomputeRowHeights(this.props.index);
+        // this.props.measure();
+    }
+
+    render() {
+
+        const {messageInfo} = this.props;
+
+        if (!messageInfo.fromMe && !messageInfo.timestamp_read) {
+            return (
+                <VisibilitySensor active={true}
+                                  onEnterViewport={messageInfo.onViewport}
+                                  onChange={messageInfo.onViewport}>
+                    <div ref={this.props.forwardedRef}>
+                        {this.desktopMessages()}
+                        {this.mobileMessages()}
+                    </div>
+                </VisibilitySensor>
+            );
+        } else {
+            return (
+                <div ref={this.props.forwardedRef}>
+                    {this.desktopMessages()}
+                    {this.mobileMessages()}
+                </div>
+            );
+        }
+
     }
 }
 
@@ -414,6 +297,4 @@ Message.defaultProps = {
     fromMe: false
 };
 
-const MessageViewport = handleViewport(Message, {}, {disconnectOnLeave: true});
-
-export default withStyles(styles, {withTheme: true, index: 1})(MessageViewport);
+export default withStyles(styles, {withTheme: true, index: 1})(Message);

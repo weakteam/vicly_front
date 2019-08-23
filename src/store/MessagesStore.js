@@ -7,6 +7,7 @@ import Chat from "./models/Chat";
 import UserChat from "./models/UserChat";
 import GroupChat from "./models/GroupChat";
 import Message from "./models/Message";
+import rootStore from "./RootStore";
 
 export default class MessagesStore {
     @observable.shallow groups = [];
@@ -25,6 +26,9 @@ export default class MessagesStore {
     @observable chatsFetched = false;
     err_message = "";
     @observable messagesLoading = false;
+
+    scrollTopUC = new Map();
+    scrollTopGC = new Map();
 
     invalidate() {
         this.groupChats = [];
@@ -70,11 +74,11 @@ export default class MessagesStore {
                     // If opened user chat
                     let currentChat = this.getCurrentChatNew();
                     let previousChat = this.getPreviousChatNew();
-                    if (currentChat.messages.length <= 20) {
+                    if (!currentChat.wasFetched) {
                         currentChat.loadMessages(currentChat.page);
                     } else {
-                        const lastMessage = currentChat.messages[currentChat.messages.length - 1];
-                        if (lastMessage) {
+                        if (currentChat.messages.length) {
+                            const lastMessage = currentChat.messages[currentChat.messages.length - 1];
                             currentChat.loadMessagesAfter(lastMessage.id);
                         }
                     }
@@ -302,7 +306,9 @@ export default class MessagesStore {
     }
 
     isChatChanged() {
-        return this.currentChatId !== this.previousCurrentChatId || this.isCurrentChatForUser !== this.previousIsCurrentChatForUser;
+        let l = this.currentChatId !== this.previousCurrentChatId || this.isCurrentChatForUser !== this.previousIsCurrentChatForUser;
+        this.invalidateChatChanged();
+        return l;
     }
 
     invalidateChatChanged() {
@@ -310,7 +316,27 @@ export default class MessagesStore {
         this.previousCurrentChatId = this.currentChatId;
     }
 
+    invalidateToHome() {
+        this.previousIsCurrentChatForUser = null;
+        this.previousCurrentChatId = null;
+        this.currentChatId = null;
+        this.isCurrentChatForUser = null;
+    }
+
     addGroupChat(message) {
 
     };
+
+    getSavedScrollTop() {
+        return this.isCurrentChatForUser ? this.scrollTopUC.get(this.currentChatId) : this.scrollTopGC.get(this.currentChatId);
+    }
+
+    saveScrollTop(scrollTop) {
+        let chat = this.getCurrentChatNew();
+        if (this.isCurrentChatForUser) {
+            this.scrollTopUC.set(this.currentChatId, scrollTop);
+        } else {
+            this.scrollTopGC.set(this.currentChatId, scrollTop);
+        }
+    }
 }

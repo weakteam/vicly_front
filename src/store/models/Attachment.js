@@ -13,11 +13,13 @@ export default class Attachment {
     metadata = null;
     timestamp = null;
     mime = "";
+    type = "";
     @observable dataFetched = "none";
     // One of ["none" | "loading" | ready | "error"]
     @observable statusFull = "none";
     // One of ["none" | "loading" | ready | "error"]
-    @observable statusPreview = "none";
+    @observable statusPreviewSmall = "none";
+    @observable statusPreviewBig = "none";
     @observable fullSrc = null;
     previewBig = null;
     previewSmall = null;
@@ -27,6 +29,7 @@ export default class Attachment {
     @observable progressFull = null;
     // int (percent)
     @observable progressPreview = null;
+
 
     constructor(attachmentObject) {
         this.id = attachmentObject.id || null;
@@ -57,9 +60,10 @@ export default class Attachment {
     }
 
     onLoadPreviewProgress(progress) {
-        if (this.statusPreview !== "loading") {
-            this.statusPreview = "loading";
-        }
+        // FIXME
+        // if (this.statusPreviewSmall !== "loading") {
+        //     this.statusPreviewSmall = "loading";
+        // }
         this.progressPreview = progress;
         // console.log("download preview:" + progress + "%");
     }
@@ -82,71 +86,54 @@ export default class Attachment {
         this.timestamp = jsonResponse.timestamp;
         this.metadata = jsonResponse.metadata;
         this.filename = jsonResponse.filename;
-        this.previewSmall = new Attachment(jsonResponse.previewSmall);
-        this.previewBig = new Attachment(jsonResponse.previewBig);
+        this.previewSmall = jsonResponse.previewSmall && new Attachment(jsonResponse.previewSmall);
+        this.previewBig = jsonResponse.previewBig && new Attachment(jsonResponse.previewBig);
         this.size = jsonResponse.size;
         this.mime = jsonResponse.mime;
-        // TODO download image !!!
-        // if (this.mime.st) {
-        //     this.previewSrc = URL.createObjectURL(file)
-        // }
-        if (this.metadata && this.metadata["Content-Type"] && this.metadata["Content-Type"] !== this.mime) {
-            // console.log("Apache Tika mime != Browser mime!!!");
-        }
 
         this.dataFetched = "ready";
-
-        if (this.canShowPreview()) {
-            this.statusPreview = "loading";
-            rootStore.imageService.getImagePreview(this, false)
-                .catch(err => console.log("Error while load small preview image:" + err));
+        if (this.mime.startsWith("image/")) {
+            this.type = "image";
+        } else if (this.mime.startsWith("video/")) {
+            this.type = "video";
+        } else {
+            this.type = "file";
         }
         rootStore.attachmentService.addAttachment(this);
     };
 
+    //FIXME move to downloadService
     loadFull = () => {
-        this.statusFull = "loading";
-        if (this.canShowPreview()) {
-            rootStore.imageService.getImage(this)
-                .catch(err => console.log("Error while load full image:" + err));
-        } else {
-            rootStore.attachmentService.downloadFile(this)
-                .catch(err => console.log("Error while load full image:" + err));
-        }
+        // this.statusFull = "loading";
+        // if (this.canShowPreview()) {
+        //     rootStore.imageService.getImage(this)
+        //         .catch(err => console.log("Error while load full image:" + err));
+        // } else {
+        //     rootStore.attachmentService.downloadFile(this)
+        //         .catch(err => console.log("Error while load full image:" + err));
+        // }
     };
-
-    downloadAttachmentFromUrl() {
-        if (!this.fullSrc) {
-            alert("Файл еще не загружен...")
-        }
-        let a = document.createElement('a');
-        a.style = "display: none";
-        a.href = this.fullSrc;
-        a.download = this.filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
 
     onPreviewSmallLoaded(image) {
         this.previewSrcSmall = image;
-        this.statusPreview = "ready";
+        this.statusPreviewSmall = "ready";
     }
 
     onPreviewBigLoaded(image) {
         this.previewSrcBig = image;
-        this.statusPreview = "ready";
+        this.statusPreviewBig = "ready";
     }
 
     loadPreviewBig() {
-        this.statusPreview = "loading";
+        this.statusPreviewBig = "loading";
         rootStore.imageService.getImagePreview(this, true)
-            .catch(err => console.log("Error while load small preview image:" + err));
+            .catch(err => console.log("Error while load big preview image:" + err));
     }
 
-    onFullLoaded(imageServiceObject) {
-        this.fullSrc = imageServiceObject.big;
-        this.statusFull = "ready";
+    loadPreviewSmall() {
+        this.statusPreviewSmall = "loading";
+        rootStore.imageService.getImagePreview(this, false)
+            .catch(err => console.log("Error while load small preview image:" + err));
     }
 
     onLoadError(err) {
@@ -156,10 +143,23 @@ export default class Attachment {
 
     canShowPreview() {
         return this.previewSmall || this.previewBig;
-
     }
 
-    // TODO MAYBE NEED RENAME TO onFetched!?
+    isImage() {
+        return this.type === "image";
+    }
+
+    isVideo() {
+        return this.type === "video";
+    }
+
+    isMedia() {
+        return this.isImage() || this.isVideo();
+    }
+
+
+    //FIXME need review
+    //TODO MAYBE NEED RENAME TO onFetched!?
     onUploadComplete = (event) => {
         let request = event.currentTarget;
         if (request.status !== 200) {
