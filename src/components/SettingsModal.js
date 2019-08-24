@@ -36,7 +36,7 @@ const styles = theme => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
-        borderRadius: 0,
+        borderRadius: 10,
         justifyContent: 'center',
         // padding: 30,
         boxShadow: theme.shadows[0],
@@ -58,7 +58,7 @@ const styles = theme => ({
         position: 'absolute',
         right: 0,
         left: 0,
-        borderRadius: '5px 5px 0px 0px',
+        borderRadius: '10px 10px 0px 0px',
     },
     header: {
         textAlign: 'start',

@@ -9,7 +9,6 @@
     "@material-ui/styles": "latest",
     "animate.css": "^3.7.2",
     "array-flat-polyfill": "^1.0.1",
-    "faker": "^4.1.0",
     "halogenium": "^2.2.3",
     "hoist-non-react-statics": "latest",
     "intersection-observer": "^0.6.0",

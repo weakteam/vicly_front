@@ -8,9 +8,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
     emptyChat: {
-        top: 40,
+        top: 0,
         bottom: 0,
         right: 0,
+        left: 0,
         [theme.breakpoints.down('xs')]: {
             left: 0,
         },
@@ -19,15 +20,11 @@ const styles = theme => ({
                 theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
                 }`,
         },
-        left: '30%',
-        position: 'fixed',
+        position: 'absolute',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    empty: {
-        textAlign: 'center',
-    }
 });
 
 @observer
@@ -36,10 +33,7 @@ class ChatLoader extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.emptyChat}>
-                <div className={classes.empty}>
                     <CircularProgress/>
-                    <Typography variant="overline" className={classes.text}>Загрузка</Typography>
-                </div>
             </div>
         );
     }

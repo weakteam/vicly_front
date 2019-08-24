@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import InviteIcon from "./InviteIcon";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import rootStore from "../store/RootStore";
+import "animate.css/animate.min.css"
 
 const {accountStore} = rootStore;
 
@@ -83,7 +84,7 @@ class ProfileBar extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-            <div className={classes.position}>
+            <div className={classes.position +' animated fadeInDown faster'}>
                 <ProfileIco
                     changeThemeType={this.props.changeThemeType}
                     handleLogout={this.handleLogoutFunc}

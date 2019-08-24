@@ -14,6 +14,7 @@ import {observer} from "mobx-react";
 import Badge from "@material-ui/core/Badge";
 import Loyalty from "@material-ui/icons/Loyalty"
 import deferComponentRender from "./DeferredWrapper";
+import "animate.css/animate.min.css"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -104,7 +105,7 @@ class Workgroup extends React.Component {
         let colorName = this.workGroupColor(wcolor);
 
         return (
-            <div className={classes.WorkGroupBack}>
+            <div className={classes.WorkGroupBack +' animated fadeInDown faster'}>
                 <ListItem disableGutters button onClick={this.handleClick} className={classes.groupName}>
                         <div className={classes.workgroupName}>
                             <Typography variant='button' className={classes.text}>
