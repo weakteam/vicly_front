@@ -6,6 +6,7 @@ class Download {
     attachmentId = null;
     @observable progress = null;
     error = "";
+    // done | abort | loading | error
     @observable status = "";
     src = null;
     attachment = null;
@@ -16,7 +17,7 @@ class Download {
         this.rootStore = rootStore;
     }
 
-    start() {
+    start = () => {
         let ajax = new XMLHttpRequest();
         const innerProgressHandler = (event) => {
             this.progress = (event.loaded / event.total) * 100;
@@ -41,9 +42,10 @@ class Download {
         ajax.open("GET", `${BACKEND_URL}/attachment/download/${this.attachmentId}`, true);
         ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
         ajax.send();
+        this.status = "loading";
     }
 
-    save() {
+    save = () => {
         if (this.status === "done" && this.src) {
             let a = document.createElement('a');
             a.style = "display: none";
