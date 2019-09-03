@@ -1,6 +1,7 @@
 import {observable} from "mobx";
 import {BACKEND_URL} from "../../common";
 import rootStore from "../RootStore";
+import Attachment from "./Attachment";
 
 
 export default class Message {
@@ -16,6 +17,7 @@ export default class Message {
     timestamp_change = null;
     @observable timestamp_delivery = null;
     timestamp_post = null;
+    formatted_time = null;
     @observable timestamp_read = null;
 
     constructor(messageObject) {
@@ -31,8 +33,14 @@ export default class Message {
         this.timestamp_delivery = messageObject.timestamp_delivery;
         this.timestamp_read = messageObject.timestamp_read;
         this.attachments = messageObject.attachments;
+        this.formatted_time = this.formatTime(this.timestamp_post.timestamp);
         if (this.attachments.length) {
-            this.attachments = this.attachments.map(id => rootStore.attachmentService.loadAttachmentInfo(id))
+            this.attachments = this.attachments.map(attachOrId => {
+                if (typeof attachOrId === "string")
+                    return rootStore.attachmentService.loadAttachmentInfo(attachOrId);
+                else
+                    return new Attachment(attachOrId);
+            })
         }
     }
 
@@ -67,5 +75,18 @@ export default class Message {
             this.readMessage();
         }
 
+    };
+
+    formatTime(timestamp) {
+        const now = new Date(Date.now());
+        let date = new Date(timestamp);
+        const today = now.toDateString() === date.toDateString();
+        const mins = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        if (today) {
+            return date.getHours() + ":" + mins;
+        } else {
+            //  return date.getHours() + ":" + mins + " " + date.getDay() + "/" + date.getMonth() + "/" + (date.getFullYear() - 2000);
+            return date.getHours() + ":" + mins;
+        }
     }
 }

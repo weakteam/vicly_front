@@ -32,15 +32,32 @@ export default class Attachment {
 
 
     constructor(attachmentObject) {
-        this.id = attachmentObject.id || null;
-        this.fid = attachmentObject.fid || null;
-        this.user_id = attachmentObject.user_id || null;
-        this.filename = attachmentObject.filename || null;
-        this.size = attachmentObject.size || null;
-        this.is_avatar = attachmentObject.is_avatar || null;
-        this.metadata = attachmentObject.metadata || null;
-        this.timestamp = attachmentObject.timestamp || null;
-        this.mime = attachmentObject.mime || null;
+        this.createInstance(attachmentObject)
+    }
+
+    createInstance(attachmentObject) {
+        this.id = attachmentObject.id;
+        this.user_id = attachmentObject.user_id;
+        this.is_avatar = attachmentObject.is_avatar;
+        this.timestamp = attachmentObject.timestamp;
+        this.metadata = attachmentObject.metadata;
+        this.filename = attachmentObject.filename;
+        this.previewSmall = attachmentObject.previewSmall && new Attachment(attachmentObject.previewSmall);
+        this.previewBig = attachmentObject.previewBig && new Attachment(attachmentObject.previewBig);
+        this.size = attachmentObject.size;
+        this.mime = attachmentObject.mime;
+
+        this.dataFetched = "ready";
+        if (this.mime) {
+            if (this.mime.startsWith("image/")) {
+                this.type = "image";
+            } else if (this.mime.startsWith("video/")) {
+                this.type = "video";
+            } else {
+                this.type = "file";
+            }
+        }
+        rootStore.attachmentService.addAttachment(this);
     }
 
     onUploadProgress(progress) {
@@ -60,12 +77,7 @@ export default class Attachment {
     }
 
     onLoadPreviewProgress(progress) {
-        // FIXME
-        // if (this.statusPreviewSmall !== "loading") {
-        //     this.statusPreviewSmall = "loading";
-        // }
         this.progressPreview = progress;
-        // console.log("download preview:" + progress + "%");
     }
 
     // TODO MAYBE NEED RENAME TO onFetched!?
@@ -77,29 +89,7 @@ export default class Attachment {
             return;
         }
         let jsonResponse = JSON.parse(request.responseText);
-        // console.log("upload complete:" + request.responseText);
-        ////////////////////////////////////////////////////
-
-        this.id = jsonResponse.id;
-        this.user_id = jsonResponse.user_id;
-        this.is_avatar = jsonResponse.is_avatar;
-        this.timestamp = jsonResponse.timestamp;
-        this.metadata = jsonResponse.metadata;
-        this.filename = jsonResponse.filename;
-        this.previewSmall = jsonResponse.previewSmall && new Attachment(jsonResponse.previewSmall);
-        this.previewBig = jsonResponse.previewBig && new Attachment(jsonResponse.previewBig);
-        this.size = jsonResponse.size;
-        this.mime = jsonResponse.mime;
-
-        this.dataFetched = "ready";
-        if (this.mime.startsWith("image/")) {
-            this.type = "image";
-        } else if (this.mime.startsWith("video/")) {
-            this.type = "video";
-        } else {
-            this.type = "file";
-        }
-        rootStore.attachmentService.addAttachment(this);
+        this.createInstance(jsonResponse);
     };
 
     //FIXME move to downloadService
@@ -179,17 +169,8 @@ export default class Attachment {
         this.filename = jsonResponse.filename;
         this.size = jsonResponse.size;
         this.mime = jsonResponse.mime;
-
-
         this.dataFetched = "ready";
-
         this.statusPreview = "ready";
-        // if (this.canShowPreview()) {
-        //     // rootStore.imageService.getImagePreview(this)
-        //     //     .catch(err => console.log("Error while load image:" + err));
-        // } else {
-        //
-        // }
         rootStore.attachmentService.addAttachment(this);
     };
 

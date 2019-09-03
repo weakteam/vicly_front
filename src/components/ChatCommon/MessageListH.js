@@ -67,7 +67,7 @@ function MessageListH(props) {
         clientHeight.current = event.target.clientHeight;
         mapHeight.get(chatId).scrollTop = event.target.scrollTop;
         if (event.target) {
-            if (scrollTop.current <= (scrollHeight.current / 10) && !scrolledOnTop.current) {
+            if (scrollTop.current === 0) {
                 scrolledOnTop.current = true;
                 let chat1 = rootStore.messagesStore.getCurrentChatNew();
                 chat1.nextPage();
@@ -146,7 +146,6 @@ function MessageListH(props) {
                 onContextMenu={() => {
                 }}
             />
-
         );
     }
 
@@ -154,11 +153,12 @@ function MessageListH(props) {
         <Virtuoso
             ScrollContainer={scroller.current}
             style={{width: '100%', height: '100%', marginTop: 10, marginBottom: 10}}
-            overscan={0}
+            overscan={200}
             totalCount={messages.length}
             item={rendererVirtuoso}
             ref={virtuoso}
             totalListHeightChanged={resizeHandler}
+            computeItemKey={(index)=>messages[index].key}
         />
     );
 }

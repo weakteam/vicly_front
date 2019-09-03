@@ -140,7 +140,7 @@ export default class Chat {
         rootStore.messagesStore.invalidateChatChanged();
         if (this.lastFetchedCount > 0) {
             this.direction = "prepend";
-            this.loadMessages(++this.page);
+            return this.loadMessages(++this.page);
         }
     };
 

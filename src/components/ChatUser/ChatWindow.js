@@ -7,7 +7,6 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
-import ChatWindowEmpty from "../ChatCommon/ChatLoader";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -36,7 +35,7 @@ const styles = theme => ({
         bottom: 0,
         left: 0,
         padding: '59px 0 57px 20px',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         [theme.breakpoints.down('md')]: {
             // left: 280,
             padding: '60px 20px 57px 20px',
