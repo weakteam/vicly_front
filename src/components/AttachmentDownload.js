@@ -80,6 +80,9 @@ export default observer(function AttachmentDownload(props) {
                                     Download
                                 </Button>) : null
                         }
+                        <Button onClick={() => rootStore.downloadService.deleteDownload(download.attachment)}>
+                            Delete
+                        </Button>
                     </ListItemAvatar>
                     <ListItemText primary={download.attachment.filename}
                                   secondary={bytesToSize(download.attachment.size)}/>

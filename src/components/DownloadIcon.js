@@ -18,6 +18,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import AttachmentDownload from "./AttachmentDownload";
+import {observer} from "mobx-react";
 
 const {accountStore, messagesStore} = rootStore;
 const top = 50;
@@ -83,7 +84,7 @@ const styles = theme => ({
     },
 });
 
-function DownloadIcon(props) {
+const DownloadIcon = observer(function DownloadIcon(props) {
     const {classes} = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -96,7 +97,7 @@ function DownloadIcon(props) {
     }
 
     const open = Boolean(anchorEl);
-
+    const downloads = Array.from(rootStore.downloadService.downloads);
     return (
         <div className={classes.root}>
             <IconButton onClick={handleClick}>
@@ -118,19 +119,20 @@ function DownloadIcon(props) {
                     horizontal: 'center',
                 }}
             >
-
                 <List className={classes.root}>
                     {
-                        Array.from(rootStore.downloadService.downloads)
-                            .map(download => (
+                        downloads.length ?
+                            downloads.map(download => (
                                 <AttachmentDownload download={download[1]}/>
                             ))
+                            :
+                            "No downloads"
                     }
                 </List>
             </Popover>
         </div>
     );
-}
+});
 
 // We need an intermediary variable for handling the recursive nesting.
 const SimpleModalWrapped = withStyles(styles, {withTheme: true, index: 1})(DownloadIcon);
