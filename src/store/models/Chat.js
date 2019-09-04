@@ -119,7 +119,7 @@ export default class Chat {
         newMessages = newMessages.map(message => new Message(message)).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.direction = "prepend";
         this.prevMessageLength = this.messages.length;
-        this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
+        this.messages.unshift(...newMessages);
     }
 
     postMessage() {

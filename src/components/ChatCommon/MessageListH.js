@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {memo, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import Message from './Message';
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
@@ -71,7 +71,6 @@ function MessageListH(props) {
                 scrolledOnTop.current = true;
                 let chat1 = rootStore.messagesStore.getCurrentChatNew();
                 chat1.nextPage();
-                //alert("IAMONTOPFUCKU");
             } else if (scrollTop.current > (scrollHeight.current / 10) && scrolledOnTop.current) {
                 scrolledOnTop.current = false;
             }
@@ -117,14 +116,16 @@ function MessageListH(props) {
 
     // ----------------------------------//
     const myUserId = accountStore.userId;
+    const users = chat.user && [chat.user] || chat.users;
+
     //FIXME group chats and user chats
-    const avatar_images = [chat.user].map(chatUser =>
+    const avatar_images = users.map(chatUser =>
         rootStore.imageService.images.find(elem => elem.userId === chatUser.id) || null
     );
     avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null);
 
     const messages = chat.messages.map(message => {
-        const user = [chat.user].find(user => message.from === user.id);
+        const user = users.find(user => message.from === user.id);
         const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
         return {
             key: message.id,
@@ -152,7 +153,7 @@ function MessageListH(props) {
     return (
         <Virtuoso
             ScrollContainer={scroller.current}
-            style={{width: '100%', height: '100%', marginTop: 10, marginBottom: 10}}
+            style={{width: '100%', height: '100%'}}
             overscan={200}
             totalCount={messages.length}
             item={rendererVirtuoso}

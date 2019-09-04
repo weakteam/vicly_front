@@ -7,14 +7,12 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/es/Divider/Divider";
 import rootStore from "../store/RootStore";
-import GroupChat from "./ChatGroup/GroupChat";
 import {observer} from "mobx-react";
-import Badge from "@material-ui/core/Badge";
 import Loyalty from "@material-ui/icons/Loyalty"
 import deferComponentRender from "./DeferredWrapper";
 import "animate.css/animate.min.css"
+import GroupChat from "./ChatGroup/GroupChat";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -126,15 +124,15 @@ class Workgroup extends React.Component {
                                         handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
                             )
                         }
-                        {/*{*/}
-                        {/*    groupChatsNew.map(*/}
-                        {/*        groupChat =>*/}
-                        {/*            <GroupChat*/}
-                        {/*                key={groupChat.chatId}*/}
-                        {/*                groupChat={groupChat}*/}
-                        {/*                handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>*/}
-                        {/*    )*/}
-                        {/*}*/}
+                        {
+                            groupChatsNew.map(
+                                groupChat =>
+                                    <GroupChat
+                                        key={groupChat.chatId}
+                                        groupChat={groupChat}
+                                        handleDrawerToggleForMob={this.props.handleDrawerToggleForMob}/>
+                            )
+                        }
                     </List>
                 </Collapse>
             </div>

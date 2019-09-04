@@ -303,12 +303,12 @@ class ChatBar extends React.Component {
                     onClose={this.handleMenuClose}
                     style={{zIndex: 1303}}>
                     {
-                        this.state.chatInfo === true ? (
+                        this.state.chatInfo ? (
                             <div className={classes.paper}>
                                 <GroupChatInfo handleMenuClose={this.handleMenuClose}/>
                             </div>
                             ) : (
-                                this.state.attachments === true ? (
+                                this.state.attachments ? (
                                     <div className={classes.paperAttachment}>
                                         <AttachmentsModal handleMenuClose={this.handleMenuClose}/>
                                     </div>

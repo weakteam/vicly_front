@@ -7,6 +7,7 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
+import GroupChatBar from "../ChatGroup/GroupChatBar";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -114,7 +115,14 @@ class ChatWindow extends React.Component {
         return (
             <div className={classes.chatWindow}>
                 <ThreadWindow/>
-                <ChatBar match={chat.user.id} chat={chat}/>
+                {
+                    chat.chatType === "user" ?
+                        <ChatBar match={chat.user.id} chat={chat}/>
+                        :
+                        <GroupChatBar chat={chat} match={chat.chatId}
+                                      handleDrawerToggle={this.props.handleDrawerToggle}/>
+                }
+                {/*<ChatBar match={chat.user.id} chat={chat}/>*/}
                 <MessageList
                     myselfUser={myselfUser}
                     chat={chat}

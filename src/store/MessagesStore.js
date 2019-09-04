@@ -83,7 +83,7 @@ export default class MessagesStore {
                         }
                     }
                     currentChat.setSelected(true);
-                    previousChat.setSelected(false);
+                    previousChat && previousChat.setSelected(false);
                 }
             },
             {fireImmediately: true}
