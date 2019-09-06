@@ -164,7 +164,6 @@ function Message(props) {
 
     );
     const {messageInfo} = props;
-    let component = null;
     let style = {};
     if (props.changingMode) {
         style.backgroundColor = "#f06292";

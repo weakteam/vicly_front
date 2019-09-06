@@ -1,6 +1,7 @@
 import React, {useCallback, useRef} from "react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
+import {ResizeObserver} from "@juggle/resize-observer";
 
 
 const MyScrollContainer = (scrollCallback, resizeObserver) =>
