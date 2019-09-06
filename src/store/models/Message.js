@@ -69,7 +69,6 @@ export default class Message {
         }
     }
 
-
     onViewport = () => {
         if (!this.fromMe && !this.timestamp_read) {
             this.readMessage();

@@ -3,6 +3,7 @@ import toastService from "./toastService";
 import {autorun} from "mobx";
 
 const NEW_MESSAGE = 0;
+const DELETE_MESSAGE_HARD = 1;
 const MARK_DELIVERY = 4;
 const MARK_READ = 5;
 const USER_ACTIVITY = 10;
@@ -90,6 +91,10 @@ export default class WebsocketService {
         switch (payload.event) {
             case NEW_MESSAGE:
                 this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
+                break;
+            case DELETE_MESSAGE_HARD:
+                let chat = this.rootStore.messagesStore.findChatById(payload.message.chat.id);
+                chat && chat.messageDelete(payload.message.id);
                 break;
             case USER_ONLINE:
                 this.rootStore.accountStore.showOnline(payload.message.id);

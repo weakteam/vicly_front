@@ -59,7 +59,7 @@ export default class ViclyApi {
         });
     }
 
-    async postMessageInGroupChat(message,attachments, chatId) {
+    async postMessageInGroupChat(message, attachments, chatId) {
         return await fetch(BACKEND_URL + "/message/postnewchat", {
             method: 'POST',
             headers: {
@@ -69,12 +69,12 @@ export default class ViclyApi {
             body: JSON.stringify({
                 "chat_id": chatId,
                 "message": message,
-                "attachments":attachments
+                "attachments": attachments
             })
         });
     }
 
-    async postMessageToUser(message,attachments, userId) {
+    async postMessageToUser(message, attachments, userId) {
         return await fetch(BACKEND_URL + "/message/postnewuser", {
             method: 'POST',
             headers: {
@@ -84,7 +84,7 @@ export default class ViclyApi {
             body: JSON.stringify({
                 "chat_id": userId,
                 "message": message,
-                "attachments":attachments
+                "attachments": attachments
             })
         });
     }
@@ -111,6 +111,34 @@ export default class ViclyApi {
             },
             body: JSON.stringify({
                 "message_id": messageId
+            })
+        });
+    }
+
+    async messageDeleteSoft(messageId) {
+        return await fetch(BACKEND_URL + "/message/delete", {
+            method: 'POST',
+            headers: {
+                'Authorization': this.accountStore.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "mode": 1,
+                "id": messageId
+            })
+        });
+    }
+
+    async messageChange(messageId, newText) {
+        return await fetch(BACKEND_URL + "/message/change", {
+            method: 'POST',
+            headers: {
+                'Authorization': this.accountStore.token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "message": newText,
+                "id": messageId
             })
         });
     }

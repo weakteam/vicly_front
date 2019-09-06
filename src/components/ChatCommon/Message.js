@@ -13,6 +13,7 @@ import "../../css/message.css"
 import VisibilitySensor from "react-visibility-sensor";
 import {useTheme} from "@material-ui/core";
 import AttachmentShowFile from "./AttachmentShowFile";
+import {contextMenu, Item, Menu, MenuProvider} from "react-contexify";
 
 const useStyles = makeStyles({
         fromMe: {
@@ -163,7 +164,7 @@ function Message(props) {
 
     );
     const {messageInfo} = props;
-
+    let component = null;
     if (!messageInfo.fromMe && !messageInfo.timestamp_read) {
         return (
             <VisibilitySensor active={true}
@@ -181,6 +182,7 @@ function Message(props) {
             </div>
         );
     }
+
 }
 
 Message.defaultProps = {
