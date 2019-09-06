@@ -165,19 +165,23 @@ function Message(props) {
     );
     const {messageInfo} = props;
     let component = null;
+    let style = {};
+    if (props.changingMode) {
+        style.backgroundColor = "#f06292";
+    }
     if (!messageInfo.fromMe && !messageInfo.timestamp_read) {
         return (
             <VisibilitySensor active={true}
                               onEnterViewport={messageInfo.onViewport}
                               onChange={messageInfo.onViewport}>
-                <div style={props.styl}>
+                <div style={style}>
                     {a}
                 </div>
             </VisibilitySensor>
         );
     } else {
         return (
-            <div style={props.styl}>
+            <div style={style}>
                 {a}
             </div>
         );

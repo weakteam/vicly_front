@@ -122,13 +122,13 @@ function MessageListH(props) {
         let message = contexedMessage;
         return (
             <Menu style={{zIndex: 1500}} id={menuId}>
-                <Item onClick={() => chat.messageDeleteHard(message.current.messageInfo)}>
+                <Item onClick={() => (message)}>
                     Ответить
                 </Item>
-                <Item onClick={() => console.log('red')}>
+                <Item onClick={() => props.setChangingMode(message.current.messageInfo)}>
                     Изменить
                 </Item>
-                <Item onClick={() => console.log('red')}>
+                <Item onClick={() => chat.messageDeleteHard(message.current.messageInfo)}>
                     Удалить
                 </Item>
             </Menu>)
@@ -138,10 +138,11 @@ function MessageListH(props) {
         const message = messages[index];
         return (
             <Message
-                key={message.id}
+                key={message.messageInfo.id}
                 userInfo={message.userInfo}
                 messageInfo={message.messageInfo}
                 avatar={message.avatar}
+                changingMode={props.changingMessage && props.changingMessage.id === message.messageInfo.id}
                 index={index}
                 onContextMenu={handleContextMenu(message)}
             />

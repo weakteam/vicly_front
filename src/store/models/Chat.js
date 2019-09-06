@@ -166,8 +166,11 @@ export default class Chat {
         }
     }
 
-    messageChanged(messageObject) {
-
+    messageChanged(messageId, newText) {
+        let message = this.messages.find(message => message.id === messageId);
+        if (message) {
+            message.message = newText;
+        }
     }
 
     messageDelete(messageId) {
@@ -177,6 +180,19 @@ export default class Chat {
     async messageDeleteHard(message) {
         try {
             const response = await rootStore.api.messageDeleteSoft(message.id);
+            if (!response.ok) {
+                console.log("message hard deleting failed")
+            } else {
+                // this.messageDelete(message.id)
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async messageChange(message, newText) {
+        try {
+            const response = await rootStore.api.messageChange(message.id, newText);
             if (!response.ok) {
                 console.log("message hard deleting failed")
             } else {

@@ -11,7 +11,7 @@ export default class Message {
     fromMe = false;
     id = null;
     key = null;
-    message = null;
+    @observable message = null;
     reply_for = null;
     // timestamp_delivery: {timestamp: 1556227517250, zone: "UTC+0"}
     timestamp_change = null;

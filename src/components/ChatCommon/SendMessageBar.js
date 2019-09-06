@@ -13,6 +13,7 @@ import DocumentWindow from "./DocumentWindow";
 import rootStore from "../../store/RootStore";
 import AttachmentBar from "./AttachmentBar";
 import Slide from "@material-ui/core/Slide";
+import CloseIcon from '@material-ui/icons/Close';
 
 function getModalStyle() {
     const top = 50;
@@ -28,7 +29,7 @@ function getModalStyle() {
 const styles = theme => ({
     position: {
         zIndex: 5000,
-       /* margin: '5px 5px 5px 5px',*/
+        /* margin: '5px 5px 5px 5px',*/
         borderRadius: 5,
         boxShadow: ` ${
             theme.palette.type === 'light' ? 'inset 0px -3px 0px 0px rgb(218, 218, 218), 0px 4px 7px 0px rgba(0, 0, 0, 0.07)' : 'inset 0px -3px 0px 1px rgba(45, 53, 70, 0.86), 0 0 13px 0px #00000014'
@@ -138,6 +139,7 @@ class SendMessageBar extends React.Component {
         open: false,
         attachments: [],
         upload: false,
+        changingMode: false
     };
 
 
@@ -168,11 +170,16 @@ class SendMessageBar extends React.Component {
             alert("There are broken attachments!!!!");
             return;
         }
-        this.props.handleSendMessage({
-            message: this.state.messageText,
-            attachments: this.state.attachments.map(attach => attach.id),
-            fromMe: true
-        });
+        if (this.props.message) {
+
+        } else {
+            this.props.handleSendMessage({
+                message: this.state.messageText,
+                attachments: this.state.attachments.map(attach => attach.id),
+                fromMe: true
+            });
+        }
+
         this.setState({
             messageText: "",
             attachments: []
@@ -230,8 +237,30 @@ class SendMessageBar extends React.Component {
         }
     };
 
-    shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return this.state !== nextState;
+    cancelChangingMode = () => {
+        this.props.cancelChangingMode();
+        this.setState({
+            changingMode: false,
+            messageText: ""
+        })
+    };
+
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     return this.state !== nextState;
+    // }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.changingMessage && prevProps.changingMessage !== this.props.changingMessage) {
+            this.setState({
+                messageText: this.props.changingMessage.message,
+                changingMode: true
+            })
+        } else if (!this.props.changingMessage && prevProps.changingMessage) {
+            this.setState({
+                messageText: "",
+                changingMode: false
+            })
+        }
     }
 
     render() {
@@ -244,6 +273,14 @@ class SendMessageBar extends React.Component {
                 <IconButton className={classes.iconButton} onClick={this.handleMenu}>
                     <AttachFile className={classes.icon}/>
                 </IconButton>
+
+                {
+                    this.state.changingMode ? (
+                        <IconButton className={classes.iconButton} onClick={this.cancelChangingMode}>
+                            <CloseIcon className={classes.icon}/>
+                        </IconButton>
+                    ) : null
+                }
 
                 <FormControl fullWidth>
                     {

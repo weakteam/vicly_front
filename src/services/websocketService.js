@@ -2,14 +2,15 @@ import {IP} from "../common";
 import toastService from "./toastService";
 import {autorun} from "mobx";
 
-const NEW_MESSAGE = 0;
-const DELETE_MESSAGE_HARD = 1;
-const MARK_DELIVERY = 4;
-const MARK_READ = 5;
+const MESSAGE_NEW = 0;
+const MESSAGE_DELETE_HARD = 1;
+const MESSAGE_CHANGED = 3;
+const MESSAGE_MARK_DELIVERED = 4;
+const MESSAGE_MARK_READED = 5;
 const USER_ACTIVITY = 10;
 const USER_ONLINE = 11;
 const USER_OFFLINE = 12;
-const NEW_GROUP_CHAT = 21;
+const GROUP_CHAT_NEW = 21;
 
 
 export default class WebsocketService {
@@ -89,12 +90,18 @@ export default class WebsocketService {
             return;
         }
         switch (payload.event) {
-            case NEW_MESSAGE:
+            case MESSAGE_NEW:
                 this.rootStore.messagesStore.addMessageToEnd(payload.message.message);
                 break;
-            case DELETE_MESSAGE_HARD:
-                let chat = this.rootStore.messagesStore.findChatById(payload.message.chat.id);
-                chat && chat.messageDelete(payload.message.id);
+            case MESSAGE_DELETE_HARD:
+                var chat = this.rootStore.messagesStore.findChatById(payload.message.chat.id);
+                if (chat)
+                    chat.messageDelete(payload.message.id);
+                break;
+            case MESSAGE_CHANGED:
+                var chat = this.rootStore.messagesStore.findChatById(payload.message.chat.id);
+                if (chat)
+                    chat.messageChanged(payload.message.id, payload.message.new_text);
                 break;
             case USER_ONLINE:
                 this.rootStore.accountStore.showOnline(payload.message.id);
@@ -102,13 +109,13 @@ export default class WebsocketService {
             case USER_OFFLINE:
                 this.rootStore.accountStore.showOffline(payload.message.id);
                 break;
-            case MARK_DELIVERY:
+            case MESSAGE_MARK_DELIVERED:
                 this.rootStore.messagesStore.onDeliveryMessage(payload.message);
                 break;
-            case MARK_READ:
+            case MESSAGE_MARK_READED:
                 this.rootStore.messagesStore.onReadMessage(payload.message);
                 break;
-            case NEW_GROUP_CHAT:
+            case GROUP_CHAT_NEW:
                 // console.log('NEW FUCKIN GROUP CHAT!!!!!' +payload.message.id);
                 this.rootStore.messagesStore.addGroupChat(payload.message.id);
                 break;

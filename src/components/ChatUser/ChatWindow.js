@@ -66,11 +66,36 @@ class ChatWindow extends React.Component {
 
     state = {
         fakeUpdated: false,
-        chat: null
+        chat: null,
+        changeMessageMode: false,
+        changingMessage: null
     };
 
     handleSendMessage = (message) => {
-        this.props.chat.postMessage(message.message, message.attachments);
+
+        if (this.state.changeMessageMode) {
+            this.props.chat.messageChange(this.state.changingMessage, message.message);
+            this.setState({
+                changeMessageMode: false,
+                changingMessage: null
+            })
+        } else {
+            this.props.chat.postMessage(message.message, message.attachments);
+        }
+    };
+
+    setChangingMode = (message) => {
+        this.setState({
+            changeMessageMode: true,
+            changingMessage: message
+        })
+    };
+
+    cancelChangingMode = () => {
+        this.setState({
+            changeMessageMode: false,
+            changingMessage: null
+        })
     };
 
     updateCount = 0;
@@ -128,8 +153,13 @@ class ChatWindow extends React.Component {
                     chat={chat}
                     scrollHandler={this.scrollHandler}
                     messageEnd={this.messagesEnd}
+                    changingMessage={this.state.changingMessage}
+                    setChangingMode={this.setChangingMode}
                     ref={this.messageList}/>
-                <SendMessageBar handleSendMessage={this.handleSendMessage}/>
+                <SendMessageBar
+                    cancelChangingMode={this.cancelChangingMode}
+                    changingMessage={this.state.changingMessage}
+                    handleSendMessage={this.handleSendMessage}/>
             </div>
         )
     }
