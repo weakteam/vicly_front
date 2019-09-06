@@ -125,7 +125,14 @@ function MessageListH(props) {
                 <Item onClick={() => (message)}>
                     Ответить
                 </Item>
-                <Item onClick={() => props.setChangingMode(message.current.messageInfo)}>
+                <Item onClick={() => {
+                    if (message.current.messageInfo.from !== rootStore.accountStore.userId) {
+                        alert("You can't change foreign message!");
+                    } else {
+                        props.setChangingMode(message.current.messageInfo)
+                    }
+
+                }}>
                     Изменить
                 </Item>
                 <Item onClick={() => chat.messageDeleteHard(message.current.messageInfo)}>
