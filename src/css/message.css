@@ -4,6 +4,7 @@
     display: flex;
     min-height: 60px;
     padding-bottom: 10px;
+    align-items: flex-end;
 }
 .avatar {
     margin-right: 9px;
@@ -43,23 +44,33 @@
     width: 100%;
 }
 .gridList {
-    margin: 6px 0 6px 0!important;
-    max-width: 300px;
+    /* margin: 6px 0 6px 0!important; */
+    margin: 0;
+    max-width: 500px;
+/*    width: min-content;*/
+   /* display: flex;*/
+    /* flex-wrap: initial; */
+    overflow: hidden;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 0 0 10px 10px;
+    background-color: rgb(226, 240, 241);
+/* justify-content: center; */
 }
 .mobileHeaderPosition {
-    display: flex;
-    align-items: start;
+display: flex;
+align-items: start;
 }
 @media (max-width: 599px) {
-    .fromMeMob {
-        max-width: 225px;
-    }
-    .gridList {
-        max-width: 250px;
-    }
+.fromMeMob {
+    max-width: 225px;
+}
+.gridList {
+    max-width: 250px;
+}
 }
 @media (min-width: 600px) and (max-width: 959px) {
-    .fromMeMob {
-        max-width: 300px;
-    }
+.fromMeMob {
+    max-width: 300px;
+}
 }

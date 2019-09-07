@@ -10,6 +10,7 @@ import Menu from "@material-ui/core/Menu/Menu";
 import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase/index";
 import history from "../../store/history";
+import DownloadIcon from "../DownloadIcon";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -188,8 +189,9 @@ class ChatBar extends React.Component {
                         {title}
                     </Typography>
                 </div>
-
+                <DownloadIcon/>
                 <div>
+
                     <IconButton
                         aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup="true"

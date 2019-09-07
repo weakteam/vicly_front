@@ -24,8 +24,8 @@ const useStyles = makeStyles({
         // padding: theme.spacing.unit * 4,
     },
     attached: {
-        width: '100%',
-        height: '100%',
+        width: 'fit-content',
+        height: 180,
         //  height: 110,
         objectFit: 'cover',
     },
@@ -201,7 +201,7 @@ function AttachmentShowMedia(props) {
 
 
     return (
-        <div className="attachDiv">
+        <>
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
@@ -234,7 +234,7 @@ function AttachmentShowMedia(props) {
                 mediaAttachment()
             }
 
-        </div>
+        </>
     )
 }
 

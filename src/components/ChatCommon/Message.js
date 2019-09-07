@@ -34,6 +34,12 @@ const useStyles = makeStyles({
         },
         toMe: {
             maxWidth: 500,
+            /*backgroundColor: ` ${
+                theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
+            }`,*/
+            backgroundColor: theme => ` ${
+                theme.palette.type === 'light' ? '#fff' : '#fff'
+            }`,
             padding: '3px 14px 3px 14px',
             borderRadius: '10px 10px 10px 0',
             boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
@@ -41,7 +47,7 @@ const useStyles = makeStyles({
         // If my message not readed yet!
         nonread: {
             transition: theme => theme.transitions.create(['border-color', 'box-shadow']),
-            boxShadow: `${fade('#fb8c00', 0.25)} 0 0 0 0.2rem`,
+            boxShadow: `${fade('#fb8c00', 0.25)} 0px 3px 6px 0px`,
         },
         nondelivered: {
             transition: theme => theme.transitions.create(['border-color', 'box-shadow']),
@@ -74,15 +80,18 @@ function Message(props) {
     const name = props.userInfo.first_name[0];
     let colorChange = AvatarColor.getColor(name);
     let colsNumber;
-    if (props.messageInfo.attachments.length === 1) {
-        colsNumber = 2;
-    } else {
+    if (props.messageInfo.attachments.length <= 3) {
         colsNumber = 1;
+    } else {
+        colsNumber = 3;
     }
     const fromMe = props.messageInfo.fromMe ? 'from-me' : '';
     const msgColor = props.messageInfo.timestamp_read ? "" : props.messageInfo.timestamp_delivery ? classes.nonread : classes.nondelivered;
     const mediaAttachments = props.messageInfo.attachments.filter(attachment => attachment.isMedia());
     const fileAttachments = props.messageInfo.attachments.filter(attachment => !attachment.isMedia());
+    let isAttachment;
+    isAttachment = !!(mediaAttachments.length || fileAttachments.length);
+    console.log(isAttachment);
     let a = (
         <div className="messageBlock">
             <div className="avatar">
@@ -102,65 +111,65 @@ function Message(props) {
                 }
 
             </div>
-            <div onContextMenu={props.onContextMenu}
-                 className={fromMe ? classes.fromMe + " " + msgColor : classes.toMe}>
-                {
-                    fromMe ? (
-                        <Typography
-                            variant="body2"
-                            className={classes.senderName + ' senderName1'}>Я</Typography>
-                    ) : (
-                        <Typography
-                            variant="body2"
-                            className={classes.senderName + ' senderName1'}>{`${props.userInfo.first_name} ${props.userInfo.last_name}`}</Typography>
-                    )
-                }
+            <div className={msgColor} style={{borderRadius: 10}} >
+                <div onContextMenu={props.onContextMenu}
+                     className={fromMe ? classes.fromMe  : classes.toMe}
+                     style={isAttachment ? {borderRadius: '10px 10px 0 0', boxShadow: 0} : {} }>
+                    {
+                        fromMe ? (
+                            <Typography
+                                variant="body2"
+                                className={classes.senderName + ' senderName1'}>Я</Typography>
+                        ) : (
+                            <Typography
+                                variant="body2"
+                                className={classes.senderName + ' senderName1'}>{`${props.userInfo.first_name} ${props.userInfo.last_name}`}</Typography>
+                        )
+                    }
 
-                <Typography variant="body1" className={classes.mess + ' mess'}>
-                    {props.messageInfo.message}
-                </Typography>
+                    <Typography variant="body1" className={classes.mess + ' mess'}>
+                        {props.messageInfo.message}
+                    </Typography>
 
+                </div>
                 {
                     mediaAttachments.length ?
                         (
-                            <>
-                                <GridList className="gridList" cols={2}>
+                                <div style={ {   width: 'min-content',
+                                    minWidth: 'auto',
+                                    maxWidth: 500, borderRadius: '0 0 10px 10px', overflow: 'hidden'}}>
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (
-                                                <GridListTile style={{height: 180, width: 320}} key={atta.id}
-                                                              cols={colsNumber}>
                                                     <AttachmentShowMedia attachment={atta}/>
-                                                </GridListTile>
                                             )
                                         })
                                     }
-                                </GridList>
-                            </>
+                                </div>
                         ) : null
                 }
                 {
                     fileAttachments.length ?
                         (
                             <>
-                                <GridList className="gridList" cols={2}>
+                                <div className="gridList" style={{backgroundColor: '#29C6C4', padding: '3px 14px 3px 14px'}} >
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (
-                                                <GridListTile key={atta.id} cols={colsNumber}>
                                                     <AttachmentShowFile attachment={atta}/>
-                                                </GridListTile>
                                             )
                                         })
                                     }
-                                </GridList>
+                                </div>
                             </>
                         ) : null
                 }
+
             </div>
             <Typography variant="caption"
                         className="caption">{props.messageInfo.formatted_time}</Typography>
-        </div>
+            </div>
+
 
     );
     const {messageInfo} = props;

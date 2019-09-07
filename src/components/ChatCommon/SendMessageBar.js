@@ -230,7 +230,7 @@ class SendMessageBar extends React.Component {
 
     onEnterDown = (event) => {
         // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
-        if (event.keyCode === 13 && event.shiftKey) {
+        if (event.keyCode === 13) { //&& event.shiftKey
             event.preventDefault();
             event.stopPropagation();
             this.handleSendButton();

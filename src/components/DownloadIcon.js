@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import PersonAdd from '@material-ui/icons/PersonAddOutlined'
+import PersonAdd from '@material-ui/icons/ArrowDownwardOutlined'
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import InviteForm from "./InviteForm";
 import history from "../store/history"
@@ -26,12 +26,12 @@ const left = 50;
 
 const styles = theme => ({
     root: {
-        alignSelf: 'center',
+      /*  alignSelf: 'center',
         marginLeft: 'auto',
-        width: 400
+        width: 400*/
     },
     paper: {
-        top: `${top}%`,
+       /* top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
         width: 495,
@@ -50,8 +50,13 @@ const styles = theme => ({
         borderRadius: 10,
         backgroundColor: ` ${
             theme.palette.type === 'light' ? '#0A8D8D' : '#0A8D8D'
+        }`,*/
+        boxShadow: 'inset 0 -2px 0px 0px #dadada',
+        backgroundColor: ` ${
+            theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.darkSecondary
         }`,
-        boxShadow: theme.shadows[5],
+        marginTop: 15,
+        padding: 10,
     },
     textField: {
         width: '-webkit-fill-available',
@@ -109,6 +114,7 @@ const DownloadIcon = observer(function DownloadIcon(props) {
                 onClose={handleClose}
                 classes={{
                     root: classes.rootIndex,
+                    paper: classes.paper
                 }}
                 anchorOrigin={{
                     vertical: 'bottom',
@@ -126,7 +132,7 @@ const DownloadIcon = observer(function DownloadIcon(props) {
                                 <AttachmentDownload download={download[1]}/>
                             ))
                             :
-                            "No downloads"
+                            <Typography variant="h6">Загрузки отсутствуют</Typography>
                     }
                 </List>
             </Popover>

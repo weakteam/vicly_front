@@ -97,7 +97,7 @@ class ProfileBar extends React.Component {
                         <Typography className={classes.text}> online </Typography>
                     </Badge>
                 </div>
-                <DownloadIcon/>
+
                 <InviteIcon/>
 
                 <IconButton onClick={this.handleLogoutFunc}>

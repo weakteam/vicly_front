@@ -10,6 +10,7 @@ import {observer} from "mobx-react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {ListItemIcon} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const {accountStore, messagesStore} = rootStore;
 const top = 50;
@@ -70,29 +71,29 @@ export default observer(function AttachmentDownload(props) {
     const {download} = props;
 
     return (
-        <ListItem>
-            <Grid container>
-                <Grid item xs={12}>
-                    <ListItemAvatar>
-                        {
-                            download.src ?
-                                (<Button onClick={download.save}>
-                                    Download
-                                </Button>) : null
-                        }
-                        <Button onClick={() => rootStore.downloadService.deleteDownload(download.attachment)}>
-                            Delete
-                        </Button>
-                    </ListItemAvatar>
-                    <ListItemText primary={download.attachment.filename}
-                                  secondary={bytesToSize(download.attachment.size)}/>
-                </Grid>
-                <Grid item xs={12}>
-                    {
-                        download.status ? <LinearProgress variant="determinate" value={download.progress}/> : null
-                    }
-                </Grid>
-            </Grid>
-        </ListItem>
+        <>
+<div style={{padding: '6px 8px'}}>
+    <Typography variant='h6'>{download.attachment.filename}</Typography>
+    <Typography variant='h6'>{bytesToSize(download.attachment.size)}</Typography>
+    {
+        download.status ? <LinearProgress variant="determinate" value={download.progress}/> : null
+    }
+</div>
+
+
+
+
+            <div>
+                {
+                    download.src ?
+                        (<Button onClick={download.save}>
+                            Загрузить
+                        </Button>) : null
+                }
+                <Button onClick={() => rootStore.downloadService.deleteDownload(download.attachment)}>
+                    Удалиить
+                </Button>
+            </div>
+        </>
     );
 })
