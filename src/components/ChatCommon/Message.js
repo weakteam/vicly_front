@@ -113,7 +113,7 @@ function Message(props) {
                 <div onContextMenu={props.onContextMenu}
                      className={fromMe ? classes.fromMe  : classes.toMe}
                 style={
-                    isAttachment ? {borderRadius: '10px 10px 0 0', boxShadow: 'none'} : {}
+                    isAttachment ? {borderRadius: '10px 10px 0 0', boxShadow: 'none', padding: '3px 14px 3px 14px'} : {}
                 }>
                     {
                         fromMe ? (
