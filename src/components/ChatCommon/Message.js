@@ -13,6 +13,7 @@ import "../../css/message.css"
 import VisibilitySensor from "react-visibility-sensor";
 import {useTheme} from "@material-ui/core";
 import AttachmentShowFile from "./AttachmentShowFile";
+import 'typeface-roboto';
 import {contextMenu, Item, Menu, MenuProvider} from "react-contexify";
 
 const useStyles = makeStyles({
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
             boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
             maxWidth: 500,
             backgroundColor: theme => ` ${theme.palette.type === 'light' ? '#E2F0F1' : '#007776'}`,
-            padding: '3px 14px 3px 14px',
+            padding: '5px 14px 7px 14px',
             borderRadius: '10px 10px 10px 0',
         },
         fromMeMob: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
             backgroundColor: theme => ` ${
                 theme.palette.type === 'light' ? '#E2F0F1' : '#007776'
             }`,
-            padding: '3px 14px 3px 14px',
+            padding: '5px 14px 7px 14px',
             borderRadius: '10px 10px 0px 10px',
             boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
         },
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
             backgroundColor: theme => ` ${
                 theme.palette.type === 'light' ? '#fff' : '#fff'
             }`,
-            padding: '3px 14px 3px 14px',
+            padding: '5px 14px 7px 14px',
             borderRadius: '10px 10px 10px 0',
             boxShadow: 'inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1)',
         },
@@ -116,19 +117,17 @@ function Message(props) {
                 }>
                     {
                         fromMe ? (
-                            <Typography
-                                variant="body2"
-                                className={classes.senderName + ' senderName1'}>Я</Typography>
+                           <div
+                                className={classes.senderName + ' senderName1'}>Я</div>
                         ) : (
-                            <Typography
-                                variant="body2"
-                                className={classes.senderName + ' senderName1'}>{`${props.userInfo.first_name} ${props.userInfo.last_name}`}</Typography>
+                            <div
+                                className={classes.senderName + ' senderName1'}>{`${props.userInfo.first_name} ${props.userInfo.last_name}`}</div>
                         )
                     }
 
-                    <Typography variant="body1" className={classes.mess + ' mess'}>
+                    <div className={classes.mess + ' mess'}>
                         {props.messageInfo.message}
-                    </Typography>
+                    </div>
 
                 </div>
                 {

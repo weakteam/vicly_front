@@ -41,13 +41,13 @@ function AttachmentShowFile(props) {
 
     return (
         <div onClick={handleAttachmentDownload} className="attachDiv">
-            <div style={{display: "flex"}}>
+            <div style={{display: "flex", padding: '3px 0px',     alignItems: 'center',}}>
                 <img src={window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
                      className={classes.attachedIcon}
                      onClick={attachment.loadFull}/>
                 <div style={{overflow: 'hidden'}}>
-                    <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
-                    <Typography className={classes.caption}>{+attachment.size + " kb"}</Typography>
+                    <div className='fileName'>{attachment.filename}</div>
+                    <div className='size'>{+attachment.size + " kb"}</div>
                 </div>
                 {
                     attachment.statusFull === "loading" || attachment.statusFull === "ready" ?

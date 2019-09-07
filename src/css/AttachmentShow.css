@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 .attachDiv {
     align-self: center;
     margin-left: auto;
@@ -41,4 +42,22 @@
 .userAvatar {
     width: 40px;
     height: 40px;
+}
+.fileName {
+    color: #ffffff;
+    overflow: hidden;
+    font-size: 1rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
+}
+.size {
+    color: #cefffe;
+    overflow: hidden;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
 }
