@@ -61,6 +61,10 @@
 display: flex;
 align-items: start;
 }
+.attachMess {
+    border-radius: 10px 10px 0 0;
+    box-shadow: none;
+}
 @media (max-width: 599px) {
 .fromMeMob {
     max-width: 225px;

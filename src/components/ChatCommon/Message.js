@@ -34,9 +34,6 @@ const useStyles = makeStyles({
         },
         toMe: {
             maxWidth: 500,
-            /*backgroundColor: ` ${
-                theme.palette.type === 'light' ? '#f9f9f9' : '#212C3D'
-            }`,*/
             backgroundColor: theme => ` ${
                 theme.palette.type === 'light' ? '#fff' : '#fff'
             }`,
@@ -114,7 +111,9 @@ function Message(props) {
             <div className={msgColor} style={{borderRadius: 10}} >
                 <div onContextMenu={props.onContextMenu}
                      className={fromMe ? classes.fromMe  : classes.toMe}
-                     style={isAttachment ? {borderRadius: '10px 10px 0 0', boxShadow: 0} : {} }>
+                style={
+                    isAttachment ? {borderRadius: '10px 10px 0 0', boxShadow: 'none'} : {}
+                }>
                     {
                         fromMe ? (
                             <Typography
