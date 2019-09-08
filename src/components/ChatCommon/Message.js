@@ -179,7 +179,11 @@ function Message(props) {
     const {messageInfo} = props;
     let style = {};
     if (props.changingMode) {
-        style.backgroundColor = "#f06292";
+        /*style.backgroundColor = "#f06292";*/
+        style.padding = '40px';
+        style.backgroundColor =  'rgba(45, 128, 127, 0.04)';
+        style.transition =  'all 0.9s ease-in-out 0s';
+        style.borderRadius = '10px';
     }
     if (!messageInfo.fromMe && !messageInfo.timestamp_read) {
         return (
