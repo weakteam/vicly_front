@@ -64,14 +64,14 @@ const useStyles = makeStyles({
                 theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
             }`,
         },
-    mediaContainer: {
-        width: 'min-content',
-        display: 'grid',
-        minWidth: 'auto',
-        boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
-        maxWidth: 500, borderRadius: '0 0 10px 0',
-        overflow: 'hidden',
-    }
+        mediaContainer: {
+            width: 'min-content',
+            display: 'grid',
+            minWidth: 'auto',
+            boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
+            maxWidth: 500, borderRadius: '0 0 10px 0',
+            overflow: 'hidden',
+        }
     }
 );
 
@@ -157,7 +157,6 @@ function Message(props) {
                             <>
                                 <div className="gridList"
                                      style={{backgroundColor: '#29C6C4', padding: '3px 14px 3px 14px'}}>
-                                <div className="gridList">
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (
