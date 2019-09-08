@@ -63,12 +63,14 @@ const useStyles = makeStyles({
                 theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
             }`,
         },
-        mediaContainer: {
-            "&:hover":
-                {
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                },
-        },
+    mediaContainer: {
+        width: 'min-content',
+        display: 'grid',
+        minWidth: 'auto',
+        boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
+        maxWidth: 500, borderRadius: '0 0 10px 0',
+        overflow: 'hidden',
+    }
     }
 );
 
@@ -145,15 +147,7 @@ function Message(props) {
                 {
                     mediaAttachments.length ?
                         (
-                            <div style={{
-                                width: 'min-content',
-                                display: 'grid',
-                                minWidth: 'auto',
-                                boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
-                                maxWidth: 500, borderRadius: '0 0 10px 0',
-                                overflow: 'hidden',
-                            }}
-                                 className={classes.mediaContainer}>
+                            <div className={classes.mediaContainer}>
                                 {
                                     props.messageInfo.attachments.map(atta => {
                                         return (
@@ -168,10 +162,7 @@ function Message(props) {
                     fileAttachments.length ?
                         (
                             <>
-                                <div className="gridList" style={{
-                                    backgroundColor: '#29C6C4',
-                                    padding: '3px 14px 3px 14px',
-                                }}>
+                                <div className="gridList">
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (

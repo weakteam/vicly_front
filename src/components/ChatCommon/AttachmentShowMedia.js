@@ -24,7 +24,7 @@ const useStyles = makeStyles({
         // padding: theme.spacing.unit * 4,
     },
     attached: {
-position: 'relative',
+        position: 'relative',
         width: 'fit-content',
         height: 180,
         //  height: 110,
@@ -55,9 +55,10 @@ position: 'relative',
         cursor: 'pointer',
     },
     imagePreview: {
+        cursor: 'pointer',
         "&:hover":
             {
-               backgroundColor: 'rgba(255, 255, 255, 0.9)'
+                opacity: 0.7
             }
     },
     caption:

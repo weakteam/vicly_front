@@ -50,18 +50,14 @@
     width: 100%;
 }
 .gridList {
-    /* margin: 6px 0 6px 0!important; */
+    background-color: #29C6C4;
+   /* padding: 3px 14px 3px 14px;*/
     margin: 0;
     max-width: 500px;
-/*    width: min-content;*/
-   /* display: flex;*/
-    /* flex-wrap: initial; */
     overflow: hidden;
     flex-direction: row;
     flex-wrap: wrap;
     border-radius: 0 0 10px 0;
-    background-color: rgb(226, 240, 241);
-/* justify-content: center; */
 }
 .mobileHeaderPosition {
 display: flex;
