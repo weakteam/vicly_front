@@ -14,6 +14,8 @@ import VisibilitySensor from "react-visibility-sensor";
 import {useTheme} from "@material-ui/core";
 import AttachmentShowFile from "./AttachmentShowFile";
 import 'typeface-roboto';
+import Ac from '../../images/fon1.jpg'
+import Acb from '../../images/fon2.jpg'
 import {contextMenu, Item, Menu, MenuProvider} from "react-contexify";
 import MediaGallery from "../MediaGallery";
 
@@ -62,6 +64,14 @@ const useStyles = makeStyles({
                 theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
             }`,
         },
+    mediaContainer: {
+        width: 'min-content',
+        display: 'grid',
+        minWidth: 'auto',
+        boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
+        maxWidth: 500, borderRadius: '0 0 10px 0',
+        overflow: 'hidden',
+    }
     }
 );
 
@@ -110,7 +120,7 @@ function Message(props) {
                 }
 
             </div>
-            <div className={msgColor} style={{borderRadius: 10}}>
+            <div className={msgColor} style={{borderRadius: '10px 10px 10px 0'}}>
                 <div onContextMenu={props.onContextMenu}
                      className={fromMe ? classes.fromMe : classes.toMe}
                      style={
@@ -147,6 +157,7 @@ function Message(props) {
                             <>
                                 <div className="gridList"
                                      style={{backgroundColor: '#29C6C4', padding: '3px 14px 3px 14px'}}>
+                                <div className="gridList">
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (

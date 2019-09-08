@@ -50,18 +50,14 @@
     width: 100%;
 }
 .gridList {
-    /* margin: 6px 0 6px 0!important; */
+    background-color: #29C6C4;
+   /* padding: 3px 14px 3px 14px;*/
     margin: 0;
     max-width: 500px;
-/*    width: min-content;*/
-   /* display: flex;*/
-    /* flex-wrap: initial; */
     overflow: hidden;
     flex-direction: row;
     flex-wrap: wrap;
-    border-radius: 0 0 10px 10px;
-    background-color: rgb(226, 240, 241);
-/* justify-content: center; */
+    border-radius: 0 0 10px 0;
 }
 .mobileHeaderPosition {
 display: flex;
@@ -70,6 +66,15 @@ align-items: start;
 .attachMess {
     border-radius: 10px 10px 0 0;
     box-shadow: none;
+}
+.shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 3px 3px 10px 0 #000000;
+    border-radius: 20px;
+    top: 0;
+    left: 0;
 }
 @media (max-width: 599px) {
 .fromMeMob {
