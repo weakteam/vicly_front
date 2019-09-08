@@ -8,6 +8,8 @@ export default class Attachment {
     user_id = null;
     filename = null;
     size = null;
+    width = null;
+    height = null;
     is_avatar = null;
     // Plain js object with any fields :(
     metadata = null;
@@ -30,6 +32,8 @@ export default class Attachment {
     // int (percent)
     @observable progressPreview = null;
 
+    attachedHeigth = 180;
+    attachedWidth = null;
 
     constructor(attachmentObject) {
         this.createInstance(attachmentObject)
@@ -46,6 +50,13 @@ export default class Attachment {
         this.previewBig = attachmentObject.previewBig && new Attachment(attachmentObject.previewBig);
         this.size = attachmentObject.size;
         this.mime = attachmentObject.mime;
+        this.width = attachmentObject.width;
+        this.height = attachmentObject.height;
+        if (this.height && this.width) {
+            this.aspect = this.width / this.height;
+            this.attachedWidth = Math.round(this.attachedHeigth * this.aspect);
+        }
+
 
         this.dataFetched = "ready";
         if (this.mime) {

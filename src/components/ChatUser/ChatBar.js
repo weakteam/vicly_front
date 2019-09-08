@@ -10,7 +10,9 @@ import Menu from "@material-ui/core/Menu/Menu";
 import rootStore from "../../store/RootStore";
 import InputBase from "@material-ui/core/InputBase/index";
 import history from "../../store/history";
+import ChatInfoModal from "../ChatCommon/ChatInfoModal";
 import DownloadIcon from "../DownloadIcon";
+import {Modal} from "@material-ui/core";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -141,6 +143,7 @@ class ChatBar extends React.Component {
         auth: true,
         anchorEl: null,
         type: this.props.theme.palette.type,
+        openChatInfo: false
     };
 
     constructor(props) {
@@ -160,6 +163,13 @@ class ChatBar extends React.Component {
 
     handleClose = () => {
         this.setState({anchorEl: null});
+    };
+
+    handleOpenChatInfo = () => {
+        this.setState({
+            anchorEl: null,
+            openChatInfo: true
+        });
     };
 
     render() {
@@ -222,6 +232,10 @@ class ChatBar extends React.Component {
                         <MenuItem onClick={this.handleClose} className={classes.menuItem}>Выйти</MenuItem>
                     </Menu>
                 </div>
+                <Modal open={this.state.openChatInfo}>
+                    <ChatInfoModal chat={{}}/>
+                </Modal>
+
             </div>
         )
     }

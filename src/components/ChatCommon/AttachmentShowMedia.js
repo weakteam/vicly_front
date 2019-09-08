@@ -1,11 +1,8 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import Close from "@material-ui/icons/Close";
 import {CircularProgress, Divider, makeStyles, Typography} from "@material-ui/core";
 import {observer} from "mobx-react";
 import Modal from "@material-ui/core/Modal";
-import rootStore from "../../store/RootStore";
-import getLinkFromMime from "../../utils/mimetypes";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
 import "../../css/AttachmentShow.css"
 
@@ -21,12 +18,10 @@ const useStyles = makeStyles({
         width: '90%',
         height: '90%',
         backgroundColor: "#191b22"
-        // padding: theme.spacing.unit * 4,
     },
     attached: {
-        width: 'fit-content',
-        height: 180,
-        //  height: 110,
+        width: "100%",
+         height: "100%",
         objectFit: 'cover',
     },
     attachedIcon: {
@@ -233,7 +228,6 @@ function AttachmentShowMedia(props) {
             {
                 mediaAttachment()
             }
-
         </>
     )
 }

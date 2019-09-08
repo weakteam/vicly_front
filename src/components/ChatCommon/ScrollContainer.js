@@ -30,12 +30,12 @@ const MyScrollContainer = (scrollCallback, resizeObserver) =>
             } else {
                 elRef.current.removeEventListener('scroll', onScroll);
             }
-        }, [])
+        }, []);
 
         scrollTo(scrollTop => {
             const goTo = {top: scrollTop};
             elRef.current.scrollTo(goTo);
-        })
+        });
 
         return (
             <div ref={ref} style={{

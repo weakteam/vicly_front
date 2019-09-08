@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {withStyles} from '@material-ui/styles';
 import 'typeface-roboto';
 import SendMessageBar from "../ChatCommon/SendMessageBar";
@@ -130,6 +130,8 @@ class ChatWindow extends React.Component {
 
     render() {
         const {classes, chat} = this.props;
+        //TODO use context
+        // useContext()
         const myselfUser = {
             fullName: this.accountStore.fullName,
             first_name: this.accountStore.first_name,
