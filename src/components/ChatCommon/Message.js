@@ -14,6 +14,8 @@ import VisibilitySensor from "react-visibility-sensor";
 import {useTheme} from "@material-ui/core";
 import AttachmentShowFile from "./AttachmentShowFile";
 import 'typeface-roboto';
+import Ac from '../../images/fon1.jpg'
+import Acb from '../../images/fon2.jpg'
 import {contextMenu, Item, Menu, MenuProvider} from "react-contexify";
 
 const useStyles = makeStyles({
@@ -60,6 +62,12 @@ const useStyles = makeStyles({
             color: theme => ` ${
                 theme.palette.type === 'light' ? '#227B87' : '#8cfff0'
             }`,
+        },
+        mediaContainer: {
+            "&:hover":
+                {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                },
         },
     }
 );
@@ -109,15 +117,19 @@ function Message(props) {
                 }
 
             </div>
-            <div className={msgColor} style={{borderRadius: 10}} >
+            <div className={msgColor} style={{borderRadius: '10px 10px 10px 0'}}>
                 <div onContextMenu={props.onContextMenu}
-                     className={fromMe ? classes.fromMe  : classes.toMe}
-                style={
-                    isAttachment ? {borderRadius: '10px 10px 0 0', boxShadow: 'none', padding: '3px 14px 3px 14px'} : {}
-                }>
+                     className={fromMe ? classes.fromMe : classes.toMe}
+                     style={
+                         isAttachment ? {
+                             borderRadius: '10px 10px 0 0',
+                             boxShadow: 'none',
+                             padding: '3px 14px 3px 14px'
+                         } : {}
+                     }>
                     {
                         fromMe ? (
-                           <div
+                            <div
                                 className={classes.senderName + ' senderName1'}>Я</div>
                         ) : (
                             <div
@@ -133,28 +145,37 @@ function Message(props) {
                 {
                     mediaAttachments.length ?
                         (
-                                <div style={ {   width: 'min-content',
-                                    minWidth: 'auto',
-                                    maxWidth: 500, borderRadius: '0 0 10px 10px', overflow: 'hidden'}}>
-                                    {
-                                        props.messageInfo.attachments.map(atta => {
-                                            return (
-                                                    <AttachmentShowMedia attachment={atta}/>
-                                            )
-                                        })
-                                    }
-                                </div>
+                            <div style={{
+                                width: 'min-content',
+                                display: 'grid',
+                                minWidth: 'auto',
+                                boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
+                                maxWidth: 500, borderRadius: '0 0 10px 0',
+                                overflow: 'hidden',
+                            }}
+                                 className={classes.mediaContainer}>
+                                {
+                                    props.messageInfo.attachments.map(atta => {
+                                        return (
+                                            <AttachmentShowMedia attachment={atta}/>
+                                        )
+                                    })
+                                }
+                            </div>
                         ) : null
                 }
                 {
                     fileAttachments.length ?
                         (
                             <>
-                                <div className="gridList" style={{backgroundColor: '#29C6C4', padding: '3px 14px 3px 14px'}} >
+                                <div className="gridList" style={{
+                                    backgroundColor: '#29C6C4',
+                                    padding: '3px 14px 3px 14px',
+                                }}>
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (
-                                                    <AttachmentShowFile attachment={atta}/>
+                                                <AttachmentShowFile attachment={atta}/>
                                             )
                                         })
                                     }
@@ -166,7 +187,7 @@ function Message(props) {
             </div>
             <Typography variant="caption"
                         className="caption">{props.messageInfo.formatted_time}</Typography>
-            </div>
+        </div>
 
 
     );
