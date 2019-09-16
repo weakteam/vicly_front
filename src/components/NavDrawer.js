@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import Logo from "../images/logoVicly.svg";
 import LogoDark from "../images/LoginLogo.svg";
 import {withStyles, Drawer, AppBar, Toolbar, IconButton, SwipeableDrawer, List, Typography} from "@material-ui/core";
-import MenuIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import MenuIcon from "@material-ui/icons/Menu";
 import InviteIcon from "./InviteIcon";
 import ProfileIco from "./ProfileIco";
 import '../css/IOS.css'

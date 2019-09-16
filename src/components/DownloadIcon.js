@@ -26,9 +26,9 @@ const left = 50;
 
 const styles = theme => ({
     root: {
-      /*  alignSelf: 'center',
+      //alignSelf: 'center',
         marginLeft: 'auto',
-        width: 400*/
+        //width: 400
     },
     paper: {
        /* top: `${top}%`,

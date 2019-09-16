@@ -61,6 +61,7 @@ const styles = theme => ({
            },*/
     },
     namePosition: {
+        marginLeft: 'auto',
         display: 'inline-flex',
         alignItems: 'center',
         maxWidth: '40%'
@@ -201,7 +202,6 @@ class ChatBar extends React.Component {
                 </div>
                 <DownloadIcon/>
                 <div>
-
                     <IconButton
                         aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup="true"

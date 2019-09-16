@@ -29,6 +29,8 @@
 .caption {
     margin-left: 14px!important;
     color: #bbb;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
 }
 .mess {
     margin-top: 7px;
@@ -50,8 +52,8 @@
     width: 100%;
 }
 .gridList {
+    padding: 3px 14px 3px 14px;
     background-color: #29C6C4;
-   /* padding: 3px 14px 3px 14px;*/
     margin: 0;
     max-width: 500px;
     overflow: hidden;
@@ -66,6 +68,11 @@ align-items: start;
 .attachMess {
     border-radius: 10px 10px 0 0;
     box-shadow: none;
+}
+.isAttachment {
+    border-radius: 10px 10px 0 0!important;
+    box-shadow: none!important;
+    padding: 3px 14px 3px 14px!important;
 }
 .shadow {
     position: absolute;

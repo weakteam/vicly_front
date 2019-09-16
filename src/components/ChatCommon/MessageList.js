@@ -5,6 +5,7 @@ import {observer} from "mobx-react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
 import {contextMenu, Item, Menu} from "react-contexify";
+import {Typography} from "@material-ui/core";
 
 const {accountStore, messagesStore} = rootStore;
 

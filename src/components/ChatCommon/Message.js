@@ -47,10 +47,12 @@ const useStyles = makeStyles({
         },
         // If my message not readed yet!
         nonread: {
+            borderRadius: '10px 10px 10px 0',
             transition: theme => theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('#fb8c00', 0.25)} 0px 3px 6px 0px`,
         },
         nondelivered: {
+            borderRadius: '10px 10px 10px 0',
             transition: theme => theme.transitions.create(['border-color', 'box-shadow']),
             boxShadow: `${fade('rgba(239, 5, 17)', 0.25)} 0px 3px 6px 0px`,
         },
@@ -71,6 +73,11 @@ const useStyles = makeStyles({
             boxShadow: 'inset 0 -3px 0 0 #cbcfcf',
             maxWidth: 500, borderRadius: '0 0 10px 0',
             overflow: 'hidden',
+        },
+        isAttachment: {
+            borderRadius: '10px 10px 0 0',
+            boxShadow: 'none',
+            padding: '3px 14px 3px 14px'
         }
     }
 );
@@ -100,7 +107,6 @@ function Message(props) {
     const fileAttachments = props.messageInfo.attachments.filter(attachment => !attachment.isMedia());
     let isAttachment;
     isAttachment = !!(mediaAttachments.length || fileAttachments.length);
-    console.log(isAttachment);
     let a = (
         <div className="messageBlock">
             <div className="avatar">
@@ -118,18 +124,10 @@ function Message(props) {
                             </Avatar>
                         )
                 }
-
             </div>
-            <div className={msgColor} style={{borderRadius: '10px 10px 10px 0'}}>
+            <div className={msgColor}>
                 <div onContextMenu={props.onContextMenu}
-                     className={fromMe ? classes.fromMe : classes.toMe}
-                     style={
-                         isAttachment ? {
-                             borderRadius: '10px 10px 0 0',
-                             boxShadow: 'none',
-                             padding: '3px 14px 3px 14px'
-                         } : {}
-                     }>
+                     className={[fromMe ? (classes.fromMe) : (classes.toMe), isAttachment ? 'isAttachment' : ''].join(' ')}>
                     {
                         fromMe ? (
                             <div
@@ -155,8 +153,7 @@ function Message(props) {
                     fileAttachments.length ?
                         (
                             <>
-                                <div className="gridList"
-                                     style={{backgroundColor: '#29C6C4', padding: '3px 14px 3px 14px'}}>
+                                <div className="gridList">
                                     {
                                         props.messageInfo.attachments.map(atta => {
                                             return (
@@ -170,8 +167,7 @@ function Message(props) {
                 }
 
             </div>
-            <Typography variant="caption"
-                        className="caption">{props.messageInfo.formatted_time}</Typography>
+            <div className="caption">{props.messageInfo.formatted_time}</div>
         </div>
 
 
