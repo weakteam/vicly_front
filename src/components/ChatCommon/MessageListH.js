@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import Message from './Message';
 import rootStore from "../../store/RootStore";
 import {observer} from "mobx-react";
@@ -8,47 +8,12 @@ import {contextMenu, Item, Menu} from "react-contexify";
 import {Virtuoso} from "react-virtuoso";
 import ScrollContainer from "./ScrollContainer";
 
-const {accountStore, messagesStore} = rootStore;
+const {accountStore} = rootStore;
 
 const menuId = 'awesome';
 
-const MyMenu = ({menuId, message}) => {
-    console.log(JSON.stringify(message, null, 2));
-
-    return (<Menu id={menuId}>
-        <Item onClick={() => alert("lol")}>
-            <span>🔷</span>
-            Ответить
-        </Item>
-        <Item onClick={() => alert('red')}>
-            <span>🛑</span>
-            Изменить
-        </Item>
-        <Item onClick={() => alert('red')}>
-            <span>🛑</span>
-            Удалить
-        </Item>
-    </Menu>)
-};
-
-let top = 0;
-
-// Here come the magic
-function handleContextMenu(message) {
-    return (e) => {
-        // always prevent default behavior
-        e.preventDefault();
-
-        // Don't forget to pass the id and the event and voila!
-        contextMenu.show({
-            id: menuId,
-            event: e,
-            message: message
-        });
-    };
-}
-
 const mapHeight = new Map();
+
 
 function MessageListH(props) {
     const {chat} = props;
@@ -67,11 +32,10 @@ function MessageListH(props) {
         clientHeight.current = event.target.clientHeight;
         mapHeight.get(chatId).scrollTop = event.target.scrollTop;
         if (event.target) {
-            if (scrollTop.current <= (scrollHeight.current / 10) && !scrolledOnTop.current) {
+            if (scrollTop.current === 0) {
                 scrolledOnTop.current = true;
                 let chat1 = rootStore.messagesStore.getCurrentChatNew();
                 chat1.nextPage();
-                //alert("IAMONTOPFUCKU");
             } else if (scrollTop.current > (scrollHeight.current / 10) && scrolledOnTop.current) {
                 scrolledOnTop.current = false;
             }
@@ -90,7 +54,7 @@ function MessageListH(props) {
     let scrolledOnTop = useRef(false);
 
     useLayoutEffect(() => {
-        if (chat.direction === "append" && scrollTop.current + clientHeight.current === oldScrollHeight.current) {
+        if (chat.direction === "append" && scrollTop.current + clientHeight.current >= oldScrollHeight.current - 40) {
             list.current.target.scrollTop = scrollHeight.current - clientHeight.current;
         }
         if (chat.direction === "prepend" && list.current && !rootStore.messagesStore.isChatChanged()) {
@@ -106,7 +70,9 @@ function MessageListH(props) {
         if ((scrollT || scrollT === 0) && list.current) {
             list.current.target.scrollTop = scrollT
         }
-        return () => mapHeight.get(chatId).scrollTop = scrollTop.current;
+        return () => {
+            mapHeight.get(chatId).scrollTop = scrollTop.current
+        };
     }, [rootStore.messagesStore.currentChatId, rootStore.messagesStore.isCurrentChatForUser]);
 
     const resizeHandler = (height) => {
@@ -117,14 +83,16 @@ function MessageListH(props) {
 
     // ----------------------------------//
     const myUserId = accountStore.userId;
+    const users = chat.user && [chat.user] || chat.users;
+
     //FIXME group chats and user chats
-    const avatar_images = [chat.user].map(chatUser =>
+    const avatar_images = users.map(chatUser =>
         rootStore.imageService.images.find(elem => elem.userId === chatUser.id) || null
     );
     avatar_images.push(rootStore.imageService.images.find(elem => elem.userId === myUserId) || null);
 
     const messages = chat.messages.map(message => {
-        const user = [chat.user].find(user => message.from === user.id);
+        const user = users.find(user => message.from === user.id);
         const avatar = avatar_images.find(elem => elem && elem.userId === message.from) || null;
         return {
             key: message.id,
@@ -134,32 +102,74 @@ function MessageListH(props) {
         }
     });
 
+    const contexedMessage = useRef(null);
+
+    function handleContextMenu(message) {
+        return (e) => {
+            e.preventDefault();
+
+            contexedMessage.current = message;
+
+            contextMenu.show({
+                id: menuId,
+                event: e
+            });
+        }
+    }
+
+
+    const MyMenu = ({menuId}) => {
+        let message = contexedMessage;
+        return (
+            <Menu style={{zIndex: 1500}} id={menuId}>
+                <Item onClick={() => (message)}>
+                    Ответить
+                </Item>
+                <Item onClick={() => {
+                    if (message.current.messageInfo.from !== rootStore.accountStore.userId) {
+                        alert("You can't change foreign message!");
+                    } else {
+                        props.setChangingMode(message.current.messageInfo)
+                    }
+
+                }}>
+                    Изменить
+                </Item>
+                <Item onClick={() => chat.messageDeleteHard(message.current.messageInfo)}>
+                    Удалить
+                </Item>
+            </Menu>)
+    };
+
     function rendererVirtuoso(index) {
         const message = messages[index];
         return (
             <Message
-                key={message.id}
+                key={message.messageInfo.id}
                 userInfo={message.userInfo}
                 messageInfo={message.messageInfo}
                 avatar={message.avatar}
+                changingMode={props.changingMessage && props.changingMessage.id === message.messageInfo.id}
                 index={index}
-                onContextMenu={() => {
-                }}
+                onContextMenu={handleContextMenu(message)}
             />
-
         );
     }
 
     return (
-        <Virtuoso
-            ScrollContainer={scroller.current}
-            style={{width: '100%', height: '100%', marginTop: 10, marginBottom: 10}}
-            overscan={0}
-            totalCount={messages.length}
-            item={rendererVirtuoso}
-            ref={virtuoso}
-            totalListHeightChanged={resizeHandler}
-        />
+        <>
+            <Virtuoso
+                ScrollContainer={scroller.current}
+                style={{width: '100%', height: '100%'}}
+                overscan={200}
+                totalCount={messages.length}
+                item={rendererVirtuoso}
+                ref={virtuoso}
+                totalListHeightChanged={resizeHandler}
+                computeItemKey={(index) => messages[index].key}
+            />
+            <MyMenu menuId={menuId} message={contexedMessage}/>
+        </>
     );
 }
 

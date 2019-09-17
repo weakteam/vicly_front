@@ -112,7 +112,7 @@ const styles = theme => ({
         marginBottom: 5,
     },
     textInfo: {
-        padding: '20px 30px',
+        padding: '22px 30px',
         [theme.breakpoints.down('xs')]: {
             padding: '4% 3%',
         },
@@ -138,7 +138,7 @@ const styles = theme => ({
     },
     form: {
         position: 'absolute',
-        top: 228,
+        top: 243,
         bottom: 0,
         borderRadius: '0 0 10px 10px',
         left: 0,

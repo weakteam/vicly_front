@@ -13,7 +13,7 @@ export default class GroupChat extends Chat {
     // Array of User objects
     users = [];
 
-    constructor(chatObject, chatType, users) {
+    constructor(chatObject, users) {
         super(chatObject, "group", users);
         // usersNew must be ARRAY!!!! instances of User
         this.users = users;
@@ -39,16 +39,22 @@ export default class GroupChat extends Chat {
     }
 
     async loadMessages(page) {
+        super.loadMessages();
         try {
             const response = await rootStore.api.getGroupChatMessages(this.chatId, page);
             if (!response.ok) {
                 alert("fetch messages failed")
             }
             let messages = await response.json();
-            runInAction("getAllMessagesById", () => {
-                this.updateChat(messages);
+            runInAction("getAllMessagesById1", () => {
+                this.fetching = false;
+                this.wasFetched = true;
+                this.lastFetchedPage = page;
+                this.lastFetchedCount = messages.length;
+                this.prependChat(messages);
             })
         } catch (err) {
+            this.fetching = false;
             console.log(err);
             // return dispatch(setChatList(err))
         }

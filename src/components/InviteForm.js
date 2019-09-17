@@ -305,7 +305,7 @@ const styles = theme => ({
         }`,
     },
     headerBarInf: {
-        padding: '15px 0',
+        padding: '22px 0',
         [theme.breakpoints.down('xs')]: {},
         //position: 'absolute',
         // top: 300,

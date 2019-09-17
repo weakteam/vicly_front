@@ -1,11 +1,8 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import Close from "@material-ui/icons/Close";
 import {CircularProgress, Divider, makeStyles, Typography} from "@material-ui/core";
 import {observer} from "mobx-react";
 import Modal from "@material-ui/core/Modal";
-import rootStore from "../../store/RootStore";
-import getLinkFromMime from "../../utils/mimetypes";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
 import "../../css/AttachmentShow.css"
 
@@ -20,22 +17,11 @@ const useStyles = makeStyles({
         alignItems: 'center',
         width: '90%',
         height: '90%',
-        //  padding: 30,
-        /* [theme.breakpoints.down('xs')]: {
-             width: '80%',
-         },*/
-        //  width: 585,
-        /*  backgroundColor: ` ${
-              theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.primary.dark
-              }`,*/
-        // boxShadow: theme.shadows[5],
         backgroundColor: "#191b22"
-        // padding: theme.spacing.unit * 4,
     },
     attached: {
-        width: '100%',
-        height: '100%',
-        //  height: 110,
+        width: "100%",
+         height: "100%",
         objectFit: 'cover',
     },
     attachedIcon: {
@@ -75,13 +61,10 @@ const useStyles = makeStyles({
             textOverflow: 'ellipsis',
             margin: "auto",
             display: "block",
-            // width: "80%",
             maxWidth: 230,
             fontSize: '0.75rem',
             textAlign: "start",
             color: "#252525",
-            // padding: 10,
-            // height: 150,
         },
     modal:
         {
@@ -123,16 +106,12 @@ const useStyles = makeStyles({
         backgroundColor: '#fff',
         borderRadius: '0px 5px 5px 0px',
         height: '100%',
-        // width: '20%',
         width: 400,
-        /*[theme.breakpoints.down('md')]: {
-            width: '30%',
-        },*/
     },
 });
 
 
-function AttachmentShowH(props) {
+function AttachmentShowMedia(props) {
     const {attachment} = props;
     const classes = useStyles(props);
     const [imageModal, setImageModal] = useState(false);
@@ -215,81 +194,42 @@ function AttachmentShowH(props) {
             return videoAttachment();
     };
 
-    let fileAttachment = () => {
-        const {attachment} = props;
-        if (attachment.dataFetched === "ready") {
-            const src = getLinkFromMime(attachment.mime);
-            return (
-                <div style={{display: "flex"}}>
-                    <img src={src || window.location.origin + "/icons/xml-icon-64x64.png"} alt="ico"
-                         className={classes.attachedIcon}
-                         onClick={attachment.loadFull}/>
-                    <div style={{overflow: 'hidden'}}>
-                        <Typography variant="h6" className={classes.caption}>{attachment.filename}</Typography>
-                        <Typography className={classes.caption}>{+attachment.size + " kb"}</Typography>
-                    </div>
-                    {
-                        attachment.statusFull === "loading" || attachment.statusFull === "ready" ?
-                            (
-                                <LinearProgress variant="determinate" value={attachment.progressFull}/>
-                            ) : null
-                    }
-                </div>
-            )
-        } else if (attachment.dataFetched === "loading") {
-            return <CircularProgress variant="indeterminate"/>
-        } else if (attachment.dataFetched === "none" || attachment.statusPreview === "error") {
-            return "ERROR!"
-        }
-    };
 
-    let handleAttachmentDownload = () => {
-        rootStore.downloadService.downloadAttachment(props.attachment)
-    };
     return (
-        <div onClick={handleAttachmentDownload} className="attachDiv">
+        <>
+            <Modal
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+                open={imageModal}
+                onClose={imagePreviewModalClose}
+            >
+                <div className={classes.modal + " paper"}>
+                    <Close onClick={imagePreviewModalClose} className="close"/>
+                    <div className="contentDiv">
+                        {imageModal ? bigImagePreview() : null}
+                    </div>
+                    <div className="commentBlock">
+                        <div className="infBlockFirst">
+                            <Avatar className="userAvatar">
+                                LL
+                            </Avatar>
+                            <div style={{marginLeft: 10}}>
+                                <Typography variant="h5"
+                                            className={classes.nameUser}>Петя васечкин</Typography>
+                                <Typography variant="caption"
+                                            noWrap
+                                            className={classes.userRole}>Программист</Typography>
+                            </div>
+                        </div>
+                        <Divider/>
+                    </div>
+                </div>
+            </Modal>
             {
-                attachment.isMedia() ?
-                    (
-                        <>
-                            <Modal
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                                open={imageModal}
-                                onClose={imagePreviewModalClose}
-                            >
-                                <div className={classes.modal + " paper"}>
-                                    <Close onClick={imagePreviewModalClose} className="close"/>
-                                    <div className="contentDiv">
-                                        {imageModal ? bigImagePreview() : null}
-                                    </div>
-                                    <div className="commentBlock">
-                                        <div className="infBlockFirst">
-                                            <Avatar className="userAvatar">
-                                                LL
-                                            </Avatar>
-                                            <div style={{marginLeft: 10}}>
-                                                <Typography variant="h5"
-                                                            className={classes.nameUser}>Петя васечкин</Typography>
-                                                <Typography variant="caption"
-                                                            noWrap
-                                                            className={classes.userRole}>Программист</Typography>
-                                            </div>
-                                        </div>
-                                        <Divider/>
-                                    </div>
-                                </div>
-                            </Modal>
-                            {
-                                mediaAttachment()
-                            }
-                        </>
-                    ) : (
-                        fileAttachment()
-                    )
+                mediaAttachment()
             }
-        </div>
+        </>
     )
 }
 
-export default (observer(AttachmentShowH));
+export default (observer(AttachmentShowMedia));

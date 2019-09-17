@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import InviteIcon from "./InviteIcon";
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import rootStore from "../store/RootStore";
+import "animate.css/animate.min.css"
+import DownloadIcon from "./DownloadIcon";
 
 const {accountStore} = rootStore;
 
@@ -16,7 +18,7 @@ const styles = theme => ({
         position: 'absolute',
         backgroundColor: ` ${
             theme.palette.type === 'light' ? theme.palette.primary.light : '#2b3346'
-            }`,
+        }`,
         display: 'inline-flex',
         alignItems: 'center',
         top: 0,
@@ -37,7 +39,7 @@ const styles = theme => ({
     text: {
         color: ` ${
             theme.palette.type === 'light' ? 'rgb(140, 140, 140)' : 'rgb(159, 171, 199)'
-            }`,
+        }`,
     },
     marginInvite: {
         marginLeft: 'auto',
@@ -51,7 +53,7 @@ const styles = theme => ({
     online: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.light : theme.palette.secondary.dark
-            }`,
+        }`,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
@@ -68,7 +70,7 @@ const styles = theme => ({
     icon: {
         color: ` ${
             theme.palette.type === 'light' ? theme.palette.secondary.lightIcons : theme.palette.secondary.dark
-            }`,
+        }`,
     },
 });
 
@@ -83,7 +85,7 @@ class ProfileBar extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-            <div className={classes.position}>
+            <div className={classes.position + ' animated fadeInDown faster'}>
                 <ProfileIco
                     changeThemeType={this.props.changeThemeType}
                     handleLogout={this.handleLogoutFunc}
@@ -91,13 +93,12 @@ class ProfileBar extends React.Component {
 
                 <div className={classes.wrap}>
                     <Typography variant="h6" className={classes.online}>{accountStore.fullName}</Typography>
-                        <Badge  classes={{badge: classes.bage}}>
-                            <Typography className={classes.text}> online </Typography>
-                        </Badge>
+                    <Badge classes={{badge: classes.bage}}>
+                        <Typography className={classes.text}> online </Typography>
+                    </Badge>
                 </div>
 
-                <InviteIcon />
-
+                <InviteIcon/>
 
                 <IconButton onClick={this.handleLogoutFunc}>
                     <ExitToApp className={classes.icon}/>

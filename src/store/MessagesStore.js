@@ -260,6 +260,10 @@ export default class MessagesStore {
         return this.userChatsNew.find(elem => elem.user.id === userId);
     }
 
+    findChatById(chatId) {
+        return this.groupChatsNew.concat(this.userChatsNew).find(chat => chat.chatId === chatId);
+    }
+
     findMessage(messageId, chatId, chatType) {
         const chat = this.findChat(chatId, chatType);
         chat.messages.find(elem => elem.id === messageId);
@@ -278,24 +282,6 @@ export default class MessagesStore {
 
     getPreviousChatNew() {
         return this.previousIsCurrentChatForUser ? this.findUserChatNew(this.previousCurrentChatId) : this.findGroupChatNew(this.previousCurrentChatId);
-    }
-
-
-    nextPage(chatType, chatId) {
-        let chat = null;
-        if (chatType === "user") {
-            chat = this.findUserChat(chatId)
-        } else {
-            chat = this.findGroupChat(chatId);
-        }
-        if (chat) {
-            chat.page++;
-            if (chatType === "user") {
-                this.getUserChatMessages(chatId, chat.page);
-            } else {
-                this.getGroupChatMessages(chatId, chat.page);
-            }
-        }
     }
 
     setCurrentChatId(newCurrentChatId, isNewCurrentChatForUser) {

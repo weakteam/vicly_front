@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500&display=swap&subset=cyrillic,cyrillic-ext');
 .messageBlock {
     word-wrap: break-word;
     overflow-wrap: break-word;
     display: flex;
+    min-height: 60px;
     padding-bottom: 10px;
+    align-items: flex-end;
 }
 .avatar {
     margin-right: 9px;
@@ -14,24 +18,30 @@
     width: 40px!important;
     height: 40px!important;
     border-radius: 5px!important;
-    box-shadow: inset 0 4px 2px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.13);
 }
 .senderName1 {
     min-width: max-content;
     font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
 }
 .caption {
     margin-left: 14px!important;
     color: #bbb;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
 }
 .mess {
-    font-size: 0.8rem;
+    margin-top: 7px;
+    font-size: 0.9rem;
     white-space: pre-wrap;
     word-break: break-all;
     display: flex;
+    font-family: 'Roboto', sans-serif;
 }
 .fromMeMob {
-    padding: 3px 14px 3px 14px;
+    padding: 5px 14px 7px 14px;
     border-radius: 10px 10px 0px 10px;
     box-shadow: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.1);
     max-width: 500px;
@@ -42,23 +52,47 @@
     width: 100%;
 }
 .gridList {
-    margin: 6px 0 6px 0!important;
-    max-width: 300px;
+    padding: 3px 14px 3px 14px;
+    background-color: #29C6C4;
+    margin: 0;
+    max-width: 500px;
+    overflow: hidden;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 0 0 10px 0;
 }
 .mobileHeaderPosition {
-    display: flex;
-    align-items: start;
+display: flex;
+align-items: start;
+}
+.attachMess {
+    border-radius: 10px 10px 0 0;
+    box-shadow: none;
+}
+.isAttachment {
+    border-radius: 10px 10px 0 0!important;
+    box-shadow: none!important;
+    padding: 3px 14px 3px 14px!important;
+}
+.shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 3px 3px 10px 0 #000000;
+    border-radius: 20px;
+    top: 0;
+    left: 0;
 }
 @media (max-width: 599px) {
-    .fromMeMob {
-        max-width: 225px;
-    }
-    .gridList {
-        max-width: 250px;
-    }
+.fromMeMob {
+    max-width: 225px;
+}
+.gridList {
+    max-width: 250px;
+}
 }
 @media (min-width: 600px) and (max-width: 959px) {
-    .fromMeMob {
-        max-width: 300px;
-    }
+.fromMeMob {
+    max-width: 300px;
+}
 }

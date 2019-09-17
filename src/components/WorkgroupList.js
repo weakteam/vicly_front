@@ -62,10 +62,7 @@ class WorkgroupList extends Component {
             } else {
                 return (
                     <div className={classes.load}>
-                        <div style={{textAlign: "center"}}>
                             <CircularProgress/>
-                            <Typography variant="overline" className={classes.text}>Загрузка</Typography>
-                        </div>
                     </div>
                 )
             }

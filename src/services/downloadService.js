@@ -6,6 +6,7 @@ class Download {
     attachmentId = null;
     @observable progress = null;
     error = "";
+    // done | abort | loading | error
     @observable status = "";
     src = null;
     attachment = null;
@@ -16,13 +17,13 @@ class Download {
         this.rootStore = rootStore;
     }
 
-    start() {
-        let ajax = new XMLHttpRequest();
+    start = () => {
+        this.ajax = new XMLHttpRequest();
         const innerProgressHandler = (event) => {
             this.progress = (event.loaded / event.total) * 100;
         };
         const innerLoadEnd = (event) => {
-            this.src = URL.createObjectURL(new Blob([ajax.response], {type: this.attachment.mime}));
+            this.src = URL.createObjectURL(new Blob([this.ajax.response], {type: this.attachment.mime}));
             this.status = "done";
         };
         const innerLoadError = (err) => {
@@ -33,17 +34,18 @@ class Download {
             this.status = "abort";
         };
 
-        ajax.onprogress = innerProgressHandler;
-        ajax.onload = innerLoadEnd;
-        ajax.onerror = innerLoadError;
-        ajax.onabort = innerLoadAbort;
-        ajax.responseType = "arraybuffer";
-        ajax.open("GET", `${BACKEND_URL}/attachment/download/${this.attachmentId}`, true);
-        ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
-        ajax.send();
-    }
+        this.ajax.onprogress = innerProgressHandler;
+        this.ajax.onload = innerLoadEnd;
+        this.ajax.onerror = innerLoadError;
+        this.ajax.onabort = innerLoadAbort;
+        this.ajax.responseType = "arraybuffer";
+        this.ajax.open("GET", `${BACKEND_URL}/attachment/download/${this.attachmentId}`, true);
+        this.ajax.setRequestHeader('Authorization', this.rootStore.accountStore.token);
+        this.ajax.send();
+        this.status = "loading";
+    };
 
-    save() {
+    save = () => {
         if (this.status === "done" && this.src) {
             let a = document.createElement('a');
             a.style = "display: none";
@@ -53,11 +55,17 @@ class Download {
             a.click();
             document.body.removeChild(a);
         }
+    };
+
+    stop = () => {
+        if (this.ajax) {
+            this.ajax.abort();
+        }
     }
 }
 
 export default class DownloadService {
-    downloads = new Map();
+    @observable downloads = new Map();
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -72,6 +80,13 @@ export default class DownloadService {
         this.downloads.set(attachment.id, download);
         download.start();
         return download;
+    }
+
+    deleteDownload(attachment) {
+        if (this.downloads.has(attachment.id)) {
+            this.downloads.get(attachment.id).stop();
+            this.downloads.delete(attachment.id);
+        }
     }
 
     getDownload(attachmentId) {

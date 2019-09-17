@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {withStyles} from '@material-ui/styles';
 import 'typeface-roboto';
 import SendMessageBar from "../ChatCommon/SendMessageBar";
@@ -7,7 +7,7 @@ import ChatBar from "./ChatBar";
 import {observer} from "mobx-react";
 import rootStore from "../../store/RootStore";
 import ThreadWindow from "../ChatCommon/ThreadWindow";
-import ChatWindowEmpty from "../ChatCommon/ChatLoader";
+import GroupChatBar from "../ChatGroup/GroupChatBar";
 
 const {accountStore, messagesStore} = rootStore;
 const styles = theme => ({
@@ -36,7 +36,7 @@ const styles = theme => ({
         bottom: 0,
         left: 0,
         padding: '59px 0 57px 20px',
-        overflow: 'hidden',
+        // overflow: 'hidden',
         [theme.breakpoints.down('md')]: {
             // left: 280,
             padding: '60px 20px 57px 20px',
@@ -66,11 +66,36 @@ class ChatWindow extends React.Component {
 
     state = {
         fakeUpdated: false,
-        chat: null
+        chat: null,
+        changeMessageMode: false,
+        changingMessage: null
     };
 
     handleSendMessage = (message) => {
-        this.props.chat.postMessage(message.message, message.attachments);
+
+        if (this.state.changeMessageMode) {
+            this.props.chat.messageChange(this.state.changingMessage, message.message);
+            this.setState({
+                changeMessageMode: false,
+                changingMessage: null
+            })
+        } else {
+            this.props.chat.postMessage(message.message, message.attachments);
+        }
+    };
+
+    setChangingMode = (message) => {
+        this.setState({
+            changeMessageMode: true,
+            changingMessage: message
+        })
+    };
+
+    cancelChangingMode = () => {
+        this.setState({
+            changeMessageMode: false,
+            changingMessage: null
+        })
     };
 
     updateCount = 0;
@@ -105,6 +130,8 @@ class ChatWindow extends React.Component {
 
     render() {
         const {classes, chat} = this.props;
+        //TODO use context
+        // useContext()
         const myselfUser = {
             fullName: this.accountStore.fullName,
             first_name: this.accountStore.first_name,
@@ -115,14 +142,26 @@ class ChatWindow extends React.Component {
         return (
             <div className={classes.chatWindow}>
                 <ThreadWindow/>
-                <ChatBar match={chat.user.id} chat={chat}/>
+                {
+                    chat.chatType === "user" ?
+                        <ChatBar match={chat.user.id} chat={chat}/>
+                        :
+                        <GroupChatBar chat={chat} match={chat.chatId}
+                                      handleDrawerToggle={this.props.handleDrawerToggle}/>
+                }
+                {/*<ChatBar match={chat.user.id} chat={chat}/>*/}
                 <MessageList
                     myselfUser={myselfUser}
                     chat={chat}
                     scrollHandler={this.scrollHandler}
                     messageEnd={this.messagesEnd}
+                    changingMessage={this.state.changingMessage}
+                    setChangingMode={this.setChangingMode}
                     ref={this.messageList}/>
-                <SendMessageBar handleSendMessage={this.handleSendMessage}/>
+                <SendMessageBar
+                    cancelChangingMode={this.cancelChangingMode}
+                    changingMessage={this.state.changingMessage}
+                    handleSendMessage={this.handleSendMessage}/>
             </div>
         )
     }

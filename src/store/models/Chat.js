@@ -71,7 +71,7 @@ export default class Chat {
 
     }
 
-    processNewMessage(message){
+    processNewMessage(message) {
         //REALLY ABSTRACT
     }
 
@@ -119,7 +119,7 @@ export default class Chat {
         newMessages = newMessages.map(message => new Message(message)).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
         this.direction = "prepend";
         this.prevMessageLength = this.messages.length;
-        this.messages.unshift(...newMessages);//this.messages.concat(newMessages).sort((a, b) => a.timestamp_post.timestamp - b.timestamp_post.timestamp);
+        this.messages.unshift(...newMessages);
     }
 
     postMessage() {
@@ -140,7 +140,7 @@ export default class Chat {
         rootStore.messagesStore.invalidateChatChanged();
         if (this.lastFetchedCount > 0) {
             this.direction = "prepend";
-            this.loadMessages(++this.page);
+            return this.loadMessages(++this.page);
         }
     };
 
@@ -166,8 +166,41 @@ export default class Chat {
         }
     }
 
-    messageChanged(messageObject) {
+    messageChanged(messageId, newText) {
+        let message = this.messages.find(message => message.id === messageId);
+        if (message) {
+            message.message = newText;
+        }
+    }
 
+    messageDelete(messageId) {
+        this.messages.splice(this.messages.findIndex(message => message.id === messageId), 1)
+    }
+
+    async messageDeleteHard(message) {
+        try {
+            const response = await rootStore.api.messageDeleteSoft(message.id);
+            if (!response.ok) {
+                console.log("message hard deleting failed")
+            } else {
+                // this.messageDelete(message.id)
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async messageChange(message, newText) {
+        try {
+            const response = await rootStore.api.messageChange(message.id, newText);
+            if (!response.ok) {
+                console.log("message hard deleting failed")
+            } else {
+                // this.messageDelete(message.id)
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 }

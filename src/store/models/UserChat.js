@@ -68,7 +68,6 @@ export default class UserChat extends Chat {
                 this.lastFetchedCount = messages.length;
                 this.prependChat(messages);
             });
-
         } catch (err) {
             this.fetching = false;
             console.log(err);
@@ -104,8 +103,8 @@ export default class UserChat extends Chat {
         return rootStore.imageService.images.find(elem => elem.userId === this.user.id);
     }
 
-    processNewMessage(message){
-        if (message.from !== rootStore.accountStore.userId && message.from === this.user.id === rootStore.messagesStore.currentChatId){
+    processNewMessage(message) {
+        if (message.from !== rootStore.accountStore.userId && message.from === this.user.id === rootStore.messagesStore.currentChatId) {
             rootStore.toastService.toastNewMessage(this.getChatEventName(), message.message, this.genereteChatUrl(), this.getAvatarSrc());
         }
     }

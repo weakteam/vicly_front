@@ -5,6 +5,7 @@ import InputBase from "@material-ui/core/InputBase";
 
 import rootStore from "../store/RootStore";
 import NewChatIcon from "./NewChatIcon";
+import "animate.css/animate.min.css"
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -135,7 +136,7 @@ class SearchBar extends React.Component {
         const {classes} = this.props;
 
         return (
-            <div className={classes.position}>
+            <div className={classes.position +' animated fadeInDown faster'}>
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
                         <SearchIcon className={classes.iconSearch}/>

@@ -5,6 +5,7 @@ import {observer} from "mobx-react";
 import '../../css/IOS.css'
 import '../../css/scrollbar.css'
 import {contextMenu, Item, Menu} from "react-contexify";
+import {Typography} from "@material-ui/core";
 
 const {accountStore, messagesStore} = rootStore;
 
@@ -199,7 +200,7 @@ class MessageList extends React.Component {
         return (
             <div style={{WebkitOverflowScrolling: 'touch'}} className="scrollbarMessages" id="style-2"
                  ref={this.messageList}>
-                <div className={"scroll scrollMessageArea"} id='messageList'>
+                <div className="scroll scrollMessageArea" id='messageList'>
                     {messages}
                     <div ref={this.messageEnd}/>
                 </div>

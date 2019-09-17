@@ -132,7 +132,7 @@ class Dialog extends React.Component {
         const userId = userChat.user.id;
         const firstName = userChat.user.first_name;
         const lastName = userChat.user.last_name;
-        const lastMessage = userChat.last ? this.props.userChat.last.message : null;
+        const lastMessage = userChat.last ? userChat.last : null;
         const countUnread = userChat.unread;
         const lastMessageDatetime = userChat.last ? userChat.last.timestamp_post.timestamp : null;
         const selected = userChat.selected;
@@ -197,7 +197,7 @@ class Dialog extends React.Component {
                                         style={{color: selected ? '#fff' : ''}}>{firstName + " " + lastName}</Typography>
                             <Typography variant="h6"
                                         className={classes.message}
-                                        style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage : "Нет сообщений"}</Typography>
+                                        style={{color: selected ? '#b5dcdc' : ''}}>{lastMessage ? lastMessage.message : "Нет сообщений"}</Typography>
                         </div>
 
                         <div style={{padding: 8, margin: '0 0 auto auto'}}>
